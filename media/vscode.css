@@ -1,0 +1,20 @@
+details > summary {
+  padding: 2px 6px;
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 1%;
+  font-weight: bolder;
+  cursor: pointer;
+  font-size: large;
+}
+details > div > div {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.comment-date {
+  font-style: italic;
+  opacity: 0.5;
+}
+.comment-poster {
+  font-weight: bold;
+}
