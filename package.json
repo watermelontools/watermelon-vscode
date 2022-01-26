@@ -1,8 +1,14 @@
 {
-  "name": "watermelon",
-	"displayName": "watermelon",
-	"description": "",
+	"name": "watermelon",
+	"description": "Watermelon, find all the historical context of your code",
 	"version": "0.0.1",
+	"publisher": "Watermelon Tools Inc",
+	"private": true,
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/orgs/watermelontools/"
+	},
 	"engines": {
 		"vscode": "^1.63.0"
 	},
@@ -10,36 +16,32 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:watermelon.helloWorld"
+		"onCommand:watermelon.start",
+		"onWebviewPanel:watermelon"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "watermelon.helloWorld",
-				"title": "Hello World"
+				"command": "watermelon.start",
+				"title": "Start watermelon",
+				"category": "watermelon"
 			}
 		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
+		"lint": "eslint . --ext .ts,.tsx",
+		"watch": "tsc -w -p ./"
 	},
 	"devDependencies": {
+		"@types/node": "^12.12.0",
 		"@types/vscode": "^1.63.0",
-		"@types/glob": "^7.2.0",
-		"@types/mocha": "^9.0.0",
-		"@types/node": "14.x",
-		"@typescript-eslint/eslint-plugin": "^5.9.1",
-		"@typescript-eslint/parser": "^5.9.1",
-		"eslint": "^8.6.0",
-		"glob": "^7.2.0",
-		"mocha": "^9.1.3",
-		"typescript": "^4.5.4",
-		"@vscode/test-electron": "^2.0.3"
+		"@types/vscode-webview": "^1.57.0",
+		"@typescript-eslint/eslint-plugin": "^4.16.0",
+		"@typescript-eslint/parser": "^4.16.0",
+		"eslint": "^7.21.0",
+		"typescript": "^4.4.3"
 	}
 }
