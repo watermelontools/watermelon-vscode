@@ -1,9 +1,7 @@
 import * as vscode from 'vscode';
 
 const cats = {
-	'Coding Cat': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
-	'Compiling Cat': 'h>ttps://media.giphy.com/media/mlvseq9yvZhba/giphy.gif',
-	'Testing Cat': 'https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif'
+	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
 
 export function activate(context: vscode.ExtensionContext) {
@@ -73,7 +71,7 @@ class watermelonPanel {
 		// Otherwise, create a new panel.
 		const panel = vscode.window.createWebviewPanel(
 			watermelonPanel.viewType,
-			'Cat Coding',
+			'Watermelon',
 			column || vscode.ViewColumn.One,
 			getWebviewOptions(extensionUri),
 		);
@@ -147,16 +145,16 @@ class watermelonPanel {
 		// Vary the webview's content based on where it is located in the editor.
 		switch (this._panel.viewColumn) {
 			case vscode.ViewColumn.Two:
-				this._updateForCat(webview, 'Compiling Cat');
+				this._updateForCat(webview, 'Watermelon');
 				return;
 
 			case vscode.ViewColumn.Three:
-				this._updateForCat(webview, 'Testing Cat');
+				this._updateForCat(webview, 'Watermelon');
 				return;
 
 			case vscode.ViewColumn.One:
 			default:
-				this._updateForCat(webview, 'Coding Cat');
+				this._updateForCat(webview, 'Watermelon');
 				return;
 		}
 	}
