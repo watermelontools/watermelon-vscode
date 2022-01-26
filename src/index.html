@@ -1,0 +1,28 @@
+<html>
+  <header>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdn.rawgit.com/oauth-io/oauth-js/c5af4519/dist/oauth.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css">
+  </header>
+
+  <body>
+    <a id="github-button" class="btn btn-block btn-social btn-github">
+      <i class="fa fa-github"></i> Sign in with Github
+    </a>
+
+    <script>
+      $('#github-button').on('click', function() {
+        // Initialize with your OAuth.io app public key
+        OAuth.initialize('YOUR_OAUTH_KEY');
+        // Use popup for OAuth
+        OAuth.popup('github').then(github => {
+          console.log(github);
+          // Retrieves user data from oauth provider
+          console.log(github.me());
+        });
+      })
+    </script>
+  </body>
+</html>
