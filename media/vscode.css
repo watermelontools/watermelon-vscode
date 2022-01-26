@@ -6,7 +6,7 @@ details > summary {
   cursor: pointer;
   font-size: large;
 }
-details > div > div {
+.comment-owner {
   display: flex;
   width: 100%;
   justify-content: space-between;

@@ -714,7 +714,7 @@ $(document).ready(function () {
   console.log(pr);
   comments.forEach((comment) => {
     pr.append(`<div>
-  <div>
+  <div class="comment-owner">
   <p class="comment-poster">${comment.user.login}</p>
   <p class="comment-date">${comment.created_at}</p>
 </div>
