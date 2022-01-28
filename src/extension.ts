@@ -184,6 +184,13 @@ class watermelonPanel {
 
 		return `<!DOCTYPE html>
 			<html lang="en">
+			<header>
+				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"></script>
+				<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+				<script src="https://cdn.rawgit.com/oauth-io/oauth-js/c5af4519/dist/oauth.js"></script>
+				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css">
+			</header>
 			<head>
 				<meta charset="UTF-8">
 
@@ -203,13 +210,28 @@ class watermelonPanel {
 			</head>
 			<body>
 				<img src="${catGifPath}" width="300" />
+					<a id="github-button" class="btn btn-block btn-social btn-github">
+					<i class="fa fa-github"></i> Sign in with Github
+				</a>
 				<h2 id="lines-of-code-counter">Github</h2>
 
 				<div id="ghHolder"></div>
 				
 				
 				</body>
-				<script nonce="${nonce}" src="${scriptUri}"></script>
+				<script nonce="${nonce}" src="${scriptUri}">
+				</script>
+
+				<script>
+					$('#github-button').on('click', function() {
+					// Initialize with your OAuth.io app public key
+					OAuth.initialize('VZ0GP42DGRn7t30wPt-xp90Q5DM')
+					OAuth.popup('github').done(function(result) {
+						console.log(result)
+						// do some stuff with result
+					})
+					})
+				</script>
 			</html>`;
 	}
 }
