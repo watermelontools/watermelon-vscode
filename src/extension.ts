@@ -10,14 +10,13 @@ export function activate(context: vscode.ExtensionContext) {
 			watermelonPanel.createOrShow(context.extensionUri);
 		})
 	);
+	vscode.window.onDidChangeTextEditorSelection((selection) => {
 
-	context.subscriptions.push(
-		vscode.commands.registerCommand('watermelon.doRefactor', () => {
-			if (watermelonPanel.currentPanel) {
-				watermelonPanel.currentPanel.doRefactor();
-			}
-		})
-	);
+		vscode.window.showInformationMessage(
+			`${selection.textEditor.document.getText(new vscode.Range(selection.selections[0].start, selection.selections[0].end))}`
+		)
+	})
+
 
 	if (vscode.window.registerWebviewPanelSerializer) {
 		// Make sure we register a serializer in activation event
@@ -59,7 +58,7 @@ class watermelonPanel {
 
 	public static createOrShow(extensionUri: vscode.Uri) {
 		const column = vscode.window.activeTextEditor
-			? vscode.window.activeTextEditor.viewColumn
+			? vscode.ViewColumn.Beside
 			: undefined;
 
 		// If we already have a panel, show it.
@@ -203,12 +202,19 @@ class watermelonPanel {
 			</head>
 			<body>
 				<img src="${catGifPath}" width="300" />
-				<h2 id="lines-of-code-counter">Github</h2>
+				<h1 id="lines-of-code-counter">Github</h1>
 
 				<div id="ghHolder"></div>
 				
-				
+				<h1 id="lines-of-code-counter">Slack</h1>
+				<div id="slackHolder"></div>
+				<p>We found no conversations :(</p>
+
+				<h1 id="lines-of-code-counter">Jira</h1>
+				<div id="jiraHolder"></div>
+				<a>yourCompany.atlassian.com/jira/ENGOPS-218</a>
 				</body>
+				
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</html>`;
 	}
