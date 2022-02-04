@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Octokit } from "@octokit/core";
-const octokit = new Octokit({ auth: `USER-GH-TOKEN` });
+const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
