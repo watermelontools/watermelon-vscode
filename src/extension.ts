@@ -1,10 +1,19 @@
 import * as vscode from 'vscode';
-
+import { Octokit } from "@octokit/core";
+const octokit = new Octokit({ auth: `USER-GH-TOKEN` });
 const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
 
 export function activate(context: vscode.ExtensionContext) {
+	octokit.request('GET /repos/{owner}/{repo}/issues/comments', {
+		owner: 'octocat',
+		repo: 'hello-world'
+	}).then(octoresp => {
+		console.log(octoresp)
+
+	});
+
 	context.subscriptions.push(
 		vscode.commands.registerCommand('watermelon.start', () => {
 			watermelonPanel.createOrShow(context.extensionUri);
@@ -22,7 +31,6 @@ export function activate(context: vscode.ExtensionContext) {
 		// Make sure we register a serializer in activation event
 		vscode.window.registerWebviewPanelSerializer(watermelonPanel.viewType, {
 			async deserializeWebviewPanel(webviewPanel: vscode.WebviewPanel, state: any) {
-				console.log(`Got state: ${state}`);
 				// Reset the webview options so we use latest uri for `localResourceRoots`.
 				webviewPanel.webview.options = getWebviewOptions(context.extensionUri);
 				watermelonPanel.revive(webviewPanel, context.extensionUri);
@@ -171,11 +179,11 @@ class watermelonPanel {
 		const scriptUri = (scriptPathOnDisk).with({ 'scheme': 'vscode-resource' });
 
 		// Local path to css styles
-		const styleResetPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css');
+		//const styleResetPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css');
 		const stylesPathMainPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'vscode.css');
 
 		// Uri to load styles into webview
-		const stylesResetUri = webview.asWebviewUri(styleResetPath);
+		//const stylesResetUri = webview.asWebviewUri(styleResetPath);
 		const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
 
 		// Use a nonce to only allow specific scripts to be run
@@ -202,7 +210,7 @@ class watermelonPanel {
 
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-				<link href="${stylesResetUri}" rel="stylesheet">
+				
 				<link href="${stylesMainUri}" rel="stylesheet">
 
 				<title>Watermelon</title>

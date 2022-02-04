@@ -43,5 +43,8 @@
 		"@typescript-eslint/parser": "^4.16.0",
 		"eslint": "^7.21.0",
 		"typescript": "^4.4.3"
+	},
+	"dependencies": {
+		"@octokit/core": "^3.5.1"
 	}
 }
