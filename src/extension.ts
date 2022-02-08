@@ -4,15 +4,9 @@ const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
-
+let owner = process.env.GH_OWNER || "facebook";
+let repo = process.env.GH_REPO || "react";
 export function activate(context: vscode.ExtensionContext) {
-	octokit.request('GET /repos/{owner}/{repo}/issues/comments', {
-		owner: 'octocat',
-		repo: 'hello-world'
-	}).then(octoresp => {
-		console.log(octoresp)
-
-	});
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('watermelon.start', () => {
@@ -93,6 +87,7 @@ class watermelonPanel {
 	private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
 		this._panel = panel;
 		this._extensionUri = extensionUri;
+		this.getRepoIssues();
 
 		// Set the webview's initial html content
 		this._update();
@@ -131,7 +126,19 @@ class watermelonPanel {
 		// You can send any JSON serializable data.
 		this._panel.webview.postMessage({ command: 'refactor' });
 	}
-
+	public getRepoIssues() {
+		octokit.request('GET /repos/{owner}/{repo}/issues/comments', {
+			// for now, let's use envvars
+			owner: owner,
+			repo: repo,
+			/* owner: 'octocat', // should be local (from token)
+			repo: 'hello-world' // should be local (from reponame?) */
+			// or parse git remote show originº
+		}).then(octoresp => {
+			console.log(octoresp);
+			this._panel.webview.postMessage({ command: "prs", data: octoresp.data })
+		});
+	}
 	public dispose() {
 		watermelonPanel.currentPanel = undefined;
 
@@ -174,7 +181,6 @@ class watermelonPanel {
 	private _getHtmlForWebview(webview: vscode.Webview, catGifPath: string) {
 		// Local path to main script run in the webview
 		const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js');
-
 		// And the uri we use to load this script in the webview
 		const scriptUri = (scriptPathOnDisk).with({ 'scheme': 'vscode-resource' });
 
