@@ -229,11 +229,11 @@ class watermelonPanel {
 				
 				<h1 id="lines-of-code-counter">Slack</h1>
 				<div id="slackHolder"></div>
-				<p>We found no conversations :(</p>
+				<p>We will soon add Slack search</p>
 
 				<h1 id="lines-of-code-counter">Jira</h1>
 				<div id="jiraHolder"></div>
-				<a>yourCompany.atlassian.com/jira/ENGOPS-218</a>
+				<p>We will soon add Jira search</p>
 				</body>
 				
 				<script nonce="${nonce}" src="${scriptUri}"></script>
