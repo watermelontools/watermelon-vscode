@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { Octokit } from "@octokit/core";
 import { GitExtension } from '../git';
+import { Credentials } from './credentials';
 
 //@ts-ignore
 //console.log(git?.getRepository(vscode.Uri.file(vscode.workspace?.workspaceFolders[0].uri.path)))
@@ -10,8 +11,24 @@ const cats = {
 };
 let owner = process.env.GH_OWNER || "facebook";
 let repo = process.env.GH_REPO || "react";
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
+	const credentials = new Credentials();
+	await credentials.initialize(context);
 
+	const disposable = vscode.commands.registerCommand('extension.getGitHubUser', async () => {
+		/**
+		 * Octokit (https://github.com/octokit/rest.js#readme) is a library for making REST API
+		 * calls to GitHub. It provides convenient typings that can be helpful for using the API.
+		 * 
+		 * Documentation on GitHub's REST API can be found here: https://docs.github.com/en/rest
+		 */
+		const octokit = await credentials.getOctokit();
+		const userInfo = await octokit.users.getAuthenticated();
+
+		vscode.window.showInformationMessage(`Logged into GitHub as ${userInfo.data.login}`);
+	});
+
+	context.subscriptions.push(disposable);
 	context.subscriptions.push(
 		vscode.commands.registerCommand('watermelon.start', () => {
 			watermelonPanel.createOrShow(context.extensionUri);
@@ -264,4 +281,8 @@ if (gitExtension?.isActive) {
 	git = gitExtension?.exports?.getAPI(1)
 	console.log("ACTIVEgit", git)
 };
+while (!gitExtension?.isActive) {
+	console.log("gitEXT", gitExtension?.isActive)
+
+}
 console.log("git", git)
