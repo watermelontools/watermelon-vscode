@@ -1,5 +1,9 @@
 import * as vscode from 'vscode';
 import { Octokit } from "@octokit/core";
+import { GitExtension } from '../git';
+
+//@ts-ignore
+//console.log(git?.getRepository(vscode.Uri.file(vscode.workspace?.workspaceFolders[0].uri.path)))
 const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
@@ -14,10 +18,9 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	);
 	vscode.window.onDidChangeTextEditorSelection((selection) => {
-
 		vscode.window.showInformationMessage(
 			`${selection.textEditor.document.getText(new vscode.Range(selection.selections[0].start, selection.selections[0].end))}`
-		)
+		);
 	})
 
 
@@ -31,6 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		});
 	}
+
 }
 
 function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
@@ -249,3 +253,15 @@ function getNonce() {
 	}
 	return text;
 }
+
+const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git')
+let git
+console.log("gitEXTPRE", gitExtension?.isActive)
+gitExtension?.activate()
+console.log("gitEXT", gitExtension?.isActive)
+
+if (gitExtension?.isActive) {
+	git = gitExtension?.exports?.getAPI(1)
+	console.log("ACTIVEgit", git)
+};
+console.log("git", git)
