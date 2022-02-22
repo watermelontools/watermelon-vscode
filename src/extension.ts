@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { Octokit } from "@octokit/core";
 import { GitExtension } from '../git';
 import { Credentials } from './credentials';
+import getWebviewOptions from './utils/getWebViewOptions';
+import getNonce from './utils/getNonce';
 
 //@ts-ignore
 //console.log(git?.getRepository(vscode.Uri.file(vscode.workspace?.workspaceFolders[0].uri.path)))
@@ -52,16 +54,6 @@ export async function activate(context: vscode.ExtensionContext) {
 		});
 	}
 
-}
-
-function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
-	return {
-		// Enable javascript in the webview
-		enableScripts: true,
-
-		// And restrict the webview to only loading content from our extension's `media` directory.
-		localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')]
-	};
 }
 
 /**
@@ -262,22 +254,10 @@ class watermelonPanel {
 	}
 }
 
-function getNonce() {
-	let text = '';
-	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	for (let i = 0; i < 32; i++) {
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-	}
-	return text;
-}
-
 const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git')
-let git
-console.log("gitEXTPRE", gitExtension?.isActive)
-gitExtension?.activate()
-console.log("gitEXT", gitExtension?.isActive)
+let git;
+gitExtension?.activate();
 
 if (gitExtension?.isActive) {
-	git = gitExtension?.exports?.getAPI(1)
-	console.log("ACTIVEgit", git)
+	git = gitExtension?.exports?.getAPI(1);
 };
