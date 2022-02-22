@@ -4,6 +4,7 @@ import { GitExtension } from '../git';
 import { Credentials } from './credentials';
 import getWebviewOptions from './utils/getWebViewOptions';
 import getNonce from './utils/getNonce';
+import constants from './constants';
 
 //@ts-ignore
 //console.log(git?.getRepository(vscode.Uri.file(vscode.workspace?.workspaceFolders[0].uri.path)))
@@ -11,8 +12,7 @@ const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
-let owner = process.env.GH_OWNER || "facebook";
-let repo = process.env.GH_REPO || "react";
+
 export async function activate(context: vscode.ExtensionContext) {
 	const credentials = new Credentials();
 	await credentials.initialize(context);
@@ -142,8 +142,8 @@ class watermelonPanel {
 	public getRepoIssues() {
 		octokit.request('GET /repos/{owner}/{repo}/issues/comments', {
 			// for now, let's use envvars
-			owner: owner,
-			repo: repo,
+			owner: constants.owner,
+			repo: constants.repo,
 			/* owner: 'octocat', // should be local (from token)
 			repo: 'hello-world' // should be local (from reponame?) */
 			// or parse git remote show originº
