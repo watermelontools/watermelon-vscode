@@ -272,12 +272,9 @@ function getNonce() {
 }
 
 const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git')
-let git
-console.log("gitEXTPRE", gitExtension?.isActive)
-gitExtension?.activate()
-console.log("gitEXT", gitExtension?.isActive)
+let git;
+gitExtension?.activate();
 
 if (gitExtension?.isActive) {
-	git = gitExtension?.exports?.getAPI(1)
-	console.log("ACTIVEgit", git)
+	git = gitExtension?.exports?.getAPI(1);
 };
