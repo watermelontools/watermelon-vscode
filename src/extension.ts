@@ -55,7 +55,9 @@ export async function activate(context: vscode.ExtensionContext) {
 	}
 
 }
-
+export async function deactivate() {
+	// used for cleanup, maybe set cache? analytics?
+}
 /**
  * Manages cat coding webview panels
  */
