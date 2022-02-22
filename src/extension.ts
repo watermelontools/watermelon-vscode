@@ -3,6 +3,7 @@ import { Octokit } from "@octokit/core";
 import { GitExtension } from '../git';
 import { Credentials } from './credentials';
 import getWebviewOptions from './utils/getWebViewOptions';
+import getNonce from './utils/getNonce';
 
 //@ts-ignore
 //console.log(git?.getRepository(vscode.Uri.file(vscode.workspace?.workspaceFolders[0].uri.path)))
@@ -251,15 +252,6 @@ class watermelonPanel {
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</html>`;
 	}
-}
-
-function getNonce() {
-	let text = '';
-	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	for (let i = 0; i < 32; i++) {
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-	}
-	return text;
 }
 
 const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git')
