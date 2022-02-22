@@ -2,15 +2,25 @@ import * as vscode from 'vscode';
 import { Octokit } from "@octokit/core";
 import { GitExtension } from '../git';
 import { Credentials } from './credentials';
+import { GitHub } from 'github-graphql-api';
+
+var exec = require('child_process').exec;
+
 
 //@ts-ignore
 //console.log(git?.getRepository(vscode.Uri.file(vscode.workspace?.workspaceFolders[0].uri.path)))
 const octokit = new Octokit({ auth: process.env.GH_TOKEN });
+// const github = new GitHub({ token: process.env.GH_TOKEN })
 const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
 let owner = process.env.GH_OWNER || "facebook";
 let repo = process.env.GH_REPO || "react";
+
+// selection ranges should be a global var
+let startLine = 0;
+let endLine = 0;
+
 export async function activate(context: vscode.ExtensionContext) {
 	const credentials = new Credentials();
 	await credentials.initialize(context);
@@ -35,6 +45,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		})
 	);
 	vscode.window.onDidChangeTextEditorSelection((selection) => {
+		startLine = selection.selections[0].start.line;
+		endLine = selection.selections[0].end.line;
 		vscode.window.showInformationMessage(
 			`${selection.textEditor.document.getText(new vscode.Range(selection.selections[0].start, selection.selections[0].end))}`
 		);
@@ -83,6 +95,17 @@ class watermelonPanel {
 		const column = vscode.window.activeTextEditor
 			? vscode.ViewColumn.Beside
 			: undefined;
+		
+		// get commit shas here
+		// exec('git blame -L 1,5 README.md',
+		exec(`git blame -L ${startLine},${endLine} README.md`
+		function (error, stdout, stderr) {
+			console.log('stdout: ' + stdout);
+			console.log('stderr: ' + stderr);
+			if (error !== null) {
+				 console.log('exec error: ' + error);
+			}
+		});
 
 		// If we already have a panel, show it.
 		if (watermelonPanel.currentPanel) {
@@ -109,6 +132,7 @@ class watermelonPanel {
 		this._panel = panel;
 		this._extensionUri = extensionUri;
 		this.getRepoIssues();
+		this.getCommitSHAs(); // NOTE: Please put this where it's appropriate. I'm not sure where. 
 
 		// Set the webview's initial html content
 		this._update();
@@ -142,6 +166,13 @@ class watermelonPanel {
 		);
 	}
 
+	public getCommitSHAs() {
+		console.log("startLine", startLine)
+		console.log("endLine: ", endLine)
+
+		// Call Git Blame via GitHub's API here.
+	}
+
 	public doRefactor() {
 		// Send a message to the webview webview.
 		// You can send any JSON serializable data.
@@ -156,7 +187,7 @@ class watermelonPanel {
 			repo: 'hello-world' // should be local (from reponame?) */
 			// or parse git remote show originº
 		}).then(octoresp => {
-			console.log(octoresp);
+			console.log("octoresp: ", octoresp);
 			this._panel.webview.postMessage({ command: "prs", data: octoresp.data })
 		});
 	}
@@ -271,18 +302,25 @@ function getNonce() {
 	return text;
 }
 
+function makeFrame()
+{
+    const activeEditor = vscode.window.activeTextEditor;
+    if (activeEditor) {
+        activeEditor.selection.active.line;
+    }
+}
+
 const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git')
 let git
-console.log("gitEXTPRE", gitExtension?.isActive)
 gitExtension?.activate()
 console.log("gitEXT", gitExtension?.isActive)
 
-if (gitExtension?.isActive) {
-	git = gitExtension?.exports?.getAPI(1)
-	console.log("ACTIVEgit", git)
-};
-while (!gitExtension?.isActive) {
-	console.log("gitEXT", gitExtension?.isActive)
+// if (gitExtension?.isActive) {
+// 	git = gitExtension?.exports?.getAPI(1)
+// 	console.log("ACTIVEgit", git)
+// };
+// while (!gitExtension?.isActive) {
+// 	console.log("gitEXT", gitExtension?.isActive)
 
-}
+// }
 console.log("git", git)
