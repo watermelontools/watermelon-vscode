@@ -281,8 +281,3 @@ if (gitExtension?.isActive) {
 	git = gitExtension?.exports?.getAPI(1)
 	console.log("ACTIVEgit", git)
 };
-while (!gitExtension?.isActive) {
-	console.log("gitEXT", gitExtension?.isActive)
-
-}
-console.log("git", git)
