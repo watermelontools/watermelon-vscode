@@ -17,7 +17,8 @@
 	],
 	"activationEvents": [
 		"onCommand:watermelon.start",
-		"onWebviewPanel:watermelon"
+		"onWebviewPanel:watermelon",
+		"onStartupFinished"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -45,6 +46,10 @@
 		"typescript": "^4.4.3"
 	},
 	"dependencies": {
-		"@octokit/core": "^3.5.1"
-	}
+		"@octokit/core": "^3.5.1",
+		"@octokit/rest": "^18.12.0"
+	},
+	"extensionDependencies": [
+		"vscode.git"
+	]
 }
