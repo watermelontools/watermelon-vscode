@@ -1,7 +1,7 @@
 {
 	"name": "watermelon-tools",
 	"description": "Watermelon, find all the historical context of your code",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "WatermelonTools",
 	"displayName": "Watermelon",
 	"private": true,
@@ -23,7 +23,7 @@
 		"Repo",
 		"Context"
 	],
-	"icon":"images/logo.png",
+	"icon": "images/logo.png",
 	"activationEvents": [
 		"onCommand:watermelon.start",
 		"onWebviewPanel:watermelon"
