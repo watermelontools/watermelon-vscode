@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { Octokit } from "@octokit/core";
 import { GitExtension } from '../git';
 import { Credentials } from './credentials';
+import * as fs from "fs";   
 // import {execa} from 'execa';
 
 var exec = require('child_process').exec;
@@ -97,10 +98,13 @@ class watermelonPanel {
 			: undefined;
 
 
+		const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
+		
 		// Git Blame's index doesn't start at 0 but at 1. But VS Code's API indexes start at 0, despite the IDE showing it starts at 1. 
 		// So fucking confusing
 		// Therefore we have to add 1 to the index.
-		exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
+		// exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
+		exec(`git blame -l -L ${startLine+1},${endLine+1} ${currentlyOpenTabfilePath}`,
 		function (error:string, stdout:string, stderr:string) {
 			let arrayOfSHAs: string[] = [];
 			const splitConsoleReturn = stdout.split(";");
