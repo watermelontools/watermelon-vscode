@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { Octokit } from "@octokit/core";
 import { GitExtension } from '../git';
 import { Credentials } from './credentials';
-import { GitHub } from 'github-graphql-api';
+// import {execa} from 'execa';
 
 var exec = require('child_process').exec;
 
@@ -95,17 +95,28 @@ class watermelonPanel {
 		const column = vscode.window.activeTextEditor
 			? vscode.ViewColumn.Beside
 			: undefined;
-		
-		// get commit shas here
-		// exec('git blame -L 1,5 README.md',
-		exec(`git blame -L ${startLine},${endLine} README.md`
-		function (error, stdout, stderr) {
-			console.log('stdout: ' + stdout);
-			console.log('stderr: ' + stderr);
+
+
+		// Git Blame's index doesn't start at 0 but at 1. But VS Code's API indexes start at 0, despite the IDE showing it starts at 1. 
+		// So fucking confusing
+		// Therefore we have to add 1 to the index.
+		exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
+		function (error:string, stdout:string, stderr:string) {
+			let arrayOfSHAs: string[] = [];
+			const splitConsoleReturn = stdout.split(";");
+			splitConsoleReturn.forEach((commit: string) => {
+				const commitHash = commit.split(" ")[0].replace("\n", "");
+				if (commitHash !== "\n") {
+					arrayOfSHAs.push(commitHash);
+				}
+			});
 			if (error !== null) {
+				// TODO: Prompt the user something here
 				 console.log('exec error: ' + error);
 			}
+			return arrayOfSHAs;
 		});
+		
 
 		// If we already have a panel, show it.
 		if (watermelonPanel.currentPanel) {
@@ -131,8 +142,7 @@ class watermelonPanel {
 	private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
 		this._panel = panel;
 		this._extensionUri = extensionUri;
-		this.getRepoIssues();
-		this.getCommitSHAs(); // NOTE: Please put this where it's appropriate. I'm not sure where. 
+		this.getRepoIssues(); 
 
 		// Set the webview's initial html content
 		this._update();
@@ -164,13 +174,6 @@ class watermelonPanel {
 			null,
 			this._disposables
 		);
-	}
-
-	public getCommitSHAs() {
-		console.log("startLine", startLine)
-		console.log("endLine: ", endLine)
-
-		// Call Git Blame via GitHub's API here.
 	}
 
 	public doRefactor() {
@@ -246,6 +249,8 @@ class watermelonPanel {
 
 		// Use a nonce to only allow specific scripts to be run
 		const nonce = getNonce();
+		// execa('echo hey unicorns',).stdout.pipe(process.stdout);
+		// console.log(testExeca());
 
 		return `<!DOCTYPE html>
 			<html lang="en">
@@ -301,6 +306,11 @@ function getNonce() {
 	}
 	return text;
 }
+
+// async function testExeca() {
+// 	const {stdout} = await execa('echo unicorns');
+// 	return (stdout);
+// }
 
 function makeFrame()
 {
