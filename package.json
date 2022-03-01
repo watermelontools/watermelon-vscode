@@ -45,6 +45,8 @@
 		"typescript": "^4.4.3"
 	},
 	"dependencies": {
-		"@octokit/core": "^3.5.1"
+		"@octokit/core": "^3.5.1",
+		"@octokit/rest": "^18.12.0",
+		"@vscode/test-electron": "^2.1.2"
 	}
 }
