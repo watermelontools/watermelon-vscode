@@ -1,8 +1,9 @@
 {
-	"name": "watermelon",
+	"name": "watermelon-tools",
 	"description": "Watermelon, find all the historical context of your code",
-	"version": "0.0.1",
-	"publisher": "Watermelon Tools Inc",
+	"version": "0.0.2",
+	"publisher": "WatermelonTools",
+	"displayName": "Watermelon",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -15,6 +16,14 @@
 	"categories": [
 		"Other"
 	],
+	"keywords": [
+		"Github",
+		"Comments",
+		"PRs",
+		"Repo",
+		"Context"
+	],
+	"icon": "images/logo.png",
 	"activationEvents": [
 		"onCommand:watermelon.start",
 		"onWebviewPanel:watermelon"
@@ -41,6 +50,7 @@
 		"@types/vscode-webview": "^1.57.0",
 		"@typescript-eslint/eslint-plugin": "^4.16.0",
 		"@typescript-eslint/parser": "^4.16.0",
+		"@vscode/test-electron": "^2.1.2",
 		"eslint": "^7.21.0",
 		"typescript": "^4.4.3"
 	},
