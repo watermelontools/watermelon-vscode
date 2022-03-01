@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { Octokit } from "@octokit/core";
 import { GitExtension } from '../git';
 import { Credentials } from './credentials';
+import getWebviewOptions from './utils/getWebViewOptions';
+import getNonce from './utils/getNonce';
 
 var exec = require('child_process').exec;
 
