@@ -9,7 +9,6 @@ var exec = require('child_process').exec;
 
 
 //@ts-ignore
-//console.log(git?.getRepository(vscode.Uri.file(vscode.workspace?.workspaceFolders[0].uri.path)))
 const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 // const github = new GitHub({ token: process.env.GH_TOKEN })
 const cats = {
@@ -313,34 +312,4 @@ class watermelonPanel {
 	}
 }
 
-function getNonce() {
-	let text = '';
-	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	for (let i = 0; i < 32; i++) {
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-	}
-	return text;
-}
 
-function makeFrame()
-{
-    const activeEditor = vscode.window.activeTextEditor;
-    if (activeEditor) {
-        activeEditor.selection.active.line;
-    }
-}
-
-const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git')
-let git
-gitExtension?.activate()
-console.log("gitEXT", gitExtension?.isActive)
-
-// if (gitExtension?.isActive) {
-// 	git = gitExtension?.exports?.getAPI(1)
-// 	console.log("ACTIVEgit", git)
-// };
-// while (!gitExtension?.isActive) {
-// 	console.log("gitEXT", gitExtension?.isActive)
-
-// }
-console.log("git", git)
