@@ -63,17 +63,24 @@ export async function activate(context: vscode.ExtensionContext) {
 	}
 
 }
-
+function escapeFilePath(path:string| undefined){
+	if(path){
+		// $& means the whole matched string
+		return path.replace(/[. *\s+\ ?^${}()|[\]\\]/g, '\\$&');
+	}
+	else {return "";}
+}
 function getCommitHashes(){
 	const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
 	let splitPath = currentlyOpenTabfilePath?.split("/");
-	let fileName = splitPath?.pop();
-	let folderRoute = splitPath?.join("/");
+	let fileName = splitPath?.pop()?.split(" ").join("\\ ");
+	let folderRoute = splitPath?.join("/").split(" ").join("\\ ");
 	// Git Blame's index doesn't start at 0 but at 1. But VS Code's API indexes start at 0, despite the IDE showing it starts at 1. 
 	// So fucking confusing
 	// Therefore we have to add 1 to the index.
 	// exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
-	exec(`cd ${folderRoute} \n git blame -l -L ${startLine+1},${endLine+1} ${fileName}`,
+	// might return "fatal: no such path '<path>' in HEAD"
+	 exec(`cd ${escapeFilePath(folderRoute)} \n git blame -l -L ${startLine+1},${endLine+1} ${escapeFilePath(fileName)}`,
 		function (error:string, stdout:string, stderr:string) {
 			let arrayOfSHAs: string[] = [];
 			const splitConsoleReturn = stdout.split(";");
@@ -89,7 +96,7 @@ function getCommitHashes(){
 			}
 			console.log(arrayOfSHAs)
 			return arrayOfSHAs;
-		});
+		}); 
 }
 
 /**
