@@ -4,6 +4,7 @@ import { GitExtension } from '../git';
 import { Credentials } from './credentials';
 import getWebviewOptions from './utils/getWebViewOptions';
 import getNonce from './utils/getNonce';
+import { ConsoleReporter } from '@vscode/test-electron';
 
 var exec = require('child_process').exec;
 
@@ -14,8 +15,30 @@ const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
-let owner = process.env.GH_OWNER || "facebook";
-let repo = process.env.GH_REPO || "react";
+
+
+
+const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
+let splitPath = currentlyOpenTabfilePath?.split("/");
+let fileName = splitPath?.pop()?.split(" ").join("\\ ");
+let folderRoute = splitPath?.join("/").split(" ").join("\\ ");
+
+
+// let owner = "";
+// let repo = "";
+// // get repo name and owner basename
+// exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
+// 	function (error:string, stdout:string, stderr:string) {
+// 		const splitStdout = stdout.split("/");
+// 		owner = splitStdout[3];
+// 	}
+// );
+
+// exec(`cd ${escapeFilePath(folderRoute)} \n git rev-parse --show-toplevel`,
+// 	function (error:string, stdout:string, stderr:string) {
+// 		repo = stdout.split("/")[3];
+// 	}
+// );
 
 // selection ranges should be a global var
 let startLine = 0;
@@ -49,7 +72,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	vscode.window.onDidChangeTextEditorSelection((selection) => {
 		startLine = selection.selections[0].start.line;
 		endLine = selection.selections[0].end.line;
-		getSHAs();
+		// getSHAs();
 	});
 
 
@@ -72,6 +95,7 @@ function escapeFilePath(path:string| undefined){
 	}
 	else {return "";}
 }
+
 async function getSHAs() {
 	const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
 	let splitPath = currentlyOpenTabfilePath?.split("/");
@@ -98,8 +122,8 @@ async function getSHAs() {
 				 console.log('exec error: ' + error);
 			}
 			 toReturn = [...new Set(localSHAs)]
-arrayOfSHAs= toReturn
-return toReturn
+			arrayOfSHAs= toReturn
+			return toReturn
 		}); 
 }
 
@@ -123,7 +147,8 @@ class watermelonPanel {
 			? vscode.ViewColumn.Beside
 			: undefined;
 
-
+		getSHAs();
+		
 		// If we already have a panel, show it.
 		if (watermelonPanel.currentPanel) {
 			watermelonPanel.currentPanel._panel.reveal(column);
@@ -140,7 +165,6 @@ class watermelonPanel {
 
 		watermelonPanel.currentPanel = new watermelonPanel(panel, extensionUri);
 		console.log(arrayOfSHAs)
-		console.log("fdsgafgafdgadfgadfgd")
 	}
 
 	public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
@@ -190,17 +214,44 @@ class watermelonPanel {
 		this._panel.webview.postMessage({ command: 'refactor' });
 	}
 	public getRepoIssues() {
-		octokit.request('GET /repos/{owner}/{repo}/issues/comments', {
-			// for now, let's use envvars
-			owner: owner,
-			repo: repo,
-			/* owner: 'octocat', // should be local (from token)
-			repo: 'hello-world' // should be local (from reponame?) */
-			// or parse git remote show originº
-		}).then(octoresp => {
-			console.log("octoresp: ", octoresp);
-			this._panel.webview.postMessage({ command: "prs", data: octoresp.data })
-		});
+
+		let owner = "watermelontools";
+		let repo = "wm-extension";
+		// get repo name and owner basename
+		console.log("escape foulder route: ", folderRoute)
+		exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
+			function (error:string, stdout:string, stderr:string) {
+				const splitStdout = stdout.split("/");
+				let localowner = splitStdout[3];
+				owner = localowner
+				console.log("owner", owner)	
+					exec(`cd ${escapeFilePath(folderRoute)} \n git rev-parse --show-toplevel`,
+			function (error:string, stdout:string, stderr:string) {
+				let localrepo = stdout.split("/")[3];
+				repo = localrepo
+				console.log("repo: ", repo)
+				console.log("ready for octo: ", localowner, localrepo)
+				octokit.request(`GET /repos/vercel/hyper/search`, {
+					owner: localowner,
+					repo: localrepo,
+					query: arrayOfSHAs[0]
+				}).then(octoresp => {
+					console.log("octoresp: ", octoresp);
+					//@ts-ignore
+				}).catch(err => {
+					console.log("octoerr: ", err)
+				});
+			}
+		);
+			}
+		);
+
+
+
+
+
+		console.log("owner repo", owner, repo)
+
 	}
 	public dispose() {
 		watermelonPanel.currentPanel = undefined;
