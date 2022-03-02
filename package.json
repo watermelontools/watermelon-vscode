@@ -5,7 +5,7 @@
 	"publisher": "WatermelonTools",
 	"displayName": "Watermelon",
 	"private": true,
-	"license": "MIT",
+	"license": "Apache",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/orgs/watermelontools/"
