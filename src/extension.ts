@@ -9,7 +9,6 @@ var exec = require('child_process').exec;
 
 
 //@ts-ignore
-//console.log(git?.getRepository(vscode.Uri.file(vscode.workspace?.workspaceFolders[0].uri.path)))
 const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 // const github = new GitHub({ token: process.env.GH_TOKEN })
 const cats = {
@@ -21,6 +20,8 @@ let repo = process.env.GH_REPO || "react";
 // selection ranges should be a global var
 let startLine = 0;
 let endLine = 0;
+// selected shas
+let arrayOfSHAs: string[] = [];
 
 export async function activate(context: vscode.ExtensionContext) {
 	const credentials = new Credentials();
@@ -48,10 +49,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	vscode.window.onDidChangeTextEditorSelection((selection) => {
 		startLine = selection.selections[0].start.line;
 		endLine = selection.selections[0].end.line;
-		vscode.window.showInformationMessage(
-			`${selection.textEditor.document.getText(new vscode.Range(selection.selections[0].start, selection.selections[0].end))}`
-		);
-	})
+		getSHAs();
+	});
 
 
 	if (vscode.window.registerWebviewPanelSerializer) {
@@ -66,40 +65,42 @@ export async function activate(context: vscode.ExtensionContext) {
 	}
 
 }
-
-function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
-	return {
-		// Enable javascript in the webview
-		enableScripts: true,
-
-		// And restrict the webview to only loading content from our extension's `media` directory.
-		localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')]
-	};
+function escapeFilePath(path:string| undefined){
+	if(path){
+		// $& means the whole matched string
+		return path.replace(/[. *\s+\ ?^${}()|[\]\\]/g, '\\$&');
+	}
+	else {return "";}
 }
-
-function getCommitHashes(){
+async function getSHAs() {
 	const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
-		
+	let splitPath = currentlyOpenTabfilePath?.split("/");
+	let fileName = splitPath?.pop()?.split(" ").join("\\ ");
+	let folderRoute = splitPath?.join("/").split(" ").join("\\ ");
 	// Git Blame's index doesn't start at 0 but at 1. But VS Code's API indexes start at 0, despite the IDE showing it starts at 1. 
 	// So fucking confusing
 	// Therefore we have to add 1 to the index.
 	// exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
-	exec(`git blame -l -L ${startLine+1},${endLine+1} ${currentlyOpenTabfilePath}`,
+	// might return "fatal: no such path '<path>' in HEAD"
+	let toReturn 
+	await exec(`cd ${escapeFilePath(folderRoute)} \n git blame -l -L ${startLine+1},${endLine+1} ${fileName}`,
 		function (error:string, stdout:string, stderr:string) {
-			let arrayOfSHAs: string[] = [];
+			let localSHAs: string[] =[]
 			const splitConsoleReturn = stdout.split(";");
 			splitConsoleReturn.forEach((commit: string) => {
 				const commitHash = commit.split(" ")[0].replace("\n", "");
 				if (commitHash !== "\n") {
-					arrayOfSHAs.push(commitHash);
+					localSHAs.push(commitHash);
 				}
 			});
 			if (error !== null) {
 				// TODO: Prompt the user something here
 				 console.log('exec error: ' + error);
 			}
-			return arrayOfSHAs;
-		});
+			 toReturn = [...new Set(localSHAs)]
+arrayOfSHAs= toReturn
+return toReturn
+		}); 
 }
 
 /**
@@ -121,28 +122,7 @@ class watermelonPanel {
 		const column = vscode.window.activeTextEditor
 			? vscode.ViewColumn.Beside
 			: undefined;
-		
-		// // Git Blame's index doesn't start at 0 but at 1. But VS Code's API indexes start at 0, despite the IDE showing it starts at 1. 
-		// // So fucking confusing
-		// // Therefore we have to add 1 to the index.
-		// // exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
-		// exec(`git blame -l -L ${startLine+1},${endLine+1} ${currentlyOpenTabfilePath}`,
-		// function (error:string, stdout:string, stderr:string) {
-		// 	let arrayOfSHAs: string[] = [];
-		// 	const splitConsoleReturn = stdout.split(";");
-		// 	splitConsoleReturn.forEach((commit: string) => {
-		// 		const commitHash = commit.split(" ")[0].replace("\n", "");
-		// 		if (commitHash !== "\n") {
-		// 			arrayOfSHAs.push(commitHash);
-		// 		}
-		// 	});
-		// 	if (error !== null) {
-		// 		// TODO: Prompt the user something here
-		// 		 console.log('exec error: ' + error);
-		// 	}
-		// 	return arrayOfSHAs;
-		// });
-		
+
 
 		// If we already have a panel, show it.
 		if (watermelonPanel.currentPanel) {
@@ -159,6 +139,8 @@ class watermelonPanel {
 		);
 
 		watermelonPanel.currentPanel = new watermelonPanel(panel, extensionUri);
+		console.log(arrayOfSHAs)
+		console.log("fdsgafgafdgadfgadfgd")
 	}
 
 	public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
@@ -322,34 +304,4 @@ class watermelonPanel {
 	}
 }
 
-function getNonce() {
-	let text = '';
-	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	for (let i = 0; i < 32; i++) {
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-	}
-	return text;
-}
 
-function makeFrame()
-{
-    const activeEditor = vscode.window.activeTextEditor;
-    if (activeEditor) {
-        activeEditor.selection.active.line;
-    }
-}
-
-const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git')
-let git
-gitExtension?.activate()
-console.log("gitEXT", gitExtension?.isActive)
-
-// if (gitExtension?.isActive) {
-// 	git = gitExtension?.exports?.getAPI(1)
-// 	console.log("ACTIVEgit", git)
-// };
-// while (!gitExtension?.isActive) {
-// 	console.log("gitEXT", gitExtension?.isActive)
-
-// }
-console.log("git", git)
