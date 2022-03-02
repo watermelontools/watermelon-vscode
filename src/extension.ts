@@ -20,6 +20,8 @@ let repo = process.env.GH_REPO || "react";
 // selection ranges should be a global var
 let startLine = 0;
 let endLine = 0;
+// selected shas
+let arrayOfSHAs: string[] = [];
 
 export async function activate(context: vscode.ExtensionContext) {
 	const credentials = new Credentials();
@@ -47,7 +49,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	vscode.window.onDidChangeTextEditorSelection((selection) => {
 		startLine = selection.selections[0].start.line;
 		endLine = selection.selections[0].end.line;
-		getCommitHashes()
+		getSHAs();
 	});
 
 
@@ -70,7 +72,7 @@ function escapeFilePath(path:string| undefined){
 	}
 	else {return "";}
 }
-function getCommitHashes(){
+async function getSHAs() {
 	const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
 	let splitPath = currentlyOpenTabfilePath?.split("/");
 	let fileName = splitPath?.pop()?.split(" ").join("\\ ");
@@ -80,22 +82,24 @@ function getCommitHashes(){
 	// Therefore we have to add 1 to the index.
 	// exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
 	// might return "fatal: no such path '<path>' in HEAD"
-	 exec(`cd ${escapeFilePath(folderRoute)} \n git blame -l -L ${startLine+1},${endLine+1} ${escapeFilePath(fileName)}`,
+	let toReturn 
+	await exec(`cd ${escapeFilePath(folderRoute)} \n git blame -l -L ${startLine+1},${endLine+1} ${fileName}`,
 		function (error:string, stdout:string, stderr:string) {
-			let arrayOfSHAs: string[] = [];
+			let localSHAs: string[] =[]
 			const splitConsoleReturn = stdout.split(";");
 			splitConsoleReturn.forEach((commit: string) => {
 				const commitHash = commit.split(" ")[0].replace("\n", "");
 				if (commitHash !== "\n") {
-					arrayOfSHAs.push(commitHash);
+					localSHAs.push(commitHash);
 				}
 			});
 			if (error !== null) {
 				// TODO: Prompt the user something here
 				 console.log('exec error: ' + error);
 			}
-			console.log(arrayOfSHAs)
-			return arrayOfSHAs;
+			 toReturn = [...new Set(localSHAs)]
+arrayOfSHAs= toReturn
+return toReturn
 		}); 
 }
 
@@ -118,28 +122,7 @@ class watermelonPanel {
 		const column = vscode.window.activeTextEditor
 			? vscode.ViewColumn.Beside
 			: undefined;
-		
-		// // Git Blame's index doesn't start at 0 but at 1. But VS Code's API indexes start at 0, despite the IDE showing it starts at 1. 
-		// // So fucking confusing
-		// // Therefore we have to add 1 to the index.
-		// // exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
-		// exec(`git blame -l -L ${startLine+1},${endLine+1} ${currentlyOpenTabfilePath}`,
-		// function (error:string, stdout:string, stderr:string) {
-		// 	let arrayOfSHAs: string[] = [];
-		// 	const splitConsoleReturn = stdout.split(";");
-		// 	splitConsoleReturn.forEach((commit: string) => {
-		// 		const commitHash = commit.split(" ")[0].replace("\n", "");
-		// 		if (commitHash !== "\n") {
-		// 			arrayOfSHAs.push(commitHash);
-		// 		}
-		// 	});
-		// 	if (error !== null) {
-		// 		// TODO: Prompt the user something here
-		// 		 console.log('exec error: ' + error);
-		// 	}
-		// 	return arrayOfSHAs;
-		// });
-		
+
 
 		// If we already have a panel, show it.
 		if (watermelonPanel.currentPanel) {
@@ -156,6 +139,8 @@ class watermelonPanel {
 		);
 
 		watermelonPanel.currentPanel = new watermelonPanel(panel, extensionUri);
+		console.log(arrayOfSHAs)
+		console.log("fdsgafgafdgadfgadfgd")
 	}
 
 	public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
