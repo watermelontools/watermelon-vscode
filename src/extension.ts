@@ -7,8 +7,10 @@ import getNonce from './utils/getNonce';
 
 var exec = require('child_process').exec;
 
-
+const path = require('path')
+const {EOL} = require('os');
 //@ts-ignore
+console.log(EOL)
 const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 // const github = new GitHub({ token: process.env.GH_TOKEN })
 const cats = {
@@ -49,6 +51,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	vscode.window.onDidChangeTextEditorSelection((selection) => {
 		startLine = selection.selections[0].start.line;
 		endLine = selection.selections[0].end.line;
+//console.log("EXT", arrayOfSHAs)
+
 		getSHAs();
 	});
 
@@ -74,21 +78,27 @@ function escapeFilePath(path:string| undefined){
 }
 async function getSHAs() {
 	const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
-	let splitPath = currentlyOpenTabfilePath?.split("/");
+	let splitPath = currentlyOpenTabfilePath?.split(path.sep);
 	let fileName = splitPath?.pop()?.split(" ").join("\\ ");
-	let folderRoute = splitPath?.join("/").split(" ").join("\\ ");
+	let folderRoute = splitPath?.join(path.sep).split(" ").join("\\ ");
 	// Git Blame's index doesn't start at 0 but at 1. But VS Code's API indexes start at 0, despite the IDE showing it starts at 1. 
 	// So fucking confusing
 	// Therefore we have to add 1 to the index.
 	// exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
 	// might return "fatal: no such path '<path>' in HEAD"
+	let command = `cd ${folderRoute} \n git blame -l -L ${startLine+1},${endLine+1} ${fileName}`
+	console.log(command)
 	let toReturn 
-	await exec(`cd ${escapeFilePath(folderRoute)} \n git blame -l -L ${startLine+1},${endLine+1} ${fileName}`,
+	await exec( `cd ${folderRoute} \n git blame -l -L ${startLine+1},${endLine+1} ${fileName}`,
 		function (error:string, stdout:string, stderr:string) {
 			let localSHAs: string[] =[]
-			const splitConsoleReturn = stdout.split(";");
+			console.log("stout",stdout)
+			const splitConsoleReturn = stdout.split(EOL);
 			splitConsoleReturn.forEach((commit: string) => {
+				console.log("cm",commit)
+
 				const commitHash = commit.split(" ")[0].replace("\n", "");
+				console.log("hash",commitHash)
 				if (commitHash !== "\n") {
 					localSHAs.push(commitHash);
 				}
@@ -99,6 +109,7 @@ async function getSHAs() {
 			}
 			 toReturn = [...new Set(localSHAs)]
 arrayOfSHAs= toReturn
+//console.log("internal", toReturn)
 return toReturn
 		}); 
 }
