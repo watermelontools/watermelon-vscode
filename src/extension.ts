@@ -108,27 +108,22 @@ async function getSHAs() {
 	// Therefore we have to add 1 to the index.
 	// exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
 	// might return "fatal: no such path '<path>' in HEAD"
-	let command = `cd ${folderRoute} \n git blame -l -L ${startLine+1},${endLine+1} ${fileName}`
-	console.log(command)
+	let command = `cd ${folderRoute} |git blame -l -L ${startLine+1},${endLine+1} ${fileName} `
 	let toReturn 
-	await exec( `cd ${folderRoute} \n git blame -l -L ${startLine+1},${endLine+1} ${fileName}`,
+	await exec( command, {cwd: folderRoute},
 		function (error:string, stdout:string, stderr:string) {
+			if (error) {
+				// TODO: Prompt the user something here
+				 console.log('exec error: ' + error);
+			}
 			let localSHAs: string[] =[]
-			console.log("stout",stdout)
 			const splitConsoleReturn = stdout.split(EOL);
 			splitConsoleReturn.forEach((commit: string) => {
-				console.log("cm",commit)
-
 				const commitHash = commit.split(" ")[0].replace("\n", "");
-				console.log("hash",commitHash)
 				if (commitHash !== "\n") {
 					localSHAs.push(commitHash);
 				}
 			});
-			if (error !== null) {
-				// TODO: Prompt the user something here
-				 console.log('exec error: ' + error);
-			}
 			 toReturn = [...new Set(localSHAs)]
 
 			arrayOfSHAs= toReturn
@@ -183,7 +178,7 @@ class watermelonPanel {
 	private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
 		this._panel = panel;
 		this._extensionUri = extensionUri;
-		this.getRepoIssues(); 
+		//this.getRepoIssues(); 
 
 		// Set the webview's initial html content
 		this._update();
