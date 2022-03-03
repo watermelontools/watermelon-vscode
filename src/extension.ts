@@ -5,6 +5,7 @@ import { Credentials } from './credentials';
 import getWebviewOptions from './utils/getWebViewOptions';
 import getNonce from './utils/getNonce';
 import { ConsoleReporter } from '@vscode/test-electron';
+import { start } from 'repl';
 
 var exec = require('child_process').exec;
 
@@ -66,13 +67,14 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(
 		vscode.commands.registerCommand('watermelon.start', () => {
+			getPRsPerSHAs();
 			watermelonPanel.createOrShow(context.extensionUri);
 		})
 	);
 	vscode.window.onDidChangeTextEditorSelection((selection) => {
 		startLine = selection.selections[0].start.line;
 		endLine = selection.selections[0].end.line;
-		// getSHAs();
+		getSHAs();
 	});
 
 
@@ -96,7 +98,29 @@ function escapeFilePath(path:string| undefined){
 	else {return "";}
 }
 
+function getPRsPerSHAs(){
+	octokit.request(`GET /search/issues?type=Commits`, {
+		q: `hash:${arrayOfSHAs[0]}`
+	}).then(octoresp => {
+		const issuesBySHAs = octoresp.data.items;
+		issuesBySHAs.forEach((issue: { url: any; }) => {
+			const issueUrl = issue.url;
+
+			octokit.request(`GET ${issueUrl}/comments`).then(octoresp => {
+				console.log("get prs per shas - octoresp: ", octoresp);
+				// this paints the panel
+				// thisClass._panel.webview.postMessage({ command: "prs", data: octoresp.data})
+				//@ts-ignore
+			}).catch(err => {
+				console.log("octoerr: ", err);
+			});
+		})
+	}).catch(error=> console.log("octoERR", error))
+	// hash:124a9a0ee1d8f1e15e833aff432fbb3b02632105
+}
+
 async function getSHAs() {
+	console.log("get shas executed: ", arrayOfSHAs)
 	const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
 	let splitPath = currentlyOpenTabfilePath?.split("/");
 	let fileName = splitPath?.pop()?.split(" ").join("\\ ");
@@ -106,7 +130,7 @@ async function getSHAs() {
 	// Therefore we have to add 1 to the index.
 	// exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
 	// might return "fatal: no such path '<path>' in HEAD"
-	let toReturn 
+	let toReturn;
 	await exec(`cd ${escapeFilePath(folderRoute)} \n git blame -l -L ${startLine+1},${endLine+1} ${fileName}`,
 		function (error:string, stdout:string, stderr:string) {
 			let localSHAs: string[] =[]
@@ -147,7 +171,6 @@ class watermelonPanel {
 			? vscode.ViewColumn.Beside
 			: undefined;
 
-		getSHAs();
 		
 		// If we already have a panel, show it.
 		if (watermelonPanel.currentPanel) {
@@ -164,7 +187,6 @@ class watermelonPanel {
 		);
 
 		watermelonPanel.currentPanel = new watermelonPanel(panel, extensionUri);
-		console.log(arrayOfSHAs)
 	}
 
 	public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
@@ -174,7 +196,6 @@ class watermelonPanel {
 	private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
 		this._panel = panel;
 		this._extensionUri = extensionUri;
-		this.getRepoIssues(); 
 
 		// Set the webview's initial html content
 		this._update();
@@ -214,9 +235,11 @@ class watermelonPanel {
 		this._panel.webview.postMessage({ command: 'refactor' });
 	}
 
-	public paintPanel (message:object) {
-		this._panel.webview.postMessage(message);
-	}
+	// public paintPanel (message:object) {
+	// 	this._panel.webview.postMessage(message);
+	// }
+
+	// arrayOfSHAs: string[]
 
 	public getRepoIssues() {
 		let owner = "";
