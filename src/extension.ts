@@ -213,45 +213,38 @@ class watermelonPanel {
 		// You can send any JSON serializable data.
 		this._panel.webview.postMessage({ command: 'refactor' });
 	}
-	public getRepoIssues() {
 
-		let owner = "watermelontools";
-		let repo = "wm-extension";
+	public paintPanel (message:object) {
+		this._panel.webview.postMessage(message);
+	}
+
+	public getRepoIssues() {
+		let owner = "";
+		let repo = "";
+		const thisClass = this;
 		// get repo name and owner basename
-		console.log("escape foulder route: ", folderRoute)
+		// NOTE: It's very important to have a piece of code selected for this to work
 		exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
 			function (error:string, stdout:string, stderr:string) {
 				const splitStdout = stdout.split("/");
 				let localowner = splitStdout[3];
 				owner = localowner
-				console.log("owner", owner)	
-					exec(`cd ${escapeFilePath(folderRoute)} \n git rev-parse --show-toplevel`,
+			exec(`cd ${escapeFilePath(folderRoute)} \n git rev-parse --show-toplevel`,
 			function (error:string, stdout:string, stderr:string) {
 				let localrepo = stdout.split("/")[3];
-				repo = localrepo
-				console.log("repo: ", repo)
-				console.log("ready for octo: ", localowner, localrepo)
-				octokit.request(`GET /repos/vercel/hyper/search`, {
-					owner: localowner,
-					repo: localrepo,
-					query: arrayOfSHAs[0]
-				}).then(octoresp => {
+				repo = localrepo.trim()
+				octokit.request(`GET /repos/${owner}/${repo}/issues/comments`).then(octoresp => {
 					console.log("octoresp: ", octoresp);
+					// this paints the panel
+					thisClass._panel.webview.postMessage({ command: "prs", data: octoresp.data})
 					//@ts-ignore
 				}).catch(err => {
-					console.log("octoerr: ", err)
+					console.log("octoerr: ", err);
 				});
 			}
 		);
 			}
 		);
-
-
-
-
-
-		console.log("owner repo", owner, repo)
-
 	}
 	public dispose() {
 		watermelonPanel.currentPanel = undefined;
