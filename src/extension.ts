@@ -9,7 +9,8 @@ import { start } from 'repl';
 
 var exec = require('child_process').exec;
 
-
+const path = require('path')
+const {EOL} = require('os');
 //@ts-ignore
 const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 // const github = new GitHub({ token: process.env.GH_TOKEN })
@@ -107,9 +108,8 @@ function getPRsPerSHAs(){
 			const issueUrl = issue.url;
 
 			octokit.request(`GET ${issueUrl}/comments`).then(octoresp => {
-				console.log("get prs per shas - octoresp: ", octoresp);
 				// this paints the panel
-				// thisClass._panel.webview.postMessage({ command: "prs", data: octoresp.data})
+				watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: octoresp.data})
 				//@ts-ignore
 			}).catch(err => {
 				console.log("octoerr: ", err);
@@ -120,32 +120,33 @@ function getPRsPerSHAs(){
 }
 
 async function getSHAs() {
-	console.log("get shas executed: ", arrayOfSHAs)
 	const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
-	let splitPath = currentlyOpenTabfilePath?.split("/");
+	let splitPath = currentlyOpenTabfilePath?.split(path.sep);
 	let fileName = splitPath?.pop()?.split(" ").join("\\ ");
-	let folderRoute = splitPath?.join("/").split(" ").join("\\ ");
+	let folderRoute = splitPath?.join(path.sep).split(" ").join("\\ ");
 	// Git Blame's index doesn't start at 0 but at 1. But VS Code's API indexes start at 0, despite the IDE showing it starts at 1. 
 	// So fucking confusing
 	// Therefore we have to add 1 to the index.
 	// exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
 	// might return "fatal: no such path '<path>' in HEAD"
-	let toReturn;
-	await exec(`cd ${escapeFilePath(folderRoute)} \n git blame -l -L ${startLine+1},${endLine+1} ${fileName}`,
+	let command = `cd ${folderRoute} |git blame -l -L ${startLine+1},${endLine+1} ${fileName} `
+	let toReturn 
+	await exec( command, {cwd: folderRoute},
 		function (error:string, stdout:string, stderr:string) {
+			if (error) {
+				// TODO: Prompt the user something here
+				 console.log('exec error: ' + error);
+			}
 			let localSHAs: string[] =[]
-			const splitConsoleReturn = stdout.split(";");
+			const splitConsoleReturn = stdout.split(EOL);
 			splitConsoleReturn.forEach((commit: string) => {
 				const commitHash = commit.split(" ")[0].replace("\n", "");
 				if (commitHash !== "\n") {
 					localSHAs.push(commitHash);
 				}
 			});
-			if (error !== null) {
-				// TODO: Prompt the user something here
-				 console.log('exec error: ' + error);
-			}
 			 toReturn = [...new Set(localSHAs)]
+
 			arrayOfSHAs= toReturn
 			return toReturn
 		}); 
@@ -229,10 +230,10 @@ class watermelonPanel {
 		);
 	}
 
-	public doRefactor() {
+	public doRefactor(message:object) {
 		// Send a message to the webview webview.
 		// You can send any JSON serializable data.
-		this._panel.webview.postMessage({ command: 'refactor' });
+		this._panel.webview.postMessage(message);
 	}
 
 	// public paintPanel (message:object) {
@@ -257,7 +258,6 @@ class watermelonPanel {
 				let localrepo = stdout.split("/")[3];
 				repo = localrepo.trim()
 				octokit.request(`GET /repos/${owner}/${repo}/issues/comments`).then(octoresp => {
-					console.log("octoresp: ", octoresp);
 					// this paints the panel
 					thisClass._panel.webview.postMessage({ command: "prs", data: octoresp.data})
 					//@ts-ignore
