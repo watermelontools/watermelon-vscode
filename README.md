@@ -1,4 +1,9 @@
-**Only UNIX-like systems and public repos at the moment**
+**Watermelon only works with public repos at the moment**
+
+![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)
+
+[![Stargazers repo roster for @watermelontools/wm-extension](https://reporoster.com/stars/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/stargazers)
+[![Forkers repo roster for @watermelontools/wm-extension](https://reporoster.com/forks/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/network/members)
 
 Watermelon is an IDE extension that brings in answers of _why_ a piece of code was written.
 
