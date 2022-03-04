@@ -1,4 +1,4 @@
-## Watermelon
+**Only UNIX-like systems and public repos at the moment**
 
 Watermelon is an IDE extension that brings in answers of _why_ a piece of code was written.
 

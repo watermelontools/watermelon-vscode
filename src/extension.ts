@@ -4,23 +4,49 @@ import { GitExtension } from '../git';
 import { Credentials } from './credentials';
 import getWebviewOptions from './utils/getWebViewOptions';
 import getNonce from './utils/getNonce';
+import { ConsoleReporter } from '@vscode/test-electron';
+import { start } from 'repl';
 
 var exec = require('child_process').exec;
 
-
+const path = require('path')
+const {EOL} = require('os');
 //@ts-ignore
-//console.log(git?.getRepository(vscode.Uri.file(vscode.workspace?.workspaceFolders[0].uri.path)))
 const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 // const github = new GitHub({ token: process.env.GH_TOKEN })
 const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
-let owner = process.env.GH_OWNER || "facebook";
-let repo = process.env.GH_REPO || "react";
+
+
+
+const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
+let splitPath = currentlyOpenTabfilePath?.split("/");
+let fileName = splitPath?.pop()?.split(" ").join("\\ ");
+let folderRoute = splitPath?.join("/").split(" ").join("\\ ");
+
+
+// let owner = "";
+// let repo = "";
+// // get repo name and owner basename
+// exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
+// 	function (error:string, stdout:string, stderr:string) {
+// 		const splitStdout = stdout.split("/");
+// 		owner = splitStdout[3];
+// 	}
+// );
+
+// exec(`cd ${escapeFilePath(folderRoute)} \n git rev-parse --show-toplevel`,
+// 	function (error:string, stdout:string, stderr:string) {
+// 		repo = stdout.split("/")[3];
+// 	}
+// );
 
 // selection ranges should be a global var
 let startLine = 0;
 let endLine = 0;
+// selected shas
+let arrayOfSHAs: string[] = [];
 
 export async function activate(context: vscode.ExtensionContext) {
 	const credentials = new Credentials();
@@ -42,16 +68,15 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(
 		vscode.commands.registerCommand('watermelon.start', () => {
+			getPRsPerSHAs();
 			watermelonPanel.createOrShow(context.extensionUri);
 		})
 	);
 	vscode.window.onDidChangeTextEditorSelection((selection) => {
 		startLine = selection.selections[0].start.line;
 		endLine = selection.selections[0].end.line;
-		vscode.window.showInformationMessage(
-			`${selection.textEditor.document.getText(new vscode.Range(selection.selections[0].start, selection.selections[0].end))}`
-		);
-	})
+		getSHAs();
+	});
 
 
 	if (vscode.window.registerWebviewPanelSerializer) {
@@ -66,40 +91,65 @@ export async function activate(context: vscode.ExtensionContext) {
 	}
 
 }
-
-function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
-	return {
-		// Enable javascript in the webview
-		enableScripts: true,
-
-		// And restrict the webview to only loading content from our extension's `media` directory.
-		localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')]
-	};
+function escapeFilePath(path:string| undefined){
+	if(path){
+		// $& means the whole matched string
+		return path.replace(/[. *\s+\ ?^${}()|[\]\\]/g, '\\$&');
+	}
+	else {return "";}
 }
 
-function getCommitHashes(){
+function getPRsPerSHAs(){
+	octokit.request(`GET /search/issues?type=Commits`, {
+		q: `hash:${arrayOfSHAs[0]}`
+	}).then(octoresp => {
+		const issuesBySHAs = octoresp.data.items;
+		issuesBySHAs.forEach((issue: { url: any; }) => {
+			const issueUrl = issue.url;
+
+			octokit.request(`GET ${issueUrl}/comments`).then(octoresp => {
+				// this paints the panel
+				watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: octoresp.data})
+				//@ts-ignore
+			}).catch(err => {
+				console.log("octoerr: ", err);
+			});
+		})
+	}).catch(error=> console.log("octoERR", error))
+	// hash:124a9a0ee1d8f1e15e833aff432fbb3b02632105
+}
+
+async function getSHAs() {
 	const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
-		
+	let splitPath = currentlyOpenTabfilePath?.split(path.sep);
+	let fileName = splitPath?.pop()?.split(" ").join("\\ ");
+	let folderRoute = splitPath?.join(path.sep).split(" ").join("\\ ");
 	// Git Blame's index doesn't start at 0 but at 1. But VS Code's API indexes start at 0, despite the IDE showing it starts at 1. 
 	// So fucking confusing
 	// Therefore we have to add 1 to the index.
 	// exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
-	exec(`git blame -l -L ${startLine+1},${endLine+1} ${currentlyOpenTabfilePath}`,
+	// might return "fatal: no such path '<path>' in HEAD"
+	let command = `cd ${folderRoute} |git blame -l -L ${startLine+1},${endLine+1} ${fileName} `
+	let toReturn 
+	await exec( command, {cwd: folderRoute},
 		function (error:string, stdout:string, stderr:string) {
-			let arrayOfSHAs: string[] = [];
-			const splitConsoleReturn = stdout.split(";");
-			splitConsoleReturn.forEach((commit: string) => {
-				const commitHash = commit.split(" ")[0].replace("\n", "");
-				if (commitHash !== "\n") {
-					arrayOfSHAs.push(commitHash);
-				}
-			});
-			if (error !== null) {
+			if (error) {
 				// TODO: Prompt the user something here
 				 console.log('exec error: ' + error);
 			}
-			return arrayOfSHAs;
-		});
+			let localSHAs: string[] =[]
+			const splitConsoleReturn = stdout.split(EOL);
+			splitConsoleReturn.forEach((commit: string) => {
+				const commitHash = commit.split(" ")[0].replace("\n", "");
+				if (commitHash !== "\n") {
+					localSHAs.push(commitHash);
+				}
+			});
+			 toReturn = [...new Set(localSHAs)]
+
+			arrayOfSHAs= toReturn
+			return toReturn
+		}); 
 }
 
 /**
@@ -121,29 +171,8 @@ class watermelonPanel {
 		const column = vscode.window.activeTextEditor
 			? vscode.ViewColumn.Beside
 			: undefined;
-		
-		// // Git Blame's index doesn't start at 0 but at 1. But VS Code's API indexes start at 0, despite the IDE showing it starts at 1. 
-		// // So fucking confusing
-		// // Therefore we have to add 1 to the index.
-		// // exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
-		// exec(`git blame -l -L ${startLine+1},${endLine+1} ${currentlyOpenTabfilePath}`,
-		// function (error:string, stdout:string, stderr:string) {
-		// 	let arrayOfSHAs: string[] = [];
-		// 	const splitConsoleReturn = stdout.split(";");
-		// 	splitConsoleReturn.forEach((commit: string) => {
-		// 		const commitHash = commit.split(" ")[0].replace("\n", "");
-		// 		if (commitHash !== "\n") {
-		// 			arrayOfSHAs.push(commitHash);
-		// 		}
-		// 	});
-		// 	if (error !== null) {
-		// 		// TODO: Prompt the user something here
-		// 		 console.log('exec error: ' + error);
-		// 	}
-		// 	return arrayOfSHAs;
-		// });
-		
 
+		
 		// If we already have a panel, show it.
 		if (watermelonPanel.currentPanel) {
 			watermelonPanel.currentPanel._panel.reveal(column);
@@ -168,7 +197,6 @@ class watermelonPanel {
 	private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
 		this._panel = panel;
 		this._extensionUri = extensionUri;
-		this.getRepoIssues(); 
 
 		// Set the webview's initial html content
 		this._update();
@@ -202,23 +230,44 @@ class watermelonPanel {
 		);
 	}
 
-	public doRefactor() {
+	public doRefactor(message:object) {
 		// Send a message to the webview webview.
 		// You can send any JSON serializable data.
-		this._panel.webview.postMessage({ command: 'refactor' });
+		this._panel.webview.postMessage(message);
 	}
+
+	// public paintPanel (message:object) {
+	// 	this._panel.webview.postMessage(message);
+	// }
+
+	// arrayOfSHAs: string[]
+
 	public getRepoIssues() {
-		octokit.request('GET /repos/{owner}/{repo}/issues/comments', {
-			// for now, let's use envvars
-			owner: owner,
-			repo: repo,
-			/* owner: 'octocat', // should be local (from token)
-			repo: 'hello-world' // should be local (from reponame?) */
-			// or parse git remote show originº
-		}).then(octoresp => {
-			console.log("octoresp: ", octoresp);
-			this._panel.webview.postMessage({ command: "prs", data: octoresp.data })
-		});
+		let owner = "";
+		let repo = "";
+		const thisClass = this;
+		// get repo name and owner basename
+		// NOTE: It's very important to have a piece of code selected for this to work
+		exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
+			function (error:string, stdout:string, stderr:string) {
+				const splitStdout = stdout.split("/");
+				let localowner = splitStdout[3];
+				owner = localowner
+			exec(`cd ${escapeFilePath(folderRoute)} \n git rev-parse --show-toplevel`,
+			function (error:string, stdout:string, stderr:string) {
+				let localrepo = stdout.split("/")[3];
+				repo = localrepo.trim()
+				octokit.request(`GET /repos/${owner}/${repo}/issues/comments`).then(octoresp => {
+					// this paints the panel
+					thisClass._panel.webview.postMessage({ command: "prs", data: octoresp.data})
+					//@ts-ignore
+				}).catch(err => {
+					console.log("octoerr: ", err);
+				});
+			}
+		);
+			}
+		);
 	}
 	public dispose() {
 		watermelonPanel.currentPanel = undefined;
@@ -322,34 +371,4 @@ class watermelonPanel {
 	}
 }
 
-function getNonce() {
-	let text = '';
-	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	for (let i = 0; i < 32; i++) {
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-	}
-	return text;
-}
 
-function makeFrame()
-{
-    const activeEditor = vscode.window.activeTextEditor;
-    if (activeEditor) {
-        activeEditor.selection.active.line;
-    }
-}
-
-const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git')
-let git
-gitExtension?.activate()
-console.log("gitEXT", gitExtension?.isActive)
-
-// if (gitExtension?.isActive) {
-// 	git = gitExtension?.exports?.getAPI(1)
-// 	console.log("ACTIVEgit", git)
-// };
-// while (!gitExtension?.isActive) {
-// 	console.log("gitEXT", gitExtension?.isActive)
-
-// }
-console.log("git", git)

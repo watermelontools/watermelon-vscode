@@ -1,5 +1,5 @@
 const prJson = {
-  title: "activesupport `Object#as_json` more thorough implicit conversion",
+  title: "Summary",
 };
 
 while (!$) {
@@ -7,6 +7,7 @@ while (!$) {
 }
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
+    console.log("prs: ", prs)
     $("#ghHolder").append(`
     <details open>
       <summary>${prJson.title}</summary>
