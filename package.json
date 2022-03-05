@@ -46,7 +46,7 @@
 		"deploy": "vsce publish --yarn"
 	},
 	"devDependencies": {
-		"@types/node": "^12.12.0",
+		"@types/node": "^12.20.46",
 		"@types/vscode": "^1.63.0",
 		"@types/vscode-webview": "^1.57.0",
 		"@typescript-eslint/eslint-plugin": "^4.16.0",
@@ -59,6 +59,8 @@
 	"dependencies": {
 		"@octokit/core": "^3.5.1",
 		"@octokit/rest": "^18.12.0",
-		"@vscode/test-electron": "^2.1.2"
+		"@vscode/test-electron": "^2.1.2",
+		"airtable": "^0.11.2",
+		"dotenv": "^16.0.0"
 	}
 }

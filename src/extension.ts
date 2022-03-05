@@ -7,8 +7,6 @@ import getNonce from './utils/getNonce';
 import { ConsoleReporter } from '@vscode/test-electron';
 import { start } from 'repl';
 
-var exec = require('child_process').exec;
-
 const path = require('path')
 const {EOL} = require('os');
 //@ts-ignore
@@ -18,6 +16,13 @@ const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
 
+const Airtable = require('airtable');
+
+Airtable.configure({
+    endpointUrl: 'https://api.airtable.com',
+    apiKey: "keyOgeDU8McqfrAJa"
+});
+var base = Airtable.base("appesXek3hiDnF4lt");
 
 
 const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
@@ -268,6 +273,34 @@ class watermelonPanel {
 		);
 			}
 		);
+
+		// Update query count on Airtable 
+		let organizationalCount;
+	
+		base('Table 1').find('recSr9yVB2ivlXWRA', function(err: any, record: { fields: { Count: any; }; }) {
+			if (err) { console.error(err); return; }
+			console.log("record.fields.count: ", record.fields.Count)
+			organizationalCount = record.fields.Count+1;
+			
+	
+			base('Table 1').update([
+				{
+				  "id": "recSr9yVB2ivlXWRA",
+				  "fields": {
+					"Organization": owner,
+					"Count": organizationalCount
+				  }
+				}
+			  ], function(err: any, records: any[]) {
+				if (err) {
+				  console.error(err);
+				  return;
+				}
+				records.forEach(function(record) {
+				  console.log(record.get('Organization'));
+				});
+			  });
+		});
 	}
 	public dispose() {
 		watermelonPanel.currentPanel = undefined;
