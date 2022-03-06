@@ -4,8 +4,8 @@ import { GitExtension } from '../git';
 import { Credentials } from './credentials';
 import getWebviewOptions from './utils/getWebViewOptions';
 import getNonce from './utils/getNonce';
-import { ConsoleReporter } from '@vscode/test-electron';
-import { start } from 'repl';
+
+var exec = require('child_process').exec;
 
 const path = require('path')
 const {EOL} = require('os');
@@ -73,7 +73,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(
 		vscode.commands.registerCommand('watermelon.start', () => {
-			getPRsPerSHAs();
+			// getPRsPerSHAs(); Commented to not exceed api limits
 			watermelonPanel.createOrShow(context.extensionUri);
 		})
 	);
@@ -177,7 +177,8 @@ class watermelonPanel {
 			? vscode.ViewColumn.Beside
 			: undefined;
 
-		
+		this.updateOrganizationalQueryCount();
+
 		// If we already have a panel, show it.
 		if (watermelonPanel.currentPanel) {
 			watermelonPanel.currentPanel._panel.reveal(column);
@@ -193,6 +194,50 @@ class watermelonPanel {
 		);
 
 		watermelonPanel.currentPanel = new watermelonPanel(panel, extensionUri);
+	}
+
+	public static updateOrganizationalQueryCount() {
+		let owner = "";
+		exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
+			async function (error:string, stdout:string, stderr:string) {
+				const splitStdout = stdout.split("/");
+				let localowner = splitStdout[3];
+				owner = localowner;
+
+				// update organizational query count
+				// Update query count on Airtable 
+				let organizationalCount:number;
+
+				await base('Table 1')
+				.select({
+					filterByFormula: `Organization = "${owner}"`
+				}).firstPage((err: any, records: any) => {
+						organizationalCount = records[0].fields.Count+1;
+
+						base('Table 1').update([
+							{
+							"id": records[0].id,
+							"fields": {
+								"Count": organizationalCount
+							}
+							}
+						], function(err: any, records: any[]) {
+							if (err) {
+								console.error(err);
+							return;
+							}
+						});
+					}
+				);
+			
+			
+				// base('Table 1').find('recSr9yVB2ivlXWRA', function(err: any, record: { fields: { Count: any; }; }) {
+				// 	if (err) { console.error(err); return; }
+				// 	organizationalCount = record.fields.Count+1;
+					
+				// });
+			}
+		);
 	}
 
 	public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
@@ -247,61 +292,6 @@ class watermelonPanel {
 
 	// arrayOfSHAs: string[]
 
-	public getRepoIssues() {
-		let owner = "";
-		let repo = "";
-		const thisClass = this;
-		// get repo name and owner basename
-		// NOTE: It's very important to have a piece of code selected for this to work
-		exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
-			function (error:string, stdout:string, stderr:string) {
-				const splitStdout = stdout.split("/");
-				let localowner = splitStdout[3];
-				owner = localowner
-			exec(`cd ${escapeFilePath(folderRoute)} \n git rev-parse --show-toplevel`,
-			function (error:string, stdout:string, stderr:string) {
-				let localrepo = stdout.split("/")[3];
-				repo = localrepo.trim()
-				octokit.request(`GET /repos/${owner}/${repo}/issues/comments`).then(octoresp => {
-					// this paints the panel
-					thisClass._panel.webview.postMessage({ command: "prs", data: octoresp.data})
-					//@ts-ignore
-				}).catch(err => {
-					console.log("octoerr: ", err);
-				});
-			}
-		);
-			}
-		);
-
-		// Update query count on Airtable 
-		let organizationalCount;
-	
-		base('Table 1').find('recSr9yVB2ivlXWRA', function(err: any, record: { fields: { Count: any; }; }) {
-			if (err) { console.error(err); return; }
-			console.log("record.fields.count: ", record.fields.Count)
-			organizationalCount = record.fields.Count+1;
-			
-	
-			base('Table 1').update([
-				{
-				  "id": "recSr9yVB2ivlXWRA",
-				  "fields": {
-					"Organization": owner,
-					"Count": organizationalCount
-				  }
-				}
-			  ], function(err: any, records: any[]) {
-				if (err) {
-				  console.error(err);
-				  return;
-				}
-				records.forEach(function(record) {
-				  console.log(record.get('Organization'));
-				});
-			  });
-		});
-	}
 	public dispose() {
 		watermelonPanel.currentPanel = undefined;
 
