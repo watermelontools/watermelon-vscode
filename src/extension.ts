@@ -212,30 +212,41 @@ class watermelonPanel {
 				.select({
 					filterByFormula: `Organization = "${owner}"`
 				}).firstPage((err: any, records: any) => {
-						organizationalCount = records[0].fields.Count+1;
 
-						base('Table 1').update([
-							{
-							"id": records[0].id,
-							"fields": {
-								"Count": organizationalCount
-							}
-							}
-						], function(err: any, records: any[]) {
-							if (err) {
-								console.error(err);
-							return;
-							}
-						});
-					}
+						if (records[0]) {
+							organizationalCount = records[0].fields.Count+1;
+
+							base('Table 1').update([
+								{
+									"id": records[0].id,
+									"fields": {
+										"Count": organizationalCount
+									}
+								}
+							], function(err: any, records: any[]) {
+								if (err) {
+									console.error(err);
+								return;
+								}
+							});
+						} else {
+							console.log("owner/localowner for create: ", owner, localowner)
+							base('Table 1').create([
+								{
+								  "fields": {
+									"Organization": owner,
+									"Count": 0
+								  }
+								}
+							  ], function(err: any, records: any[]) {
+								if (err) {
+								  console.error(err);
+								  return;
+								}
+							  });
+						}
+					},
 				);
-			
-			
-				// base('Table 1').find('recSr9yVB2ivlXWRA', function(err: any, record: { fields: { Count: any; }; }) {
-				// 	if (err) { console.error(err); return; }
-				// 	organizationalCount = record.fields.Count+1;
-					
-				// });
 			}
 		);
 	}
