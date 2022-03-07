@@ -4,6 +4,7 @@ import { GitExtension } from '../git';
 import { Credentials } from './credentials';
 import getWebviewOptions from './utils/getWebViewOptions';
 import getNonce from './utils/getNonce';
+import { updateOrganizationalQueryCount } from './exacore/backend';
 
 var exec = require('child_process').exec;
 
@@ -16,36 +17,10 @@ const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
 
-const Airtable = require('airtable');
-
-Airtable.configure({
-    endpointUrl: 'https://api.airtable.com',
-    apiKey: "keyOgeDU8McqfrAJa"
-});
-var base = Airtable.base("appesXek3hiDnF4lt");
-
-
 const currentlyOpenTabfilePath = vscode.window.activeTextEditor?.document.uri.fsPath;
 let splitPath = currentlyOpenTabfilePath?.split("/");
 let fileName = splitPath?.pop()?.split(" ").join("\\ ");
 let folderRoute = splitPath?.join("/").split(" ").join("\\ ");
-
-
-// let owner = "";
-// let repo = "";
-// // get repo name and owner basename
-// exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
-// 	function (error:string, stdout:string, stderr:string) {
-// 		const splitStdout = stdout.split("/");
-// 		owner = splitStdout[3];
-// 	}
-// );
-
-// exec(`cd ${escapeFilePath(folderRoute)} \n git rev-parse --show-toplevel`,
-// 	function (error:string, stdout:string, stderr:string) {
-// 		repo = stdout.split("/")[3];
-// 	}
-// );
 
 // selection ranges should be a global var
 let startLine = 0;
@@ -204,49 +179,8 @@ class watermelonPanel {
 				let localowner = splitStdout[3];
 				owner = localowner;
 
-				// update organizational query count
-				// Update query count on Airtable 
-				let organizationalCount:number;
-
-				await base('Table 1')
-				.select({
-					filterByFormula: `Organization = "${owner}"`
-				}).firstPage((err: any, records: any) => {
-
-						if (records[0]) {
-							organizationalCount = records[0].fields.Count+1;
-
-							base('Table 1').update([
-								{
-									"id": records[0].id,
-									"fields": {
-										"Count": organizationalCount
-									}
-								}
-							], function(err: any, records: any[]) {
-								if (err) {
-									console.error(err);
-								return;
-								}
-							});
-						} else {
-							console.log("owner/localowner for create: ", owner, localowner)
-							base('Table 1').create([
-								{
-								  "fields": {
-									"Organization": owner,
-									"Count": 0
-								  }
-								}
-							  ], function(err: any, records: any[]) {
-								if (err) {
-								  console.error(err);
-								  return;
-								}
-							  });
-						}
-					},
-				);
+				await updateOrganizationalQueryCount(owner);
+				
 			}
 		);
 	}
