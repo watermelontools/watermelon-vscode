@@ -138,3 +138,4 @@ git bisect reset
 ```
 Now we are in the commit we were in (usually HEAD) when we started, and know what broke our app.
 
+Phew, that was a lot. Coding as a team is hard, but if you do it right it doesn't have to be crazy. The right tools help, and that's why we built [Watermelon](https://watermelon.tools), a VSCode extension that gets the historical context of your code to make it easier. For now we have github, with Jira, Zoom and Slack integrations coming soon.
