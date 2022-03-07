@@ -48,7 +48,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(
 		vscode.commands.registerCommand('watermelon.start', () => {
-			// getPRsPerSHAs(); Commented to not exceed api limits
+			getPRsPerSHAs();
 			watermelonPanel.createOrShow(context.extensionUri);
 		})
 	);
@@ -96,7 +96,6 @@ function getPRsPerSHAs(){
 			});
 		})
 	}).catch(error=> console.log("octoERR", error))
-	// hash:124a9a0ee1d8f1e15e833aff432fbb3b02632105
 }
 
 async function getSHAs() {
