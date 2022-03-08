@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.3]
 - Basic GitHub integration works for public GitHub repositories
-- We know support UNIX and Windows
+- We now support UNIX and Windows
 
 ## [0.0.3]
 
