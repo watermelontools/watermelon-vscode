@@ -1,19 +1,37 @@
 import * as vscode from 'vscode';
 import { Octokit } from "@octokit/core";
-import { GitExtension } from '../git';
 import { Credentials } from './credentials';
 import getWebviewOptions from './utils/getWebViewOptions';
 import getNonce from './utils/getNonce';
 import { ConsoleReporter } from '@vscode/test-electron';
 import { start } from 'repl';
-
+import { API as BuiltInGitApi, GitExtension } from '../@types/git';
 var exec = require('child_process').exec;
 
 const path = require('path')
 const {EOL} = require('os');
 //@ts-ignore
 const octokit = new Octokit({ auth: process.env.GH_TOKEN });
-// const github = new GitHub({ token: process.env.GH_TOKEN })
+
+
+// selection ranges should be a global var
+let startLine = 0;
+let endLine = 0;
+
+// repo information
+let owner:string| undefined = "";
+let repo:string| undefined = "";
+let localUser: string | undefined = "";
+// selected shas
+let arrayOfSHAs: string[] = [];
+
+// get repo name and owner basename
+
+/* const gitExtension = vscode?.extensions?.getExtension<GitExtension>('vscode.git')?.exports;
+if(gitExtension){
+	const git = gitExtension.getAPI(1);
+console.log(git)
+} */
 const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
@@ -26,29 +44,22 @@ let fileName = splitPath?.pop()?.split(" ").join("\\ ");
 let folderRoute = splitPath?.join("/").split(" ").join("\\ ");
 
 
-// let owner = "";
-// let repo = "";
-// // get repo name and owner basename
-// exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
-// 	function (error:string, stdout:string, stderr:string) {
-// 		const splitStdout = stdout.split("/");
-// 		owner = splitStdout[3];
-// 	}
-// );
+async function getGitAPI():Promise<BuiltInGitApi | undefined> {
+	try {
+        const extension = vscode?.extensions?.getExtension('vscode.git') as vscode.Extension<GitExtension>;
+        if (extension !== undefined) {
+            const gitExtension = extension.isActive ? extension.exports : await extension.activate();
 
-// exec(`cd ${escapeFilePath(folderRoute)} \n git rev-parse --show-toplevel`,
-// 	function (error:string, stdout:string, stderr:string) {
-// 		repo = stdout.split("/")[3];
-// 	}
-// );
+            return gitExtension.getAPI(1);
+        }
+    } catch {}
 
-// selection ranges should be a global var
-let startLine = 0;
-let endLine = 0;
-// selected shas
-let arrayOfSHAs: string[] = [];
+    return undefined;
+}
+
 
 export async function activate(context: vscode.ExtensionContext) {
+	let gitAPI = await getGitAPI()
 	const credentials = new Credentials();
 	await credentials.initialize(context);
 
@@ -64,12 +75,21 @@ export async function activate(context: vscode.ExtensionContext) {
 
 		vscode.window.showInformationMessage(`Logged into GitHub as ${userInfo.data.login}`);
 	});
-
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(
-		vscode.commands.registerCommand('watermelon.start', () => {
-			getPRsPerSHAs();
-			watermelonPanel.createOrShow(context.extensionUri);
+		vscode.commands.registerCommand('watermelon.start',async () => {
+				let config= await (await gitAPI?.repositories[0]?.getConfig("remote.origin.url"))?.split("/")
+				console.log(config)
+				if(config){
+					repo= config[4].split(".")[0]
+					owner = config[3]
+				}
+				localUser = await gitAPI?.repositories[0]?.getGlobalConfig("user.name")
+				console.log("git internal",owner)
+				console.log("git internal",repo)
+				
+				getPRsPerSHAs();
+				watermelonPanel.createOrShow(context.extensionUri);
 		})
 	);
 	vscode.window.onDidChangeTextEditorSelection((selection) => {
@@ -98,45 +118,24 @@ function escapeFilePath(path:string| undefined){
 	}
 	else {return "";}
 }
+function getPRsPerSHAs(){
+	octokit.request(`GET /search/issues?type=Commits`, {
+		q: `hash:${arrayOfSHAs[0]}`
+	}).then(octoresp => {
+		const issuesBySHAs = octoresp.data.items;
+		issuesBySHAs.forEach((issue: { url: any; }) => {
+			const issueUrl = issue.url;
 
-async function getPRsPerSHAs(){
-
-	let owner = "";
-	// get repo name and owner basename
-	await exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
-		async function (error:string, stdout:string, stderr:string) {
-			const splitStdout = stdout.split("/");
-			// Retrieving the owner here is very important because it evades pulling issues from other repos
-			let localowner = splitStdout[3];
-			owner = localowner;
-			
-			// Get issues by commit hash and owner
-			await octokit.request(`GET /search/issues?type=Commits`, {
-				org: owner,
-				q: `hash:${arrayOfSHAs[0]}`
-			}).then(octoresp => {
-				const issuesBySHAs = octoresp.data.items;
-
-				// Show toast if no search results are found
-				if (issuesBySHAs.length === 0) {
-					vscode.window.showErrorMessage("No search results. Try selecting a bigger piece of code or another file.");
-				} else {
-					issuesBySHAs.forEach((issue: { url: any; }) => {
-						const issueUrl = issue.url;
-	
-						octokit.request(`GET ${issueUrl}/comments`).then(octoresp => {
-							// this paints the panel
-							watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: octoresp.data})
-							//@ts-ignore
-						}).catch(err => {
-							console.log("octoerr: ", err);
-						});
-					})
-				}
-			}).catch(error=> console.log("octoERR", error))
-
-		}
-	);
+			octokit.request(`GET ${issueUrl}/comments`).then(octoresp => {
+				// this paints the panel
+				watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: octoresp.data})
+				//@ts-ignore
+			}).catch(err => {
+				console.log("octoerr: ", err);
+			});
+		})
+	}).catch(error=> console.log("octoERR", error))
+	// hash:124a9a0ee1d8f1e15e833aff432fbb3b02632105
 }
 
 async function getSHAs() {
@@ -256,6 +255,39 @@ class watermelonPanel {
 		this._panel.webview.postMessage(message);
 	}
 
+	// public paintPanel (message:object) {
+	// 	this._panel.webview.postMessage(message);
+	// }
+
+	// arrayOfSHAs: string[]
+
+	public getRepoIssues() {
+		let owner = "";
+		let repo = "";
+		const thisClass = this;
+		// get repo name and owner basename
+		// NOTE: It's very important to have a piece of code selected for this to work
+		exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
+			function (error:string, stdout:string, stderr:string) {
+				const splitStdout = stdout.split("/");
+				let localowner = splitStdout[3];
+				owner = localowner
+			exec(`cd ${escapeFilePath(folderRoute)} \n git rev-parse --show-toplevel`,
+			function (error:string, stdout:string, stderr:string) {
+				let localrepo = stdout.split("/")[3];
+				repo = localrepo.trim()
+				octokit.request(`GET /repos/${owner}/${repo}/issues/comments`).then(octoresp => {
+					// this paints the panel
+					thisClass._panel.webview.postMessage({ command: "prs", data: octoresp.data})
+					//@ts-ignore
+				}).catch(err => {
+					console.log("octoerr: ", err);
+				});
+			}
+		);
+			}
+		);
+	}
 	public dispose() {
 		watermelonPanel.currentPanel = undefined;
 
