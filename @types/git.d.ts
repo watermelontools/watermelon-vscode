@@ -1,7 +1,9 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
+ *--------------------------------------------------------------------------------------------
+ Taken from: https://github.com/microsoft/vscode/blob/main/extensions/git/src/api/git.d.ts
+ */
 
 import { Event, Uri } from 'vscode';
 
