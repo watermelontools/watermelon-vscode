@@ -99,24 +99,44 @@ function escapeFilePath(path:string| undefined){
 	else {return "";}
 }
 
-function getPRsPerSHAs(){
-	octokit.request(`GET /search/issues?type=Commits`, {
-		q: `hash:${arrayOfSHAs[0]}`
-	}).then(octoresp => {
-		const issuesBySHAs = octoresp.data.items;
-		issuesBySHAs.forEach((issue: { url: any; }) => {
-			const issueUrl = issue.url;
+async function getPRsPerSHAs(){
 
-			octokit.request(`GET ${issueUrl}/comments`).then(octoresp => {
-				// this paints the panel
-				watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: octoresp.data})
-				//@ts-ignore
-			}).catch(err => {
-				console.log("octoerr: ", err);
-			});
-		})
-	}).catch(error=> console.log("octoERR", error))
-	// hash:124a9a0ee1d8f1e15e833aff432fbb3b02632105
+	let owner = "";
+	// get repo name and owner basename
+	await exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
+		async function (error:string, stdout:string, stderr:string) {
+			const splitStdout = stdout.split("/");
+			// Retrieving the owner here is very important because it evades pulling issues from other repos
+			let localowner = splitStdout[3];
+			owner = localowner;
+			
+			// Get issues by commit hash and owner
+			await octokit.request(`GET /search/issues?type=Commits`, {
+				org: owner,
+				q: `hash:${arrayOfSHAs[0]}`
+			}).then(octoresp => {
+				const issuesBySHAs = octoresp.data.items;
+
+				// Show toast if no search results are found
+				if (issuesBySHAs.length === 0) {
+					vscode.window.showErrorMessage("No search results. Try selecting a bigger piece of code or another file.");
+				} else {
+					issuesBySHAs.forEach((issue: { url: any; }) => {
+						const issueUrl = issue.url;
+	
+						octokit.request(`GET ${issueUrl}/comments`).then(octoresp => {
+							// this paints the panel
+							watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: octoresp.data})
+							//@ts-ignore
+						}).catch(err => {
+							console.log("octoerr: ", err);
+						});
+					})
+				}
+			}).catch(error=> console.log("octoERR", error))
+
+		}
+	);
 }
 
 async function getSHAs() {
@@ -236,39 +256,6 @@ class watermelonPanel {
 		this._panel.webview.postMessage(message);
 	}
 
-	// public paintPanel (message:object) {
-	// 	this._panel.webview.postMessage(message);
-	// }
-
-	// arrayOfSHAs: string[]
-
-	public getRepoIssues() {
-		let owner = "";
-		let repo = "";
-		const thisClass = this;
-		// get repo name and owner basename
-		// NOTE: It's very important to have a piece of code selected for this to work
-		exec(`cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
-			function (error:string, stdout:string, stderr:string) {
-				const splitStdout = stdout.split("/");
-				let localowner = splitStdout[3];
-				owner = localowner
-			exec(`cd ${escapeFilePath(folderRoute)} \n git rev-parse --show-toplevel`,
-			function (error:string, stdout:string, stderr:string) {
-				let localrepo = stdout.split("/")[3];
-				repo = localrepo.trim()
-				octokit.request(`GET /repos/${owner}/${repo}/issues/comments`).then(octoresp => {
-					// this paints the panel
-					thisClass._panel.webview.postMessage({ command: "prs", data: octoresp.data})
-					//@ts-ignore
-				}).catch(err => {
-					console.log("octoerr: ", err);
-				});
-			}
-		);
-			}
-		);
-	}
 	public dispose() {
 		watermelonPanel.currentPanel = undefined;
 
