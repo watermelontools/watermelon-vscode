@@ -283,41 +283,6 @@ class watermelonPanel {
 
   // arrayOfSHAs: string[]
 
-  public getRepoIssues() {
-    let owner = "";
-    let repo = "";
-    const thisClass = this;
-    // get repo name and owner basename
-    // NOTE: It's very important to have a piece of code selected for this to work
-    exec(
-      `cd ${escapeFilePath(folderRoute)} \n git config --get remote.origin.url`,
-      function (error: string, stdout: string, stderr: string) {
-        const splitStdout = stdout.split("/");
-        let localowner = splitStdout[3];
-        owner = localowner;
-        exec(
-          `cd ${escapeFilePath(folderRoute)} \n git rev-parse --show-toplevel`,
-          function (error: string, stdout: string, stderr: string) {
-            let localrepo = stdout.split("/")[3];
-            repo = localrepo.trim();
-            octokit
-              .request(`GET /repos/${owner}/${repo}/issues/comments`)
-              .then((octoresp) => {
-                // this paints the panel
-                thisClass._panel.webview.postMessage({
-                  command: "prs",
-                  data: octoresp.data,
-                });
-                //@ts-ignore
-              })
-              .catch((err) => {
-                console.log("octoerr: ", err);
-              });
-          }
-        );
-      }
-    );
-  }
   public dispose() {
     watermelonPanel.currentPanel = undefined;
 
