@@ -98,10 +98,18 @@ export async function activate(context: vscode.ExtensionContext) {
       watermelonPanel.createOrShow(context.extensionUri);
     })
   );
-  vscode.window.onDidChangeTextEditorSelection((selection) => {
+  vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     startLine = selection.selections[0].start.line;
     endLine = selection.selections[0].end.line;
-    getSHAs();
+    const currentlyOpenTabfilePath =
+      vscode.window.activeTextEditor?.document.uri.fsPath;
+
+    let blame = await gitAPI?.repositories[0].blame(
+      currentlyOpenTabfilePath || "."
+    );
+    let blameArray = blame?.split("\n").slice(startLine, endLine + 1);
+    let shaArray = blameArray?.map((line) => line.split(" ")[0]);
+    arrayOfSHAs = [...new Set(shaArray)];
   });
 
   if (vscode.window.registerWebviewPanelSerializer) {
@@ -153,45 +161,6 @@ function getPRsPerSHAs() {
     })
     .catch((error) => console.log("octoERR", error));
   // hash:124a9a0ee1d8f1e15e833aff432fbb3b02632105
-}
-
-async function getSHAs() {
-  const currentlyOpenTabfilePath =
-    vscode.window.activeTextEditor?.document.uri.fsPath;
-  let splitPath = currentlyOpenTabfilePath?.split(path.sep);
-  let fileName = splitPath?.pop()?.split(" ").join("\\ ");
-  let folderRoute = splitPath?.join(path.sep).split(" ").join("\\ ");
-  // Git Blame's index doesn't start at 0 but at 1. But VS Code's API indexes start at 0, despite the IDE showing it starts at 1.
-  // So fucking confusing
-  // Therefore we have to add 1 to the index.
-  // exec(`cd Users \n cd estebanvargas \n cd wm-extension \n cd src \n git blame -l -L ${startLine+1},${endLine+1} extension.ts`,
-  // might return "fatal: no such path '<path>' in HEAD"
-  let command = `cd ${folderRoute} |git blame -l -L ${startLine + 1},${
-    endLine + 1
-  } ${fileName} `;
-  let toReturn;
-  await exec(
-    command,
-    { cwd: folderRoute },
-    function (error: string, stdout: string, stderr: string) {
-      if (error) {
-        // TODO: Prompt the user something here
-        console.log("exec error: " + error);
-      }
-      let localSHAs: string[] = [];
-      const splitConsoleReturn = stdout.split(EOL);
-      splitConsoleReturn.forEach((commit: string) => {
-        const commitHash = commit.split(" ")[0].replace("\n", "");
-        if (commitHash !== "\n") {
-          localSHAs.push(commitHash);
-        }
-      });
-      toReturn = [...new Set(localSHAs)];
-
-      arrayOfSHAs = toReturn;
-      return toReturn;
-    }
-  );
 }
 
 /**
