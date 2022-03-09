@@ -85,8 +85,6 @@ export async function activate(context: vscode.ExtensionContext) {
 					owner = config[3]
 				}
 				localUser = await gitAPI?.repositories[0]?.getGlobalConfig("user.name")
-				console.log("git internal",owner)
-				console.log("git internal",repo)
 				
 				getPRsPerSHAs();
 				watermelonPanel.createOrShow(context.extensionUri);
