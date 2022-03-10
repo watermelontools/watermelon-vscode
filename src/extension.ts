@@ -21,13 +21,6 @@ let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 
-// get repo name and owner basename
-
-/* const gitExtension = vscode?.extensions?.getExtension<GitExtension>('vscode.git')?.exports;
-if(gitExtension){
-	const git = gitExtension.getAPI(1);
-console.log(git)
-} */
 const cats = {
   Watermelon:
     "https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png",
@@ -84,7 +77,6 @@ export async function activate(context: vscode.ExtensionContext) {
       let config = await (
         await gitAPI?.repositories[0]?.getConfig("remote.origin.url")
       )?.split("/");
-      console.log(config);
       if (config) {
         repo = config[4].split(".")[0];
         owner = config[3];
@@ -246,8 +238,6 @@ class watermelonPanel {
   // public paintPanel (message:object) {
   // 	this._panel.webview.postMessage(message);
   // }
-
-  // arrayOfSHAs: string[]
 
   public dispose() {
     watermelonPanel.currentPanel = undefined;
