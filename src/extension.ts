@@ -12,8 +12,7 @@ var exec = require('child_process').exec;
 const path = require('path')
 const {EOL} = require('os');
 //@ts-ignore
-const octokit = new Octokit({ auth: process.env.GH_TOKEN });
-// const github = new GitHub({ token: process.env.GH_TOKEN })
+const github = new GitHub({ token: process.env.GH_TOKEN })
 const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };

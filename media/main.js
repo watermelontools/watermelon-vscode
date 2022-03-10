@@ -8,20 +8,26 @@ while (!$) {
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
     console.log("prs: ", prs)
-    $("#ghHolder").append(`
-    <details open>
-      <summary>${prJson.title}</summary>
-      <div id="ghInternal"></div>
-    </details>`);
+    // $("#ghHolder").append(`
+    // <details open>
+    //   <summary>${pr.issue_url.title || "PR Summary"}</>
+    //   <div id="ghInternal"></div>
+    // </details>`);
     prs.forEach((pr) => {
       $("#ghInternal").append(`
-        <div>
-          <div class="comment-owner">
-            <p class="comment-poster">${pr.user.login}</p>
-            <p class="comment-date">${pr.updated_at}</p>
+        <details open>
+          <div>
+          <details open>
+          <summary>${pr.issue_url.title || "PR Summary"}</>
+          <div id="ghInternal"></div>
+        </details>
+            <div class="comment-owner">
+              <p class="comment-poster">Author: ${pr.user.login}</p>
+              <p class="comment-date">${new Date(pr.updated_at)}</p>
+            </div>
+            <p class="comment-body">${pr.body}</p>
           </div>
-          <p class="comment-body">${pr.body}</p>
-        </div>
+        </details>
       `);
     });
   };
