@@ -130,6 +130,9 @@ function getPRsPerSHAs() {
     })
     .then((octoresp) => {
       const issuesBySHAs = octoresp.data.items;
+	  if (issuesBySHAs.length === 0) {
+		vscode.window.showErrorMessage("No search results. Try selecting a bigger piece of code or another file.");
+	  }else{
       issuesBySHAs.forEach((issue: { url: any }) => {
         const issueUrl = issue.url;
 
@@ -146,7 +149,7 @@ function getPRsPerSHAs() {
           .catch((err) => {
             console.log("octoerr: ", err);
           });
-      });
+      });}
     })
     .catch((error) => console.log("octoERR", error));
   // hash:124a9a0ee1d8f1e15e833aff432fbb3b02632105
