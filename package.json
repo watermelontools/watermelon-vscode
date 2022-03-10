@@ -35,11 +35,6 @@
 				"command": "watermelon.start",
 				"title": "Start watermelon",
 				"category": "watermelon"
-			},
-			{
-				"command": "watermelon.getGitHubUser",
-				"title": "Shows the current logged in user",
-				"category": "Watermelon"
 			}
 		]
 	},
