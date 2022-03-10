@@ -7,8 +7,6 @@ import { API as BuiltInGitApi, GitExtension } from "../@types/git";
 
 const path = require("path");
 const { EOL } = require("os");
-//@ts-ignore
-const octokit = new Octokit({ auth: process.env.GH_TOKEN });
 // selection ranges should be a global var
 let startLine = 0;
 let endLine = 0;
@@ -47,28 +45,19 @@ async function getGitAPI(): Promise<BuiltInGitApi | undefined> {
 
   return undefined;
 }
+let octokit: any;
 
 export async function activate(context: vscode.ExtensionContext) {
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
   await credentials.initialize(context);
+  let userInfo: any | undefined = undefined;
 
-  context.subscriptions.push(
-    vscode.commands.registerCommand("watermelon.getGitHubUser", async () => {
-      /**
-       * Octokit (https://github.com/octokit/rest.js#readme) is a library for making REST API
-       * calls to GitHub. It provides convenient typings that can be helpful for using the API.
-       *
-       * Documentation on GitHub's REST API can be found here: https://docs.github.com/en/rest
-       */
-      const octokit = await credentials.getOctokit();
-      const userInfo = await octokit.users.getAuthenticated();
+  octokit = await credentials.getOctokit();
+  if (octokit) {
+    userInfo = await octokit.users.getAuthenticated();
+  }
 
-      vscode.window.showInformationMessage(
-        `Logged into GitHub as ${userInfo.data.login}`
-      );
-    })
-  );
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
       let config = await (
@@ -125,8 +114,8 @@ function getPRsPerSHAs() {
     .request(`GET /search/issues?type=Commits`, {
       q: `hash:${arrayOfSHAs[0]}`,
     })
-    .then((octoresp) => {
-      const issuesBySHAs = octoresp.data.items;
+    .then((octorespSearch: any) => {
+      const issuesBySHAs = octorespSearch.data.items;
       if (issuesBySHAs.length === 0) {
         vscode.window.showErrorMessage(
           "No search results. Try selecting a bigger piece of code or another file."
@@ -137,21 +126,21 @@ function getPRsPerSHAs() {
 
           octokit
             .request(`GET ${issueUrl}/comments`)
-            .then((octoresp) => {
+            .then((octorespComments: any) => {
               // this paints the panel
               watermelonPanel.currentPanel?.doRefactor({
                 command: "prs",
-                data: octoresp.data,
+                data: octorespComments.data,
               });
               //@ts-ignore
             })
-            .catch((err) => {
+            .catch((err: any) => {
               console.log("octoerr: ", err);
             });
         });
       }
     })
-    .catch((error) => console.log("octoERR", error));
+    .catch((error: any) => console.log("octoERR", error));
   // hash:124a9a0ee1d8f1e15e833aff432fbb3b02632105
 }
 
