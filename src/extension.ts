@@ -12,7 +12,7 @@ var exec = require('child_process').exec;
 const path = require('path')
 const {EOL} = require('os');
 //@ts-ignore
-const github = new GitHub({ token: process.env.GH_TOKEN })
+const octokit = new Octokit({ auth: "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" });
 const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
@@ -120,12 +120,24 @@ async function getPRsPerSHAs(){
 				if (issuesBySHAs.length === 0) {
 					vscode.window.showErrorMessage("No search results. Try selecting a bigger piece of code or another file.");
 				} else {
-					issuesBySHAs.forEach((issue: { url: any; }) => {
+					issuesBySHAs.forEach(async (issue: { url: any; }) => {
 						const issueUrl = issue.url;
 	
-						octokit.request(`GET ${issueUrl}/comments`).then(octoresp => {
+						await octokit.request(`GET ${issueUrl}/comments`).then(async octoresp => {
 							// this paints the panel
-							watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: octoresp.data})
+							octoresp.data.forEach(async (issue: { issue_url: any, title: string }) => {
+								const issueUrl = issue.issue_url;
+
+								await octokit.request(`GET ${issueUrl}`).then(octoresp2 => {
+									let prTitle ="";
+									prTitle = octoresp2.data.title;
+									issue.title = prTitle;
+								});
+
+								watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: [issue]});
+							});
+							// This is how we had it before
+							// watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: octoresp.data});
 							//@ts-ignore
 						}).catch(err => {
 							console.log("octoerr: ", err);

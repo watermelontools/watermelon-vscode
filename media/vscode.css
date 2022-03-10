@@ -6,6 +6,7 @@ details > summary {
   cursor: pointer;
   font-size: large;
 }
+
 .comment-owner {
   display: flex;
   width: 100%;
