@@ -126,6 +126,7 @@ function escapeFilePath(path: string | undefined) {
 function getPRsPerSHAs() {
   octokit
     .request(`GET /search/issues?type=Commits`, {
+      org: owner,
       q: `hash:${arrayOfSHAs[0]}`,
     })
     .then((octoresp) => {
