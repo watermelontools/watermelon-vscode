@@ -3,15 +3,13 @@ import { Octokit } from "@octokit/core";
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/getWebViewOptions";
 import getNonce from "./utils/getNonce";
-import { ConsoleReporter } from "@vscode/test-electron";
-import { start } from "repl";
 import { API as BuiltInGitApi, GitExtension } from "../@types/git";
-var exec = require("child_process").exec;
 
 const path = require("path");
 const { EOL } = require("os");
 //@ts-ignore
-const octokit = new Octokit({ auth: "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" });
+const octokit = new Octokit({ auth: process.env.GH_TOKEN });
+
 // selection ranges should be a global var
 let startLine = 0;
 let endLine = 0;
@@ -20,9 +18,16 @@ let endLine = 0;
 let owner: string | undefined = "";
 let repo: string | undefined = "";
 let localUser: string | undefined = "";
-// selection shas
+// selected shas
 let arrayOfSHAs: string[] = [];
 
+// get repo name and owner basename
+
+/* const gitExtension = vscode?.extensions?.getExtension<GitExtension>('vscode.git')?.exports;
+if(gitExtension){
+	const git = gitExtension.getAPI(1);
+console.log(git)
+} */
 const cats = {
   Watermelon:
     "https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png",
@@ -50,23 +55,12 @@ async function getGitAPI(): Promise<BuiltInGitApi | undefined> {
 
   return undefined;
 }
-async function setSHAs(gitAPI: BuiltInGitApi | undefined
-	) {
-	const currentlyOpenTabfilePath =
-	vscode.window.activeTextEditor?.document.uri.fsPath;
 
-  let blame = await gitAPI?.repositories[0].blame(
-	currentlyOpenTabfilePath || "."
-  );
-  let blameArray = blame?.split("\n").slice(startLine, endLine + 1);
-  let shaArray = blameArray?.map((line) => line.split(" ")[0]);
-  arrayOfSHAs = [...new Set(shaArray)];
-}
 export async function activate(context: vscode.ExtensionContext) {
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
   await credentials.initialize(context);
-	setSHAs(gitAPI)
+
   const disposable = vscode.commands.registerCommand(
     "extension.getGitHubUser",
     async () => {
@@ -90,6 +84,7 @@ export async function activate(context: vscode.ExtensionContext) {
       let config = await (
         await gitAPI?.repositories[0]?.getConfig("remote.origin.url")
       )?.split("/");
+      console.log(config);
       if (config) {
         repo = config[4].split(".")[0];
         owner = config[3];
