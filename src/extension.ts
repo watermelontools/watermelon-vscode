@@ -9,7 +9,6 @@ const path = require("path");
 const { EOL } = require("os");
 //@ts-ignore
 const octokit = new Octokit({ auth: process.env.GH_TOKEN });
-
 // selection ranges should be a global var
 let startLine = 0;
 let endLine = 0;
@@ -54,9 +53,8 @@ export async function activate(context: vscode.ExtensionContext) {
   const credentials = new Credentials();
   await credentials.initialize(context);
 
-  const disposable = vscode.commands.registerCommand(
-    "extension.getGitHubUser",
-    async () => {
+  context.subscriptions.push(
+    vscode.commands.registerCommand("watermelon.getGitHubUser", async () => {
       /**
        * Octokit (https://github.com/octokit/rest.js#readme) is a library for making REST API
        * calls to GitHub. It provides convenient typings that can be helpful for using the API.
@@ -69,9 +67,8 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.window.showInformationMessage(
         `Logged into GitHub as ${userInfo.data.login}`
       );
-    }
+    })
   );
-  context.subscriptions.push(disposable);
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
       let config = await (
