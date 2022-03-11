@@ -110,6 +110,7 @@ async function getPRsPerSHAs(){
 			let localowner = splitStdout[3];
 			owner = localowner;
 			
+
 			// Get issues by commit hash and owner
 			await octokit.request(`GET /search/issues?type=Commits`, {
 				org: owner,
