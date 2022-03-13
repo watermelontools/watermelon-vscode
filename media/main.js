@@ -9,10 +9,10 @@ $(document).ready(function () {
         <summary>${pr.title}</summary>
         <div id="ghInternal">
           <div class="comment-owner">
-            <p class="comment-poster">Author: ${pr.user.login}</p>
-            <p class="comment-date">${new Date(pr.updated_at)}</p>
+            <p class="comment-poster">Author: ${pr.user}</p>
+            <p class="comment-date">${new Date(pr.created_at)}</p>
           </div>
-          <p class="comment-body">${pr.body}</p>
+          <p class="comment-body">${pr.comments}</p>
         </div>
         </div>
       </details>

@@ -12,7 +12,8 @@ var exec = require('child_process').exec;
 const path = require('path')
 const {EOL} = require('os');
 //@ts-ignore
-const octokit = new Octokit({ auth: "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" });
+const octokit = new Octokit({ auth: process.env.GH_AUTH_TOKEN });
+// const octokit = new Octokit({ auth: "ghp" });
 const cats = {
 	'Watermelon': 'https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png',
 };
@@ -120,29 +121,52 @@ async function getPRsPerSHAs(){
 				if (issuesBySHAs.length === 0) {
 					vscode.window.showErrorMessage("No search results. Try selecting a bigger piece of code or another file.");
 				} else {
+					let issuesWithTitlesAndGroupedComments: { user: any; title: string; comments: any[]; created_at: any; }[] = [];
+
 					issuesBySHAs.forEach(async (issue: { url: any; }) => {
 						const issueUrl = issue.url;
+						let prTitlesPushed: string[] = [];
 	
 						await octokit.request(`GET ${issueUrl}/comments`).then(async octoresp => {
 							// this paints the panel
-							octoresp.data.forEach(async (issue: { issue_url: any, title: string }) => {
+							octoresp.data.forEach(async (issue: { issue_url: any, body: string; user: any; title: string; comments: any[]; created_at: any; }) => {
 								const issueUrl = issue.issue_url;
 
 								await octokit.request(`GET ${issueUrl}`).then(octoresp2 => {
 									let prTitle ="";
 									prTitle = octoresp2.data.title;
 									issue.title = prTitle;
+
+									if (prTitlesPushed.includes(prTitle)) {
+										for (let i=0; i<issuesWithTitlesAndGroupedComments.length; i++) {
+											if(issue.title === prTitle) {
+												if (!issuesWithTitlesAndGroupedComments[i].comments.includes(issue.body)) {
+													issuesWithTitlesAndGroupedComments[i].comments.push(issue.body);
+												}
+											}
+										}
+									} else {
+										prTitlesPushed.push(prTitle);
+										issuesWithTitlesAndGroupedComments.push({
+											user: issue.user.login,
+											title: issue.title,
+											comments: [issue.body+"\n\n"],
+											created_at: issue.created_at
+										});
+									}
 								});
 
-								watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: [issue]});
+								// NOTE: It works here but it keeps adding stuff to the UI. They stack up and only the last execution of this line renders stuff correctly.
+								// QUESTION: Is there a way to do a refactor that re-starts the DOM, instead of stalking up staff on it? 
+								watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: issuesWithTitlesAndGroupedComments});
 							});
-							// This is how we had it before
-							// watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: octoresp.data});
 							//@ts-ignore
 						}).catch(err => {
 							console.log("octoerr: ", err);
 						});
-					})
+					});
+					// NOTE: Here render would happen one time, but issuesWithTitleAndGroupedComments doesn't reach here
+					// watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: issuesWithTitlesAndGroupedComments});
 				}
 			}).catch(error=> console.log("octoERR", error))
 
