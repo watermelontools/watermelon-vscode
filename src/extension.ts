@@ -124,7 +124,11 @@ function escapeFilePath(path: string | undefined) {
     return "";
   }
 }
+
 function getPRsPerSHAs() {
+  watermelonPanel.currentPanel?.doRefactor({
+    command: "loading",
+  });
   octokit
     .request(`GET /search/issues?type=Commits`, {
       org: owner,
@@ -339,9 +343,14 @@ class watermelonPanel {
 			</head>
 			<body>
 				<img src="${catGifPath}" width="300" />
+        <p>Watermelon helps you get the context of your code.</p>
+        <p>Help us by <a href="https://github.com/watermelontools/wm-extension>starring us on github</a></p>
 				<h1 id="lines-of-code-counter">Github</h1>
 
-				<div id="ghHolder"></div>
+				<div id="ghHolder">
+          <p>Select a piece of code to start. Then run the Watermelon VS Code Command by pressing CTRL + SHIFT+ P (or CMD + SHIFT+ P in Mac) and type > Watermelon</p>
+          <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
+        </div>
 				
 				<h1 id="lines-of-code-counter">Slack</h1>
 				<div id="slackHolder"></div>
