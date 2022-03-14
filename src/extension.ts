@@ -342,7 +342,7 @@ class watermelonPanel {
 				<h1 id="lines-of-code-counter">Github</h1>
 
 				<div id="ghHolder">
-          <p>Select a piece of code to start</p>
+          <p>Select a piece of code to start. Then run the Watermelon VS Code Command by pressing CTRL + SHIFT+ P (or CMD + SHIFT+ P in Mac) and type > Watermelon</p>
           <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
         </div>
 				
