@@ -7,7 +7,6 @@ while (!$) {
 }
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
-    console.log("prs: ", prs)
     $("#ghHolder").append(`
     <details open>
       <summary>${prJson.title}</summary>
