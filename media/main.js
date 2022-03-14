@@ -5,6 +5,22 @@ const prJson = {
 while (!$) {
   console.log("no $");
 }
+
+function parseMarkdown(markdownText) {
+	const htmlText = markdownText
+		.replace(/^### (.*$)/gim, '<h3>$1</h3>')
+		.replace(/^## (.*$)/gim, '<h2>$1</h2>')
+		.replace(/^# (.*$)/gim, '<h1>$1</h1>')
+		.replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>')
+		.replace(/\*\*(.*)\*\*/gim, '<b>$1</b>')
+		.replace(/\*(.*)\*/gim, '<i>$1</i>')
+		.replace(/!\[(.*?)\]\((.*?)\)/gim, "<img alt='$1' src='$2' />")
+		.replace(/\[(.*?)\]\((.*?)\)/gim, "<a href='$2'>$1</a>")
+		.replace(/\n$/gim, '<br />')
+
+	return htmlText.trim()
+}
+
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
     $("#ghHolder").append(`
@@ -19,7 +35,11 @@ $(document).ready(function () {
             <p class="comment-poster">${pr.user.login}</p>
             <p class="comment-date">${pr.updated_at}</p>
           </div>
-          <p class="comment-body">${pr.body}</p>
+          <div class="markdown-wrapper">
+            <div class="markdown-text">
+              <p class="comment-body">${parseMarkdown(pr.body)}</p>
+            </div>
+          </div>
         </div>
       `);
     });
