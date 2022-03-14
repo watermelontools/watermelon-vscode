@@ -326,7 +326,10 @@ class watermelonPanel {
 				<img src="${catGifPath}" width="300" />
 				<h1 id="lines-of-code-counter">Github</h1>
 
-				<div id="ghHolder"></div>
+				<div id="ghHolder">
+          <p>Select a piece of code to start</p>
+          <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
+        </div>
 				
 				<h1 id="lines-of-code-counter">Slack</h1>
 				<div id="slackHolder"></div>
