@@ -124,7 +124,11 @@ function escapeFilePath(path: string | undefined) {
     return "";
   }
 }
+
 function getPRsPerSHAs() {
+  watermelonPanel.currentPanel?.doRefactor({
+    command: "loading",
+  });
   octokit
     .request(`GET /search/issues?type=Commits`, {
       org: owner,
