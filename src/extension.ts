@@ -324,6 +324,8 @@ class watermelonPanel {
 			</head>
 			<body>
 				<img src="${catGifPath}" width="300" />
+        <p>Watermelon helps you get the context of your code.</p>
+        <p>Help us by <a href="https://github.com/watermelontools/wm-extension>starring us on github</a></p>
 				<h1 id="lines-of-code-counter">Github</h1>
 
 				<div id="ghHolder"></div>
