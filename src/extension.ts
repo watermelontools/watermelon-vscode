@@ -48,16 +48,16 @@ async function getGitAPI(): Promise<BuiltInGitApi | undefined> {
 let octokit: any;
 
 export async function activate(context: vscode.ExtensionContext) {
+  vscode.commands.executeCommand(
+    "setContext",
+    "watermelon.isLoggedInGithub",
+    false
+  );
+
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
   await credentials.initialize(context);
   let userInfo: any | undefined = undefined;
-
-  octokit = await credentials.getOctokit();
-  if (octokit) {
-    userInfo = await octokit.users.getAuthenticated();
-  }
-
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
       let config = await (
@@ -68,11 +68,26 @@ export async function activate(context: vscode.ExtensionContext) {
         owner = config[3];
       }
       localUser = await gitAPI?.repositories[0]?.getGlobalConfig("user.name");
-
+      octokit = await credentials.getOctokit();
+      if (octokit) {
+        userInfo = await octokit.users.getAuthenticated();
+      }
+      
       getPRsPerSHAs();
       watermelonPanel.createOrShow(context.extensionUri);
     })
   );
+  vscode.authentication.getSession("github", []).then((session: any) => {
+    vscode.commands.executeCommand(
+      "setContext",
+      "watermelon.isLoggedInGithub",
+      true
+    );
+  });
+  octokit = await credentials.getOctokit();
+  if (octokit) {
+    userInfo = await octokit.users.getAuthenticated();
+  }
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     startLine = selection.selections[0].start.line;
     endLine = selection.selections[0].end.line;
@@ -326,7 +341,10 @@ class watermelonPanel {
 				<img src="${catGifPath}" width="300" />
 				<h1 id="lines-of-code-counter">Github</h1>
 
-				<div id="ghHolder"></div>
+				<div id="ghHolder">
+          <p>Select a piece of code to start</p>
+          <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
+        </div>
 				
 				<h1 id="lines-of-code-counter">Slack</h1>
 				<div id="slackHolder"></div>
