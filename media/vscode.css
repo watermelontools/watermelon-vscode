@@ -121,12 +121,6 @@ details > summary {
       margin-top : 40px;
   }
   
-  .btn-submit {
-      background-color: #db6161;
-      background-image: -moz-linear-gradient(top , #db6161, #ad3838);
-      cursor: pointer;
-  }
-  
   .btn-reset {
       background-color: #95A4A7;
       background-image: -moz-linear-gradient(top , #95A4A7, #8DA0A0);
@@ -196,17 +190,6 @@ details > summary {
       position: fixed;
       width: 770px;
       z-index: 1;
-  }
-  
-  footer .close {
-      background: url("http://demo.neutrinoboy.jp/icons/circle-remove.png") no-repeat scroll 0 0 / 50% auto rgba(0, 0, 0, 0);
-      cursor: pointer;
-      height: 20px;
-      position: absolute;
-      right: -16px;
-      top: 1px;
-      width: 38px;
-      z-index: 3;
   }
   
   .main-logo {
