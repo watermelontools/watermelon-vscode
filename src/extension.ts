@@ -68,7 +68,6 @@ export async function activate(context: vscode.ExtensionContext) {
         owner = config[3];
       }
       localUser = await gitAPI?.repositories[0]?.getGlobalConfig("user.name");
-
       getPRsPerSHAs();
       watermelonPanel.createOrShow(context.extensionUri);
     })
@@ -109,7 +108,11 @@ function escapeFilePath(path: string | undefined) {
     return "";
   }
 }
+
 function getPRsPerSHAs() {
+  watermelonPanel.currentPanel?.doRefactor({
+    command: "loading",
+  });
   octokit
     .request(`GET /search/issues?type=Commits`, {
       org: owner,

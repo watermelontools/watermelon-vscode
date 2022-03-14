@@ -7,6 +7,7 @@ while (!$) {
 }
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
+    removeLoading();
     $("#ghHolder").append(`
     <details open>
       <summary>${prJson.title}</summary>
@@ -24,12 +25,23 @@ $(document).ready(function () {
       `);
     });
   };
+  const setLoading = () => {
+    $("#ghHolder").append(`
+    <p>Loading...</p>
+    `);
+  };
+  const removeLoading = () => {
+    $("#ghHolder p").remove();
+  };
   window.addEventListener("message", (event) => {
     const message = event.data; // The JSON data our extension sent
 
     switch (message.command) {
       case "prs":
         addPRsToDoc(message.data);
+        break;
+      case "loading":
+        setLoading();
         break;
     }
   });
