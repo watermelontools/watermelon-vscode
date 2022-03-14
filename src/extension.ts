@@ -335,7 +335,10 @@ class watermelonPanel {
 				<h1 id="lines-of-code-counter">Jira</h1>
 				<div id="jiraHolder"></div>
 				<p>We will soon add Jira search</p>
-				</body>
+        <h2>Need help?</h2>
+        <p>Join us on <a href="https://discord.com/invite/W5mrAxUeWb">Discord</a> or <a href="https://github.com/watermelontools/wm-extension/issues>send an Issue on Github</a></p>
+	
+        </body>
 				
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</html>`;
