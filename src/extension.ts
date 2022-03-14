@@ -360,7 +360,7 @@ class watermelonPanel {
 				<div id="jiraHolder"></div>
 				<p>We will soon add Jira search</p>
         <h2>Need help?</h2>
-        <p>Send an issue on <a href="https://github.com/watermelontools/wm-extension/issues>GitHub</a> and join us on <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Slack</a></p>
+        <p>Send an issue on <a href="https://github.com/watermelontools/wm-extension/issues">GitHub</a> and join us on <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Slack</a></p>
 	
         </body>
 				
