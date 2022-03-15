@@ -241,29 +241,11 @@ class watermelonPanel {
     }
   }
 
-  private _update() {
+  private _update(title:string= "") {
     const webview = this._panel.webview;
+     if (title){this._panel.title = title};
+    this._panel.webview.html = this._getHtmlForWebview(webview, cats.Watermelon);
 
-    // Vary the webview's content based on where it is located in the editor.
-    switch (this._panel.viewColumn) {
-      case vscode.ViewColumn.Two:
-        this._updateForCat(webview, "Watermelon");
-        return;
-
-      case vscode.ViewColumn.Three:
-        this._updateForCat(webview, "Watermelon");
-        return;
-
-      case vscode.ViewColumn.One:
-      default:
-        this._updateForCat(webview, "Watermelon");
-        return;
-    }
-  }
-
-  private _updateForCat(webview: vscode.Webview, catName: keyof typeof cats) {
-    this._panel.title = catName;
-    this._panel.webview.html = this._getHtmlForWebview(webview, cats[catName]);
   }
 
   private _getHtmlForWebview(webview: vscode.Webview, catGifPath: string) {
