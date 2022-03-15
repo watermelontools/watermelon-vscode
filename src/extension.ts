@@ -116,14 +116,6 @@ export async function activate(context: vscode.ExtensionContext) {
     });
   }
 }
-function escapeFilePath(path: string | undefined) {
-  if (path) {
-    // $& means the whole matched string
-    return path.replace(/[. *\s+\ ?^${}()|[\]\\]/g, "\\$&");
-  } else {
-    return "";
-  }
-}
 
 function getPRsPerSHAs() {
   watermelonPanel.currentPanel?.doRefactor({
@@ -141,27 +133,52 @@ function getPRsPerSHAs() {
           "No search results. Try selecting a bigger piece of code or another file."
         );
       } else {
-        issuesBySHAs.forEach((issue: { url: any }) => {
-          const issueUrl = issue.url;
+        let issuesWithTitlesAndGroupedComments: { user: any; title: string; comments: any[]; created_at: any; }[] = [];
 
-          octokit
-            .request(`GET ${issueUrl}/comments`)
-            .then((octorespComments: any) => {
-              // this paints the panel
-              watermelonPanel.currentPanel?.doRefactor({
-                command: "prs",
-                data: octorespComments.data,
+        issuesBySHAs.forEach(async (issue: { url: any }) => {
+          const issueUrl = issue.url;
+          let prTitlesPushed: string[] = [];
+
+          await octokit.request(`GET ${issueUrl}/comments`).then(async (octoresp: { data: { issue_url: any; body: string; user: any; title: string; comments: any[]; created_at: any; }[]; }) => {
+            // this paints the panel
+            octoresp.data.forEach(async (issue: { issue_url: any, body: string; user: any; title: string; comments: any[]; created_at: any; }) => {
+              const issueUrl = issue.issue_url;
+  
+              await octokit.request(`GET ${issueUrl}`).then((octoresp2: { data: { title: string; }; }) => {
+                let prTitle ="";
+                prTitle = octoresp2.data.title;
+                issue.title = prTitle;
+  
+                if (prTitlesPushed.includes(prTitle)) {
+                  for (let i=0; i<issuesWithTitlesAndGroupedComments.length; i++) {
+                    if(issue.title === prTitle) {
+                      if (!issuesWithTitlesAndGroupedComments[i].comments.includes(issue.body)) {
+                        issuesWithTitlesAndGroupedComments[i].comments.push(issue.body);
+                      }
+                    }
+                  }
+                } else {
+                  prTitlesPushed.push(prTitle);
+                  issuesWithTitlesAndGroupedComments.push({
+                    user: issue.user.login,
+                    title: issue.title,
+                    comments: [issue.body+"\n\n"],
+                    created_at: issue.created_at
+                  });
+                }
               });
-              //@ts-ignore
-            })
-            .catch((err: any) => {
-              console.log("octoerr: ", err);
+              // NOTE: It works here but it keeps adding stuff to the UI. They stack up and only the last execution of this line renders stuff correctly.
+              // QUESTION: Is there a way to do a refactor that re-starts the DOM, instead of stalking up staff on it? 
+              watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: issuesWithTitlesAndGroupedComments});
             });
+      });
+
+
+
         });
       }
     })
     .catch((error: any) => console.log("octoERR", error));
-  // hash:124a9a0ee1d8f1e15e833aff432fbb3b02632105
 }
 
 /**
