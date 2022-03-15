@@ -4,6 +4,7 @@ import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/getWebViewOptions";
 import getNonce from "./utils/getNonce";
 import getGitAPI from "./utils/getGitAPI";
+import { watermelonBannerImageURL } from "./constants";
 
 const path = require("path");
 const { EOL } = require("os");
@@ -17,11 +18,6 @@ let repo: string | undefined = "";
 let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
-
-const cats = {
-  Watermelon:
-    "https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png",
-};
 
 const currentlyOpenTabfilePath =
   vscode.window.activeTextEditor?.document.uri.fsPath;
@@ -244,7 +240,7 @@ class watermelonPanel {
   private _update(title:string= "") {
     const webview = this._panel.webview;
      if (title){this._panel.title = title};
-    this._panel.webview.html = this._getHtmlForWebview(webview, cats.Watermelon);
+    this._panel.webview.html = this._getHtmlForWebview(webview, watermelonBannerImageURL);
 
   }
 
