@@ -36,9 +36,9 @@
         "title": "Start watermelon",
         "category": "watermelon"
       },
-			{
+      {
         "command": "watermelon.signin",
-        "title": "Sign in to Github to enjoy watermelon", 
+        "title": "Sign in to Github to enjoy watermelon",
         "category": "watermelon"
       }
     ],

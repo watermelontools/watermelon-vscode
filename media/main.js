@@ -24,24 +24,19 @@ function parseMarkdown(markdownText) {
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
     removeLoading();
-    $("#ghHolder").append(`
-    <details open>
-      <summary>${prJson.title}</summary>
-      <div id="ghInternal"></div>
-    </details>`);
     prs.forEach((pr) => {
-      $("#ghInternal").append(`
-        <div>
+      $("#ghHolder").append(`
+      <details open>
+        <summary>${pr.title}</summary>
+        <div id="ghInternal">
           <div class="comment-owner">
-            <p class="comment-poster">${pr.user.login}</p>
-            <p class="comment-date">${pr.updated_at}</p>
+            <p class="comment-poster">Author: ${pr.user}</p>
+            <p class="comment-date">${new Date(pr.created_at)}</p>
           </div>
-          <div class="markdown-wrapper">
-            <div class="markdown-text">
-              <p class="comment-body">${parseMarkdown(pr.body)}</p>
-            </div>
-          </div>
+          <p class="comment-body">${pr.comments}</p>
         </div>
+        </div>
+      </details>
       `);
     });
   };
