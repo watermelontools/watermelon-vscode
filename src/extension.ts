@@ -141,7 +141,7 @@ function getPRsPerSHAs() {
 }
 
 /**
- * Manages cat coding webview panels
+ * Manages watermelon webview panel
  */
 class watermelonPanel {
   /**
