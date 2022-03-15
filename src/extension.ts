@@ -3,7 +3,7 @@ import { Octokit } from "@octokit/core";
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/getWebViewOptions";
 import getNonce from "./utils/getNonce";
-import { API as BuiltInGitApi, GitExtension } from "../@types/git";
+import getGitAPI from "./utils/getGitAPI";
 
 const path = require("path");
 const { EOL } = require("os");
@@ -29,22 +29,7 @@ let splitPath = currentlyOpenTabfilePath?.split("/");
 let fileName = splitPath?.pop()?.split(" ").join("\\ ");
 let folderRoute = splitPath?.join("/").split(" ").join("\\ ");
 
-async function getGitAPI(): Promise<BuiltInGitApi | undefined> {
-  try {
-    const extension = vscode?.extensions?.getExtension(
-      "vscode.git"
-    ) as vscode.Extension<GitExtension>;
-    if (extension !== undefined) {
-      const gitExtension = extension.isActive
-        ? extension.exports
-        : await extension.activate();
 
-      return gitExtension.getAPI(1);
-    }
-  } catch {}
-
-  return undefined;
-}
 let octokit: any;
 
 export async function activate(context: vscode.ExtensionContext) {
