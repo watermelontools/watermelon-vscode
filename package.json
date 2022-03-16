@@ -26,7 +26,8 @@
   "icon": "images/logo.png",
   "activationEvents": [
     "onCommand:watermelon.start",
-    "onWebviewPanel:watermelon"
+    "onWebviewPanel:watermelon",
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -45,8 +46,9 @@
     "views": {
       "watermelon": [
         {
+          "type": "webview",
           "id": "watermelon",
-          "name": "welcome"
+          "name": "watermelon"
         }
       ]
     },
@@ -71,11 +73,6 @@
         "view": "watermelon",
         "contents": "You have not yet signed in with GitHub\n[Sign in](command:watermelon.signin)",
         "when": "config.git.enabled && watermelon.isLoggedInGithub==false"
-      },
-      {
-        "view": "watermelon",
-        "contents": "Thanks for using WM!",
-        "when": "config.git.enabled && watermelon.isLoggedInGithub==true"
       }
     ]
   },
