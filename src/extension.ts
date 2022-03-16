@@ -71,15 +71,10 @@ export async function activate(context: vscode.ExtensionContext) {
     userInfo = await octokit.users.getAuthenticated();
   }
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
-    startLine = selection.selections[0].start.line;
-    endLine = selection.selections[0].end.line;
-    const currentlyOpenTabfilePath =
-      vscode.window.activeTextEditor?.document.uri.fsPath;
-
     arrayOfSHAs = await getSHAArray(
-      startLine,
-      endLine,
-      currentlyOpenTabfilePath,
+      selection.selections[0].start.line,
+      selection.selections[0].end.line,
+      vscode.window.activeTextEditor?.document.uri.fsPath,
       gitAPI
     );
   });
