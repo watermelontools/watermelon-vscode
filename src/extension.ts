@@ -8,6 +8,7 @@ import { watermelonBannerImageURL } from "./constants";
 import getInitialHTML from "./utils/getInitialHTML";
 import getSHAArray from "./utils/getSHAArray";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
+import getLocalUser from "./utils/vscode/getLocalUser";
 
 // selection ranges should be a global var
 let startLine = 0;
@@ -38,7 +39,8 @@ export async function activate(context: vscode.ExtensionContext) {
         repo = config[4].split(".")[0];
         owner = config[3];
       }
-      localUser = await gitAPI?.repositories[0]?.getGlobalConfig("user.name");
+      localUser = await getLocalUser();
+      console.log(localUser);
       octokit = await credentials.getOctokit();
       if (octokit) {
         userInfo = await octokit.users.getAuthenticated();
