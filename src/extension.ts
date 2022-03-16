@@ -30,7 +30,6 @@ export async function activate(context: vscode.ExtensionContext) {
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
   await credentials.initialize(context);
-  let userInfo: any | undefined = undefined;
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
       let { repoName, ownerUsername } = await getRepoInfo();
@@ -39,9 +38,7 @@ export async function activate(context: vscode.ExtensionContext) {
       localUser = await getLocalUser();
 
       octokit = await credentials.getOctokit();
-      if (octokit) {
-        userInfo = await octokit.users.getAuthenticated();
-      }
+
 
       getPRsPerSHAs();
       watermelonPanel.createOrShow(context.extensionUri);
@@ -55,9 +52,7 @@ export async function activate(context: vscode.ExtensionContext) {
     );
   });
   octokit = await credentials.getOctokit();
-  if (octokit) {
-    userInfo = await octokit.users.getAuthenticated();
-  }
+
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
