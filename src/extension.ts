@@ -5,8 +5,6 @@ import getWebviewOptions from "./utils/getWebViewOptions";
 import getNonce from "./utils/getNonce";
 import { API as BuiltInGitApi, GitExtension } from "../@types/git";
 
-const path = require("path");
-const { EOL } = require("os");
 // selection ranges should be a global var
 let startLine = 0;
 let endLine = 0;
@@ -26,8 +24,7 @@ const cats = {
 const currentlyOpenTabfilePath =
   vscode.window.activeTextEditor?.document.uri.fsPath;
 let splitPath = currentlyOpenTabfilePath?.split("/");
-let fileName = splitPath?.pop()?.split(" ").join("\\ ");
-let folderRoute = splitPath?.join("/").split(" ").join("\\ ");
+
 
 async function getGitAPI(): Promise<BuiltInGitApi | undefined> {
   try {
