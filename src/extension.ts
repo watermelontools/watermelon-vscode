@@ -6,6 +6,7 @@ import getNonce from "./utils/getNonce";
 import getGitAPI from "./utils/getGitAPI";
 import { watermelonBannerImageURL } from "./constants";
 import getInitialHTML from "./utils/getInitialHTML";
+import getSHAArray from "./utils/getSHAArray";
 
 const path = require("path");
 const { EOL } = require("os");
@@ -75,13 +76,12 @@ export async function activate(context: vscode.ExtensionContext) {
     const currentlyOpenTabfilePath =
       vscode.window.activeTextEditor?.document.uri.fsPath;
 
-    let blame = await gitAPI?.repositories[0].blame(
-      currentlyOpenTabfilePath || "."
+    arrayOfSHAs = await getSHAArray(
+      startLine,
+      endLine,
+      currentlyOpenTabfilePath,
+      gitAPI
     );
-    let blameArray = blame?.split("\n").slice(startLine, endLine + 1);
-    let shaArray = blameArray?.map((line) => line.split(" ")[0]);
-    arrayOfSHAs = [...new Set(shaArray)];
-    console.log(arrayOfSHAs);
   });
 
   if (vscode.window.registerWebviewPanelSerializer) {
