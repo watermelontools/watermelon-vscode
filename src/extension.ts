@@ -11,9 +11,6 @@ import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 
-// selection ranges should be a global var
-let startLine = 0;
-let endLine = 0;
 
 // repo information
 let owner: string | undefined = "";
