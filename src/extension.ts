@@ -3,7 +3,13 @@ import { Octokit } from "@octokit/core";
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/getWebViewOptions";
 import getNonce from "./utils/getNonce";
-import { API as BuiltInGitApi, GitExtension } from "../@types/git";
+import getGitAPI from "./utils/getGitAPI";
+import { watermelonBannerImageURL } from "./constants";
+import getInitialHTML from "./utils/getInitialHTML";
+import getSHAArray from "./utils/getSHAArray";
+import setLoggedIn from "./utils/vscode/setLoggedIn";
+import getLocalUser from "./utils/vscode/getLocalUser";
+import getRepoInfo from "./utils/vscode/getRepoInfo";
 
 // selection ranges should be a global var
 let startLine = 0;
@@ -16,55 +22,24 @@ let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 
-const cats = {
-  Watermelon:
-    "https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png",
-};
-
-async function getGitAPI(): Promise<BuiltInGitApi | undefined> {
-  try {
-    const extension = vscode?.extensions?.getExtension(
-      "vscode.git"
-    ) as vscode.Extension<GitExtension>;
-    if (extension !== undefined) {
-      const gitExtension = extension.isActive
-        ? extension.exports
-        : await extension.activate();
-
-      return gitExtension.getAPI(1);
-    }
-  } catch {}
-
-  return undefined;
-}
 let octokit: any;
 
 export async function activate(context: vscode.ExtensionContext) {
-  vscode.commands.executeCommand(
-    "setContext",
-    "watermelon.isLoggedInGithub",
-    false
-  );
+  setLoggedIn(false);
 
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
   await credentials.initialize(context);
-  let userInfo: any | undefined = undefined;
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
-      let config = await (
-        await gitAPI?.repositories[0]?.getConfig("remote.origin.url")
-      )?.split("/");
-      if (config) {
-        repo = config[4].split(".")[0];
-        owner = config[3];
-      }
-      localUser = await gitAPI?.repositories[0]?.getGlobalConfig("user.name");
+      let { repoName, ownerUsername } = await getRepoInfo();
+        repo = repoName;
+        owner = ownerUsername;
+      localUser = await getLocalUser();
+
       octokit = await credentials.getOctokit();
-      if (octokit) {
-        userInfo = await octokit.users.getAuthenticated();
-      }
-      
+
+
       getPRsPerSHAs();
       watermelonPanel.createOrShow(context.extensionUri);
     })
@@ -77,21 +52,14 @@ export async function activate(context: vscode.ExtensionContext) {
     );
   });
   octokit = await credentials.getOctokit();
-  if (octokit) {
-    userInfo = await octokit.users.getAuthenticated();
-  }
-  vscode.window.onDidChangeTextEditorSelection(async (selection) => {
-    startLine = selection.selections[0].start.line;
-    endLine = selection.selections[0].end.line;
-    const currentlyOpenTabfilePath =
-      vscode.window.activeTextEditor?.document.uri.fsPath;
 
-    let blame = await gitAPI?.repositories[0].blame(
-      currentlyOpenTabfilePath || "."
+  vscode.window.onDidChangeTextEditorSelection(async (selection) => {
+    arrayOfSHAs = await getSHAArray(
+      selection.selections[0].start.line,
+      selection.selections[0].end.line,
+      vscode.window.activeTextEditor?.document.uri.fsPath,
+      gitAPI
     );
-    let blameArray = blame?.split("\n").slice(startLine, endLine + 1);
-    let shaArray = blameArray?.map((line) => line.split(" ")[0]);
-    arrayOfSHAs = [...new Set(shaArray)];
   });
 
   if (vscode.window.registerWebviewPanelSerializer) {
@@ -125,48 +93,85 @@ function getPRsPerSHAs() {
           "No search results. Try selecting a bigger piece of code or another file."
         );
       } else {
-        let issuesWithTitlesAndGroupedComments: { user: any; title: string; comments: any[]; created_at: any; }[] = [];
+        let issuesWithTitlesAndGroupedComments: {
+          user: any;
+          title: string;
+          comments: any[];
+          created_at: any;
+        }[] = [];
 
         issuesBySHAs.forEach(async (issue: { url: any }) => {
           const issueUrl = issue.url;
           let prTitlesPushed: string[] = [];
 
-          await octokit.request(`GET ${issueUrl}/comments`).then(async (octoresp: { data: { issue_url: any; body: string; user: any; title: string; comments: any[]; created_at: any; }[]; }) => {
-            // this paints the panel
-            octoresp.data.forEach(async (issue: { issue_url: any, body: string; user: any; title: string; comments: any[]; created_at: any; }) => {
-              const issueUrl = issue.issue_url;
-  
-              await octokit.request(`GET ${issueUrl}`).then((octoresp2: { data: { title: string; }; }) => {
-                let prTitle ="";
-                prTitle = octoresp2.data.title;
-                issue.title = prTitle;
-  
-                if (prTitlesPushed.includes(prTitle)) {
-                  for (let i=0; i<issuesWithTitlesAndGroupedComments.length; i++) {
-                    if(issue.title === prTitle) {
-                      if (!issuesWithTitlesAndGroupedComments[i].comments.includes(issue.body)) {
-                        issuesWithTitlesAndGroupedComments[i].comments.push(issue.body);
+          await octokit.request(`GET ${issueUrl}/comments`).then(
+            async (octoresp: {
+              data: {
+                issue_url: any;
+                body: string;
+                user: any;
+                title: string;
+                comments: any[];
+                created_at: any;
+              }[];
+            }) => {
+              // this paints the panel
+              octoresp.data.forEach(
+                async (issue: {
+                  issue_url: any;
+                  body: string;
+                  user: any;
+                  title: string;
+                  comments: any[];
+                  created_at: any;
+                }) => {
+                  const issueUrl = issue.issue_url;
+
+                  await octokit
+                    .request(`GET ${issueUrl}`)
+                    .then((octoresp2: { data: { title: string } }) => {
+                      let prTitle = "";
+                      prTitle = octoresp2.data.title;
+                      issue.title = prTitle;
+
+                      if (prTitlesPushed.includes(prTitle)) {
+                        for (
+                          let i = 0;
+                          i < issuesWithTitlesAndGroupedComments.length;
+                          i++
+                        ) {
+                          if (issue.title === prTitle) {
+                            if (
+                              !issuesWithTitlesAndGroupedComments[
+                                i
+                              ].comments.includes(issue.body)
+                            ) {
+                              issuesWithTitlesAndGroupedComments[
+                                i
+                              ].comments.push(issue.body);
+                            }
+                          }
+                        }
+                      } else {
+                        prTitlesPushed.push(prTitle);
+                        issuesWithTitlesAndGroupedComments.push({
+                          user: issue.user.login,
+                          title: issue.title,
+                          comments: [issue.body + "\n\n"],
+                          created_at: issue.created_at,
+                        });
                       }
-                    }
-                  }
-                } else {
-                  prTitlesPushed.push(prTitle);
-                  issuesWithTitlesAndGroupedComments.push({
-                    user: issue.user.login,
-                    title: issue.title,
-                    comments: [issue.body+"\n\n"],
-                    created_at: issue.created_at
+                    });
+                  // NOTE: It works here but it keeps adding stuff to the UI. They stack up and only the last execution of this line renders stuff correctly.
+                  // QUESTION: Is there a way to do a refactor that re-starts the DOM, instead of stalking up staff on it?
+                  watermelonPanel.currentPanel?.doRefactor({
+                    command: "prs",
+                    data: issuesWithTitlesAndGroupedComments,
                   });
                 }
-              });
-              // NOTE: It works here but it keeps adding stuff to the UI. They stack up and only the last execution of this line renders stuff correctly.
-              // QUESTION: Is there a way to do a refactor that re-starts the DOM, instead of stalking up staff on it? 
-              watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: issuesWithTitlesAndGroupedComments});
-            });
-      });
-
-
-
+              );
+            }
+          );
         });
       }
     })
@@ -174,7 +179,7 @@ function getPRsPerSHAs() {
 }
 
 /**
- * Manages cat coding webview panels
+ * Manages watermelon webview panel
  */
 class watermelonPanel {
   /**
@@ -274,32 +279,18 @@ class watermelonPanel {
     }
   }
 
-  private _update() {
+  private _update(title: string = "") {
     const webview = this._panel.webview;
-
-    // Vary the webview's content based on where it is located in the editor.
-    switch (this._panel.viewColumn) {
-      case vscode.ViewColumn.Two:
-        this._updateForCat(webview, "Watermelon");
-        return;
-
-      case vscode.ViewColumn.Three:
-        this._updateForCat(webview, "Watermelon");
-        return;
-
-      case vscode.ViewColumn.One:
-      default:
-        this._updateForCat(webview, "Watermelon");
-        return;
+    if (title) {
+      this._panel.title = title;
     }
+    this._panel.webview.html = this._getHtmlForWebview(
+      webview,
+      watermelonBannerImageURL
+    );
   }
 
-  private _updateForCat(webview: vscode.Webview, catName: keyof typeof cats) {
-    this._panel.title = catName;
-    this._panel.webview.html = this._getHtmlForWebview(webview, cats[catName]);
-  }
-
-  private _getHtmlForWebview(webview: vscode.Webview, catGifPath: string) {
+  private _getHtmlForWebview(webview: vscode.Webview, imagePath: string) {
     // Local path to main script run in the webview
     const scriptPathOnDisk = vscode.Uri.joinPath(
       this._extensionUri,
@@ -323,57 +314,6 @@ class watermelonPanel {
 
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
-
-    return `<!DOCTYPE html>
-			<html lang="en">
-			<header>
-				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"></script>
-				<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-				<script src="https://cdn.rawgit.com/oauth-io/oauth-js/c5af4519/dist/oauth.js"></script>
-				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css">
-			</header>
-			<head>
-				<meta charset="UTF-8">
-
-				<!--
-					Use a content security policy to only allow loading images from https or from our extension directory,
-					and only allow scripts that have a specific nonce.
-				-->
-				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
-
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-				
-				<link href="${stylesMainUri}" rel="stylesheet">
-
-				<title>Watermelon</title>
-			</head>
-			<body>
-				<img src="${catGifPath}" width="300" />
-        <p>Watermelon helps you get the context of your code.</p>
-        <p>Help us by <a href="https://github.com/watermelontools/wm-extension">starring watermelon on github</a></p>
-				<h1 id="lines-of-code-counter">Github</h1>
-
-				<div id="ghHolder">
-          <p>Select a piece of code to start. Then run the Watermelon VS Code Command by pressing <kbd>CTRL</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> (or <kbd>CMD</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> in Mac) and type > Watermelon</p>
-          <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
-        </div>
-				
-				<h1 id="lines-of-code-counter">Slack</h1>
-				<div id="slackHolder"></div>
-				<p>We will soon add Slack search</p>
-
-				<h1 id="lines-of-code-counter">Jira</h1>
-				<div id="jiraHolder"></div>
-				<p>We will soon add Jira search</p>
-        <h2>Need help?</h2>
-        <p>Send an issue on <a href="https://github.com/watermelontools/wm-extension/issues">GitHub</a> and join us on <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Slack</a></p>
-	
-        </body>
-				
-				<script nonce="${nonce}" src="${scriptUri}"></script>
-			</html>`;
+    return getInitialHTML(webview, stylesMainUri, imagePath, nonce, scriptUri);
   }
 }
