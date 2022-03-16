@@ -9,6 +9,7 @@ import getInitialHTML from "./utils/getInitialHTML";
 import getSHAArray from "./utils/getSHAArray";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
+import getRepoInfo from "./utils/vscode/getRepoInfo";
 
 // selection ranges should be a global var
 let startLine = 0;
@@ -32,15 +33,11 @@ export async function activate(context: vscode.ExtensionContext) {
   let userInfo: any | undefined = undefined;
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
-      let config = await (
-        await gitAPI?.repositories[0]?.getConfig("remote.origin.url")
-      )?.split("/");
-      if (config) {
-        repo = config[4].split(".")[0];
-        owner = config[3];
-      }
+      let { repoName, ownerUsername } = await getRepoInfo();
+        repo = repoName;
+        owner = ownerUsername;
       localUser = await getLocalUser();
-      console.log(localUser);
+
       octokit = await credentials.getOctokit();
       if (octokit) {
         userInfo = await octokit.users.getAuthenticated();
@@ -112,76 +109,74 @@ function getPRsPerSHAs() {
           const issueUrl = issue.url;
           let prTitlesPushed: string[] = [];
 
-          await octokit
-            .request(`GET ${issueUrl}/comments`)
-            .then(
-              async (octoresp: {
-                data: {
+          await octokit.request(`GET ${issueUrl}/comments`).then(
+            async (octoresp: {
+              data: {
+                issue_url: any;
+                body: string;
+                user: any;
+                title: string;
+                comments: any[];
+                created_at: any;
+              }[];
+            }) => {
+              // this paints the panel
+              octoresp.data.forEach(
+                async (issue: {
                   issue_url: any;
                   body: string;
                   user: any;
                   title: string;
                   comments: any[];
                   created_at: any;
-                }[];
-              }) => {
-                // this paints the panel
-                octoresp.data.forEach(
-                  async (issue: {
-                    issue_url: any;
-                    body: string;
-                    user: any;
-                    title: string;
-                    comments: any[];
-                    created_at: any;
-                  }) => {
-                    const issueUrl = issue.issue_url;
+                }) => {
+                  const issueUrl = issue.issue_url;
 
-                    await octokit
-                      .request(`GET ${issueUrl}`)
-                      .then((octoresp2: { data: { title: string } }) => {
-                        let prTitle = "";
-                        prTitle = octoresp2.data.title;
-                        issue.title = prTitle;
+                  await octokit
+                    .request(`GET ${issueUrl}`)
+                    .then((octoresp2: { data: { title: string } }) => {
+                      let prTitle = "";
+                      prTitle = octoresp2.data.title;
+                      issue.title = prTitle;
 
-                        if (prTitlesPushed.includes(prTitle)) {
-                          for (
-                            let i = 0;
-                            i < issuesWithTitlesAndGroupedComments.length;
-                            i++
-                          ) {
-                            if (issue.title === prTitle) {
-                              if (
-                                !issuesWithTitlesAndGroupedComments[
-                                  i
-                                ].comments.includes(issue.body)
-                              ) {
-                                issuesWithTitlesAndGroupedComments[
-                                  i
-                                ].comments.push(issue.body);
-                              }
+                      if (prTitlesPushed.includes(prTitle)) {
+                        for (
+                          let i = 0;
+                          i < issuesWithTitlesAndGroupedComments.length;
+                          i++
+                        ) {
+                          if (issue.title === prTitle) {
+                            if (
+                              !issuesWithTitlesAndGroupedComments[
+                                i
+                              ].comments.includes(issue.body)
+                            ) {
+                              issuesWithTitlesAndGroupedComments[
+                                i
+                              ].comments.push(issue.body);
                             }
                           }
-                        } else {
-                          prTitlesPushed.push(prTitle);
-                          issuesWithTitlesAndGroupedComments.push({
-                            user: issue.user.login,
-                            title: issue.title,
-                            comments: [issue.body + "\n\n"],
-                            created_at: issue.created_at,
-                          });
                         }
-                      });
-                    // NOTE: It works here but it keeps adding stuff to the UI. They stack up and only the last execution of this line renders stuff correctly.
-                    // QUESTION: Is there a way to do a refactor that re-starts the DOM, instead of stalking up staff on it?
-                    watermelonPanel.currentPanel?.doRefactor({
-                      command: "prs",
-                      data: issuesWithTitlesAndGroupedComments,
+                      } else {
+                        prTitlesPushed.push(prTitle);
+                        issuesWithTitlesAndGroupedComments.push({
+                          user: issue.user.login,
+                          title: issue.title,
+                          comments: [issue.body + "\n\n"],
+                          created_at: issue.created_at,
+                        });
+                      }
                     });
-                  }
-                );
-              }
-            );
+                  // NOTE: It works here but it keeps adding stuff to the UI. They stack up and only the last execution of this line renders stuff correctly.
+                  // QUESTION: Is there a way to do a refactor that re-starts the DOM, instead of stalking up staff on it?
+                  watermelonPanel.currentPanel?.doRefactor({
+                    command: "prs",
+                    data: issuesWithTitlesAndGroupedComments,
+                  });
+                }
+              );
+            }
+          );
         });
       }
     })
