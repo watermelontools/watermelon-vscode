@@ -19,11 +19,6 @@ let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 
-const currentlyOpenTabfilePath =
-  vscode.window.activeTextEditor?.document.uri.fsPath;
-let splitPath = currentlyOpenTabfilePath?.split("/");
-
-
 let octokit: any;
 
 export async function activate(context: vscode.ExtensionContext) {
