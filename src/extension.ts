@@ -23,7 +23,7 @@ let arrayOfSHAs: string[] = [];
 let octokit: any;
 
 export async function activate(context: vscode.ExtensionContext) {
-setLoggedIn(false);
+  setLoggedIn(false);
 
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
@@ -99,48 +99,87 @@ function getPRsPerSHAs() {
           "No search results. Try selecting a bigger piece of code or another file."
         );
       } else {
-        let issuesWithTitlesAndGroupedComments: { user: any; title: string; comments: any[]; created_at: any; }[] = [];
+        let issuesWithTitlesAndGroupedComments: {
+          user: any;
+          title: string;
+          comments: any[];
+          created_at: any;
+        }[] = [];
 
         issuesBySHAs.forEach(async (issue: { url: any }) => {
           const issueUrl = issue.url;
           let prTitlesPushed: string[] = [];
 
-          await octokit.request(`GET ${issueUrl}/comments`).then(async (octoresp: { data: { issue_url: any; body: string; user: any; title: string; comments: any[]; created_at: any; }[]; }) => {
-            // this paints the panel
-            octoresp.data.forEach(async (issue: { issue_url: any, body: string; user: any; title: string; comments: any[]; created_at: any; }) => {
-              const issueUrl = issue.issue_url;
-  
-              await octokit.request(`GET ${issueUrl}`).then((octoresp2: { data: { title: string; }; }) => {
-                let prTitle ="";
-                prTitle = octoresp2.data.title;
-                issue.title = prTitle;
-  
-                if (prTitlesPushed.includes(prTitle)) {
-                  for (let i=0; i<issuesWithTitlesAndGroupedComments.length; i++) {
-                    if(issue.title === prTitle) {
-                      if (!issuesWithTitlesAndGroupedComments[i].comments.includes(issue.body)) {
-                        issuesWithTitlesAndGroupedComments[i].comments.push(issue.body);
-                      }
-                    }
+          await octokit
+            .request(`GET ${issueUrl}/comments`)
+            .then(
+              async (octoresp: {
+                data: {
+                  issue_url: any;
+                  body: string;
+                  user: any;
+                  title: string;
+                  comments: any[];
+                  created_at: any;
+                }[];
+              }) => {
+                // this paints the panel
+                octoresp.data.forEach(
+                  async (issue: {
+                    issue_url: any;
+                    body: string;
+                    user: any;
+                    title: string;
+                    comments: any[];
+                    created_at: any;
+                  }) => {
+                    const issueUrl = issue.issue_url;
+
+                    await octokit
+                      .request(`GET ${issueUrl}`)
+                      .then((octoresp2: { data: { title: string } }) => {
+                        let prTitle = "";
+                        prTitle = octoresp2.data.title;
+                        issue.title = prTitle;
+
+                        if (prTitlesPushed.includes(prTitle)) {
+                          for (
+                            let i = 0;
+                            i < issuesWithTitlesAndGroupedComments.length;
+                            i++
+                          ) {
+                            if (issue.title === prTitle) {
+                              if (
+                                !issuesWithTitlesAndGroupedComments[
+                                  i
+                                ].comments.includes(issue.body)
+                              ) {
+                                issuesWithTitlesAndGroupedComments[
+                                  i
+                                ].comments.push(issue.body);
+                              }
+                            }
+                          }
+                        } else {
+                          prTitlesPushed.push(prTitle);
+                          issuesWithTitlesAndGroupedComments.push({
+                            user: issue.user.login,
+                            title: issue.title,
+                            comments: [issue.body + "\n\n"],
+                            created_at: issue.created_at,
+                          });
+                        }
+                      });
+                    // NOTE: It works here but it keeps adding stuff to the UI. They stack up and only the last execution of this line renders stuff correctly.
+                    // QUESTION: Is there a way to do a refactor that re-starts the DOM, instead of stalking up staff on it?
+                    watermelonPanel.currentPanel?.doRefactor({
+                      command: "prs",
+                      data: issuesWithTitlesAndGroupedComments,
+                    });
                   }
-                } else {
-                  prTitlesPushed.push(prTitle);
-                  issuesWithTitlesAndGroupedComments.push({
-                    user: issue.user.login,
-                    title: issue.title,
-                    comments: [issue.body+"\n\n"],
-                    created_at: issue.created_at
-                  });
-                }
-              });
-              // NOTE: It works here but it keeps adding stuff to the UI. They stack up and only the last execution of this line renders stuff correctly.
-              // QUESTION: Is there a way to do a refactor that re-starts the DOM, instead of stalking up staff on it? 
-              watermelonPanel.currentPanel?.doRefactor({ command: "prs", data: issuesWithTitlesAndGroupedComments});
-            });
-      });
-
-
-
+                );
+              }
+            );
         });
       }
     })
