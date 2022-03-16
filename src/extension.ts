@@ -7,6 +7,7 @@ import getGitAPI from "./utils/getGitAPI";
 import { watermelonBannerImageURL } from "./constants";
 import getInitialHTML from "./utils/getInitialHTML";
 import getSHAArray from "./utils/getSHAArray";
+import setLoggedIn from "./utils/vscode/setLoggedIn";
 
 // selection ranges should be a global var
 let startLine = 0;
@@ -22,11 +23,7 @@ let arrayOfSHAs: string[] = [];
 let octokit: any;
 
 export async function activate(context: vscode.ExtensionContext) {
-  vscode.commands.executeCommand(
-    "setContext",
-    "watermelon.isLoggedInGithub",
-    false
-  );
+setLoggedIn(false);
 
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
