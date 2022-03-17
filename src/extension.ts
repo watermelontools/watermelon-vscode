@@ -10,6 +10,7 @@ import getSHAArray from "./utils/getSHAArray";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
+import { join } from "path";
 
 
 // repo information
@@ -78,10 +79,18 @@ function getPRsPerSHAs() {
   watermelonPanel.currentPanel?.doRefactor({
     command: "loading",
   });
+
+  // Splice the array to avoid the 256 character restriction on the query to the GitHub API
+  if (arrayOfSHAs.length > 22) {
+    arrayOfSHAs.splice(22, arrayOfSHAs.length - 22);
+  }
+
+  let joinedArrayOfSHAs = arrayOfSHAs.join();
+
   octokit
     .request(`GET /search/issues?type=Commits`, {
       org: owner,
-      q: `hash:${arrayOfSHAs[0]}`,
+      q: joinedArrayOfSHAs,
     })
     .then((octorespSearch: any) => {
       const issuesBySHAs = octorespSearch.data.items;
