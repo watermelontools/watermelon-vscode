@@ -47,7 +47,7 @@
       "watermelon": [
         {
           "type": "webview",
-          "id": "watermelon",
+          "id": "watermelon.sidebar",
           "name": "watermelon"
         }
       ]
