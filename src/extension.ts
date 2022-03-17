@@ -28,6 +28,9 @@ export async function activate(context: vscode.ExtensionContext) {
   const credentials = new Credentials();
   await credentials.initialize(context);
   context.subscriptions.push(
+    //@ts-ignore
+		vscode.window.registerWebviewViewProvider(watermelonPanel.viewType, watermelonPanel.createOrShow(context.extensionUri)));
+  context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
       let { repoName, ownerUsername } = await getRepoInfo();
         repo = repoName;
@@ -178,7 +181,7 @@ function getPRsPerSHAs() {
 /**
  * Manages watermelon webview panel
  */
-class watermelonPanel {
+class watermelonPanel implements vscode.WebviewViewProvider{
   /**
    * Track the currently panel. Only allow a single panel to exist at a time.
    */
@@ -190,7 +193,14 @@ class watermelonPanel {
   private readonly _extensionUri: vscode.Uri;
   private _disposables: vscode.Disposable[] = [];
 
-  public static createOrShow(extensionUri: vscode.Uri) {
+	public resolveWebviewView(
+		webviewView: vscode.WebviewView,
+		context: vscode.WebviewViewResolveContext,
+		_token: vscode.CancellationToken,
+	) {
+    webviewView.webview.html= this._getHtmlForWebview(webviewView.webview, "");
+    }
+      public static createOrShow(extensionUri: vscode.Uri) {
     const column = vscode.window.activeTextEditor
       ? vscode.ViewColumn.Beside
       : undefined;
@@ -210,46 +220,12 @@ class watermelonPanel {
     );
 
     watermelonPanel.currentPanel = new watermelonPanel(panel, extensionUri);
+    return watermelonPanel.currentPanel;
   }
 
   public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
     watermelonPanel.currentPanel = new watermelonPanel(panel, extensionUri);
-  }
-
-  private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
-    this._panel = panel;
-    this._extensionUri = extensionUri;
-
-    // Set the webview's initial html content
-    this._update();
-
-    // Listen for when the panel is disposed
-    // This happens when the user closes the panel or when the panel is closed programmatically
-    this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
-
-    // Update the content based on view changes
-    this._panel.onDidChangeViewState(
-      (e) => {
-        if (this._panel.visible) {
-          this._update();
-        }
-      },
-      null,
-      this._disposables
-    );
-
-    // Handle messages from the webview
-    this._panel.webview.onDidReceiveMessage(
-      (message) => {
-        switch (message.command) {
-          case "alert":
-            vscode.window.showErrorMessage(message.text);
-            return;
-        }
-      },
-      null,
-      this._disposables
-    );
+    return watermelonPanel.currentPanel;
   }
 
   public doRefactor(message: object) {
@@ -257,10 +233,6 @@ class watermelonPanel {
     // You can send any JSON serializable data.
     this._panel.webview.postMessage(message);
   }
-
-  // public paintPanel (message:object) {
-  // 	this._panel.webview.postMessage(message);
-  // }
 
   public dispose() {
     watermelonPanel.currentPanel = undefined;
@@ -312,5 +284,41 @@ class watermelonPanel {
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
     return getInitialHTML(webview, stylesMainUri, imagePath, nonce, scriptUri);
+  }
+
+  private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
+    this._panel = panel;
+    this._extensionUri = extensionUri;
+    this.resolveWebviewView= this.resolveWebviewView.bind(this);
+    // Set the webview's initial html content
+    this._update();
+
+    // Listen for when the panel is disposed
+    // This happens when the user closes the panel or when the panel is closed programmatically
+    this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
+
+    // Update the content based on view changes
+    this._panel.onDidChangeViewState(
+      (e) => {
+        if (this._panel.visible) {
+          this._update();
+        }
+      },
+      null,
+      this._disposables
+    );
+
+    // Handle messages from the webview
+    this._panel.webview.onDidReceiveMessage(
+      (message) => {
+        switch (message.command) {
+          case "alert":
+            vscode.window.showErrorMessage(message.text);
+            return;
+        }
+      },
+      null,
+      this._disposables
+    );
   }
 }
