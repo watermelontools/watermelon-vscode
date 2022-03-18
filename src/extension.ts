@@ -80,11 +80,7 @@ function getPRsPerSHAs() {
     command: "loading",
   });
 
-  // Splice the array to avoid the 256 character restriction on the query to the GitHub API
-  if (arrayOfSHAs.length > 22) {
-    arrayOfSHAs.splice(22, arrayOfSHAs.length - 22);
-  }
-
+  arrayOfSHAs = arrayOfSHAs.slice(0, 22);
   let joinedArrayOfSHAs = arrayOfSHAs.join();
 
   octokit
