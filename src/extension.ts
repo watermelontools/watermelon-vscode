@@ -80,8 +80,13 @@ export async function activate(context: vscode.ExtensionContext) {
     });
   }
 
-  function getPRsPerSHAs() {
-    octokit
+  async function getPRsPerSHAs() {
+    // TODO: Get this value from API
+    // const usageIsWithinTier = await getUsageIsWithinTier(owner);
+    const usageIsWithinTier  = true;
+
+    if (usageIsWithinTier) {
+      octokit
       .request(`GET /search/issues?type=Commits`, {
         org: owner,
         q: `hash:${arrayOfSHAs[0]}`,
@@ -176,6 +181,11 @@ export async function activate(context: vscode.ExtensionContext) {
         }
       })
       .catch((error: any) => console.log("octoERR", error));
+    } else {
+      vscode.window.showErrorMessage(
+        "You have exceeded the number of search queries your 🍉 plan allows you to execute. Please go to our website to upgrade your plan."
+      );
+    }
   }
 }
 
