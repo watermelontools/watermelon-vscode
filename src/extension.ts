@@ -81,11 +81,14 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   function getPRsPerSHAs() {
+    // takes the first 22 shas and creates a list to send to the gh api
+    let joinedArrayOfSHAs = arrayOfSHAs.slice(0,22).join();
+  
     octokit
       .request(`GET /search/issues?type=Commits`, {
         org: owner,
-        q: `hash:${arrayOfSHAs[0]}`,
-      })
+        q: joinedArrayOfSHAs,
+      })    
       .then((octorespSearch: any) => {
         const issuesBySHAs = octorespSearch.data.items;
         if (issuesBySHAs.length === 0) {
