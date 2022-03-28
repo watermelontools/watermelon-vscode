@@ -81,7 +81,7 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   function getPRsPerSHAs() {
-    arrayOfSHAs = arrayOfSHAs.slice(0, 22);
+    // takes the first 22 shas and creates a list to send to the gh api
     let joinedArrayOfSHAs = arrayOfSHAs.slice(0,22).join();
   
     octokit
