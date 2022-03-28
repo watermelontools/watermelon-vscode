@@ -82,7 +82,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   function getPRsPerSHAs() {
     arrayOfSHAs = arrayOfSHAs.slice(0, 22);
-    let joinedArrayOfSHAs = arrayOfSHAs.join();
+    let joinedArrayOfSHAs = arrayOfSHAs.slice(0,22).join();
   
     octokit
       .request(`GET /search/issues?type=Commits`, {
