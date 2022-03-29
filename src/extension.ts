@@ -93,10 +93,7 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     })
       .then(function (response: any) {
-        console.log("response.data: ", response.data)
         if (response.data.organizationIsWithinPlan === "true") {
-          console.log("response is strue: ", response)
-          // usageIsWithinTier = true;
           octokit
           .request(`GET /search/issues?type=Commits`, {
             org: owner,
@@ -109,6 +106,18 @@ export async function activate(context: vscode.ExtensionContext) {
                 "No search results. Try selecting a bigger piece of code or another file."
               );
             } else {
+              // Increase organizational query counter value
+              axios.post('https://app.watermelon.tools/api/github/countUserQueries', {
+                "organizationName": owner
+              })
+              .then(function (response: any) {
+                console.log("successful response: ", response);
+              })
+              .catch(function (error: any) {
+                console.log(error);
+              });
+
+              // Fetch information
               let issuesWithTitlesAndGroupedComments: {
                 user: any;
                 title: string;
