@@ -10,6 +10,7 @@ import getSHAArray from "./utils/getSHAArray";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
+import searchType from "./utils/analytics/searchType";
 
 // repo information
 let owner: string | undefined = "";
@@ -46,6 +47,7 @@ export async function activate(context: vscode.ExtensionContext) {
       octokit = await credentials.getOctokit();
 
       getPRsPerSHAs();
+      searchType({ searchType: "watermelon.start", owner, repo });
     })
   );
 
@@ -82,13 +84,13 @@ export async function activate(context: vscode.ExtensionContext) {
 
   function getPRsPerSHAs() {
     // takes the first 22 shas and creates a list to send to the gh api
-    let joinedArrayOfSHAs = arrayOfSHAs.slice(0,22).join();
-  
+    let joinedArrayOfSHAs = arrayOfSHAs.slice(0, 22).join();
+
     octokit
       .request(`GET /search/issues?type=Commits`, {
         org: owner,
         q: joinedArrayOfSHAs,
-      })    
+      })
       .then((octorespSearch: any) => {
         const issuesBySHAs = octorespSearch.data.items;
         if (issuesBySHAs.length === 0) {
