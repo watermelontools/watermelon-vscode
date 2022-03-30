@@ -1,4 +1,3 @@
-**Watermelon only works with public repos at the moment**
 
 ![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)
 
