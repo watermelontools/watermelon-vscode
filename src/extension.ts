@@ -50,11 +50,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   vscode.authentication.getSession("github", []).then((session: any) => {
-    vscode.commands.executeCommand(
-      "setContext",
-      "watermelon.isLoggedInGithub",
-      true
-    );
+    setLoggedIn(true)
   });
   octokit = await credentials.getOctokit();
 
