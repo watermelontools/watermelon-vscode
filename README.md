@@ -1,3 +1,4 @@
+Download on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools)
 
 ![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)
 
