@@ -10,7 +10,6 @@ import getSHAArray from "./utils/getSHAArray";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
-import request = require('request');
 
 const axios = require('axios').default;
 
