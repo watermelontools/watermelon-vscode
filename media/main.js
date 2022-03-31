@@ -5,6 +5,14 @@ const prJson = {
 while (!$) {
   console.log("no $");
 }
+const vscode = acquireVsCodeApi();
+
+const button = document.querySelector('button');
+
+button.addEventListener('click', event => {
+  sendMessage({command: "run"});
+});
+
 
 function parseMarkdown(markdownText) {
   const htmlText = markdownText
@@ -20,8 +28,12 @@ function parseMarkdown(markdownText) {
 
   return htmlText.trim();
 }
+function sendMessage(message) {
+  vscode.postMessage(message);
+}
 
 $(document).ready(function () {
+  sendMessage()
   const addPRsToDoc = (prs) => {
     removeLoading();
     prs.forEach((pr) => {
