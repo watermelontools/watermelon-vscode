@@ -12,6 +12,8 @@ import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import searchType from "./utils/analytics/searchType";
 
+const axios = require('axios').default;
+
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
@@ -52,11 +54,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   vscode.authentication.getSession("github", []).then((session: any) => {
-    vscode.commands.executeCommand(
-      "setContext",
-      "watermelon.isLoggedInGithub",
-      true
-    );
+    setLoggedIn(true)
   });
   octokit = await credentials.getOctokit();
 
@@ -84,103 +82,133 @@ export async function activate(context: vscode.ExtensionContext) {
 
   function getPRsPerSHAs() {
     // takes the first 22 shas and creates a list to send to the gh api
-    let joinedArrayOfSHAs = arrayOfSHAs.slice(0, 22).join();
+    let joinedArrayOfSHAs = arrayOfSHAs.slice(0,22).join();
 
-    octokit
-      .request(`GET /search/issues?type=Commits`, {
-        org: owner,
-        q: joinedArrayOfSHAs,
-      })
-      .then((octorespSearch: any) => {
-        const issuesBySHAs = octorespSearch.data.items;
-        if (issuesBySHAs.length === 0) {
-          vscode.window.showErrorMessage(
-            "No search results. Try selecting a bigger piece of code or another file."
-          );
-        } else {
-          let issuesWithTitlesAndGroupedComments: {
-            user: any;
-            title: string;
-            comments: any[];
-            created_at: any;
-          }[] = [];
+    axios.get('https://app.watermelon.tools/api/github/getIsWithinPlan', {
+      data: {
+        "organizationName": owner
+      }
+    })
+      .then(function (response: any) {
+        if (response.data.organizationIsWithinPlan === "true") {
+          octokit
+          .request(`GET /search/issues?type=Commits`, {
+            org: owner,
+            q: joinedArrayOfSHAs,
+          })    
+          .then((octorespSearch: any) => {
+            const issuesBySHAs = octorespSearch.data.items;
+            if (issuesBySHAs.length === 0) {
+              vscode.window.showErrorMessage(
+                "No search results. Try selecting a bigger piece of code or another file."
+              );
+            } else {
+              // Increase organizational query counter value
+              axios.post('https://app.watermelon.tools/api/github/countUserQueries', {
+                "organizationName": owner
+              })
+              .then(function (response: any) {
+                console.log("successful response: ", response);
+              })
+              .catch(function (error: any) {
+                console.log(error);
+              });
 
-          issuesBySHAs.forEach(async (issue: { url: any }) => {
-            const issueUrl = issue.url;
-            let prTitlesPushed: string[] = [];
-
-            await octokit.request(`GET ${issueUrl}/comments`).then(
-              async (octoresp: {
-                data: {
-                  issue_url: any;
-                  body: string;
-                  user: any;
-                  title: string;
-                  comments: any[];
-                  created_at: any;
-                }[];
-              }) => {
-                // this paints the panel
-                octoresp.data.forEach(
-                  async (issue: {
-                    issue_url: any;
-                    body: string;
-                    user: any;
-                    title: string;
-                    comments: any[];
-                    created_at: any;
+              // Fetch information
+              let issuesWithTitlesAndGroupedComments: {
+                user: any;
+                title: string;
+                comments: any[];
+                created_at: any;
+              }[] = [];
+    
+              issuesBySHAs.forEach(async (issue: { url: any }) => {
+                const issueUrl = issue.url;
+                let prTitlesPushed: string[] = [];
+    
+                await octokit.request(`GET ${issueUrl}/comments`).then(
+                  async (octoresp: {
+                    data: {
+                      issue_url: any;
+                      body: string;
+                      user: any;
+                      title: string;
+                      comments: any[];
+                      created_at: any;
+                    }[];
                   }) => {
-                    const issueUrl = issue.issue_url;
-
-                    await octokit
-                      .request(`GET ${issueUrl}`)
-                      .then((octoresp2: { data: { title: string } }) => {
-                        let prTitle = "";
-                        prTitle = octoresp2.data.title;
-                        issue.title = prTitle;
-
-                        if (prTitlesPushed.includes(prTitle)) {
-                          for (
-                            let i = 0;
-                            i < issuesWithTitlesAndGroupedComments.length;
-                            i++
-                          ) {
-                            if (issue.title === prTitle) {
-                              if (
-                                !issuesWithTitlesAndGroupedComments[
-                                  i
-                                ].comments.includes(issue.body)
+                    // this paints the panel
+                    octoresp.data.forEach(
+                      async (issue: {
+                        issue_url: any;
+                        body: string;
+                        user: any;
+                        title: string;
+                        comments: any[];
+                        created_at: any;
+                      }) => {
+                        const issueUrl = issue.issue_url;
+    
+                        await octokit
+                          .request(`GET ${issueUrl}`)
+                          .then((octoresp2: { data: { title: string } }) => {
+                            let prTitle = "";
+                            prTitle = octoresp2.data.title;
+                            issue.title = prTitle;
+    
+                            if (prTitlesPushed.includes(prTitle)) {
+                              for (
+                                let i = 0;
+                                i < issuesWithTitlesAndGroupedComments.length;
+                                i++
                               ) {
-                                issuesWithTitlesAndGroupedComments[
-                                  i
-                                ].comments.push(issue.body);
+                                if (issue.title === prTitle) {
+                                  if (
+                                    !issuesWithTitlesAndGroupedComments[
+                                      i
+                                    ].comments.includes(issue.body)
+                                  ) {
+                                    issuesWithTitlesAndGroupedComments[
+                                      i
+                                    ].comments.push(issue.body);
+                                  }
+                                }
                               }
+                            } else {
+                              prTitlesPushed.push(prTitle);
+                              issuesWithTitlesAndGroupedComments.push({
+                                user: issue.user.login,
+                                title: issue.title,
+                                comments: [issue.body + "\n\n"],
+                                created_at: issue.created_at,
+                              });
                             }
-                          }
-                        } else {
-                          prTitlesPushed.push(prTitle);
-                          issuesWithTitlesAndGroupedComments.push({
-                            user: issue.user.login,
-                            title: issue.title,
-                            comments: [issue.body + "\n\n"],
-                            created_at: issue.created_at,
                           });
-                        }
-                      });
-                    // NOTE: It works here but it keeps adding stuff to the UI. They stack up and only the last execution of this line renders stuff correctly.
-                    // QUESTION: Is there a way to do a refactor that re-starts the DOM, instead of stalking up staff on it?
-                    provider.sendMessage({
-                      command: "prs",
-                      data: issuesWithTitlesAndGroupedComments,
-                    });
+                        // NOTE: It works here but it keeps adding stuff to the UI. They stack up and only the last execution of this line renders stuff correctly.
+                        // QUESTION: Is there a way to do a refactor that re-starts the DOM, instead of stalking up staff on it?
+                        provider.sendMessage({
+                          command: "prs",
+                          data: issuesWithTitlesAndGroupedComments,
+                        });
+                      }
+                    );
                   }
                 );
-              }
-            );
-          });
+              });
+            }
+          })
+          .catch((error: any) => console.log("octoERR", error));
+        } else {
+          // usageIsWithinTier = false;
+          vscode.window.showErrorMessage(
+            "You have exceeded the number of search queries your 🍉 plan allows you to execute. Please go to our website to upgrade your plan."
+          );
         }
       })
-      .catch((error: any) => console.log("octoERR", error));
+      .catch(function (error: any) {
+        // handle error
+        console.log(error);
+      });
   }
 }
 

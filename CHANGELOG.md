@@ -4,6 +4,9 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.7]
+- Urgent fix: the sidebar never loaded
+
 ## [0.0.5]
 - Now the user has to login, allows viewing private repos
 - Removed local terminal dependency, uses only VSCode API
@@ -12,7 +15,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Visual improvements
 - Added helper text to explain usage
 - Now fetches PR titles (instead of showing "summary")
-- Several other improvements 
+- Several other improvements
+- 
 ## [0.0.4]
 - Basic GitHub integration works for public GitHub repositories
 - We now support UNIX and Windows
