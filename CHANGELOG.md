@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.9]
+- Added analytics to invocation through ``watermelon.start``
+- Will now stop users abusing the app
+
 ## [0.0.7]
 - Urgent fix: the sidebar never loaded
 

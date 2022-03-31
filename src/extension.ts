@@ -10,6 +10,7 @@ import getSHAArray from "./utils/getSHAArray";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
+import searchType from "./utils/analytics/searchType";
 
 const axios = require('axios').default;
 
@@ -48,6 +49,7 @@ export async function activate(context: vscode.ExtensionContext) {
       octokit = await credentials.getOctokit();
 
       getPRsPerSHAs();
+      searchType({ searchType: "watermelon.start", owner, repo });
     })
   );
 
