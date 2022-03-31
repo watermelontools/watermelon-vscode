@@ -1,3 +1,5 @@
+import { backendURL } from "../../constants";
+
 const axios = require("axios");
 
 export default async function searchType({
@@ -10,7 +12,7 @@ export default async function searchType({
   repo?: string;
 }) {
   let resp = await axios.post(
-    "http://localhost:3001/api/analytics/github/search",
+    `${backendURL}/api/analytics/github/search`,
     {
       searchType,
       owner,
