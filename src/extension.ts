@@ -45,11 +45,10 @@ export async function activate(context: vscode.ExtensionContext) {
       repo = repoName;
       owner = ownerUsername;
       localUser = await getLocalUser();
-
       octokit = await credentials.getOctokit();
 
       getPRsPerSHAs();
-      searchType({ searchType: "watermelon.start", owner, repo });
+      searchType({ searchType: "watermelon.start", owner, repo, localUser });
     })
   );
 
