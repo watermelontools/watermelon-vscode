@@ -235,11 +235,9 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage((data) => {
-      switch (data.type) {
-        case "colorSelected": {
-          vscode.window.activeTextEditor?.insertSnippet(
-            new vscode.SnippetString(`aaaaaa`)
-          );
+      switch (data.command) {
+        case "run": {
+          vscode.window.showInformationMessage("pressed button");
           break;
         }
       }
