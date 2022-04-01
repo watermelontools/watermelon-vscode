@@ -11,7 +11,7 @@ export default async function searchType({
   searchType: string;
   owner?: string;
   repo?: string;
-  localUser: string
+  localUser?: string
 }) {
   let resp = await axios.post(
     `${backendURL}/api/analytics/github/search`,
