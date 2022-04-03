@@ -39,12 +39,11 @@ export async function activate(context: vscode.ExtensionContext) {
       provider
     )
   );
-  console.log(getIsWithinPlan({ organizationName: owner }));
+  let { repoName, ownerUsername } = await getRepoInfo();
+  repo = repoName;
+  owner = ownerUsername;
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
-      let { repoName, ownerUsername } = await getRepoInfo();
-      repo = repoName;
-      owner = ownerUsername;
       localUser = await getLocalUser();
       octokit = await credentials.getOctokit();
 
