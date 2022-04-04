@@ -13,5 +13,5 @@ export default async function getPRsPerSHAS({
     org: owner,
     q: shaArray,
   });
-  return octoresp.data.items;
+  return octoresp.data?.items;
 }
