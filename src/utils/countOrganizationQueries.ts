@@ -2,7 +2,7 @@ import { backendURL } from "../constants";
 
 const axios = require("axios");
 
-export default async function countUserQueries({
+export default async function countOrganizationQueries({
   organizationName,
 }: {
   organizationName?: string;
