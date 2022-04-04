@@ -7,7 +7,6 @@ export default async function getIsWithinPlan({
 }: {
   organizationName?: string;
 }) {
-  let isWithinPlan = false;
   if (organizationName) {
     let response = await axios.post(
       `${backendURL}/api/github/getIsWithinPlan`,
@@ -16,8 +15,8 @@ export default async function getIsWithinPlan({
       }
     );
     if (response.data.organizationIsWithinPlan === "true") {
-      isWithinPlan = true;
+      return true;
     }
   }
-  return isWithinPlan;
+  return false;
 }
