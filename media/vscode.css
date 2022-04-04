@@ -22,6 +22,10 @@ details > summary {
   }
   
   /* Render markdown */
+  code {
+    background-color: #75b855;
+  }
+
   body {
       color: lightgray;
       font: 15px/1.3,sans-serif;
