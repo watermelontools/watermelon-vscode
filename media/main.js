@@ -29,7 +29,7 @@ $(document).ready(function () {
       let mdComments = pr.comments.map((comment) => parseMarkdown(comment));
       $("#ghHolder").append(`
       <details open>
-        <summary>${pr.title}</summary>
+        <summary><a href="${pr.url}" target="_blank">${pr.title}</a></summary>
         <div id="ghInternal">
           <div class="comment-owner">
             <p class="comment-poster">Author: ${pr.user}</p>
