@@ -11,12 +11,10 @@ import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import {
-  exceededPlan,
   noLinesSelected,
   noSearchResults,
 } from "./utils/vscode/showErrors";
 import searchType from "./utils/analytics/searchType";
-import getIsWithinPlan from "./utils/getIsWithinPlan";
 import getPRsPerSHAS from "./utils/getPRsPerSHAS";
 import countOrganizationQueries from "./utils/countOrganizationQueries";
 import getIssueComments from "./utils/github/getIssueComments";
