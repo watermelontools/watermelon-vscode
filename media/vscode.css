@@ -20,10 +20,23 @@ details > summary {
     font-weight: bold;
     color: lightgray;
   }
-  
-  /* Render markdown */
+
   code {
-    background-color: #75b855;
+    background-color: #161b22;
+    color: #7ee787;
+    border-radius: 0.3rem;
+    /* padding: 4px 5px 5px; */
+    white-space: nowrap;
+  }
+
+  pre code {
+    white-space: inherit;
+  }
+
+  pre {
+    background-color: #161b22;
+    padding: 5px;
+    border-radius: 0.3em;
   }
 
   body {

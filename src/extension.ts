@@ -108,7 +108,7 @@ export async function activate(context: vscode.ExtensionContext) {
                 "organizationName": owner
               })
               .then(function (response: any) {
-                console.log("successful response: ", response);
+                console.log(response);
               })
               .catch(function (error: any) {
                 console.log(error);

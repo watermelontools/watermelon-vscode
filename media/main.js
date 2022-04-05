@@ -17,9 +17,7 @@ function parseMarkdown(markdownText) {
     .replace(/!\[(.*?)\]\((.*?)\)/gim, "<img alt='$1' src='$2' />")
     .replace(/\[(.*?)\]\((.*?)\)/gim, "<a href='$2'>$1</a>")
     .replace(/\n$/gim, "<br />")
-    // Test how it behaves without backticks
-    .replace(/`([^`]*)`/gm, "<code>$1</code>")
-    .replace(/```([^`]*)```/gm, "<code>$1</code>");
+    .replace(/`([^`]*)`/gm, "<pre><code>$1</code><pre/>");
 
   return htmlText.trim();
 }
