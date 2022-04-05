@@ -16,7 +16,8 @@ function parseMarkdown(markdownText) {
     .replace(/\*(.*)\*/gim, "<i>$1</i>")
     .replace(/!\[(.*?)\]\((.*?)\)/gim, "<img alt='$1' src='$2' />")
     .replace(/\[(.*?)\]\((.*?)\)/gim, "<a href='$2'>$1</a>")
-    .replace(/\n$/gim, "<br />");
+    .replace(/\n$/gim, "<br />")
+    .replace(/`([^`]*)`/gm, "<pre><code>$1</code><pre/>");
 
   return htmlText.trim();
 }
