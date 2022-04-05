@@ -28,3 +28,7 @@ Now, while the panel is open, any code you select will start a request for conte
 Check out [Contributing.md](https://github.com/watermelontools/wm-extension/blob/dev/CONTRIBUTING.md) and be aware of the [Code of Conduct](https://github.com/watermelontools/wm-extension/blob/dev/CODE_OF_CONDUCT.md)!
 
 We're an early stage project, therefore we still have the luxury to coordinate via short chats with our contributors. If you're interested in contributing, please join our Discord server https://discord.com/invite/W5mrAxUeWb
+
+## Analytics
+
+We track users to improve our application.
