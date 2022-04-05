@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import { Octokit } from "@octokit/core";
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import getNonce from "./utils/vscode/getNonce";
