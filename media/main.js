@@ -25,7 +25,7 @@ $(document).ready(function () {
   const addPRsToDoc = (prs) => {
     removeLoading();
     prs.forEach((pr) => {
-      let mdComments = pr.comments.map((comment) => parseMarkdown(comment));
+      let mdComments = pr.comments.map((comment) => marked.parse(comment));
       $("#ghHolder").append(`
       <details open>
         <summary><a href="${pr.url}" target="_blank">${pr.title}</a></summary>

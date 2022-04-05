@@ -14,6 +14,7 @@ export default function getInitialHTML(
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdn.rawgit.com/oauth-io/oauth-js/c5af4519/dist/oauth.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css">
     </header>
     <head>
