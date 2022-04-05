@@ -107,11 +107,8 @@ export async function activate(context: vscode.ExtensionContext) {
               axios.post('https://app.watermelon.tools/api/github/countUserQueries', {
                 "organizationName": owner
               })
-              .then(function (response: any) {
-                console.log(response);
-              })
               .catch(function (error: any) {
-                console.log(error);
+                vscode.window.showErrorMessage(error);
               });
 
               // Fetch information
