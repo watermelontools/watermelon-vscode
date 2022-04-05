@@ -94,12 +94,7 @@ export async function activate(context: vscode.ExtensionContext) {
     if (joinedArrayOfSHAs.length < 1) {
       return noLinesSelected();
     }
-    let isWithinPlan = await getIsWithinPlan({
-      organizationName: owner,
-    });
-    if (!isWithinPlan) {
-      return exceededPlan();
-    }
+
     let foundPRs = await getPRsPerSHAS({
       octokit,
       repoName,
@@ -119,9 +114,10 @@ export async function activate(context: vscode.ExtensionContext) {
       title: string;
       comments: any[];
       created_at: any;
+      url: string;
     }[] = [];
 
-    foundPRs.forEach(async (issue: { url: any }) => {
+    let prPromises = foundPRs.map(async (issue: { url: any }) => {
       let comments = await getIssueComments({
         octokit,
         issueUrl: issue.url,
@@ -132,15 +128,16 @@ export async function activate(context: vscode.ExtensionContext) {
         created_at: issueData.created_at,
         user: issueData.user.login,
         title: issueData.title,
+        url: issueData.html_url,
         comments: comments.map((comment: any) => {
           return comment.body+ "\n\n";
           }),
       });
-    
-      provider.sendMessage({
-        command: "prs",
-        data: issuesWithTitlesAndGroupedComments,
-      });
+    });
+    await Promise.all(prPromises);
+    provider.sendMessage({
+      command: "prs",
+      data: issuesWithTitlesAndGroupedComments,
     });
   }
 }

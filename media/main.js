@@ -34,6 +34,7 @@ $(document).ready(function () {
             <p class="comment-poster">Author: ${pr.user}</p>
             <p class="comment-date">${new Date(pr.created_at)}</p>
           </div>
+          <a href="${pr.url}" target="_blank">${pr.url}</a>
           <p class="comment-body">${mdComments}</p>
         </div>
         </div>
