@@ -1,3 +1,4 @@
+# Watermelon
 Download on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools)
 
 Join our community on [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q)   
@@ -23,7 +24,12 @@ Now, while the panel is open, any code you select will start a request for conte
 
 Check out [Contributing.md](https://github.com/watermelontools/wm-extension/blob/dev/CONTRIBUTING.md) and be aware of the [Code of Conduct](https://github.com/watermelontools/wm-extension/blob/dev/CODE_OF_CONDUCT.md)!
 
-We're an early stage project, therefore we still have the luxury to coordinate via short chats with our contributors. If you're interested in contributing, please join our [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q)
+We're an early stage project, therefore we still have the luxury to coordinate via short chats with our contributors. If you're interested in contributing, please join our Discord server https://discord.com/invite/W5mrAxUeWb
+
+## Analytics
+
+We track users to improve our application.
+
 
 [![Stargazers repo roster for @watermelontools/wm-extension](https://reporoster.com/stars/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/stargazers)
 [![Forkers repo roster for @watermelontools/wm-extension](https://reporoster.com/forks/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/network/members)
