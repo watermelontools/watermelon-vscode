@@ -1,10 +1,7 @@
 # Watermelon
 Download on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools)
 
-Join our community on ![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)
-
-[![Stargazers repo roster for @watermelontools/wm-extension](https://reporoster.com/stars/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/stargazers)
-[![Forkers repo roster for @watermelontools/wm-extension](https://reporoster.com/forks/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/network/members)
+Join our community on [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q)   
 
 Watermelon is an IDE extension that brings in answers of _why_ a piece of code was written.
 
@@ -32,3 +29,7 @@ We're an early stage project, therefore we still have the luxury to coordinate v
 ## Analytics
 
 We track users to improve our application.
+
+
+[![Stargazers repo roster for @watermelontools/wm-extension](https://reporoster.com/stars/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/stargazers)
+[![Forkers repo roster for @watermelontools/wm-extension](https://reporoster.com/forks/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/network/members)
