@@ -1,4 +1,4 @@
-import { API as BuiltInGitApi, GitExtension } from "../../@types/git";
+import { API as BuiltInGitApi, GitExtension } from "../../../@types/git";
 import * as vscode from "vscode";
 
 export default async function getGitAPI(): Promise<BuiltInGitApi | undefined> {
