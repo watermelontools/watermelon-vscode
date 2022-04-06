@@ -10,7 +10,9 @@ $(document).ready(function () {
   const addPRsToDoc = (prs) => {
     removeLoading();
     prs.forEach((pr) => {
-      let mdComments = pr.comments.map((comment) => marked.parse(comment));
+      let mdComments = "";
+      pr.comments.forEach((comment) => {mdComments+=`<div class="comment-body">${marked.parse(comment)}</div>`});
+      console.log(mdComments);
       $("#ghHolder").append(`
       <details open>
         <summary><a href="${pr.url}" target="_blank">${pr.title}</a></summary>
@@ -19,7 +21,7 @@ $(document).ready(function () {
             <p class="comment-poster">Author: ${pr.user}</p>
             <p class="comment-date">${new Date(pr.created_at)}</p>
           </div>
-          <p class="comment-body">${mdComments}</p>
+          ${mdComments}
         </div>
         </div>
       </details>

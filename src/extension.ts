@@ -9,6 +9,7 @@ import getSHAArray from "./utils/getSHAArray";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
+import getUserEmail from "./utils/getUserEmail";
 import {
   noLinesSelected,
   noSearchResults,
@@ -54,7 +55,9 @@ export async function activate(context: vscode.ExtensionContext) {
       octokit = await credentials.getOctokit();
 
       getPRsPerSHAs();
-      searchType({ searchType: "watermelon.start", owner, repo, localUser });
+
+      const userEmail = await getUserEmail({ octokit });
+      searchType({ searchType: "watermelon.start", owner, repo, localUser, userEmail });
     })
   );
 
@@ -127,7 +130,7 @@ export async function activate(context: vscode.ExtensionContext) {
         title: issueData.title,
         url: issueData.html_url,
         comments: comments.map((comment: any) => {
-          return comment.body+ "\n\n";
+          return comment.body;
           }),
       });
     });
