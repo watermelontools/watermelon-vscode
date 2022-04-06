@@ -9,7 +9,7 @@ Watermelon is an **open-source** integration between **GitHub** and **Visual Stu
 
 Watermelon allows you to highlight a piece of code to obtain its historical context. 
 
-![watermemelon screenshot](https://github.com/watermelontools/wm-extension/640demo.gif)
+![watermelon screenshot](https://ibb.co/j3rtKZQ)
 
 ## Usage
 To use watermelon call the command menu with `CTRL + SHIFT+ P ` (or `CMD + SHIFT+ P ` in Mac)
