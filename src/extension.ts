@@ -130,7 +130,7 @@ export async function activate(context: vscode.ExtensionContext) {
         title: issueData.title,
         url: issueData.html_url,
         comments: comments.map((comment: any) => {
-          return comment.body+ "\n\n";
+          return comment.body;
           }),
       });
     });
