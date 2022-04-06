@@ -29,3 +29,7 @@ details > summary {
   font-weight: bold;
   color: lightgray;
 }
+.comment-body {
+  margin-top: 1%;
+  border-top: 1px solid lightgray;
+}
