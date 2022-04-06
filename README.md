@@ -9,7 +9,7 @@ Watermelon is an **open-source** integration between **GitHub** and **Visual Stu
 
 Watermelon allows you to highlight a piece of code to obtain its historical context. 
 
-![watermemelon screenshot](https://github.com/watermelontools/wm-extension/blob/main/640demo.gif?raw=true)
+![watermelon screenshot](https://ibb.co/j3rtKZQ)
 
 ## Usage
 To use watermelon call the command menu with `CTRL + SHIFT+ P ` (or `CMD + SHIFT+ P ` in Mac)
@@ -20,9 +20,10 @@ Now, while the panel is open, any code you select will start a request for conte
 ## Requirements
 
 * macOS 10.11+, Windows 7+ or Linux
-* Visual Studio Code v1.28.0+
+* Visual Studio Code v1.65.0+
+* You must have Git locally installed
 
-## Insatallation
+## Installation
 
 Download from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools)
 
@@ -46,12 +47,13 @@ We track users to improve our application. We store your GitHub username and whe
 
 ## Supporters
 
-[![Stargazers repo roster for @watermelontools/wm-extension](https://reporoster.com/stars/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/stargazers)
-[![Forkers repo roster for @watermelontools/wm-extension](https://reporoster.com/forks/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/network/members)
+[![Stargazers repo roster for @watermelontools/wm-extension](https://reporoster.com/stars/dark/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/stargazers)
+
+[![Forkers repo roster for @watermelontools/wm-extension](https://reporoster.com/forks/dark/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/network/members)
 
 
 ---
 
 #### About Watermelon
 
-Watermelon is built by a globally distributed team devoted to making software development as a team. Join our [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q) community, follow us on [Twitter](https://twitter.com/WatermelonTools) and go to the [Watermelon blog](https://watermelon.tools/blog/blog) to get the best programming tips. 
+Watermelon is built by a globally distributed team devoted to making software development easier. Join our [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q) community, follow us on [Twitter](https://twitter.com/WatermelonTools) and go to the [Watermelon blog](https://watermelon.tools/blog/blog) to get the best programming tips. 
