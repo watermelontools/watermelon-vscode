@@ -23,7 +23,7 @@ Now, while the panel is open, any code you select will start a request for conte
 * Visual Studio Code v1.65.0+
 * You must have Git locally installed
 
-## Insatallation
+## Installation
 
 Download from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools)
 
