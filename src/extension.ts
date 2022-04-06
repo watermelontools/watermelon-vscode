@@ -9,6 +9,7 @@ import getSHAArray from "./utils/getSHAArray";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
+import getUserEmail from "./utils/getUserEmail";
 import {
   noLinesSelected,
   noSearchResults,
@@ -55,9 +56,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
       getPRsPerSHAs();
 
-      // TODO: Handle case where user is not authenticated
-      const userinfo = await octokit.request('GET /user');
-      const userEmail = userinfo.data.email;
+      const userEmail = await getUserEmail({ octokit });
       searchType({ searchType: "watermelon.start", owner, repo, localUser, userEmail });
     })
   );
