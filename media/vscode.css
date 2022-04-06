@@ -33,3 +33,14 @@ details > summary {
   margin-top: 1%;
   border-top: 1px solid lightgray;
 }
+
+a,
+a:visited {
+  color: #db6161;
+  outline: medium none;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
