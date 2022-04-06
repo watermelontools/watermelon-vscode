@@ -6,12 +6,14 @@ export default async function searchType({
   searchType,
   owner,
   repo,
-  localUser
+  localUser,
+  userEmail
 }: {
   searchType: string;
   owner?: string;
   repo?: string;
-  localUser?: string
+  localUser?: string;
+  userEmail?: string;
 }) {
   let resp = await axios.post(
     `${backendURL}/api/analytics/github/search`,
@@ -19,7 +21,8 @@ export default async function searchType({
       searchType,
       owner,
       repo,
-      localUser
+      localUser,
+      userEmail
     }
   );
   return resp;

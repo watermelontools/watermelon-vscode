@@ -54,7 +54,11 @@ export async function activate(context: vscode.ExtensionContext) {
       octokit = await credentials.getOctokit();
 
       getPRsPerSHAs();
-      searchType({ searchType: "watermelon.start", owner, repo, localUser });
+
+      // TODO: Handle case where user is not authenticated
+      const userinfo = await octokit.request('GET /user');
+      const userEmail = userinfo.data.email;
+      searchType({ searchType: "watermelon.start", owner, repo, localUser, userEmail });
     })
   );
 
