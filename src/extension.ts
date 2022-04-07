@@ -13,8 +13,6 @@ import getUserEmail from "./utils/getUserEmail";
 import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 
-const axios = require("axios").default;
-
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
@@ -96,7 +94,6 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 }
 
-
 class watermelonSidebar implements vscode.WebviewViewProvider {
   public static readonly viewType = "watermelon.sidebar";
 
@@ -119,10 +116,20 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
-    webviewView.webview.onDidReceiveMessage((data) => {
+    webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.command) {
         case "run": {
-          vscode.window.showInformationMessage("pressed button");
+          let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+            arrayOfSHAs,
+            octokit,
+            owner,
+            repo,
+          });
+         
+          this.sendMessage({
+            command: "prs",
+            data: issuesWithTitlesAndGroupedComments,
+          });
           break;
         }
       }
