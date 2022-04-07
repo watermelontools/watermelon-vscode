@@ -5,6 +5,10 @@ const vscode = acquireVsCodeApi();
 
 const button = document.querySelector('button');
 
+function sendMessage(message) {
+  vscode.postMessage(message);
+}
+
 button.addEventListener('click', event => {
   sendMessage({command: "run"});
 });
