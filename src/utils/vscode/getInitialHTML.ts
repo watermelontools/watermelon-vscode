@@ -42,7 +42,7 @@ export default function getInitialHTML(
               Now, you can run the Watermelon VS Code Command by pressing <kbd>CTRL</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> (or <kbd>CMD</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> in Mac) and type <code>Watermelon</code>
            </p>
            <p>Or press this button to run:</p>
-           <button>Start Watermelon</button>
+           <button>Run Watermelon</button>
            <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
         </div>
         <h1 id="lines-of-code-counter">Slack</h1>
