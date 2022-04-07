@@ -1,18 +1,26 @@
 import * as vscode from "vscode";
-import { Octokit } from "@octokit/core";
 import { Credentials } from "./credentials";
-import getWebviewOptions from "./utils/getWebViewOptions";
-import getNonce from "./utils/getNonce";
-import getGitAPI from "./utils/getGitAPI";
+import getWebviewOptions from "./utils/vscode/getWebViewOptions";
+import getNonce from "./utils/vscode/getNonce";
+import getGitAPI from "./utils/vscode/getGitAPI";
 import { watermelonBannerImageURL } from "./constants";
-import getInitialHTML from "./utils/getInitialHTML";
+import getInitialHTML from "./utils/vscode/getInitialHTML";
 import getSHAArray from "./utils/getSHAArray";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
+import getUserEmail from "./utils/getUserEmail";
+import {
+  noLinesSelected,
+  noSearchResults,
+} from "./utils/vscode/showErrors";
 import searchType from "./utils/analytics/searchType";
+import getPRsPerSHAS from "./utils/getPRsPerSHAS";
+import countOrganizationQueries from "./utils/countOrganizationQueries";
+import getIssueComments from "./utils/github/getIssueComments";
+import getIssue from "./utils/github/getIssue";
 
-const axios = require('axios').default;
+const axios = require("axios").default;
 
 // repo information
 let owner: string | undefined = "";
@@ -38,23 +46,23 @@ export async function activate(context: vscode.ExtensionContext) {
       provider
     )
   );
-
+  let { repoName, ownerUsername } = await getRepoInfo();
+  repo = repoName;
+  owner = ownerUsername;
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
-      let { repoName, ownerUsername } = await getRepoInfo();
-      repo = repoName;
-      owner = ownerUsername;
       localUser = await getLocalUser();
-
       octokit = await credentials.getOctokit();
 
       getPRsPerSHAs();
-      searchType({ searchType: "watermelon.start", owner, repo });
+
+      const userEmail = await getUserEmail({ octokit });
+      searchType({ searchType: "watermelon.start", owner, repo, localUser, userEmail });
     })
   );
 
   vscode.authentication.getSession("github", []).then((session: any) => {
-    setLoggedIn(true)
+    setLoggedIn(true);
   });
   octokit = await credentials.getOctokit();
 
@@ -80,135 +88,57 @@ export async function activate(context: vscode.ExtensionContext) {
     });
   }
 
-  function getPRsPerSHAs() {
+  async function getPRsPerSHAs() {
     // takes the first 22 shas and creates a list to send to the gh api
-    let joinedArrayOfSHAs = arrayOfSHAs.slice(0,22).join();
+    let joinedArrayOfSHAs = arrayOfSHAs.slice(0, 22).join();
+    if (joinedArrayOfSHAs.length < 1) {
+      return noLinesSelected();
+    }
 
-    axios.get('https://app.watermelon.tools/api/github/getIsWithinPlan', {
-      data: {
-        "organizationName": owner
-      }
-    })
-      .then(function (response: any) {
-        if (response.data.organizationIsWithinPlan === "true") {
-          octokit
-          .request(`GET /search/issues?type=Commits`, {
-            org: owner,
-            q: joinedArrayOfSHAs,
-          })    
-          .then((octorespSearch: any) => {
-            const issuesBySHAs = octorespSearch.data.items;
-            if (issuesBySHAs.length === 0) {
-              vscode.window.showErrorMessage(
-                "No search results. Try selecting a bigger piece of code or another file."
-              );
-            } else {
-              // Increase organizational query counter value
-              axios.post('https://app.watermelon.tools/api/github/countUserQueries', {
-                "organizationName": owner
-              })
-              .then(function (response: any) {
-                console.log("successful response: ", response);
-              })
-              .catch(function (error: any) {
-                console.log(error);
-              });
+    let foundPRs = await getPRsPerSHAS({
+      octokit,
+      repoName,
+      owner,
+      shaArray: joinedArrayOfSHAs,
+    });
+    if (foundPRs?.length === 0) {
+      return noSearchResults();
+    }
 
-              // Fetch information
-              let issuesWithTitlesAndGroupedComments: {
-                user: any;
-                title: string;
-                comments: any[];
-                created_at: any;
-              }[] = [];
-    
-              issuesBySHAs.forEach(async (issue: { url: any }) => {
-                const issueUrl = issue.url;
-                let prTitlesPushed: string[] = [];
-    
-                await octokit.request(`GET ${issueUrl}/comments`).then(
-                  async (octoresp: {
-                    data: {
-                      issue_url: any;
-                      body: string;
-                      user: any;
-                      title: string;
-                      comments: any[];
-                      created_at: any;
-                    }[];
-                  }) => {
-                    // this paints the panel
-                    octoresp.data.forEach(
-                      async (issue: {
-                        issue_url: any;
-                        body: string;
-                        user: any;
-                        title: string;
-                        comments: any[];
-                        created_at: any;
-                      }) => {
-                        const issueUrl = issue.issue_url;
-    
-                        await octokit
-                          .request(`GET ${issueUrl}`)
-                          .then((octoresp2: { data: { title: string } }) => {
-                            let prTitle = "";
-                            prTitle = octoresp2.data.title;
-                            issue.title = prTitle;
-    
-                            if (prTitlesPushed.includes(prTitle)) {
-                              for (
-                                let i = 0;
-                                i < issuesWithTitlesAndGroupedComments.length;
-                                i++
-                              ) {
-                                if (issue.title === prTitle) {
-                                  if (
-                                    !issuesWithTitlesAndGroupedComments[
-                                      i
-                                    ].comments.includes(issue.body)
-                                  ) {
-                                    issuesWithTitlesAndGroupedComments[
-                                      i
-                                    ].comments.push(issue.body);
-                                  }
-                                }
-                              }
-                            } else {
-                              prTitlesPushed.push(prTitle);
-                              issuesWithTitlesAndGroupedComments.push({
-                                user: issue.user.login,
-                                title: issue.title,
-                                comments: [issue.body + "\n\n"],
-                                created_at: issue.created_at,
-                              });
-                            }
-                          });
-                        // NOTE: It works here but it keeps adding stuff to the UI. They stack up and only the last execution of this line renders stuff correctly.
-                        // QUESTION: Is there a way to do a refactor that re-starts the DOM, instead of stalking up staff on it?
-                        provider.sendMessage({
-                          command: "prs",
-                          data: issuesWithTitlesAndGroupedComments,
-                        });
-                      }
-                    );
-                  }
-                );
-              });
-            }
-          })
-          .catch((error: any) => console.log("octoERR", error));
-        } else {
-          // usageIsWithinTier = false;
-          vscode.window.showErrorMessage(
-            "You have exceeded the number of search queries your 🍉 plan allows you to execute. Please go to our website to upgrade your plan."
-          );
-        }
-      })
-      .catch(function (error: any) {
-        // handle error
-        console.log(error);
+    // Increase organizational query counter value
+    countOrganizationQueries({ organizationName: owner });
+
+    // Fetch information
+    let issuesWithTitlesAndGroupedComments: {
+      user: any;
+      title: string;
+      comments: any[];
+      created_at: any;
+      url: string;
+    }[] = [];
+
+    let prPromises = foundPRs.map(async (issue: { url: any }) => {
+      let comments = await getIssueComments({
+        octokit,
+        issueUrl: issue.url,
       });
+      let issueData = await getIssue({ octokit, issueUrl: issue.url });
+
+      issuesWithTitlesAndGroupedComments.push({
+        created_at: issueData.created_at,
+        user: issueData.user.login,
+        title: issueData.title,
+        url: issueData.html_url,
+        comments: comments.map((comment: any) => {
+          return comment.body;
+          }),
+      });
+    });
+    await Promise.all(prPromises);
+    provider.sendMessage({
+      command: "prs",
+      data: issuesWithTitlesAndGroupedComments,
+    });
   }
 }
 
