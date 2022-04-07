@@ -16,6 +16,8 @@ import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
+// user information
+let userEmail: string | undefined = "";
 let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
@@ -55,7 +57,7 @@ export async function activate(context: vscode.ExtensionContext) {
         command: "prs",
         data: issuesWithTitlesAndGroupedComments,
       });
-      const userEmail = await getUserEmail({ octokit });
+      userEmail = await getUserEmail({ octokit });
       searchType({
         searchType: "watermelon.start",
         owner,
@@ -119,7 +121,7 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.command) {
         case "run": {
-          const userEmail = await getUserEmail({ octokit });
+          userEmail = await getUserEmail({ octokit });
           localUser = await getLocalUser();
 
           let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
