@@ -1,12 +1,12 @@
-import getGitAPI from "../getGitAPI";
+import getGitAPI from "./getGitAPI";
 
 export default async function getRepoInfo(): Promise<{
   ownerUsername: string;
   repoName: string;
 }> {
   let gitAPI = await getGitAPI();
-  let ownerUsername: string | undefined = "";
-  let repoName: string | undefined = "";
+  let ownerUsername: string = "";
+  let repoName: string = "";
 
   let config = await (
     await gitAPI?.repositories[0]?.getConfig("remote.origin.url")
