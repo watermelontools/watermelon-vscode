@@ -54,8 +54,11 @@ export async function activate(context: vscode.ExtensionContext) {
       localUser = await getLocalUser();
       octokit = await credentials.getOctokit();
 
-      getPRsPerSHAs();
-
+     let issuesWithTitlesAndGroupedComments= await getPRsToPaintPerSHAs();
+     provider.sendMessage({
+      command: "prs",
+      data: issuesWithTitlesAndGroupedComments,
+    });
       const userEmail = await getUserEmail({ octokit });
       searchType({ searchType: "watermelon.start", owner, repo, localUser, userEmail });
     })
@@ -88,7 +91,7 @@ export async function activate(context: vscode.ExtensionContext) {
     });
   }
 
-  async function getPRsPerSHAs() {
+  async function getPRsToPaintPerSHAs() {
     // takes the first 22 shas and creates a list to send to the gh api
     let joinedArrayOfSHAs = arrayOfSHAs.slice(0, 22).join();
     if (joinedArrayOfSHAs.length < 1) {
@@ -135,10 +138,8 @@ export async function activate(context: vscode.ExtensionContext) {
       });
     });
     await Promise.all(prPromises);
-    provider.sendMessage({
-      command: "prs",
-      data: issuesWithTitlesAndGroupedComments,
-    });
+
+    return issuesWithTitlesAndGroupedComments;
   }
 }
 
