@@ -1,7 +1,3 @@
-const prJson = {
-  title: "Summary",
-};
-
 while (!$) {
   console.log("no $");
 }
@@ -13,9 +9,7 @@ button.addEventListener('click', event => {
   sendMessage({command: "run"});
 });
 
-
 $(document).ready(function () {
-  sendMessage()
   const addPRsToDoc = (prs) => {
     removeLoading();
     prs.forEach((pr) => {
