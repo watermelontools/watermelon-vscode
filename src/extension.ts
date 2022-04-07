@@ -119,13 +119,22 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.command) {
         case "run": {
+          const userEmail = await getUserEmail({ octokit });
+          localUser = await getLocalUser();
+
           let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
             arrayOfSHAs,
             octokit,
             owner,
             repo,
           });
-         
+          searchType({
+            searchType: "webview.button",
+            owner,
+            repo,
+            localUser,
+            userEmail,
+          });
           this.sendMessage({
             command: "prs",
             data: issuesWithTitlesAndGroupedComments,
