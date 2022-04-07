@@ -19,13 +19,16 @@ $(document).ready(function () {
       $("#ghHolder").append(`
       <details open>
         <summary><a href="${pr.url}" target="_blank">${pr.title}</a></summary>
-        <div id="ghInternal">
+        <div>
           <div class="comment-owner">
-            <p class="comment-poster">Author: ${pr.user}</p>
-            <p class="comment-date">${new Date(pr.created_at)}</p>
+            <p class="comment-poster">
+              Author: ${pr.user}
+            </p>
+            <p class="comment-date">
+              ${new Date(pr.created_at)}
+            </p>
           </div>
           ${mdComments}
-        </div>
         </div>
       </details>
       `);
