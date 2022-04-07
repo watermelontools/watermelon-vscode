@@ -10,12 +10,8 @@ import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getUserEmail from "./utils/getUserEmail";
-import { noLinesSelected, noSearchResults } from "./utils/vscode/showErrors";
 import searchType from "./utils/analytics/searchType";
-import getPRsPerSHAS from "./utils/getPRsPerSHAS";
-import countOrganizationQueries from "./utils/countOrganizationQueries";
-import getIssueComments from "./utils/github/getIssueComments";
-import getIssue from "./utils/github/getIssue";
+import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 
 const axios = require("axios").default;
 
@@ -51,7 +47,12 @@ export async function activate(context: vscode.ExtensionContext) {
       localUser = await getLocalUser();
       octokit = await credentials.getOctokit();
 
-      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs();
+      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+        arrayOfSHAs,
+        octokit,
+        owner,
+        repo,
+      });
       provider.sendMessage({
         command: "prs",
         data: issuesWithTitlesAndGroupedComments,
@@ -95,58 +96,6 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 }
 
-async function getPRsToPaintPerSHAs() {
-  let { repoName } = await getRepoInfo();
-
-  // takes the first 22 shas and creates a list to send to the gh api
-  let joinedArrayOfSHAs = arrayOfSHAs.slice(0, 22).join();
-  if (joinedArrayOfSHAs.length < 1) {
-    return noLinesSelected();
-  }
-
-  let foundPRs = await getPRsPerSHAS({
-    octokit,
-    repoName,
-    owner,
-    shaArray: joinedArrayOfSHAs,
-  });
-  if (foundPRs?.length === 0) {
-    return noSearchResults();
-  }
-
-  // Increase organizational query counter value
-  countOrganizationQueries({ organizationName: owner });
-
-  // Fetch information
-  let issuesWithTitlesAndGroupedComments: {
-    user: any;
-    title: string;
-    comments: any[];
-    created_at: any;
-    url: string;
-  }[] = [];
-
-  let prPromises = foundPRs.map(async (issue: { url: any }) => {
-    let comments = await getIssueComments({
-      octokit,
-      issueUrl: issue.url,
-    });
-    let issueData = await getIssue({ octokit, issueUrl: issue.url });
-
-    issuesWithTitlesAndGroupedComments.push({
-      created_at: issueData.created_at,
-      user: issueData.user.login,
-      title: issueData.title,
-      url: issueData.html_url,
-      comments: comments.map((comment: any) => {
-        return comment.body;
-      }),
-    });
-  });
-  await Promise.all(prPromises);
-
-  return issuesWithTitlesAndGroupedComments;
-}
 
 class watermelonSidebar implements vscode.WebviewViewProvider {
   public static readonly viewType = "watermelon.sidebar";
