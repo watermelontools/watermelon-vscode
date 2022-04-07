@@ -7,9 +7,9 @@
 
 Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code**. Watermelon makes you an expert on any file instantly by running Git blame for you and telling you why a block of code was written that way by someone else.
 
-Watermelon allows you to highlight a piece of code to obtain its historical context. 
+Watermelon allows you to highlight a piece of code to obtain its historical context.  
 
-![watermelon screenshot](https://ibb.co/j3rtKZQ)
+![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/640demo.gif?raw=true)
 
 ## Usage
 To use watermelon call the command menu with `CTRL + SHIFT+ P ` (or `CMD + SHIFT+ P ` in Mac)
@@ -27,7 +27,8 @@ Now, while the panel is open, any code you select will start a request for conte
 
 Download from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools)
 
-Alternatively, you can search for "Watermelon" in VS Code's built-in extension marketplace and install from there.
+Alternatively, you can search for "Watermelon" in VS Code's built-in extension marketplace and install from there.  
+![Download on VSCode](https://user-images.githubusercontent.com/11527621/162223094-ee24a53e-7a32-49eb-ac74-d1ab4f886d11.png)
 
 ## License
 
