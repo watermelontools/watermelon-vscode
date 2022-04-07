@@ -44,3 +44,13 @@ a:visited {
 a:hover {
   text-decoration: underline;
 }
+
+button {
+  background-color: rgb(117, 184, 85);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  padding: 0.5em 1em;
+}
