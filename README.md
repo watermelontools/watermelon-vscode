@@ -2,8 +2,14 @@
 
 [![Report an issue](https://img.shields.io/badge/-Report%20an%20issue-critical)](https://github.com/watermelontools/wm-extension/issues)
 
-![GitHub Repo stars](https://img.shields.io/github/stars/watermelontools/wm-extension?affiliations=OWNER&style=social)
-![Twitter Follow](https://img.shields.io/twitter/follow/WatermelonTools?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/watermelontools/wm-extension?style=flat-square)
+![Contributors](https://img.shields.io/github/contributors/watermelontools/wm-extension?style=flat-square)
+![Twitter Follow](https://img.shields.io/twitter/follow/WatermelonTools?style=flat-square)
+![Installs](https://img.shields.io/visual-studio-marketplace/i/WatermelonTools.watermelon-tools?style=flat-square)
+![Downloads](https://img.shields.io/visual-studio-marketplace/d/WatermelonTools.watermelon-tools?style=flat-square)
+![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)
+[![Slack](https://img.shields.io/badge/Slack%20Community-Watermelon-brightgreen)](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q)
+
 
 Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code**. Watermelon makes you an expert on any file instantly by running Git blame for you and telling you why a block of code was written that way by someone else.
 
