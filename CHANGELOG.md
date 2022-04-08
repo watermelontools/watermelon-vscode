@@ -4,11 +4,11 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-##[0.0.14]
+## [0.0.14]
 - Added search button
 - Improvements to README 
 
-##[0.0.11]
+## [0.0.11]
 - PR titles are now links to the PR on github
 - Changed Markdown parser to MarkedJS
 - General bugfixes
