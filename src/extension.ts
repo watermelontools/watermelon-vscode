@@ -10,21 +10,14 @@ import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getUserEmail from "./utils/getUserEmail";
-import {
-  noLinesSelected,
-  noSearchResults,
-} from "./utils/vscode/showErrors";
 import searchType from "./utils/analytics/searchType";
-import getPRsPerSHAS from "./utils/getPRsPerSHAS";
-import countOrganizationQueries from "./utils/countOrganizationQueries";
-import getIssueComments from "./utils/github/getIssueComments";
-import getIssue from "./utils/github/getIssue";
-
-const axios = require("axios").default;
+import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
+// user information
+let userEmail: string | undefined = "";
 let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
@@ -54,10 +47,24 @@ export async function activate(context: vscode.ExtensionContext) {
       localUser = await getLocalUser();
       octokit = await credentials.getOctokit();
 
-      getPRsPerSHAs();
-
-      const userEmail = await getUserEmail({ octokit });
-      searchType({ searchType: "watermelon.start", owner, repo, localUser, userEmail });
+      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+        arrayOfSHAs,
+        octokit,
+        owner,
+        repo,
+      });
+      provider.sendMessage({
+        command: "prs",
+        data: issuesWithTitlesAndGroupedComments,
+      });
+      userEmail = await getUserEmail({ octokit });
+      searchType({
+        searchType: "watermelon.start",
+        owner,
+        repo,
+        localUser,
+        userEmail,
+      });
     })
   );
 
@@ -87,59 +94,6 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
   }
-
-  async function getPRsPerSHAs() {
-    // takes the first 22 shas and creates a list to send to the gh api
-    let joinedArrayOfSHAs = arrayOfSHAs.slice(0, 22).join();
-    if (joinedArrayOfSHAs.length < 1) {
-      return noLinesSelected();
-    }
-
-    let foundPRs = await getPRsPerSHAS({
-      octokit,
-      repoName,
-      owner,
-      shaArray: joinedArrayOfSHAs,
-    });
-    if (foundPRs?.length === 0) {
-      return noSearchResults();
-    }
-
-    // Increase organizational query counter value
-    countOrganizationQueries({ organizationName: owner });
-
-    // Fetch information
-    let issuesWithTitlesAndGroupedComments: {
-      user: any;
-      title: string;
-      comments: any[];
-      created_at: any;
-      url: string;
-    }[] = [];
-
-    let prPromises = foundPRs.map(async (issue: { url: any }) => {
-      let comments = await getIssueComments({
-        octokit,
-        issueUrl: issue.url,
-      });
-      let issueData = await getIssue({ octokit, issueUrl: issue.url });
-
-      issuesWithTitlesAndGroupedComments.push({
-        created_at: issueData.created_at,
-        user: issueData.user.login,
-        title: issueData.title,
-        url: issueData.html_url,
-        comments: comments.map((comment: any) => {
-          return comment.body;
-          }),
-      });
-    });
-    await Promise.all(prPromises);
-    provider.sendMessage({
-      command: "prs",
-      data: issuesWithTitlesAndGroupedComments,
-    });
-  }
 }
 
 class watermelonSidebar implements vscode.WebviewViewProvider {
@@ -164,12 +118,29 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
-    webviewView.webview.onDidReceiveMessage((data) => {
-      switch (data.type) {
-        case "colorSelected": {
-          vscode.window.activeTextEditor?.insertSnippet(
-            new vscode.SnippetString(`aaaaaa`)
-          );
+    webviewView.webview.onDidReceiveMessage(async (data) => {
+      switch (data.command) {
+        case "run": {
+          userEmail = await getUserEmail({ octokit });
+          localUser = await getLocalUser();
+
+          let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+            arrayOfSHAs,
+            octokit,
+            owner,
+            repo,
+          });
+          searchType({
+            searchType: "webview.button",
+            owner,
+            repo,
+            localUser,
+            userEmail,
+          });
+          this.sendMessage({
+            command: "prs",
+            data: issuesWithTitlesAndGroupedComments,
+          });
           break;
         }
       }
