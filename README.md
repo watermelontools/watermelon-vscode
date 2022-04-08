@@ -2,12 +2,12 @@
 
 [![Report an issue](https://img.shields.io/badge/-Report%20an%20issue-critical)](https://github.com/watermelontools/wm-extension/issues)
 
-![GitHub Repo stars](https://img.shields.io/github/stars/watermelontools/wm-extension?style=flat-square)
-![Contributors](https://img.shields.io/github/contributors/watermelontools/wm-extension?style=flat-square)
-![Twitter Follow](https://img.shields.io/twitter/follow/WatermelonTools?style=flat-square)
-![Installs](https://img.shields.io/visual-studio-marketplace/i/WatermelonTools.watermelon-tools?style=flat-square)
-![Downloads](https://img.shields.io/visual-studio-marketplace/d/WatermelonTools.watermelon-tools?style=flat-square)
-![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)
+[![GitHub Repo stars](https://img.shields.io/github/stars/watermelontools/wm-extension?style=flat-square)](https://github.com/watermelontools/wm-extension/stargazers)
+[![Contributors](https://img.shields.io/github/contributors/watermelontools/wm-extension?style=flat-square)](https://github.com/watermelontools/wm-extension/graphs/contributors)
+[![Twitter Follow](https://img.shields.io/twitter/follow/WatermelonTools?style=flat-square)](https://twitter.com/intent/follow?screen_name=WatermelonTools)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false)
+[![Downloads](https://img.shields.io/visual-studio-marketplace/d/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false#review-details)
 [![Slack](https://img.shields.io/badge/Slack%20Community-Watermelon-brightgreen)](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q)
 
 
