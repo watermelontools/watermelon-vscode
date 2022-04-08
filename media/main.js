@@ -51,6 +51,7 @@ $(document).ready(function () {
       </details>
       `);
     });
+    hljs.highlightAll();
   };
   const setLoading = () => {
     $("#ghHolder").append(`
@@ -60,6 +61,7 @@ $(document).ready(function () {
   const removeLoading = () => {
     $("#ghHolder p").remove();
   };
+
   window.addEventListener("message", (event) => {
     const message = event.data; // The JSON data our extension sent
     switch (message.command) {
