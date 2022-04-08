@@ -36,11 +36,11 @@ details > summary {
 }
 .comment-header {
   background-color: rgb(22, 27, 34);
-  padding: 0.5em;
+  padding: 0.1em 0.5em;
 }
 .comment-body {
   margin-top: 1%;
-  padding: 0.5em;
+  padding: 0.1em 0.5em;
 }
 
 a,
