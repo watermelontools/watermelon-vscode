@@ -16,7 +16,7 @@ button.addEventListener("click", (event) => {
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
     removeLoading();
-    prs.forEach((pr) => {
+    prs.forEach((pr, index) => {
       let mdComments = "";
       pr.comments.forEach((comment) => {
         mdComments += `
@@ -32,7 +32,7 @@ $(document).ready(function () {
         </div>`;
       });
       $("#ghHolder").append(`
-      <details open>
+      <details ${!index ? "open" : ""}>
         <summary><a href="${pr.url}" target="_blank">${pr.title}</a></summary>
         <div>
           <div class="pr-owner">
