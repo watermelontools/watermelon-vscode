@@ -49,7 +49,7 @@ export default async function getPRsToPaintPerSHAs({arrayOfSHAs, octokit, owner,
         title: issueData.title,
         url: issueData.html_url,
         comments: comments.map((comment: any) => {
-          return comment.body;
+          return comment;
         }),
       });
     });

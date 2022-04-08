@@ -3,14 +3,14 @@ while (!$) {
 }
 const vscode = acquireVsCodeApi();
 
-const button = document.querySelector('button');
+const button = document.querySelector("button");
 
 function sendMessage(message) {
   vscode.postMessage(message);
 }
 
-button.addEventListener('click', event => {
-  sendMessage({command: "run"});
+button.addEventListener("click", (event) => {
+  sendMessage({ command: "run" });
 });
 
 $(document).ready(function () {
@@ -18,17 +18,28 @@ $(document).ready(function () {
     removeLoading();
     prs.forEach((pr) => {
       let mdComments = "";
-      pr.comments.forEach((comment) => {mdComments+=`<div class="comment-body">${marked.parse(comment)}</div>`});
-      console.log(mdComments);
+      pr.comments.forEach((comment) => {
+        mdComments += `
+        <div class="comment">
+        <div class="comment-header">
+          <h5 class="comment-author">
+          ${comment.user.login} on ${new Date(comment.created_at)}
+          </h5>
+        </div>
+        <div class="comment-body">
+      ${marked.parse(comment.body)}
+        </div>
+        </div>`;
+      });
       $("#ghHolder").append(`
       <details open>
         <summary><a href="${pr.url}" target="_blank">${pr.title}</a></summary>
         <div>
-          <div class="comment-owner">
-            <p class="comment-poster">
+          <div class="pr-owner">
+            <p class="pr-poster">
               Author: ${pr.user}
             </p>
-            <p class="comment-date">
+            <p class="pr-date">
               ${new Date(pr.created_at)}
             </p>
           </div>
