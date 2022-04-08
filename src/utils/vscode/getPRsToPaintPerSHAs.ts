@@ -33,6 +33,8 @@ export default async function getPRsToPaintPerSHAs({arrayOfSHAs, octokit, owner,
       title: string;
       comments: any[];
       created_at: any;
+      body: string;
+      avatar: string;
       url: string;
     }[] = [];
   
@@ -42,12 +44,14 @@ export default async function getPRsToPaintPerSHAs({arrayOfSHAs, octokit, owner,
         issueUrl: issue.url,
       });
       let issueData = await getIssue({ octokit, issueUrl: issue.url });
-  
+  console.log(issueData);
       issuesWithTitlesAndGroupedComments.push({
         created_at: issueData.created_at,
         user: issueData.user.login,
         title: issueData.title,
         url: issueData.html_url,
+        body: issueData.body,
+        avatar: issueData.user.avatar_url,
         comments: comments.map((comment: any) => {
           return comment;
         }),

@@ -43,6 +43,9 @@ $(document).ready(function () {
               ${new Date(pr.created_at)}
             </p>
           </div>
+          <div class="pr-body">
+            ${marked.parse(pr.body)}
+          </div>
           ${mdComments}
         </div>
       </details>
