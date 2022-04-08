@@ -130,6 +130,10 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
             owner,
             repo,
           });
+          // @ts-ignore
+          let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
+            (a:any, b: any) => b.comments.length - a.comments.length
+          );
           searchType({
             searchType: "webview.button",
             owner,
@@ -139,7 +143,7 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           });
           this.sendMessage({
             command: "prs",
-            data: issuesWithTitlesAndGroupedComments,
+            data: sortedPRs,
           });
           break;
         }
