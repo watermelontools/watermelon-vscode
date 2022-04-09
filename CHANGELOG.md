@@ -10,6 +10,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Removed bot comments
 - Sort PRs per amount of comments
 - Added syntax highlighting to long form code 
+- Removed "watermelon.signin" command declaration as it is not needed
 
 ## [0.0.14]
 - Added search button
