@@ -41,7 +41,7 @@ export default function getInitialHTML(
            <p>Now, click this button to run:</p>
            <button>Run Watermelon</button>
            <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
-           <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension">run with our command</a></p>
+           <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our command</a></p>
         </div>
         <h1 id="lines-of-code-counter">Slack</h1>
         <div id="slackHolder"></div>
