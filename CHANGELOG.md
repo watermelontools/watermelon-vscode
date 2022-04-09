@@ -9,6 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Added PR description
 - Removed bot comments
 - Sort PRs per amount of comments
+- Added syntax highlighting to long form code 
 
 ## [0.0.14]
 - Added search button
