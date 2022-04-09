@@ -36,6 +36,14 @@ Download from the [VS Code Marketplace](https://marketplace.visualstudio.com/ite
 Alternatively, you can search for "Watermelon" in VS Code's built-in extension marketplace and install from there.  
 ![Download on VSCode](https://user-images.githubusercontent.com/11527621/162223094-ee24a53e-7a32-49eb-ac74-d1ab4f886d11.png)
 
+## Commands
+
+Watermelon comes with a command that you can run from VS Code's command palette. The result is exactly the same as running a Watermelon query with the green button.
+
+|Command|Description|
+|:---|:---|
+|`watermelon.start`|Get the historical context of the selected block of code|
+
 ## License
 
 - [Apache License](https://github.com/watermelontools/wm-extension/blob/main/LICENSE)
