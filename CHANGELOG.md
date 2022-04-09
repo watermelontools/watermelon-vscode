@@ -4,6 +4,9 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## []
+- Removed "watermelon.signin" as it is not needed
+
 ## [0.0.14]
 - Added search button
 - Improvements to README 
