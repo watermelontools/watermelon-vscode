@@ -15,7 +15,6 @@ button.addEventListener("click", (event) => {
 
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
-    removeLoading();
     prs.forEach((pr, index) => {
       let mdComments = "";
       pr.comments.forEach((comment) => {
@@ -52,34 +51,36 @@ $(document).ready(function () {
       `);
     });
     hljs.highlightAll();
-    $("code").each(function(index, element) {
-    
-    // replace each with the clamped version and a see more button
-    if($(this).text().length > 100) {
-      $(this).addClass("clamp");
-      $(this).append("<button class='see-more'>See More</button>");
-    }
-    // now restore the text when the button was clicked
-    $(this).on("click", ".see-more", function() {
-      $(this).parent().removeClass("clamp");
-      $(this).remove();
-    }
-    );
-  });
+    $("code").each(function (index, element) {
+      // replace each with the clamped version and a see more button
+      if ($(this).text().length > 100) {
+        $(this).addClass("clamp");
+        $(this).append("<button class='see-more'>See More</button>");
+      }
+      // now restore the text when the button was clicked
+      $(this).on("click", ".see-more", function () {
+        $(this).parent().removeClass("clamp");
+        $(this).remove();
+      });
+    });
   };
-  const setLoading = () => {
-    $("#ghHolder").append(`
-    <p>Loading...</p>
+  function setLoading() {
+    $("#ghHolder").replaceWith(`
+    <div id="ghHolder">
+      <p>Loading...</p>
+    </div>
     `);
-  };
-  const removeLoading = () => {
+  }
+  function removeLoading() {
     $("#ghHolder p").remove();
-  };
+  }
 
   window.addEventListener("message", (event) => {
     const message = event.data; // The JSON data our extension sent
+    console.log(message);
     switch (message.command) {
       case "prs":
+        removeLoading();
         addPRsToDoc(message.data);
         break;
       case "loading":
