@@ -15,6 +15,7 @@ button.addEventListener("click", (event) => {
 
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
+    $("#ghHolder").append("<button>Run Watermelon</button>")
     prs.forEach((pr, index) => {
       let mdComments = "";
       pr.comments.forEach((comment) => {
