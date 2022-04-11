@@ -6,7 +6,10 @@ code {
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
     Liberation Mono, monospace;
 }
-
+.hljs {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #a7a7a7;
+}
 details > summary {
   padding: 2px 6px;
   border-bottom: 1px solid lightgray;
@@ -15,23 +18,32 @@ details > summary {
   cursor: pointer;
   font-size: large;
 }
-.comment-owner {
+.pr-owner {
   display: flex;
   width: 100%;
   justify-content: space-between;
 }
-.comment-date {
+.pr-date {
   font-style: italic;
   opacity: 0.5;
   color: lightgray;
 }
-.comment-poster {
+.pr-poster {
   font-weight: bold;
   color: lightgray;
 }
+.comment {
+  margin-bottom: 1%;
+  border-radius: 6px;
+  border: 1px solid #30363d;
+}
+.comment-header {
+  background-color: rgb(22, 27, 34);
+  padding: 0.1em 0.5em;
+}
 .comment-body {
   margin-top: 1%;
-  border-top: 1px solid lightgray;
+  padding: 0.1em 0.5em;
 }
 
 a,
