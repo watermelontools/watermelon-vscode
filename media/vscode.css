@@ -67,3 +67,7 @@ button {
   padding: 0.5em 1em;
   margin-bottom: 1em;
 }
+.clamp {
+  max-height: 3.5em;
+  text-overflow: ellipsis;
+}
