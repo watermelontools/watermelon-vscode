@@ -82,7 +82,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "watch": "tsc -w -p ./",
     "deploy": "vsce publish --yarn",
-    "test": "node ./out/test/runTest.js"
+    "test": "npm run compile && node ./out/test/runTest.js"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
