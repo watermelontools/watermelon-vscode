@@ -93,3 +93,19 @@ button:active {
   padding: 0.5em 1em;
   margin-bottom: 1em;
 }
+pre {
+  display: flex;
+  flex-direction: column;
+}
+.see-more-button {
+  background-color: rgb(100 100 100 / 60%);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
+  width: min-content;
+  align-self: center;
+}
