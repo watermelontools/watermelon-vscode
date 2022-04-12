@@ -17,6 +17,9 @@ export default function getInitialHTML(
         <script src="https://cdn.rawgit.com/oauth-io/oauth-js/c5af4519/dist/oauth.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <link rel="stylesheet"
+        href="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/styles/default.min.css">
+        <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/highlight.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css">
      </header>
      <head>
@@ -34,16 +37,14 @@ export default function getInitialHTML(
      <body>
         <img src="${imagePath}" width="300" />
         <p>Watermelon helps you get the context of your code.</p>
-        <p>Help us by <a href="https://github.com/watermelontools/wm-extension">starring watermelon on github</a></p>
+        <p>Help us by <a href="https://github.com/watermelontools/wm-extension">starring Watermelon on GitHub</a></p>
         <h1 id="lines-of-code-counter">Github</h1>
         <div id="ghHolder">
            <p>Select a piece of code to start.</p>
-           <p> 
-              Now, you can run the Watermelon VS Code Command by pressing <kbd>CTRL</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> (or <kbd>CMD</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> in Mac) and type <code>Watermelon</code>
-           </p>
-           <p>Or press this button to run:</p>
+           <p>Now, click this button to run:</p>
            <button>Run Watermelon</button>
            <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
+           <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a></p>
         </div>
         <h1 id="lines-of-code-counter">Slack</h1>
         <div id="slackHolder"></div>

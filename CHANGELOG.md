@@ -4,6 +4,15 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.16]
+- Improved comments UI
+- Added PR description
+- Removed bot comments
+- Sort PRs per amount of comments
+- Added syntax highlighting to long form code 
+- Removed "watermelon.signin" command declaration as it is not needed
+- Clamp long code blocks, allow declamp with button
+
 ## [0.0.14]
 - Added search button
 - Improvements to README 
