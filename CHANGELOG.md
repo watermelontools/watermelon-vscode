@@ -4,7 +4,7 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [0.0.]
+## [0.0.17]
 -Fixed loading UI
 
 ## [0.0.16]
