@@ -12,4 +12,12 @@ suite("Extension Test Suite", () => {
     assert.strictEqual([1, 2, 3].indexOf(5), -1);
     assert.strictEqual([1, 2, 3].indexOf(0), -1);
   });
+  vscode.window.showInformationMessage("Now testing the extension.");
+
+  // test that the extension is present
+  test("Extension is present", () => {
+    assert.ok(
+      vscode.extensions.getExtension("WatermelonTools.watermelon-tools")
+    );
+  });
 });
