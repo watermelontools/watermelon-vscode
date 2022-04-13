@@ -3,19 +3,25 @@ while (!$) {
 }
 const vscode = acquireVsCodeApi();
 
-const button = document.querySelector("button");
+const startButton = document.getElementById("startButton");
+const slackButton = document.getElementById("slackButton");
 
 function sendMessage(message) {
   vscode.postMessage(message);
 }
 
-button.addEventListener("click", (event) => {
+startButton.addEventListener("click", (event) => {
   sendMessage({ command: "run" });
+});
+
+slackButton.addEventListener("click", (event) => {
+  // sendMessage({ command: "slack" });
+  vscode.window.showErrorMessage("asdfsafsf");
 });
 
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
-    $("#ghHolder").append("<button>Run Watermelon</button>")
+    $("#ghHolder").append("<button id=`startButton`>Run Watermelon</button>")
     prs.forEach((pr, index) => {
       let mdComments = "";
       pr.comments.forEach((comment) => {
