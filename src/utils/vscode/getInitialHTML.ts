@@ -12,7 +12,6 @@ export default function getInitialHTML(
   <!DOCTYPE html>
   <html lang="en">
      <header>
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdn.rawgit.com/oauth-io/oauth-js/c5af4519/dist/oauth.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <link rel="stylesheet"
