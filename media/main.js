@@ -15,8 +15,9 @@ startButton.addEventListener("click", (event) => {
 });
 
 slackButton.addEventListener("click", (event) => {
-  // sendMessage({ command: "slack" });
-  vscode.window.showErrorMessage("asdfsafsf");
+  // NOTE: I wouldn't build a Slack command yet, until we know that people click this button
+  sendMessage({ command: "slack" });
+  console.log("slack button clicked");
 });
 
 $(document).ready(function () {

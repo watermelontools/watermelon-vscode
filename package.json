@@ -26,6 +26,7 @@
   "icon": "images/logo.png",
   "activationEvents": [
     "onCommand:watermelon.start",
+    "onCommand:watermelon.slack",
     "onWebviewPanel:watermelon",
     "onStartupFinished"
   ],
@@ -35,6 +36,11 @@
       {
         "command": "watermelon.start",
         "title": "Start watermelon",
+        "category": "watermelon"
+      },
+      {
+        "command": "watermelon.slack",
+        "title": "Send Slack Message",
         "category": "watermelon"
       }
     ],

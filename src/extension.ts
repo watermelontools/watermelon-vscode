@@ -12,6 +12,7 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getUserEmail from "./utils/getUserEmail";
 import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
+import { ConsoleReporter } from "@vscode/test-electron";
 
 // repo information
 let owner: string | undefined = "";
@@ -68,6 +69,13 @@ export async function activate(context: vscode.ExtensionContext) {
         localUser,
         userEmail,
       });
+    })
+  );
+
+  // Watermelon Slack command
+  context.subscriptions.push(
+    vscode.commands.registerCommand("watermelon.slack", async () => {
+      console.log("watermelon.slack called")
     })
   );
 
