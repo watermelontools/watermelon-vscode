@@ -18,7 +18,7 @@ Watermelon allows you to highlight a piece of code to obtain its historical cont
 ![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/640demo.gif?raw=true)
 
 ## Usage
-To use watermelon call the command menu with `CTRL + SHIFT+ P ` (or `CMD + SHIFT+ P ` in Mac)
+To use watermelon call the command menu with `CTRL + SHIFT + P` (or `CMD + SHIFT + P` in Mac)
 and type `Watermelon`.
 
 Now, while the panel is open, any code you select will start a request for context. Depending on the size of your github history, this might take a while.
