@@ -22,7 +22,7 @@ Simply click the Watermelon icon on the sidebar, highlight a piece of code, and 
 
 Depending on the size of your GitHub history, this might take a few seconds.
 
-Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a>
+Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our `watermelon.start` command</a>
 
 ## Requirements
 
