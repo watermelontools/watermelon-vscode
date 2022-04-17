@@ -9,6 +9,15 @@ function sendMessage(message) {
   vscode.postMessage(message);
 }
 
+Sentry.init({
+  dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
+  integrations: [new BrowserTracing()],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
 button.addEventListener("click", (event) => {
   sendMessage({ command: "run" });
 });
