@@ -15,9 +15,22 @@ startButton.addEventListener("click", (event) => {
 });
 
 slackButton.addEventListener("click", (event) => {
-  // NOTE: I wouldn't build a Slack command yet, until we know that people click this button
-  sendMessage({ command: "slack" });
-  console.log("slack button clicked");
+  fetch("https://app.watermelon.tools/api/analytics/github/search", {
+    method: 'POST',
+    mode: "cors",
+    headers: {
+      'Access-Control-Allow-Origin':'*',
+    },
+    body: {
+      searchType: "slackButton"
+    }
+  }).then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
 });
 
 $(document).ready(function () {

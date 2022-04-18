@@ -72,13 +72,6 @@ export async function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  // Watermelon Slack command
-  context.subscriptions.push(
-    vscode.commands.registerCommand("watermelon.slack", async () => {
-      console.log("watermelon.slack called")
-    })
-  );
-
   vscode.authentication.getSession("github", []).then((session: any) => {
     setLoggedIn(true);
   });
