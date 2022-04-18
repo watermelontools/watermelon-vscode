@@ -81,6 +81,7 @@ $(document).ready(function () {
     $("#ghHolder").replaceWith(`
     <div id="ghHolder">
       <p>We might have run into an error, our team is on it.</p>
+      <p>Try running a new Watermelon query, please.</p>
     </div>
     `);
     $("#ghHolder").append("<button>Run Watermelon</button>");
