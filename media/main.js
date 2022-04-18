@@ -96,7 +96,6 @@ $(document).ready(function () {
 
   window.addEventListener("message", (event) => {
     const message = event.data; // The JSON data our extension sent
-    console.log(message);
     switch (message.command) {
       case "prs":
         removeLoading();
