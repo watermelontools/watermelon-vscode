@@ -31,6 +31,11 @@ export default function getInitialHTML(
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="${stylesMainUri}" rel="stylesheet">
         <title>Watermelon</title>
+        <script
+         src="https://browser.sentry-cdn.com/6.19.6/bundle.min.js"
+         integrity="sha384-XITe7oDiyULCpVPtGc52+ISVyD2MAEbbfpNsmYcfxClZXDw+IA906MSf6rhcdf3L"
+         crossorigin="anonymous"
+         ></script>
      </head>
      <body>
         <img src="${imagePath}" width="300" />
