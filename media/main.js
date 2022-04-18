@@ -5,17 +5,29 @@ const vscode = acquireVsCodeApi();
 
 const button = document.querySelector("button");
 
+let errorTimeout;
 function sendMessage(message) {
   vscode.postMessage(message);
 }
 
+Sentry.init({
+  dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
+
 button.addEventListener("click", (event) => {
   sendMessage({ command: "run" });
 });
-
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
     $("#ghHolder").append("<button>Run Watermelon</button>")
+    $("button").on("click", (event) => {
+      sendMessage({ command: "run" });
+    });
     prs.forEach((pr, index) => {
       let mdComments = "";
       pr.comments.forEach((comment) => {
@@ -71,14 +83,28 @@ $(document).ready(function () {
       <p>Loading...</p>
     </div>
     `);
+    errorTimeout = setTimeout(setError, 4000);
+  }
+  function setError (){
+    $("#ghHolder").replaceWith(`
+    <div id="ghHolder">
+      <p>We might have run into an error, our team is on it.</p>
+      <p>Try running a new Watermelon query, please.</p>
+    </div>
+    `);
+    $("#ghHolder").append("<button>Run Watermelon</button>");
+    $("button").on("click", (event) => {
+      sendMessage({ command: "run" });
+    });
   }
   function removeLoading() {
+    clearTimeout(errorTimeout);
     $("#ghHolder p").remove();
+    $("#ghHolder button").remove();
   }
 
   window.addEventListener("message", (event) => {
     const message = event.data; // The JSON data our extension sent
-    console.log(message);
     switch (message.command) {
       case "prs":
         removeLoading();

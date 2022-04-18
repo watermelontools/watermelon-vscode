@@ -11,14 +11,13 @@ export default function getInitialHTML(
 
   <!DOCTYPE html>
   <html lang="en">
-     <header>
+
+      <head>
         <script src="https://cdn.rawgit.com/oauth-io/oauth-js/c5af4519/dist/oauth.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" async defer fetchpriority="low"></script>
         <link rel="stylesheet"
-        href="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/styles/default.min.css">
-        <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/highlight.min.js"></script>
-     </header>
-     <head>
+        href="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/styles/default.min.css" async defer fetchpriority="low">
+        <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/highlight.min.js" async defer fetchpriority="low"></script>
         <meta charset="UTF-8">
         <!--
            Use a content security policy to only allow loading images from https or from our extension directory,
@@ -29,6 +28,11 @@ export default function getInitialHTML(
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="${stylesMainUri}" rel="stylesheet">
         <title>Watermelon</title>
+        <script
+         src="https://browser.sentry-cdn.com/6.19.6/bundle.min.js"
+         integrity="sha384-XITe7oDiyULCpVPtGc52+ISVyD2MAEbbfpNsmYcfxClZXDw+IA906MSf6rhcdf3L"
+         crossorigin="anonymous"
+         ></script>
      </head>
      <body>
         <img src="${imagePath}" width="300" />
@@ -51,7 +55,9 @@ export default function getInitialHTML(
         <h2>Need help?</h2>
         <p>Send an issue on <a href="https://github.com/watermelontools/wm-extension/issues">GitHub</a> and join us on <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Slack</a></p>
      </body>
-     <script nonce="${nonce}" src="${scriptUri}"></script>
-  </html>
+     <footer>
+      <script nonce="${nonce}" src="${scriptUri}"></script>
+     </footer>
+     </html>
   `;
 }
