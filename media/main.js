@@ -91,6 +91,7 @@ $(document).ready(function () {
   function removeLoading() {
     clearTimeout(errorTimeout);
     $("#ghHolder p").remove();
+    $("#ghHolder button").remove();
   }
 
   window.addEventListener("message", (event) => {
