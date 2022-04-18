@@ -44,6 +44,9 @@ export async function activate(context: vscode.ExtensionContext) {
   owner = ownerUsername;
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
+      provider.sendMessage({
+        command: "loading",
+      });
       localUser = await getLocalUser();
       octokit = await credentials.getOctokit();
 
@@ -121,6 +124,9 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.command) {
         case "run": {
+          this.sendMessage({
+            command: "loading",
+          });
           userEmail = await getUserEmail({ octokit });
           localUser = await getLocalUser();
 
