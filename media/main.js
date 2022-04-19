@@ -25,6 +25,7 @@ button.addEventListener("click", (event) => {
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
     $("#ghHolder").append("<button>Run Watermelon</button>")
+    $("#ghHolder").append("<a class='help-link' href='https://app.slack.com'>Get help on Slack</a>");
     $("button").on("click", (event) => {
       sendMessage({ command: "run" });
     });
@@ -93,6 +94,8 @@ $(document).ready(function () {
     </div>
     `);
     $("#ghHolder").append("<button>Run Watermelon</button>");
+    $("#ghHolder").append("<a class='help-link' href='https://app.slack.com'>Get help on Slack</a>");
+    
     $("button").on("click", (event) => {
       sendMessage({ command: "run" });
     });
