@@ -37,7 +37,7 @@ $(document).ready(function () {
         <div class="comment">
         <div class="comment-header">
           <h5 class="comment-author">
-          ${comment.user.login} on ${new Date(comment.created_at)}
+          <a href=${comment.user.html_url}>${comment.user.login}</a> on ${new Date(comment.created_at)}
           </h5>
         </div>
         <div class="comment-body">
