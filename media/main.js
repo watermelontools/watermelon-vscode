@@ -10,6 +10,8 @@ function sendMessage(message) {
   vscode.postMessage(message);
 }
 
+$('#slackhelp').click(function(){ fetch("http://localhost:3001/api/analytics/slack/slackhelp"); return false; });
+
 Sentry.init({
   dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
 
