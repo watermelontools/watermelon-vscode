@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Added a timeout of 4 seconds for failed executions
 - Added Sentry to track errors
 - Various speed improvements
+- Added Slack help button
 
 ## [1.0.0]
 - Fixed loading UI
