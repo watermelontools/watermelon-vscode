@@ -5,7 +5,7 @@ const vscode = acquireVsCodeApi();
 
 const button = document.querySelector("button");
 const link = document.getElementsByClassName("help-link");
-console.log(link);
+
 let errorTimeout;
 function sendMessage(message) {
   vscode.postMessage(message);
