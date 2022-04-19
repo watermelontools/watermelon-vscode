@@ -153,6 +153,11 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           });
           break;
         }
+        case "open-link": {
+          console.log(data.link);
+          vscode.env.openExternal(vscode.Uri.parse(data.link));
+          break; 
+        }
       }
     });
   }
