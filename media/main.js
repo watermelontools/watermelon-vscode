@@ -29,7 +29,7 @@ link[0].addEventListener("click", (event) => {
 });
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
-    $("#ghHolder").append("<button>Run Watermelon</button>");
+    $("#ghHolder").append("<button>Run Watermelon</button><br/>");
     $("#ghHolder").append(
       "<button class='help-link'>Get help on Slack</button>"
     );
