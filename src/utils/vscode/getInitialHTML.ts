@@ -44,7 +44,7 @@ export default function getInitialHTML(
            <p>Select a piece of code to start.</p>
            <p>Now, click this button to run:</p>
            <button>Run Watermelon</button>
-           <button class='help-link' href='https://app.slack.com'>Get help on Slack</button>
+           <button class='help-link'>Get help on Slack</button>
            <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a></p>
         </div>

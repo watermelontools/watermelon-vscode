@@ -5,7 +5,7 @@ const vscode = acquireVsCodeApi();
 
 const button = document.querySelector("button");
 const link = document.getElementsByClassName("help-link");
-console.log(link)
+console.log(link);
 let errorTimeout;
 function sendMessage(message) {
   vscode.postMessage(message);
@@ -29,8 +29,10 @@ link[0].addEventListener("click", (event) => {
 });
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
-    $("#ghHolder").append("<button>Run Watermelon</button>")
-    $("#ghHolder").append("<button class='help-link' href='https://app.slack.com'>Get help on Slack</button>");
+    $("#ghHolder").append("<button>Run Watermelon</button>");
+    $("#ghHolder").append(
+      "<button class='help-link'>Get help on Slack</button>"
+    );
     $("button").on("click", (event) => {
       sendMessage({ command: "run" });
     });
@@ -91,7 +93,7 @@ $(document).ready(function () {
     `);
     errorTimeout = setTimeout(setError, 4000);
   }
-  function setError (){
+  function setError() {
     $("#ghHolder").replaceWith(`
     <div id="ghHolder">
       <p>We might have run into an error, our team is on it.</p>
@@ -99,8 +101,10 @@ $(document).ready(function () {
     </div>
     `);
     $("#ghHolder").append("<button>Run Watermelon</button>");
-    $("#ghHolder").append("<button class='help-link' href='https://app.slack.com'>Get help on Slack</button>");
-    
+    $("#ghHolder").append(
+      "<button class='help-link' >Get help on Slack</button>"
+    );
+
     $("button").on("click", (event) => {
       sendMessage({ command: "run" });
     });
