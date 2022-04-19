@@ -30,6 +30,7 @@ export default function getInitialHTML(
         <title>Watermelon</title>
         <script
          src="https://browser.sentry-cdn.com/6.19.6/bundle.min.js"
+         nonce="${nonce}"
          integrity="sha384-XITe7oDiyULCpVPtGc52+ISVyD2MAEbbfpNsmYcfxClZXDw+IA906MSf6rhcdf3L"
          crossorigin="anonymous"
          ></script>
