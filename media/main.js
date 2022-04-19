@@ -59,7 +59,7 @@ $(document).ready(function () {
         <div>
           <div class="pr-owner">
             <p class="pr-poster">
-              Author: ${pr.user}
+              Author: <a href="${pr.userLink}">${pr.user}</a>
             </p>
             <p class="pr-date">
               ${new Date(pr.created_at)}
