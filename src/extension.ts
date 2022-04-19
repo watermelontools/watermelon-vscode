@@ -12,6 +12,7 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getUserEmail from "./utils/getUserEmail";
 import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
+import slackhelp from "./utils/analytics/slackhelp";
 
 // repo information
 let owner: string | undefined = "";
@@ -138,7 +139,7 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           });
           // @ts-ignore
           let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-            (a:any, b: any) => b.comments.length - a.comments.length
+            (a: any, b: any) => b.comments.length - a.comments.length
           );
           searchType({
             searchType: "webview.button",
@@ -154,9 +155,9 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "open-link": {
-          console.log(data.link);
+          slackhelp();
           vscode.env.openExternal(vscode.Uri.parse(data.link));
-          break; 
+          break;
         }
       }
     });
