@@ -4,6 +4,7 @@ while (!$) {
 const vscode = acquireVsCodeApi();
 
 const button = document.querySelector("button");
+const link = document.getElementsByClassName("help-link");
 
 let errorTimeout;
 function sendMessage(message) {
@@ -22,9 +23,16 @@ Sentry.init({
 button.addEventListener("click", (event) => {
   sendMessage({ command: "run" });
 });
+
+link[0].addEventListener("click", (event) => {
+  sendMessage({ command: "open-link", link: "https://app.slack.com" });
+});
 $(document).ready(function () {
   const addPRsToDoc = (prs) => {
-    $("#ghHolder").append("<button>Run Watermelon</button>")
+    $("#ghHolder").append("<button>Run Watermelon</button>");
+    $("#ghHolder").append(
+      "<button class='help-link'>Get help on Slack</button>"
+    );
     $("button").on("click", (event) => {
       sendMessage({ command: "run" });
     });
@@ -85,7 +93,7 @@ $(document).ready(function () {
     `);
     errorTimeout = setTimeout(setError, 4000);
   }
-  function setError (){
+  function setError() {
     $("#ghHolder").replaceWith(`
     <div id="ghHolder">
       <p>We might have run into an error, our team is on it.</p>
@@ -93,6 +101,10 @@ $(document).ready(function () {
     </div>
     `);
     $("#ghHolder").append("<button>Run Watermelon</button>");
+    $("#ghHolder").append(
+      "<button class='help-link' >Get help on Slack</button>"
+    );
+
     $("button").on("click", (event) => {
       sendMessage({ command: "run" });
     });

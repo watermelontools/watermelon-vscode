@@ -33,6 +33,7 @@ export default function getInitialHTML(
          nonce="${nonce}"
          integrity="sha384-XITe7oDiyULCpVPtGc52+ISVyD2MAEbbfpNsmYcfxClZXDw+IA906MSf6rhcdf3L"
          crossorigin="anonymous"
+         nonce="${nonce}"
          ></script>
      </head>
      <body>
@@ -41,9 +42,11 @@ export default function getInitialHTML(
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">starring Watermelon on GitHub</a></p>
         <h1 id="lines-of-code-counter">Github</h1>
         <div id="ghHolder">
-           <p>Select a piece of code to start.</p>
-           <p>Now, click this button to run:</p>
+           <p>Higlight a piece of code to start.</p>
+           <p>Click this button to enrich your code with relevant information from GitHub:</p>
            <button>Run Watermelon</button>
+           <p>Click this button to send a Slack message to the owner of the highlighted block of code:</p>
+           <button class='help-link'>Get help on Slack</button>
            <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a></p>
         </div>

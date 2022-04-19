@@ -109,3 +109,14 @@ pre {
   width: min-content;
   align-self: center;
 }
+
+.help-link {
+  background-color: rgb(117, 184, 85);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
+}
