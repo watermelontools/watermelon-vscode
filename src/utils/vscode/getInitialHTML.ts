@@ -30,28 +30,26 @@ export default function getInitialHTML(
         <title>Watermelon</title>
         <script
          src="https://browser.sentry-cdn.com/6.19.6/bundle.min.js"
+         nonce="${nonce}"
          integrity="sha384-XITe7oDiyULCpVPtGc52+ISVyD2MAEbbfpNsmYcfxClZXDw+IA906MSf6rhcdf3L"
          crossorigin="anonymous"
+         nonce="${nonce}"
          ></script>
      </head>
      <body>
         <img src="${imagePath}" width="300" />
         <p>Watermelon helps you get the context of your code.</p>
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">starring Watermelon on GitHub</a></p>
-        <h1 id="lines-of-code-counter">Github</h1>
+        <br/>
         <div id="ghHolder">
-           <p>Select a piece of code to start.</p>
-           <p>Now, click this button to run:</p>
+           <p>Higlight a piece of code to start.</p>
+           <p>Click this button to enrich your code with relevant information from GitHub:</p>
            <button>Run Watermelon</button>
+           <p>Click this button to send a Slack message to the owner of the highlighted block of code:</p>
+           <button class='help-link'>Get help on Slack</button>
            <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a></p>
         </div>
-        <h1 id="lines-of-code-counter">Slack</h1>
-        <div id="slackHolder"></div>
-        <p>We will soon add Slack search</p>
-        <h1 id="lines-of-code-counter">Jira</h1>
-        <div id="jiraHolder"></div>
-        <p>We will soon add Jira search</p>
         <h2>Need help?</h2>
         <p>Send an issue on <a href="https://github.com/watermelontools/wm-extension/issues">GitHub</a> and join us on <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Slack</a></p>
      </body>
