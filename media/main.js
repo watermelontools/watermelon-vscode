@@ -11,8 +11,6 @@ function sendMessage(message) {
   vscode.postMessage(message);
 }
 
-$('#slackhelp').click(function(){ fetch("http://localhost:3001/api/analytics/slack/slackhelp"); return false; });
-
 Sentry.init({
   dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
 
@@ -59,7 +57,7 @@ $(document).ready(function () {
         <div>
           <div class="pr-owner">
             <p class="pr-poster">
-              Author: ${pr.user}
+              Author: <a href="${pr.userLink}">${pr.user}</a>
             </p>
             <p class="pr-date">
               ${new Date(pr.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"}) }
