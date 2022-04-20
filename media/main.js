@@ -66,7 +66,7 @@ $(document).ready(function () {
             </p>
           </div>
           <div class="pr-body">
-            ${marked.parse(pr.body)}
+            ${marked.parse(pr.body.replace(/\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi, `<a href="https://github.com/$&">$&</a>`).toLowerCase().replaceAll("/@","/"))}
           </div>
           ${mdComments}
         </div>
