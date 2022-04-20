@@ -4,8 +4,14 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [0.0.17]
--Fixed loading UI
+## [1.0.1]
+- Added a timeout of 4 seconds for failed executions
+- Added Sentry to track errors
+- Various speed improvements
+- Added Slack help button
+
+## [1.0.0]
+- Fixed loading UI
 
 ## [0.0.16]
 - Improved comments UI
