@@ -64,7 +64,7 @@ $(document).ready(function () {
             </p>
           </div>
           <div class="pr-body">
-            ${marked.parse(pr.body)}
+            ${marked.parse(pr.body.replace(/#([0-9]*)/gm, `<a href="${pr.repo_url.replace("api.","").replace("repos/","")}/pull/$&">$&</a>`))}
           </div>
           ${mdComments}
         </div>
