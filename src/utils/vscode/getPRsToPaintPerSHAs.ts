@@ -46,6 +46,7 @@ export default async function getPRsToPaintPerSHAs({
     body: string;
     avatar: string;
     url: string;
+    repo_url: string
   }[] = [];
 
   let prPromises = foundPRs.map(async (issue: { url: any }) => {
@@ -62,6 +63,7 @@ export default async function getPRsToPaintPerSHAs({
         url: issueData.html_url,
         body: issueData.body,
         avatar: issueData.user.avatar_url,
+        repo_url: issueData.repository_url,
         comments: comments.map((comment: any) => {
           return comment;
         }),
