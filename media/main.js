@@ -30,8 +30,11 @@ link[0].addEventListener("click", (event) => {
 $(document).ready(function () {
   const replaceIssueLinks = (text, repo_url) => {
     let repoLink = repo_url.replace("api.", "").replace("repos/", "");
-    return text.replace(/#([0-9]*)/gm, `<a href="${repoLink}/pull/$1">$&</a>`);
+    return text
+      .replace(/#([0-9]*)/gm, `<a href="${repoLink}/pull/$1">$&</a>`)
+      .replaceAll(`&<a href="${repoLink}/pull/39">#39</a>;`, "'");
   };
+
   const replaceUserTags = (text) => {
     return text
       .replace(
