@@ -39,9 +39,8 @@ $(document).ready(function () {
   const replaceUserTags = (text) => {
     return text.replace(
       /\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi,
-      `<a href="https://github.com/$&">$&</a>`
+      `<a href="https://github.com/$&">$&</a>`.toLowerCase()
     )
-    .toLowerCase()
     .replaceAll("/@", "/")
   };
   const addPRsToDoc = (prs) => {
@@ -92,9 +91,9 @@ $(document).ready(function () {
             </p>
           </div>
           <div class="pr-body">
-            ${marked.parse(
-              replaceUserTags(replaceIssueLinks(pr.body, pr.repo_url))
-            )}
+            ${
+              ((replaceUserTags(marked.parse(pr.body))))
+            }
           </div>
           ${mdComments}
         </div>
