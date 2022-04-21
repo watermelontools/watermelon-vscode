@@ -13,7 +13,7 @@ export default function getInitialHTML(
     "https://uploads-ssl.webflow.com/",
     "https://cloud.githubusercontent.com/assets/",
   ];
-  let scriptSources = [`'nonce-${nonce}'`];
+  let scriptSources = [`'nonce-${nonce}'`, "https://unpkg.com/@highlightjs/"];
 
   return `
 
