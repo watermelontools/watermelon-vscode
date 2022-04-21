@@ -7,7 +7,9 @@ export default function getInitialHTML(
   nonce: string,
   scriptUri: vscode.Uri
 ): string {
- 
+  let styleSources = [webview.cspSource];
+  let imageSources = [webview.cspSource];
+  let scriptSources = [`'nonce-${nonce}'`];
   return `
 
   <!DOCTYPE html>
@@ -25,7 +27,10 @@ export default function getInitialHTML(
            and only allow scripts that have a specific nonce.
            -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self';
+         style-src ${styleSources.join(" ")};
+         img-src ${imageSources.join(" ")};
+         script-src ${scriptSources.join(" ")};">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="${stylesMainUri}" rel="stylesheet">
         <title>Watermelon</title>
