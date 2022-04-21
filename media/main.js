@@ -28,12 +28,12 @@ link[0].addEventListener("click", (event) => {
   sendMessage({ command: "open-link", link: "https://app.slack.com" });
 });
 $(document).ready(function () {
-  const replaceIssueLinks = (text) => {
+  const replaceIssueLinks = (text, repo_url) => {
     return text.replace(
       /#([0-9]*)/gm,
-      `<a href="${pr.repo_url
+      `<a href="${repo_url
         .replace("api.", "")
-        .replace("repos/", "")}/pull/$&">$&</a>`
+        .replace("repos/", "")}/pull/$1">$&</a>`
     );
   };
   const replaceUserTags = (text) => {
@@ -93,7 +93,7 @@ $(document).ready(function () {
           </div>
           <div class="pr-body">
             ${marked.parse(
-              pr.body
+              replaceIssueLinks(pr.body, pr.repo_url)
             )}
           </div>
           ${mdComments}
