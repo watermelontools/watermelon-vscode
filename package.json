@@ -52,14 +52,14 @@
         {
           "id": "watermelon",
           "title": "Watermelon",
-          "icon": "images/wmbw.svg"
+          "icon": "images/wmbw_bold.svg"
         }
       ],
       "panel": [
         {
           "id": "watermelon",
           "title": "watermelon",
-          "icon": "images/wmbw.svg"
+          "icon": "images/wmbw_bold.svg"
         }
       ]
     },
