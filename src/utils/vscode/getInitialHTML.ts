@@ -8,7 +8,7 @@ export default function getInitialHTML(
   scriptUri: vscode.Uri
 ): string {
   let styleSources = [webview.cspSource];
-  let imageSources = [webview.cspSource];
+  let imageSources = [webview.cspSource, "https://uploads-ssl.webflow.com/"];
   let scriptSources = [`'nonce-${nonce}'`];
   return `
 
