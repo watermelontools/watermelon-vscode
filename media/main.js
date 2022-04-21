@@ -28,6 +28,14 @@ link[0].addEventListener("click", (event) => {
   sendMessage({ command: "open-link", link: "https://app.slack.com" });
 });
 $(document).ready(function () {
+  const replaceIssueLinks = (text) => {
+    return text.replace(
+      /#([0-9]*)/gm,
+      `<a href="${pr.repo_url
+        .replace("api.", "")
+        .replace("repos/", "")}/pull/$&">$&</a>`
+    );
+  };
   const addPRsToDoc = (prs) => {
     $("#ghHolder").append("<button>Run Watermelon</button><br/>");
     $("#ghHolder").append(
