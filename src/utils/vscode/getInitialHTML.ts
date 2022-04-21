@@ -7,13 +7,14 @@ export default function getInitialHTML(
   nonce: string,
   scriptUri: vscode.Uri
 ): string {
-  let styleSources = [webview.cspSource] ;
+  let styleSources = ["'self'", webview.cspSource, "https://unpkg.com/@highlightjs/"] ;
   let imageSources = [
     webview.cspSource,
     "https://uploads-ssl.webflow.com/",
     "https://cloud.githubusercontent.com/assets/",
   ];
   let scriptSources = [`'nonce-${nonce}'`];
+
   return `
 
   <!DOCTYPE html>
