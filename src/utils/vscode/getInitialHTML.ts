@@ -21,7 +21,8 @@ export default function getInitialHTML(
     `'nonce-${nonce}'`,
     "https://unpkg.com/@highlightjs/",
     "https://browser.sentry-cdn.com/",
-    "https://cdn.jsdelivr.net/npm/marked/"
+    "https://cdn.jsdelivr.net/npm/marked/",
+    "https://ajax.googleapis.com/ajax/libs/jquery/"
   ];
 
   return `
