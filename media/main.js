@@ -29,11 +29,12 @@ link[0].addEventListener("click", (event) => {
 });
 $(document).ready(function () {
   const replaceIssueLinks = (text, repo_url) => {
+    let repoLink= repo_url
+    .replace("api.", "")
+    .replace("repos/", "")
     return text.replace(
       /#([0-9]*)/gm,
-      `<a href="${repo_url
-        .replace("api.", "")
-        .replace("repos/", "")}/pull/$1">$&</a>`
+      `<a href="${repoLink}/pull/$1">$&</a>`
     );
   };
   const replaceUserTags = (text) => {
@@ -92,7 +93,7 @@ $(document).ready(function () {
           </div>
           <div class="pr-body">
             ${
-              ((replaceUserTags(marked.parse(pr.body))))
+              (replaceIssueLinks(replaceUserTags(marked.parse(pr.body)), pr.repo_url))
             }
           </div>
           ${mdComments}
