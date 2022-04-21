@@ -28,6 +28,22 @@ link[0].addEventListener("click", (event) => {
   sendMessage({ command: "open-link", link: "https://app.slack.com" });
 });
 $(document).ready(function () {
+  const replaceIssueLinks = (text, repo_url) => {
+    return text.replace(
+      /#([0-9]*)/gm,
+      `<a href="${repo_url
+        .replace("api.", "")
+        .replace("repos/", "")}/pull/$1">$&</a>`
+    );
+  };
+  const replaceUserTags = (text) => {
+    return text.replace(
+      /\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi,
+      `<a href="https://github.com/$&">$&</a>`
+    )
+    .toLowerCase()
+    .replaceAll("/@", "/")
+  };
   const addPRsToDoc = (prs) => {
     $("#ghHolder").append("<button>Run Watermelon</button><br/>");
     $("#ghHolder").append(
@@ -43,7 +59,14 @@ $(document).ready(function () {
         <div class="comment">
         <div class="comment-header">
           <h5 class="comment-author">
-            <a href="${comment.user.html_url}">${comment.user.login}</a> on ${new Date(comment.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"}) }
+            <a href="${comment.user.html_url}">${
+          comment.user.login
+        }</a> on ${new Date(comment.created_at).toLocaleDateString("en-us", {
+          weekday: "long",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })}
           </h5>
         </div>
         <div class="comment-body">
@@ -60,11 +83,18 @@ $(document).ready(function () {
               Author: <a href="${pr.userLink}">${pr.user}</a>
             </p>
             <p class="pr-date">
-              ${new Date(pr.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"}) }
+              ${new Date(pr.created_at).toLocaleDateString("en-us", {
+                weekday: "long",
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
             </p>
           </div>
           <div class="pr-body">
-            ${marked.parse(pr.body.replace(/#([0-9]*)/gm, `<a href="${pr.repo_url.replace("api.","").replace("repos/","")}/pull/$&">$&</a>`))}
+            ${marked.parse(
+              replaceUserTags(replaceIssueLinks(pr.body, pr.repo_url))
+            )}
           </div>
           ${mdComments}
         </div>
