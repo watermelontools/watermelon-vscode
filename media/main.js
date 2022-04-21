@@ -51,7 +51,14 @@ $(document).ready(function () {
         <div class="comment">
         <div class="comment-header">
           <h5 class="comment-author">
-            <a href="${comment.user.html_url}">${comment.user.login}</a> on ${new Date(comment.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"}) }
+            <a href="${comment.user.html_url}">${
+          comment.user.login
+        }</a> on ${new Date(comment.created_at).toLocaleDateString("en-us", {
+          weekday: "long",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })}
           </h5>
         </div>
         <div class="comment-body">
@@ -68,11 +75,24 @@ $(document).ready(function () {
               Author: <a href="${pr.userLink}">${pr.user}</a>
             </p>
             <p class="pr-date">
-              ${new Date(pr.created_at).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"}) }
+              ${new Date(pr.created_at).toLocaleDateString("en-us", {
+                weekday: "long",
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
             </p>
           </div>
           <div class="pr-body">
-            ${marked.parse(pr.body.replace(/\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi, `<a href="https://github.com/$&">$&</a>`).toLowerCase().replaceAll("/@","/"))}
+            ${marked.parse(
+              pr.body
+                .replace(
+                  /\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi,
+                  `<a href="https://github.com/$&">$&</a>`
+                )
+                .toLowerCase()
+                .replaceAll("/@", "/")
+            )}
           </div>
           ${mdComments}
         </div>
