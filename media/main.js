@@ -93,7 +93,7 @@ $(document).ready(function () {
           </div>
           <div class="pr-body">
             ${marked.parse(
-              replaceIssueLinks(pr.body, pr.repo_url)
+              replaceUserTags(replaceIssueLinks(pr.body, pr.repo_url))
             )}
           </div>
           ${mdComments}
