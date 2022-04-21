@@ -36,6 +36,14 @@ $(document).ready(function () {
         .replace("repos/", "")}/pull/$&">$&</a>`
     );
   };
+  const replaceUserTags = (text) => {
+    return text.replace(
+      /\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi,
+      `<a href="https://github.com/$&">$&</a>`
+    )
+    .toLowerCase()
+    .replaceAll("/@", "/")
+  };
   const addPRsToDoc = (prs) => {
     $("#ghHolder").append("<button>Run Watermelon</button><br/>");
     $("#ghHolder").append(
@@ -86,12 +94,6 @@ $(document).ready(function () {
           <div class="pr-body">
             ${marked.parse(
               pr.body
-                .replace(
-                  /\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi,
-                  `<a href="https://github.com/$&">$&</a>`
-                )
-                .toLowerCase()
-                .replaceAll("/@", "/")
             )}
           </div>
           ${mdComments}
