@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+
+## [1.1.2]
+-
+
 ## [1.1.1]
 - Fixed some instances of broken markdown
 - Fixed CSP 
@@ -13,6 +17,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Made PR authors a link to their profile
 - Dates now are more human readable
 - Font color improvements for light themes 
+- Added text to explain command on error
 
 ## [1.1.0]
 - Added a timeout of 4 seconds for failed executions
