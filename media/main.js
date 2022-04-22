@@ -130,7 +130,7 @@ $(document).ready(function () {
       <p>Try running a new Watermelon query, please.</p>
     </div>
     `);
-    $("#ghHolder").append("<button>Run Watermelon</button>");
+    $("#ghHolder").append("<button>Run Watermelon</button><br/>");
     $("#ghHolder").append(
       "<button class='help-link' >Get help on Slack</button>"
     );
