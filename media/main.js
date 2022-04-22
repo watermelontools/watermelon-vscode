@@ -56,7 +56,7 @@ $(document).ready(function () {
         mdComments += `
         <div class="comment">
         <div class="comment-header">
-          <h5 class="comment-author">
+          <h5 class="comment-author" title="View this user on github">
             <a href="${comment.user.html_url}">${
           comment.user.login
         }</a> on ${new Date(comment.created_at).toLocaleDateString("en-us", {
@@ -77,7 +77,7 @@ $(document).ready(function () {
         <summary><a href="${pr.url}" target="_blank" title="View this PR on github">${pr.title}</a></summary>
         <div>
           <div class="pr-owner">
-            <p class="pr-poster">
+            <p class="pr-poster" title="View this user on github">
               Author: <a href="${pr.userLink}">${pr.user}</a>
             </p>
             <p class="pr-date">
