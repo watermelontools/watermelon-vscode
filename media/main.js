@@ -29,20 +29,19 @@ link[0].addEventListener("click", (event) => {
 });
 $(document).ready(function () {
   const replaceIssueLinks = (text, repo_url) => {
-    return text.replace(
-      /#([0-9]*)/gm,
-      `<a href="${repo_url
-        .replace("api.", "")
-        .replace("repos/", "")}/pull/$1">$&</a>`
-    );
+    let repoLink = repo_url.replace("api.", "").replace("repos/", "");
+    return text
+      .replace(/#([0-9]*)/gm, `<a href="${repoLink}/pull/$1">$&</a>`)
+      .replaceAll(`&<a href="${repoLink}/pull/39">#39</a>;`, "'");
   };
+
   const replaceUserTags = (text) => {
-    return text.replace(
-      /\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi,
-      `<a href="https://github.com/$&">$&</a>`
-    )
-    .toLowerCase()
-    .replaceAll("/@", "/")
+    return text
+      .replace(
+        /\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi,
+        `<a href="https://github.com/$&">$&</a>`.toLowerCase()
+      )
+      .replaceAll("/@", "/");
   };
   const addPRsToDoc = (prs) => {
     $("#ghHolder").append("<button>Run Watermelon</button><br/>");
@@ -92,8 +91,9 @@ $(document).ready(function () {
             </p>
           </div>
           <div class="pr-body">
-            ${marked.parse(
-              replaceUserTags(replaceIssueLinks(pr.body, pr.repo_url))
+            ${replaceIssueLinks(
+              replaceUserTags(marked.parse(pr.body)),
+              pr.repo_url
             )}
           </div>
           ${mdComments}
