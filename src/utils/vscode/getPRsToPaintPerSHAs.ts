@@ -40,12 +40,14 @@ export default async function getPRsToPaintPerSHAs({
   // Fetch information
   let issuesWithTitlesAndGroupedComments: {
     user: any;
+    userLink: string;
     title: string;
     comments: any[];
     created_at: any;
     body: string;
     avatar: string;
     url: string;
+    repo_url: string
   }[] = [];
 
   let prPromises = foundPRs.map(async (issue: { url: any }) => {
@@ -58,10 +60,12 @@ export default async function getPRsToPaintPerSHAs({
       issuesWithTitlesAndGroupedComments.push({
         created_at: issueData.created_at,
         user: issueData.user.login,
+        userLink: issueData.user.html_url,
         title: issueData.title,
         url: issueData.html_url,
         body: issueData.body,
         avatar: issueData.user.avatar_url,
+        repo_url: issueData.repository_url,
         comments: comments.map((comment: any) => {
           return comment;
         }),
