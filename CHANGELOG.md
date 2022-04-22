@@ -12,6 +12,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Made commit authors a link to their profile
 - Made PR authors a link to their profile
 - Dates now are more human readable
+- Font color improvements for light themes 
 
 ## [1.1.0]
 - Added a timeout of 4 seconds for failed executions
