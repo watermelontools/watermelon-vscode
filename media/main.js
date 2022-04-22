@@ -74,7 +74,7 @@ $(document).ready(function () {
       });
       $("#ghHolder").append(`
       <details ${!index ? "open" : ""}>
-        <summary><a href="${pr.url}" target="_blank">${pr.title}</a></summary>
+        <summary><a href="${pr.url}" target="_blank" title="View this PR on github">${pr.title}</a></summary>
         <div>
           <div class="pr-owner">
             <p class="pr-poster">
