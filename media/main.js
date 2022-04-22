@@ -129,13 +129,19 @@ $(document).ready(function () {
       <p>Try running a new Watermelon query, please.</p>
     </div>
     `);
-    $("#ghHolder").append("<button>Run Watermelon</button>");
+    $("#ghHolder").append("<button>Run Watermelon</button><br/>");
     $("#ghHolder")
       .append("<button class='help-link' >Get help on Slack</button>")
       .on("click", (event) => {
         sendMessage({ command: "open-link", link: "https://app.slack.com" });
       });
 
+    $("#ghHolder").append(
+      "<p>Alternatively, you can <a href='https://github.com/watermelontools/wm-extension#commands'>run with our watermelon.start command</a></p>"
+    );
+    $("#ghHolder").append(
+      "<p>Select a piece of code to start. Then run the Watermelon VS Code Command by pressing <kbd>CTRL</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> (or <kbd>CMD</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> in Mac) and type > <code>start watermelon</code></p>"
+    );
     $("button").on("click", (event) => {
       sendMessage({ command: "run" });
     });
