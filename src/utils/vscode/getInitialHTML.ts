@@ -7,34 +7,58 @@ export default function getInitialHTML(
   nonce: string,
   scriptUri: vscode.Uri
 ): string {
+  let styleSources = [
+    "'self'",
+    webview.cspSource,
+    "https://unpkg.com/@highlightjs/",
+  ];
+  let imageSources = [
+    webview.cspSource,
+    "https://uploads-ssl.webflow.com/",
+    "https://cloud.githubusercontent.com/assets/",
+  ];
+  let scriptSources = [
+    `'nonce-${nonce}'`,
+    "https://unpkg.com/@highlightjs/",
+    "https://browser.sentry-cdn.com/",
+    "https://cdn.jsdelivr.net/npm/marked/",
+    "https://ajax.googleapis.com/ajax/libs/jquery/"
+  ];
+
   return `
 
   <!DOCTYPE html>
   <html lang="en">
 
       <head>
-        <script src="https://cdn.rawgit.com/oauth-io/oauth-js/c5af4519/dist/oauth.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" async defer fetchpriority="low"></script>
-        <link rel="stylesheet"
-        href="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/styles/default.min.css" async defer fetchpriority="low">
-        <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/highlight.min.js" async defer fetchpriority="low"></script>
-        <meta charset="UTF-8">
-        <!--
-           Use a content security policy to only allow loading images from https or from our extension directory,
-           and only allow scripts that have a specific nonce.
-           -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="${stylesMainUri}" rel="stylesheet">
-        <title>Watermelon</title>
+         <title>Watermelon</title>
+         <meta http-equiv="Content-Security-Policy" content="default-src 'self';
+         style-src ${styleSources.join(" ")};
+         img-src ${imageSources.join(" ")};
+         script-src ${scriptSources.join(" ")};">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <meta charset="UTF-8">
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" 
+        async defer fetchpriority="low"
+        nonce="${nonce}"
+        ></script>
+        <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/highlight.min.js" 
+        async defer fetchpriority="low"
+        ></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        nonce="${nonce}"
+        ></script>
         <script
-         src="https://browser.sentry-cdn.com/6.19.6/bundle.min.js"
-         nonce="${nonce}"
-         integrity="sha384-XITe7oDiyULCpVPtGc52+ISVyD2MAEbbfpNsmYcfxClZXDw+IA906MSf6rhcdf3L"
-         crossorigin="anonymous"
-         nonce="${nonce}"
-         ></script>
+        src="https://browser.sentry-cdn.com/6.19.6/bundle.min.js"
+        nonce="${nonce}"
+        integrity="sha384-XITe7oDiyULCpVPtGc52+ISVyD2MAEbbfpNsmYcfxClZXDw+IA906MSf6rhcdf3L"
+        crossorigin="anonymous"
+        nonce="${nonce}"
+        ></script>
+        <link rel="stylesheet"
+        href="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/styles/default.min.css" 
+        async defer fetchpriority="low">
+        <link href="${stylesMainUri}" rel="stylesheet">
      </head>
      <body>
         <img src="${imagePath}" width="300" />
