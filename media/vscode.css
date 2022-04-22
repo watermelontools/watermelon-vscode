@@ -8,7 +8,6 @@ code {
 }
 .hljs {
   background-color: rgba(0, 0, 0, 0.4);
-  color: #a7a7a7;
 }
 details > summary {
   padding: 2px 6px;
@@ -26,11 +25,9 @@ details > summary {
 .pr-date {
   font-style: italic;
   opacity: 0.5;
-  color: lightgray;
 }
 .pr-poster {
   font-weight: bold;
-  color: lightgray;
 }
 .comment {
   margin-bottom: 1%;
@@ -119,4 +116,7 @@ pre {
   color: white;
   padding: 0.5em 1em;
   margin-bottom: 1em;
+}
+img{
+  background-color:rgba(192,192,192,0.3);
 }
