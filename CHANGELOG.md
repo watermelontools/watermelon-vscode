@@ -4,7 +4,16 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [1.0.1]
+## [1.1.1]
+- Fixed some instances of broken markdown
+- Fixed CSP 
+- Added linking to user tags
+- Added linking to issues
+- Made commit authors a link to their profile
+- Made PR authors a link to their profile
+- Dates now are more human readable
+
+## [1.1.0]
 - Added a timeout of 4 seconds for failed executions
 - Added Sentry to track errors
 - Various speed improvements
