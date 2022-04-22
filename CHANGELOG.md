@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 
 ## [1.1.2]
--
+- Fixed some instances of the "Get help on Slack" running search
 
 ## [1.1.1]
 - Fixed some instances of broken markdown
