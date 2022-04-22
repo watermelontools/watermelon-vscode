@@ -3,8 +3,8 @@ while (!$) {
 }
 const vscode = acquireVsCodeApi();
 
-const button = document.querySelector("button");
 const link = document.getElementsByClassName("help-link");
+const button = document.querySelector("button");
 
 let errorTimeout;
 function sendMessage(message) {
@@ -19,14 +19,13 @@ Sentry.init({
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
 });
-
+link[0].addEventListener("click", (event) => {
+  sendMessage({ command: "open-link", link: "https://app.slack.com" });
+});
 button.addEventListener("click", (event) => {
   sendMessage({ command: "run" });
 });
 
-link[0].addEventListener("click", (event) => {
-  sendMessage({ command: "open-link", link: "https://app.slack.com" });
-});
 $(document).ready(function () {
   const replaceIssueLinks = (text, repo_url) => {
     let repoLink = repo_url.replace("api.", "").replace("repos/", "");
@@ -131,9 +130,11 @@ $(document).ready(function () {
     </div>
     `);
     $("#ghHolder").append("<button>Run Watermelon</button>");
-    $("#ghHolder").append(
-      "<button class='help-link' >Get help on Slack</button>"
-    );
+    $("#ghHolder")
+      .append("<button class='help-link' >Get help on Slack</button>")
+      .on("click", (event) => {
+        sendMessage({ command: "open-link", link: "https://app.slack.com" });
+      });
 
     $("button").on("click", (event) => {
       sendMessage({ command: "run" });
