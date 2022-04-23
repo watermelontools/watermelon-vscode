@@ -24,7 +24,7 @@ Depending on the size of your GitHub history, this might take a few seconds.
 
 Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our `watermelon.start` command</a>
 
-You may also highlight and right click on the code, you will find the 'Start Watermelon' command  
+You may also highlight and right click on the code, you will find the 'Start Watermelon' command at the end.
 
 ## Requirements
 
