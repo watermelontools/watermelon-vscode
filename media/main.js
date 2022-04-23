@@ -30,7 +30,7 @@ $(document).ready(function () {
   const replaceIssueLinks = (text, repo_url) => {
     let repoLink = repo_url.replace("api.", "").replace("repos/", "");
     return text
-      .replace(/#([0-9]*)/gm, `<a href="${repoLink}/pull/$1">$&</a>`)
+      .replace(/#([0-9]*)/gm, `<a href="${repoLink}/pull/$1" title="View this issue on github">$&</a>`)
       .replaceAll(`&<a href="${repoLink}/pull/39">#39</a>;`, "'");
   };
 
@@ -38,7 +38,7 @@ $(document).ready(function () {
     return text
       .replace(
         /\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi,
-        `<a href="https://github.com/$&">$&</a>`.toLowerCase()
+        `<a href="https://github.com/$&" title="View this user on github">$&</a>`.toLowerCase()
       )
       .replaceAll("/@", "/");
   };
@@ -56,7 +56,7 @@ $(document).ready(function () {
         mdComments += `
         <div class="comment">
         <div class="comment-header">
-          <h5 class="comment-author">
+          <h5 class="comment-author" title="View this user on github">
             <a href="${comment.user.html_url}">${
           comment.user.login
         }</a> on ${new Date(comment.created_at).toLocaleDateString("en-us", {
@@ -74,10 +74,10 @@ $(document).ready(function () {
       });
       $("#ghHolder").append(`
       <details ${!index ? "open" : ""}>
-        <summary><a href="${pr.url}" target="_blank">${pr.title}</a></summary>
+        <summary><a href="${pr.url}" target="_blank" title="View this PR on github">${pr.title}</a></summary>
         <div>
           <div class="pr-owner">
-            <p class="pr-poster">
+            <p class="pr-poster" title="View this user on github">
               Author: <a href="${pr.userLink}">${pr.user}</a>
             </p>
             <p class="pr-date">
