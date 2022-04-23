@@ -146,6 +146,21 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
   }
+  function setReceivedError(errorText) {
+    clearTimeout(errorTimeout);
+    $("#ghHolder").replaceWith(`
+    <div id="ghHolder">
+      <p>We ran into this error: ${errorText}</p>
+      <p>Try running a new Watermelon query, please.</p>
+    </div>
+    `);
+    $("#ghHolder").append("<button>Run Watermelon</button>");
+    $("#ghHolder")
+      .append("<button class='help-link' >Get help on Slack</button>")
+      .on("click", (event) => {
+        sendMessage({ command: "open-link", link: "https://app.slack.com" });
+      });
+  }
   function removeLoading() {
     clearTimeout(errorTimeout);
     $("#ghHolder p").remove();
@@ -161,6 +176,9 @@ $(document).ready(function () {
         break;
       case "loading":
         setLoading();
+        break;
+      case "error":
+        setReceivedError(message.error.errorText);
         break;
     }
   });

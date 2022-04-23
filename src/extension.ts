@@ -57,6 +57,13 @@ export async function activate(context: vscode.ExtensionContext) {
         owner,
         repo,
       });
+      if (typeof issuesWithTitlesAndGroupedComments === "object") {
+        return provider.sendMessage({
+          command: "error",
+          error: issuesWithTitlesAndGroupedComments,
+        });
+      }
+
       provider.sendMessage({
         command: "prs",
         data: issuesWithTitlesAndGroupedComments,
@@ -137,6 +144,12 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
             owner,
             repo,
           });
+          if (typeof issuesWithTitlesAndGroupedComments === "object") {
+            return this.sendMessage({
+              command: "error",
+              error: issuesWithTitlesAndGroupedComments,
+            });
+          }
           // @ts-ignore
           let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
             (a: any, b: any) => b.comments.length - a.comments.length
