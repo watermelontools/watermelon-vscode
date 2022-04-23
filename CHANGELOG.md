@@ -9,6 +9,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fixed some instances of the "Get help on Slack" running search
 - Added command to the context menu (right click to use)
 - Added tooltips to guide the user
+- Added brand color when hovering links
+- Improved error prompt when running without highlighting lines of code
 
 ## [1.1.1]
 - Fixed some instances of broken markdown
