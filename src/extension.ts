@@ -145,7 +145,6 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
             repo,
           });
           if (typeof issuesWithTitlesAndGroupedComments === "object") {
-            console.log(issuesWithTitlesAndGroupedComments);
             return this.sendMessage({
               command: "error",
               error: issuesWithTitlesAndGroupedComments,
