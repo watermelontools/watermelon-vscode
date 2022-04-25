@@ -49,6 +49,10 @@ export async function activate(context: vscode.ExtensionContext) {
         command: "loading",
       });
       localUser = await getLocalUser();
+      provider.sendMessage({
+        command: "author",
+        author:  localUser,
+      });
       octokit = await credentials.getOctokit();
 
       let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
@@ -137,7 +141,10 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           });
           userEmail = await getUserEmail({ octokit });
           localUser = await getLocalUser();
-
+          this.sendMessage({
+            command: "author",
+            author:  localUser,
+          });
           let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
             arrayOfSHAs,
             octokit,
