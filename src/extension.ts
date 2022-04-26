@@ -99,7 +99,7 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.window.activeTextEditor?.document.uri.fsPath,
       gitAPI
     );
-    provider.sendMessage({
+    provider.sendSilentMessage({
       command: "author",
       author: authors[0],
     });
@@ -193,7 +193,15 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
       this._view.webview.postMessage(message);
     }
   }
-  private _getHtmlForWebview(webview: vscode.Webview) {
+  public sendSilentMessage(message: any) {
+    if (this._view) {
+      this._view.webview.html= this._getHtmlForWebview(this._view.webview, message);
+    }
+  }
+  private _getHtmlForWebview(
+    webview: vscode.Webview,
+    message: { author?: string } = {}
+  ) {
     // Local path to main script run in the webview
     const scriptPathOnDisk = vscode.Uri.joinPath(
       this._extensionUri,
@@ -217,13 +225,24 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
 
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
-    return getInitialHTML(
-      webview,
-      stylesMainUri,
-      watermelonBannerImageURL,
-      nonce,
-      scriptUri
-    );
+    if (message?.author) {
+      return getInitialHTML(
+        webview,
+        stylesMainUri,
+        watermelonBannerImageURL,
+        nonce,
+        scriptUri,
+        message.author
+      );
+    } else {
+      return getInitialHTML(
+        webview,
+        stylesMainUri,
+        watermelonBannerImageURL,
+        nonce,
+        scriptUri
+      );
+    }
   }
 }
 /**
