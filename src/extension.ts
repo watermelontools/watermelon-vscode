@@ -57,7 +57,7 @@ export async function activate(context: vscode.ExtensionContext) {
         owner,
         repo,
       });
-      if (typeof issuesWithTitlesAndGroupedComments === "object") {
+      if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
         return provider.sendMessage({
           command: "error",
           error: issuesWithTitlesAndGroupedComments,
