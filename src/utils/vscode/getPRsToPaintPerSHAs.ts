@@ -1,9 +1,12 @@
+import * as vscode from "vscode";
 import countOrganizationQueries from "../countOrganizationQueries";
 import getPRsPerSHAS from "../getPRsPerSHAS";
 import getIssue from "../github/getIssue";
 import getIssueComments from "../github/getIssueComments";
 import getRepoInfo from "./getRepoInfo";
 import { noLinesSelected, noSearchResults } from "./showErrors";
+import getSHAArray from "../getSHAArray";
+import getGitAPI from "../vscode/getGitAPI";
 
 export default async function getPRsToPaintPerSHAs({
   arrayOfSHAs,
@@ -34,8 +37,22 @@ export default async function getPRsToPaintPerSHAs({
   // takes the first 22 shas and creates a list to send to the gh api
   let joinedArrayOfSHAs = arrayOfSHAs.slice(0, 22).join();
   if (joinedArrayOfSHAs.length < 1) {
-    noLinesSelected();
-    return { errorText: "No lines selected" };
+    // Running an experiment to see how users behave without this error prompt
+    // But rather running a git blame for the whole class
+    // noLinesSelected();
+    // return { errorText: "No lines selected" };
+    let gitAPI = await getGitAPI();
+
+    const linecount = vscode.window.activeTextEditor?.document.lineCount as number;
+
+    arrayOfSHAs = await getSHAArray(
+      1,
+      linecount,
+      vscode.window.activeTextEditor?.document.uri.fsPath,
+      gitAPI
+    );
+    joinedArrayOfSHAs = arrayOfSHAs.slice(0, 22).join();
+    
   }
 
   let foundPRs = await getPRsPerSHAS({
