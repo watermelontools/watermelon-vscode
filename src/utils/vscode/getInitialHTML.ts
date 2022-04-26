@@ -16,6 +16,7 @@ export default function getInitialHTML(
     webview.cspSource,
     "https://uploads-ssl.webflow.com/",
     "https://cloud.githubusercontent.com/assets/",
+    "https://cdn.webflow.com/",
   ];
   let scriptSources = [
     `'nonce-${nonce}'`,
