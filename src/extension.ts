@@ -13,6 +13,7 @@ import getUserEmail from "./utils/getUserEmail";
 import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import slackhelp from "./utils/analytics/slackhelp";
+import getBlameAuthors from "./utils/getBlameAuthors";
 
 // repo information
 let owner: string | undefined = "";
@@ -49,10 +50,7 @@ export async function activate(context: vscode.ExtensionContext) {
         command: "loading",
       });
       localUser = await getLocalUser();
-      provider.sendMessage({
-        command: "author",
-        author:  localUser,
-      });
+
       octokit = await credentials.getOctokit();
 
       let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
@@ -95,6 +93,16 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.window.activeTextEditor?.document.uri.fsPath,
       gitAPI
     );
+    let authors = await getBlameAuthors(
+      selection.selections[0].start.line,
+      selection.selections[0].end.line,
+      vscode.window.activeTextEditor?.document.uri.fsPath,
+      gitAPI
+    );
+    provider.sendMessage({
+      command: "author",
+      author: authors[0],
+    });
   });
 
   if (vscode.window.registerWebviewPanelSerializer) {
@@ -141,10 +149,7 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           });
           userEmail = await getUserEmail({ octokit });
           localUser = await getLocalUser();
-          this.sendMessage({
-            command: "author",
-            author:  localUser,
-          });
+
           let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
             arrayOfSHAs,
             octokit,
