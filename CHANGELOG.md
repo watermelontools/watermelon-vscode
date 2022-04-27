@@ -4,8 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.4]
+- Added github as an image source to CSP
 
-## [1.1.2]
+## [1.1.3]
 - Fixed some instances of the "Get help on Slack" running search
 - Added command to the context menu (right click to use)
 - Added tooltips to guide the user
