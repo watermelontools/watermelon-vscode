@@ -1,4 +1,7 @@
 import * as vscode from "vscode";
+import * as Path from 'path';
+import * as fs from 'fs';
+
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import getNonce from "./utils/vscode/getNonce";
@@ -13,6 +16,7 @@ import getUserEmail from "./utils/getUserEmail";
 import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import slackhelp from "./utils/analytics/slackhelp";
+import getBlameAuthors from "./utils/getBlameAuthors";
 
 // repo information
 let owner: string | undefined = "";
@@ -27,7 +31,12 @@ let octokit: any;
 
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
+  var extensionPath = Path.join(context.extensionPath, "package.json");
+  var packageFile = JSON.parse(fs.readFileSync(extensionPath, 'utf8'));
 
+  if (packageFile) {
+      console.log(packageFile.version);
+  }
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
   await credentials.initialize(context);
@@ -49,6 +58,7 @@ export async function activate(context: vscode.ExtensionContext) {
         command: "loading",
       });
       localUser = await getLocalUser();
+
       octokit = await credentials.getOctokit();
 
       let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
@@ -57,7 +67,7 @@ export async function activate(context: vscode.ExtensionContext) {
         owner,
         repo,
       });
-      if (typeof issuesWithTitlesAndGroupedComments === "object") {
+      if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
         return provider.sendMessage({
           command: "error",
           error: issuesWithTitlesAndGroupedComments,
@@ -91,6 +101,16 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.window.activeTextEditor?.document.uri.fsPath,
       gitAPI
     );
+    let authors = await getBlameAuthors(
+      selection.selections[0].start.line,
+      selection.selections[0].end.line,
+      vscode.window.activeTextEditor?.document.uri.fsPath,
+      gitAPI
+    );
+    provider.sendSilentMessage({
+      command: "author",
+      author: authors[0],
+    });
   });
 
   if (vscode.window.registerWebviewPanelSerializer) {
@@ -181,7 +201,15 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
       this._view.webview.postMessage(message);
     }
   }
-  private _getHtmlForWebview(webview: vscode.Webview) {
+  public sendSilentMessage(message: any) {
+    if (this._view) {
+      this._view.webview.html= this._getHtmlForWebview(this._view.webview, message);
+    }
+  }
+  private _getHtmlForWebview(
+    webview: vscode.Webview,
+    message: { author?: string } = {}
+  ) {
     // Local path to main script run in the webview
     const scriptPathOnDisk = vscode.Uri.joinPath(
       this._extensionUri,
@@ -205,13 +233,24 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
 
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
-    return getInitialHTML(
-      webview,
-      stylesMainUri,
-      watermelonBannerImageURL,
-      nonce,
-      scriptUri
-    );
+    if (message?.author) {
+      return getInitialHTML(
+        webview,
+        stylesMainUri,
+        watermelonBannerImageURL,
+        nonce,
+        scriptUri,
+        message.author
+      );
+    } else {
+      return getInitialHTML(
+        webview,
+        stylesMainUri,
+        watermelonBannerImageURL,
+        nonce,
+        scriptUri
+      );
+    }
   }
 }
 /**
