@@ -18,6 +18,7 @@ export default async function getPRsToPaintPerSHAs({
 }): Promise<
   | {
       user: any;
+      userImage: string;
       userLink: string;
       title: string;
       comments: any[];
@@ -56,6 +57,7 @@ export default async function getPRsToPaintPerSHAs({
   let issuesWithTitlesAndGroupedComments: {
     user: any;
     userLink: string;
+    userImage: string;
     title: string;
     comments: any[];
     created_at: any;
@@ -75,6 +77,7 @@ export default async function getPRsToPaintPerSHAs({
       issuesWithTitlesAndGroupedComments.push({
         created_at: issueData.created_at,
         user: issueData.user.login,
+        userImage: issueData.user.avatar_url,
         userLink: issueData.user.html_url,
         title: issueData.title,
         url: issueData.html_url,
