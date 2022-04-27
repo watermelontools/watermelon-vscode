@@ -68,7 +68,7 @@ export default function getInitialHTML(
         <div id="ghHolder">
            <p>Higlight a piece of code to start.</p>
            <p>Click this button to enrich your code with relevant information from GitHub:</p>
-           <button>Run Watermelon</button>
+           <button class='run-watermelon'>Run Watermelon</button>
            <p>Click this button to send a Slack message to the owner of the highlighted block of code:</p>
            <button class='help-link'>Get help on Slack</button>
            <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
