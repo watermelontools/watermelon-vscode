@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Added github as an image source to CSP
 - Added webflow to image CSP
 - Will now log the extension version to the console on startup
+- The get help button now shows the top committer name instead of "on Slack"
 
 ## [1.1.3]
 - Fixed some instances of the "Get help on Slack" running search
