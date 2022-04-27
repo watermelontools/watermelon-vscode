@@ -11,6 +11,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - The get help button now shows the top committer name instead of "on Slack"
 - Fixed an error where the command would break even when results were fetched
 - Will select whole file if no selection is made
+- Added CSS to PR header
 
 ## [1.1.3]
 - Fixed some instances of the "Get help on Slack" running search
