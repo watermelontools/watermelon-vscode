@@ -85,6 +85,7 @@ $(document).ready(function () {
         pr.title
       }</a></summary>
         <div>
+        <div class="pr-header">
           <div class="pr-owner">
             <p class="pr-poster" title="View this user on github">
               Author: <a href="${pr.userLink}">${pr.user}</a>
@@ -98,7 +99,8 @@ $(document).ready(function () {
               })}
             </p>
           </div>
-          <div class="pr-body">
+        </div>
+        <div class="pr-body">
             ${replaceIssueLinks(
               replaceUserTags(marked.parse(pr.body)),
               pr.repo_url

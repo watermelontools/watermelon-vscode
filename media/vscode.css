@@ -17,10 +17,16 @@ details > summary {
   cursor: pointer;
   font-size: large;
 }
+.pr-header{
+  border-radius: 6px 6px 0 0;
+  border: 1px solid #30363d;
+  background-color: #30363d;
+}
 .pr-owner {
   display: flex;
-  width: 100%;
+  padding: 0.2em 0.4em;
   justify-content: space-between;
+  background-color: rgba(56,139,253,0.15);
 }
 .pr-date {
   font-style: italic;
@@ -28,6 +34,11 @@ details > summary {
 }
 .pr-poster {
   font-weight: bold;
+}
+.pr-body {
+  padding: 0.2em 0.4em;
+  border: 1px solid rgba(56,139,253,0.4);
+  border-radius: 0 0 6px 6px;
 }
 .comment {
   margin-bottom: 1%;
