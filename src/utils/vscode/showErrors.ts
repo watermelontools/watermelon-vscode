@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 export function noLinesSelected() {
-  return vscode.window.showErrorMessage("Please select some lines to search");
+  return vscode.window.showErrorMessage("Please select some lines of code first to search for historical context.");
 }
 
 export function exceededPlan() {

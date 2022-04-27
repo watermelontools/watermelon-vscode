@@ -3,8 +3,8 @@ while (!$) {
 }
 const vscode = acquireVsCodeApi();
 
-const button = document.querySelector("button");
 const link = document.getElementsByClassName("help-link");
+const button = document.getElementsByClassName("run-watermelon");
 
 let errorTimeout;
 function sendMessage(message) {
@@ -19,19 +19,21 @@ Sentry.init({
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
 });
-
-button.addEventListener("click", (event) => {
-  sendMessage({ command: "run" });
-});
-
 link[0].addEventListener("click", (event) => {
   sendMessage({ command: "open-link", link: "https://app.slack.com" });
 });
+button[0].addEventListener("click", (event) => {
+  sendMessage({ command: "run" });
+});
+
 $(document).ready(function () {
   const replaceIssueLinks = (text, repo_url) => {
     let repoLink = repo_url.replace("api.", "").replace("repos/", "");
     return text
-      .replace(/#([0-9]*)/gm, `<a href="${repoLink}/pull/$1">$&</a>`)
+      .replace(
+        /#([0-9]*)/gm,
+        `<a href="${repoLink}/pull/$1" title="View this issue on github">$&</a>`
+      )
       .replaceAll(`&<a href="${repoLink}/pull/39">#39</a>;`, "'");
   };
 
@@ -39,16 +41,18 @@ $(document).ready(function () {
     return text
       .replace(
         /\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi,
-        `<a href="https://github.com/$&">$&</a>`.toLowerCase()
+        `<a href="https://github.com/$&" title="View this user on github">$&</a>`.toLowerCase()
       )
       .replaceAll("/@", "/");
   };
   const addPRsToDoc = (prs) => {
-    $("#ghHolder").append("<button>Run Watermelon</button><br/>");
+    $("#ghHolder").append(
+      "<button class='run-watermelon'>Run Watermelon</button><br/>"
+    );
     $("#ghHolder").append(
       "<button class='help-link'>Get help on Slack</button>"
     );
-    $("button").on("click", (event) => {
+    $(".run-watermelon").on("click", (event) => {
       sendMessage({ command: "run" });
     });
     prs.forEach((pr, index) => {
@@ -57,7 +61,7 @@ $(document).ready(function () {
         mdComments += `
         <div class="comment">
         <div class="comment-header">
-          <h5 class="comment-author">
+          <h5 class="comment-author" title="View this user on github">
             <a href="${comment.user.html_url}">${
           comment.user.login
         }</a> on ${new Date(comment.created_at).toLocaleDateString("en-us", {
@@ -69,16 +73,20 @@ $(document).ready(function () {
           </h5>
         </div>
         <div class="comment-body">
-      ${marked.parse(comment.body)}
+      ${replaceUserTags(marked.parse(comment.body))}
         </div>
         </div>`;
       });
       $("#ghHolder").append(`
       <details ${!index ? "open" : ""}>
-        <summary><a href="${pr.url}" target="_blank">${pr.title}</a></summary>
+        <summary><a href="${
+          pr.url
+        }" target="_blank" title="View this PR on github">${
+        pr.title
+      }</a></summary>
         <div>
           <div class="pr-owner">
-            <p class="pr-poster">
+            <p class="pr-poster" title="View this user on github">
               Author: <a href="${pr.userLink}">${pr.user}</a>
             </p>
             <p class="pr-date">
@@ -130,18 +138,43 @@ $(document).ready(function () {
       <p>Try running a new Watermelon query, please.</p>
     </div>
     `);
-    $("#ghHolder").append("<button>Run Watermelon</button><br/>");
-    $("#ghHolder").append(
-      "<button class='help-link' >Get help on Slack</button>"
-    );
+    $("#ghHolder")
+      .append("<button class='run-watermelon'>Run Watermelon</button><br/>")
+      .on("click", (event) => {
+        sendMessage({ command: "run" });
+      });
+    $("#ghHolder")
+      .append("<button class='help-link' >Get help on Slack</button>")
+      .on("click", (event) => {
+        sendMessage({ command: "open-link", link: "https://app.slack.com" });
+      });
+
     $("#ghHolder").append(
       "<p>Alternatively, you can <a href='https://github.com/watermelontools/wm-extension#commands'>run with our watermelon.start command</a></p>"
     );
     $("#ghHolder").append(
       "<p>Select a piece of code to start. Then run the Watermelon VS Code Command by pressing <kbd>CTRL</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> (or <kbd>CMD</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> in Mac) and type > <code>start watermelon</code></p>"
     );
-    $("button").on("click", (event) => {
+  }
+  function setReceivedError(errorText) {
+    clearTimeout(errorTimeout);
+    $("#ghHolder").replaceWith(`
+    <div id="ghHolder">
+      <p>We ran into this error: ${errorText}</p>
+      <p>Try running a new Watermelon query, please.</p>
+    </div>
+    `);
+    $("#ghHolder").append(
+      "<button class='run-watermelon'>Run Watermelon</button><br/>"
+    );
+    $(".run-watermelon").on("click", (event) => {
       sendMessage({ command: "run" });
+    });
+    $("#ghHolder").append(
+      "<button class='help-link' >Get help on Slack</button>"
+    );
+    $(".help-link").on("click", (event) => {
+      sendMessage({ command: "open-link", link: "https://app.slack.com" });
     });
   }
   function removeLoading() {
@@ -159,6 +192,9 @@ $(document).ready(function () {
         break;
       case "loading":
         setLoading();
+        break;
+      case "error":
+        setReceivedError(message.error.errorText);
         break;
     }
   });
