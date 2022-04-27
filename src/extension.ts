@@ -60,7 +60,14 @@ export async function activate(context: vscode.ExtensionContext) {
       localUser = await getLocalUser();
 
       octokit = await credentials.getOctokit();
-
+      if (!arrayOfSHAs.length) {
+        arrayOfSHAs = await getSHAArray(
+          1,
+          vscode.window.activeTextEditor?.document.lineCount ?? 2,
+          vscode.window.activeTextEditor?.document.uri.fsPath,
+          gitAPI
+        );
+      }
       let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
         arrayOfSHAs,
         octokit,
@@ -150,6 +157,7 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage(async (data) => {
+      let gitAPI = await getGitAPI();
       switch (data.command) {
         case "run": {
           this.sendMessage({
@@ -157,7 +165,14 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           });
           userEmail = await getUserEmail({ octokit });
           localUser = await getLocalUser();
-
+          if (!arrayOfSHAs.length) {
+            arrayOfSHAs = await getSHAArray(
+              1,
+              vscode.window.activeTextEditor?.document.lineCount ?? 2,
+              vscode.window.activeTextEditor?.document.uri.fsPath,
+              gitAPI
+            );
+          }
           let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
             arrayOfSHAs,
             octokit,
