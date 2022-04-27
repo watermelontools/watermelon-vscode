@@ -73,7 +73,7 @@ $(document).ready(function () {
           </h5>
         </div>
         <div class="comment-body">
-      ${marked.parse(comment.body)}
+      ${replaceUserTags(marked.parse(comment.body))}
         </div>
         </div>`;
       });
