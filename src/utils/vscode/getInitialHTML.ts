@@ -17,6 +17,7 @@ export default function getInitialHTML(
     "https://uploads-ssl.webflow.com/",
     "https://cloud.githubusercontent.com/assets/",
     "https://user-images.githubusercontent.com",
+    "https://cdn.webflow.com/",
   ];
   let scriptSources = [
     `'nonce-${nonce}'`,
