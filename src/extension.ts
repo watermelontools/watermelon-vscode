@@ -1,4 +1,7 @@
 import * as vscode from "vscode";
+import * as Path from 'path';
+import * as fs from 'fs';
+
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import getNonce from "./utils/vscode/getNonce";
@@ -27,7 +30,12 @@ let octokit: any;
 
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
+  var extensionPath = Path.join(context.extensionPath, "package.json");
+  var packageFile = JSON.parse(fs.readFileSync(extensionPath, 'utf8'));
 
+  if (packageFile) {
+      console.log(packageFile.version);
+  }
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
   await credentials.initialize(context);

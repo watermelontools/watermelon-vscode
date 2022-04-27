@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.1.4]
 - Added github as an image source to CSP
 - Added webflow to image CSP
+- Will now log the extension version to the console on startup
 
 ## [1.1.3]
 - Fixed some instances of the "Get help on Slack" running search
