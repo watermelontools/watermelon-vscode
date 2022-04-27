@@ -16,6 +16,7 @@ export default function getInitialHTML(
     webview.cspSource,
     "https://uploads-ssl.webflow.com/",
     "https://cloud.githubusercontent.com/assets/",
+    "https://user-images.githubusercontent.com",
     "https://cdn.webflow.com/",
   ];
   let scriptSources = [
@@ -23,7 +24,7 @@ export default function getInitialHTML(
     "https://unpkg.com/@highlightjs/",
     "https://browser.sentry-cdn.com/",
     "https://cdn.jsdelivr.net/npm/marked/",
-    "https://ajax.googleapis.com/ajax/libs/jquery/"
+    "https://ajax.googleapis.com/ajax/libs/jquery/",
   ];
 
   return `
