@@ -148,7 +148,7 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
     $("#ghHolder").append(
-      "<button class='help-link' >Get help on Slack</button>"
+      `<button class='help-link' >Get help from ${authorName}</button>`
     );
     $(".help-link").on("click", (event) => {
       sendMessage({ command: "open-link", link: "https://app.slack.com" });
