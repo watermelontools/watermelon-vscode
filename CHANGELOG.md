@@ -13,6 +13,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fixed some instances of the get help on Slack button not working
 - Will select whole file if no selection is made
 - Allow all of github as source for images
+- Fixed case where empty PR body or empty comment would break the app
+- Fixed bug that retrieved PRs from unrelated repositories
 - Added Connect-src to CSP
 - Added PR author image
 
