@@ -16,8 +16,9 @@ export default function getInitialHTML(
   let imageSources = [
     webview.cspSource,
     "https://uploads-ssl.webflow.com/",
-    "https://cloud.githubusercontent.com/assets/",
-    "https://user-images.githubusercontent.com",
+    "https://*.githubusercontent.com",
+    "https://*.github.com",
+    "https://*.github.io",
     "https://cdn.webflow.com/",
   ];
   let scriptSources = [
@@ -26,6 +27,11 @@ export default function getInitialHTML(
     "https://browser.sentry-cdn.com/",
     "https://cdn.jsdelivr.net/npm/marked/",
     "https://ajax.googleapis.com/ajax/libs/jquery/",
+  ];
+  let connectSources = [
+    "https://*.ingest.sentry.io",
+    "https://*.sentry.io",
+    "https://*.sentry.dev",
   ];
   return `
 
@@ -37,7 +43,8 @@ export default function getInitialHTML(
          <meta http-equiv="Content-Security-Policy" content="default-src 'self';
          style-src ${styleSources.join(" ")};
          img-src ${imageSources.join(" ")};
-         script-src ${scriptSources.join(" ")};">
+         script-src ${scriptSources.join(" ")};
+         connect-src ${connectSources.join(" ")}">
          <meta name="viewport" content="width=device-width, initial-scale=1.0">
          <meta charset="UTF-8">
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" 
@@ -63,7 +70,7 @@ export default function getInitialHTML(
         <link href="${stylesMainUri}" rel="stylesheet">
      </head>
      <body>
-        <img src="${imagePath}" width="300" />
+        <img src="${imagePath}" width="300" alt="watermelon logo"/>
         <p>Watermelon helps you get the context of your code.</p>
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">starring Watermelon on GitHub</a></p>
         <br/>

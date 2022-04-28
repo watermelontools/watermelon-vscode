@@ -28,12 +28,25 @@ details > summary {
   justify-content: space-between;
   background-color: rgba(56,139,253,0.15);
 }
+.pr-author-combo{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.pr-author-img{
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
 .pr-date {
   font-style: italic;
   opacity: 0.5;
 }
 .pr-poster {
   font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 .pr-body {
   padding: 0.2em 0.4em;
