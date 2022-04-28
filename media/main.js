@@ -55,6 +55,9 @@ $(document).ready(function () {
     $(".run-watermelon").on("click", (event) => {
       sendMessage({ command: "run" });
     });
+    $(".help-link").on("click", (event) => {
+      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+    });
     prs.forEach((pr, index) => {
       let mdComments = "";
       pr.comments.forEach((comment) => {
@@ -138,16 +141,18 @@ $(document).ready(function () {
       <p>Try running a new Watermelon query, please.</p>
     </div>
     `);
-    $("#ghHolder")
-      .append("<button class='run-watermelon'>Run Watermelon</button><br/>")
-      .on("click", (event) => {
-        sendMessage({ command: "run" });
-      });
-    $("#ghHolder")
-      .append(`<button class='help-link' >Get help from ${authorName}</button>`)
-      .on("click", (event) => {
-        sendMessage({ command: "open-link", link: "https://app.slack.com" });
-      });
+    $("#ghHolder").append(
+      "<button class='run-watermelon'>Run Watermelon</button><br/>"
+    );
+    $(".run-watermelon").on("click", (event) => {
+      sendMessage({ command: "run" });
+    });
+    $("#ghHolder").append(
+      `<button class='help-link' >Get help from ${authorName}</button>`
+    );
+    $(".help-link").on("click", (event) => {
+      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+    });
 
     $("#ghHolder").append(
       "<p>Alternatively, you can <a href='https://github.com/watermelontools/wm-extension#commands'>run with our watermelon.start command</a></p>"
