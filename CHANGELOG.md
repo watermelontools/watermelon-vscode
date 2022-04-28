@@ -12,6 +12,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fixed an error where the command would break even when results were fetched
 - Fixed some instances of the get help on Slack button not working
 - Will select whole file if no selection is made
+- Fixed bug that retrieved PRs from unrelated repositories
 - Added Connect-src to CSP
 - Added PR author image
 
