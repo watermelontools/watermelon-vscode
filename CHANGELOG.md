@@ -13,6 +13,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fixed some instances of the get help on Slack button not working
 - Will select whole file if no selection is made
 - Added Connect-src to CSP
+- Added PR author image
 
 ## [1.1.3]
 - Fixed some instances of the "Get help on Slack" running search

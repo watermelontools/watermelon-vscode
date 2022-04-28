@@ -18,6 +18,7 @@ export default function getInitialHTML(
     "https://uploads-ssl.webflow.com/",
     "https://cloud.githubusercontent.com/assets/",
     "https://user-images.githubusercontent.com",
+    "https://avatars.githubusercontent.com",
     "https://cdn.webflow.com/",
   ];
   let scriptSources = [
@@ -69,7 +70,7 @@ export default function getInitialHTML(
         <link href="${stylesMainUri}" rel="stylesheet">
      </head>
      <body>
-        <img src="${imagePath}" width="300" />
+        <img src="${imagePath}" width="300" alt="watermelon logo"/>
         <p>Watermelon helps you get the context of your code.</p>
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">starring Watermelon on GitHub</a></p>
         <br/>
