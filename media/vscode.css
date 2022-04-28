@@ -22,6 +22,11 @@ details > summary {
   width: 100%;
   justify-content: space-between;
 }
+.pr-author-combo{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
 .pr-author-img{
   width: 15px;
   height: 15px;

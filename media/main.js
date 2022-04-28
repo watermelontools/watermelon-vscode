@@ -88,7 +88,7 @@ $(document).ready(function () {
         <div>
           <div class="pr-owner">
             <p class="pr-poster" title="View this user on github">
-              <a href="${pr.userLink}"><img class='pr-author-img' src="${pr.userImage}" />${pr.user}</a>
+              <a class="pr-author-combo" href="${pr.userLink}"><img class='pr-author-img' src="${pr.userImage}" />${pr.user}</a>
             </p>
             <p class="pr-date">
               ${new Date(pr.created_at).toLocaleDateString("en-us", {
