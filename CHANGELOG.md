@@ -12,8 +12,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fixed an error where the command would break even when results were fetched
 - Fixed some instances of the get help on Slack button not working
 - Will select whole file if no selection is made
-- Fixed case where empty PR body or empty comment would break the app
 - Allow all of github as source for images
+- Added Connect-src to CSP
+- Added PR author image
 
 ## [1.1.3]
 - Fixed some instances of the "Get help on Slack" running search
