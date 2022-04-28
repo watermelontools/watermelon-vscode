@@ -4,6 +4,21 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.4]
+- Added github as an image source to CSP
+- Added webflow to image CSP
+- Will now log the extension version to the console on startup
+- The get help button now shows the top committer name instead of "on Slack"
+- Fixed an error where the command would break even when results were fetched
+- Will select whole file if no selection is made
+
+## [1.1.3]
+- Fixed some instances of the "Get help on Slack" running search
+- Added command to the context menu (right click to use)
+- Added tooltips to guide the user
+- Added brand color when hovering links
+- Improved error prompt when running without highlighting lines of code
+
 ## [1.1.1]
 - Fixed some instances of broken markdown
 - Fixed CSP 
@@ -13,6 +28,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Made PR authors a link to their profile
 - Dates now are more human readable
 - Font color improvements for light themes 
+- Added text to explain command on error
 
 ## [1.1.0]
 - Added a timeout of 4 seconds for failed executions

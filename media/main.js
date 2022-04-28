@@ -4,13 +4,13 @@ while (!$) {
 const vscode = acquireVsCodeApi();
 
 const link = document.getElementsByClassName("help-link");
-const button = document.querySelector("button");
+const button = document.getElementsByClassName("run-watermelon");
 
 let errorTimeout;
 function sendMessage(message) {
   vscode.postMessage(message);
 }
-
+let authorName = "the code author";
 Sentry.init({
   dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
 
@@ -22,7 +22,7 @@ Sentry.init({
 link[0].addEventListener("click", (event) => {
   sendMessage({ command: "open-link", link: "https://app.slack.com" });
 });
-button.addEventListener("click", (event) => {
+button[0].addEventListener("click", (event) => {
   sendMessage({ command: "run" });
 });
 
@@ -30,7 +30,10 @@ $(document).ready(function () {
   const replaceIssueLinks = (text, repo_url) => {
     let repoLink = repo_url.replace("api.", "").replace("repos/", "");
     return text
-      .replace(/#([0-9]*)/gm, `<a href="${repoLink}/pull/$1" title="View this issue on github">$&</a>`)
+      .replace(
+        /#([0-9]*)/gm,
+        `<a href="${repoLink}/pull/$1" title="View this issue on github">$&</a>`
+      )
       .replaceAll(`&<a href="${repoLink}/pull/39">#39</a>;`, "'");
   };
 
@@ -43,11 +46,13 @@ $(document).ready(function () {
       .replaceAll("/@", "/");
   };
   const addPRsToDoc = (prs) => {
-    $("#ghHolder").append("<button>Run Watermelon</button><br/>");
     $("#ghHolder").append(
-      "<button class='help-link'>Get help on Slack</button>"
+      "<button class='run-watermelon'>Run Watermelon</button><br/>"
     );
-    $("button").on("click", (event) => {
+    $("#ghHolder").append(
+      `<button class='help-link'>Get help from ${authorName}</button>`
+    );
+    $(".run-watermelon").on("click", (event) => {
       sendMessage({ command: "run" });
     });
     prs.forEach((pr, index) => {
@@ -68,13 +73,17 @@ $(document).ready(function () {
           </h5>
         </div>
         <div class="comment-body">
-      ${marked.parse(comment.body)}
+      ${replaceUserTags(marked.parse(comment.body))}
         </div>
         </div>`;
       });
       $("#ghHolder").append(`
       <details ${!index ? "open" : ""}>
-        <summary><a href="${pr.url}" target="_blank" title="View this PR on github">${pr.title}</a></summary>
+        <summary><a href="${
+          pr.url
+        }" target="_blank" title="View this PR on github">${
+        pr.title
+      }</a></summary>
         <div>
           <div class="pr-owner">
             <p class="pr-poster" title="View this user on github">
@@ -129,9 +138,13 @@ $(document).ready(function () {
       <p>Try running a new Watermelon query, please.</p>
     </div>
     `);
-    $("#ghHolder").append("<button>Run Watermelon</button><br/>");
     $("#ghHolder")
-      .append("<button class='help-link' >Get help on Slack</button>")
+      .append("<button class='run-watermelon'>Run Watermelon</button><br/>")
+      .on("click", (event) => {
+        sendMessage({ command: "run" });
+      });
+    $("#ghHolder")
+      .append(`<button class='help-link' >Get help from ${authorName}</button>`)
       .on("click", (event) => {
         sendMessage({ command: "open-link", link: "https://app.slack.com" });
       });
@@ -142,9 +155,6 @@ $(document).ready(function () {
     $("#ghHolder").append(
       "<p>Select a piece of code to start. Then run the Watermelon VS Code Command by pressing <kbd>CTRL</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> (or <kbd>CMD</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> in Mac) and type > <code>start watermelon</code></p>"
     );
-    $("button").on("click", (event) => {
-      sendMessage({ command: "run" });
-    });
   }
   function setReceivedError(errorText) {
     clearTimeout(errorTimeout);
@@ -154,12 +164,18 @@ $(document).ready(function () {
       <p>Try running a new Watermelon query, please.</p>
     </div>
     `);
-    $("#ghHolder").append("<button>Run Watermelon</button>");
-    $("#ghHolder")
-      .append("<button class='help-link' >Get help on Slack</button>")
-      .on("click", (event) => {
-        sendMessage({ command: "open-link", link: "https://app.slack.com" });
-      });
+    $("#ghHolder").append(
+      "<button class='run-watermelon'>Run Watermelon</button><br/>"
+    );
+    $(".run-watermelon").on("click", (event) => {
+      sendMessage({ command: "run" });
+    });
+    $("#ghHolder").append(
+      `<button class='help-link' >Get help from ${authorName}</button>`
+    );
+    $(".help-link").on("click", (event) => {
+      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+    });
   }
   function removeLoading() {
     clearTimeout(errorTimeout);
@@ -179,6 +195,9 @@ $(document).ready(function () {
         break;
       case "error":
         setReceivedError(message.error.errorText);
+        break;
+      case "author":
+        authorName = message.author;
         break;
     }
   });

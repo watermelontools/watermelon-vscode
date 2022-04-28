@@ -5,7 +5,8 @@ export default function getInitialHTML(
   stylesMainUri: vscode.Uri,
   imagePath: string,
   nonce: string,
-  scriptUri: vscode.Uri
+  scriptUri: vscode.Uri,
+  author: string = "the author"
 ): string {
   let styleSources = [
     "'self'",
@@ -16,15 +17,16 @@ export default function getInitialHTML(
     webview.cspSource,
     "https://uploads-ssl.webflow.com/",
     "https://cloud.githubusercontent.com/assets/",
+    "https://user-images.githubusercontent.com",
+    "https://cdn.webflow.com/",
   ];
   let scriptSources = [
     `'nonce-${nonce}'`,
     "https://unpkg.com/@highlightjs/",
     "https://browser.sentry-cdn.com/",
     "https://cdn.jsdelivr.net/npm/marked/",
-    "https://ajax.googleapis.com/ajax/libs/jquery/"
+    "https://ajax.googleapis.com/ajax/libs/jquery/",
   ];
-
   return `
 
   <!DOCTYPE html>
@@ -68,9 +70,11 @@ export default function getInitialHTML(
         <div id="ghHolder">
            <p>Higlight a piece of code to start.</p>
            <p>Click this button to enrich your code with relevant information from GitHub:</p>
-           <button>Run Watermelon</button>
+           <button class='run-watermelon'>Run Watermelon</button>
            <p>Click this button to send a Slack message to the owner of the highlighted block of code:</p>
-           <button class='help-link'>Get help on Slack</button>
+           <button class='help-link'>Get help from ${
+             author 
+           }</button>
            <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a></p>
         </div>
