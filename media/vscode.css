@@ -131,3 +131,14 @@ pre {
   padding: 0.5em 1em;
   margin-bottom: 1em;
 }
+@media (prefers-color-scheme: dark) {
+  p {
+    color: #42423f;
+  }
+  a {
+    color: #db6161;
+  }
+  h5{
+    color: #e4e4e4;
+  }
+}
