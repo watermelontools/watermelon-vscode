@@ -16,8 +16,9 @@ export default function getInitialHTML(
   let imageSources = [
     webview.cspSource,
     "https://uploads-ssl.webflow.com/",
-    "https://cloud.githubusercontent.com/assets/",
-    "https://user-images.githubusercontent.com",
+    "https://*.githubusercontent.com",
+    "https://*.github.com",
+    "https://*.github.io",
     "https://cdn.webflow.com/",
   ];
   let scriptSources = [
