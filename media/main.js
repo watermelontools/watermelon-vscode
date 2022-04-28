@@ -77,7 +77,7 @@ $(document).ready(function () {
           </h5>
         </div>
         <div class="comment-body">
-      ${replaceUserTags(marked.parse(comment.body))}
+      ${comment?.body ? replaceUserTags(marked.parse(comment.body)) : ""}
         </div>
         </div>`;
       });
@@ -103,10 +103,12 @@ $(document).ready(function () {
             </p>
           </div>
           <div class="pr-body">
-            ${replaceIssueLinks(
+            ${pr?.body ?
+              replaceIssueLinks(
               replaceUserTags(marked.parse(pr.body)),
-              pr.repo_url
-            )}
+              pr.repo_url)
+              : ""
+            }
           </div>
           ${mdComments}
         </div>
