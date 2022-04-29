@@ -40,7 +40,7 @@ export default function getInitialHTML(
 
       <head>
          <title>Watermelon</title>
-         <meta http-equiv="Content-Security-Policy" content="default-src 'self';
+         <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://*.watermelon.tools;
          style-src ${styleSources.join(" ")};
          img-src ${imageSources.join(" ")};
          script-src ${scriptSources.join(" ")};
