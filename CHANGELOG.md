@@ -12,6 +12,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fixed an error where the command would break even when results were fetched
 - Fixed some instances of the get help on Slack button not working
 - Will select whole file if no selection is made
+- Added CSS to PR header
 - Added a wildcard allow to watermelon.tools in CSP
 - Allow all of github as source for images
 - Fixed case where empty PR body or empty comment would break the app

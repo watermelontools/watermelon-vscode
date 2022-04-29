@@ -89,6 +89,7 @@ $(document).ready(function () {
         pr.title
       }</a></summary>
         <div>
+        <div class="pr-header">
           <div class="pr-owner">
             <p class="pr-poster" title="View this user on github">
               <a class="pr-author-combo" href="${pr.userLink}"><img class='pr-author-img' src="${pr.userImage}" />${pr.user}</a>
@@ -102,6 +103,7 @@ $(document).ready(function () {
               })}
             </p>
           </div>
+        </div>
           <div class="pr-body">
             ${pr?.body ?
               replaceIssueLinks(
