@@ -17,6 +17,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fixed bug that retrieved PRs from unrelated repositories
 - Added Connect-src to CSP
 - Added PR author image
+- Improved fonts on light themes
 
 ## [1.1.3]
 - Fixed some instances of the "Get help on Slack" running search
