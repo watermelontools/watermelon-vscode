@@ -142,7 +142,10 @@ pre {
   padding: 0.5em 1em;
   margin-bottom: 1em;
 }
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
+  html{
+    background-color: #fafafa;
+  }
   p {
     color: #42423f;
   }
@@ -151,5 +154,19 @@ pre {
   }
   h5{
     color: #e4e4e4;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  html{
+    background-color: #30363d;
+  }
+  p {
+    color: #e4e4e4;
+  }
+  a {
+    color: #db6161;
+  }
+  h5{
+    color: #42423f;
   }
 }
