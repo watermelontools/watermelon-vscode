@@ -10,7 +10,7 @@ let errorTimeout;
 function sendMessage(message) {
   vscode.postMessage(message);
 }
-
+let authorName = "the code author";
 Sentry.init({
   dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
 
@@ -45,15 +45,19 @@ $(document).ready(function () {
       )
       .replaceAll("/@", "/");
   };
+
   const addPRsToDoc = (prs) => {
     $("#ghHolder").append(
       "<button class='run-watermelon'>Run Watermelon</button><br/>"
     );
     $("#ghHolder").append(
-      "<button class='help-link'>Get help on Slack</button>"
+      `<button class='help-link'>Get help from ${authorName}</button>`
     );
     $(".run-watermelon").on("click", (event) => {
       sendMessage({ command: "run" });
+    });
+    $(".help-link").on("click", (event) => {
+      sendMessage({ command: "open-link", link: "https://app.slack.com" });
     });
     prs.forEach((pr, index) => {
       let mdComments = "";
@@ -73,7 +77,7 @@ $(document).ready(function () {
           </h5>
         </div>
         <div class="comment-body">
-      ${replaceUserTags(marked.parse(comment.body))}
+      ${comment?.body ? replaceUserTags(marked.parse(comment.body)) : ""}
         </div>
         </div>`;
       });
@@ -85,9 +89,10 @@ $(document).ready(function () {
         pr.title
       }</a></summary>
         <div>
+        <div class="pr-header">
           <div class="pr-owner">
             <p class="pr-poster" title="View this user on github">
-              Author: <a href="${pr.userLink}">${pr.user}</a>
+              <a class="pr-author-combo" href="${pr.userLink}"><img class='pr-author-img' src="${pr.userImage}" />${pr.user}</a>
             </p>
             <p class="pr-date">
               ${new Date(pr.created_at).toLocaleDateString("en-us", {
@@ -98,11 +103,14 @@ $(document).ready(function () {
               })}
             </p>
           </div>
+        </div>
           <div class="pr-body">
-            ${replaceIssueLinks(
+            ${pr?.body ?
+              replaceIssueLinks(
               replaceUserTags(marked.parse(pr.body)),
-              pr.repo_url
-            )}
+              pr.repo_url)
+              : ""
+            }
           </div>
           ${mdComments}
         </div>
@@ -138,16 +146,18 @@ $(document).ready(function () {
       <p>Try running a new Watermelon query, please.</p>
     </div>
     `);
-    $("#ghHolder")
-      .append("<button class='run-watermelon'>Run Watermelon</button><br/>")
-      .on("click", (event) => {
-        sendMessage({ command: "run" });
-      });
-    $("#ghHolder")
-      .append("<button class='help-link' >Get help on Slack</button>")
-      .on("click", (event) => {
-        sendMessage({ command: "open-link", link: "https://app.slack.com" });
-      });
+    $("#ghHolder").append(
+      "<button class='run-watermelon'>Run Watermelon</button><br/>"
+    );
+    $(".run-watermelon").on("click", (event) => {
+      sendMessage({ command: "run" });
+    });
+    $("#ghHolder").append(
+      `<button class='help-link' >Get help from ${authorName}</button>`
+    );
+    $(".help-link").on("click", (event) => {
+      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+    });
 
     $("#ghHolder").append(
       "<p>Alternatively, you can <a href='https://github.com/watermelontools/wm-extension#commands'>run with our watermelon.start command</a></p>"
@@ -171,7 +181,7 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
     $("#ghHolder").append(
-      "<button class='help-link' >Get help on Slack</button>"
+      `<button class='help-link' >Get help from ${authorName}</button>`
     );
     $(".help-link").on("click", (event) => {
       sendMessage({ command: "open-link", link: "https://app.slack.com" });
@@ -195,6 +205,9 @@ $(document).ready(function () {
         break;
       case "error":
         setReceivedError(message.error.errorText);
+        break;
+      case "author":
+        authorName = message.author;
         break;
     }
   });
