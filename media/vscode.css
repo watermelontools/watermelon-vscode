@@ -17,10 +17,27 @@ details > summary {
   cursor: pointer;
   font-size: large;
 }
+.pr-header{
+  border-radius: 6px 6px 0 0;
+  border: 1px solid #30363d;
+  background-color: #30363d;
+}
 .pr-owner {
   display: flex;
-  width: 100%;
+  padding: 0.2em 0.4em;
   justify-content: space-between;
+  background-color: rgba(56,139,253,0.15);
+}
+.pr-author-combo{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.pr-author-img{
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 .pr-date {
   font-style: italic;
@@ -28,6 +45,13 @@ details > summary {
 }
 .pr-poster {
   font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+.pr-body {
+  padding: 0.2em 0.4em;
+  border: 1px solid rgba(56,139,253,0.4);
+  border-radius: 0 0 6px 6px;
 }
 .comment {
   margin-bottom: 1%;
@@ -117,4 +141,32 @@ pre {
   color: white;
   padding: 0.5em 1em;
   margin-bottom: 1em;
+}
+@media (prefers-color-scheme: light) {
+  html{
+    background-color: #fafafa;
+  }
+  p {
+    color: #42423f;
+  }
+  a {
+    color: #db6161;
+  }
+  h5{
+    color: #e4e4e4;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  html{
+    background-color: #30363d;
+  }
+  p {
+    color: #e4e4e4;
+  }
+  a {
+    color: #db6161;
+  }
+  h5{
+    color: #42423f;
+  }
 }
