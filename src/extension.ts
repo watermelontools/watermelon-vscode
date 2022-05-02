@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import * as Path from 'path';
-import * as fs from 'fs';
+import * as Path from "path";
+import * as fs from "fs";
 
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
@@ -32,10 +32,10 @@ let octokit: any;
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
   var extensionPath = Path.join(context.extensionPath, "package.json");
-  var packageFile = JSON.parse(fs.readFileSync(extensionPath, 'utf8'));
+  var packageFile = JSON.parse(fs.readFileSync(extensionPath, "utf8"));
 
   if (packageFile) {
-      console.log(packageFile.version);
+    console.log(packageFile.version);
   }
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
@@ -218,7 +218,10 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
   }
   public sendSilentMessage(message: any) {
     if (this._view) {
-      this._view.webview.html= this._getHtmlForWebview(this._view.webview, message);
+      this._view.webview.html = this._getHtmlForWebview(
+        this._view.webview,
+        message
+      );
     }
   }
   private _getHtmlForWebview(
@@ -245,14 +248,20 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
     // Uri to load styles into webview
     //const stylesResetUri = webview.asWebviewUri(styleResetPath);
     const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
-
+    const darkLogo = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "imagotype-white.png")
+    );
+    const lightLogo = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "imagotype-black.png")
+    );
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
     if (message?.author) {
       return getInitialHTML(
         webview,
         stylesMainUri,
-        watermelonBannerImageURL,
+        darkLogo,
+        lightLogo,
         nonce,
         scriptUri,
         message.author
@@ -261,7 +270,8 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
       return getInitialHTML(
         webview,
         stylesMainUri,
-        watermelonBannerImageURL,
+        darkLogo,
+        lightLogo,
         nonce,
         scriptUri
       );

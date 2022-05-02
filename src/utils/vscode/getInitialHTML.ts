@@ -3,7 +3,8 @@ import * as vscode from "vscode";
 export default function getInitialHTML(
   webview: vscode.Webview,
   stylesMainUri: vscode.Uri,
-  imagePath: string,
+  darkLogo: vscode.Uri,
+  lightLogo: vscode.Uri,
   nonce: string,
   scriptUri: vscode.Uri,
   author: string = "the author"
@@ -70,7 +71,12 @@ export default function getInitialHTML(
         <link href="${stylesMainUri}" rel="stylesheet">
      </head>
      <body>
-        <img src="${imagePath}" width="300" alt="watermelon logo"/>
+     <picture>
+    <source
+        srcset="${darkLogo}"
+        media="(prefers-color-scheme: dark)">
+    <img src="${lightLogo}" />
+</picture>
         <p>Watermelon helps you get the context of your code.</p>
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">starring Watermelon on GitHub</a></p>
         <br/>
@@ -79,9 +85,7 @@ export default function getInitialHTML(
            <p>Click this button to enrich your code with relevant information from GitHub:</p>
            <button class='run-watermelon'>Run Watermelon</button>
            <p>Click this button to send a Slack message to the owner of the highlighted block of code:</p>
-           <button class='help-link'>Get help from ${
-             author 
-           }</button>
+           <button class='help-link'>Get help from ${author}</button>
            <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a></p>
         </div>
