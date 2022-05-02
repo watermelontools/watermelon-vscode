@@ -1,4 +1,4 @@
-export default function debounce(func: any, wait: number, immediate: any) {
+export default function debounce(func: any, wait: number = 150, immediate: any) {
   let timeout: any;
   return function () {
     // @ts-ignore
