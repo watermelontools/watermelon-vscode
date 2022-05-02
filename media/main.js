@@ -83,17 +83,17 @@ $(document).ready(function () {
       });
       $("#ghHolder").append(`
       <details ${!index ? "open" : ""}>
-        <summary>
-        <a class="pr-title"
+        <summary class="pr-title">
+        <img class="pr-state" src="${
+          pr.state === "closed"
+            ? "https://raw.githubusercontent.com/primer/octicons/main/icons/git-merge-24.svg"
+            : "https://raw.githubusercontent.com/primer/octicons/main/icons/git-pull-request-24.svg"
+        }"
+        />
+        <a 
        href="${pr.url}" target="_blank" title="View this PR on github">${
         pr.title
       }
-      <img class="pr-state" src="${
-        pr.state === "closed"
-          ? "https://raw.githubusercontent.com/primer/octicons/main/icons/git-merge-24.svg"
-          : "https://raw.githubusercontent.com/primer/octicons/main/icons/git-pull-request-24.svg"
-      }"
-      />
       </a>
       </summary>
         <div>

@@ -18,15 +18,16 @@ details > summary {
   font-size: large;
   list-style: none;
 }
-details[open] > summary > a::before {
+details[open] > summary::after {
   content: url("https://raw.githubusercontent.com/primer/octicons/main/icons/chevron-down-24.svg");
 }
-details > summary > a::before {
+details > summary::after {
   content: url("https://raw.githubusercontent.com/primer/octicons/main/icons/chevron-right-24.svg");
 }
 .pr-title{
   display: flex;
-  justify-content: flex-start;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
 }
 .pr-state{
   justify-self: flex-end;
