@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import * as Path from 'path';
-import * as fs from 'fs';
+import * as Path from "path";
+import * as fs from "fs";
 
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
@@ -17,6 +17,7 @@ import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import slackhelp from "./utils/analytics/slackhelp";
 import getBlameAuthors from "./utils/getBlameAuthors";
+import debounce from "./utils/debounce";
 
 // repo information
 let owner: string | undefined = "";
@@ -32,10 +33,10 @@ let octokit: any;
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
   var extensionPath = Path.join(context.extensionPath, "package.json");
-  var packageFile = JSON.parse(fs.readFileSync(extensionPath, 'utf8'));
+  var packageFile = JSON.parse(fs.readFileSync(extensionPath, "utf8"));
 
   if (packageFile) {
-      console.log(packageFile.version);
+    console.log(packageFile.version);
   }
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
@@ -102,22 +103,28 @@ export async function activate(context: vscode.ExtensionContext) {
   octokit = await credentials.getOctokit();
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
-    arrayOfSHAs = await getSHAArray(
-      selection.selections[0].start.line,
-      selection.selections[0].end.line,
-      vscode.window.activeTextEditor?.document.uri.fsPath,
-      gitAPI
+    +debounce(
+      async () => {
+        arrayOfSHAs = await getSHAArray(
+          selection.selections[0].start.line,
+          selection.selections[0].end.line,
+          vscode.window.activeTextEditor?.document.uri.fsPath,
+          gitAPI
+        );
+        let authors = await getBlameAuthors(
+          selection.selections[0].start.line,
+          selection.selections[0].end.line,
+          vscode.window.activeTextEditor?.document.uri.fsPath,
+          gitAPI
+        );
+        provider.sendSilentMessage({
+          command: "author",
+          author: authors[0],
+        });
+      },
+      150,
+      false
     );
-    let authors = await getBlameAuthors(
-      selection.selections[0].start.line,
-      selection.selections[0].end.line,
-      vscode.window.activeTextEditor?.document.uri.fsPath,
-      gitAPI
-    );
-    provider.sendSilentMessage({
-      command: "author",
-      author: authors[0],
-    });
   });
 
   if (vscode.window.registerWebviewPanelSerializer) {
@@ -218,7 +225,10 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
   }
   public sendSilentMessage(message: any) {
     if (this._view) {
-      this._view.webview.html= this._getHtmlForWebview(this._view.webview, message);
+      this._view.webview.html = this._getHtmlForWebview(
+        this._view.webview,
+        message
+      );
     }
   }
   private _getHtmlForWebview(
