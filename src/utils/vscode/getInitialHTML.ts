@@ -20,6 +20,7 @@ export default function getInitialHTML(
     "https://*.github.com",
     "https://*.github.io",
     "https://cdn.webflow.com/",
+    "https://i.imgur.com"
   ];
   let scriptSources = [
     `'nonce-${nonce}'`,
