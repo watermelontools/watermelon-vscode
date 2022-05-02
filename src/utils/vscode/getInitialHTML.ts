@@ -89,7 +89,7 @@ export default function getInitialHTML(
         <p>Send an issue on <a href="https://github.com/watermelontools/wm-extension/issues">GitHub</a> and join us on <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Slack</a></p>
      </body>
      <footer>
-      <script nonce="${nonce}" src="${scriptUri}"></script>
+      <script nonce="${nonce}" src="${scriptUri}" type="module"></script>
      </footer>
      </html>
   `;

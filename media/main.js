@@ -1,6 +1,8 @@
 while (!$) {
   console.log("no $");
 }
+import replaceIssueLinks from "./utils/replaceIssueLinks.js";
+import replaceUserTags from "./utils/replaceUserTags.js";
 const vscode = acquireVsCodeApi();
 
 const link = document.getElementsByClassName("help-link");
@@ -27,24 +29,6 @@ button[0].addEventListener("click", (event) => {
 });
 
 $(document).ready(function () {
-  const replaceIssueLinks = (text, repo_url) => {
-    let repoLink = repo_url.replace("api.", "").replace("repos/", "");
-    return text
-      .replace(
-        /#([0-9]*)/gm,
-        `<a href="${repoLink}/pull/$1" title="View this issue on github">$&</a>`
-      )
-      .replaceAll(`&<a href="${repoLink}/pull/39">#39</a>;`, "'");
-  };
-
-  const replaceUserTags = (text) => {
-    return text
-      .replace(
-        /\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi,
-        `<a href="https://github.com/$&" title="View this user on github">$&</a>`.toLowerCase()
-      )
-      .replaceAll("/@", "/");
-  };
 
   const addPRsToDoc = (prs) => {
     $("#ghHolder").append(
