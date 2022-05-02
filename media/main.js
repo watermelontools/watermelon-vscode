@@ -85,14 +85,22 @@ $(document).ready(function () {
       <details ${!index ? "open" : ""}>
         <summary><a href="${
           pr.url
-        }" target="_blank" title="View this PR on github">${
-        pr.title
-      }</a></summary>
+        }" target="_blank" title="View this PR on github">${pr.title}
+      <img class="pr-state" src="${
+        pr.state === "closed"
+          ? "https://raw.githubusercontent.com/primer/octicons/main/icons/git-merge-24.svg"
+          : "https://raw.githubusercontent.com/primer/octicons/main/icons/git-pull-request-24.svg"
+      }"
+      /></a></summary>
         <div>
         <div class="pr-header">
           <div class="pr-owner">
             <p class="pr-poster" title="View this user on github">
-              <a class="pr-author-combo" href="${pr.userLink}"><img class='pr-author-img' src="${pr.userImage}" />${pr.user}</a>
+              <a class="pr-author-combo" href="${
+                pr.userLink
+              }"><img class='pr-author-img' src="${pr.userImage}" />${
+        pr.user
+      }</a>
             </p>
             <p class="pr-date">
               ${new Date(pr.created_at).toLocaleDateString("en-us", {
@@ -105,11 +113,13 @@ $(document).ready(function () {
           </div>
         </div>
           <div class="pr-body">
-            ${pr?.body ?
-              replaceIssueLinks(
-              replaceUserTags(marked.parse(pr.body)),
-              pr.repo_url)
-              : ""
+            ${
+              pr?.body
+                ? replaceIssueLinks(
+                    replaceUserTags(marked.parse(pr.body)),
+                    pr.repo_url
+                  )
+                : ""
             }
           </div>
           ${mdComments}
