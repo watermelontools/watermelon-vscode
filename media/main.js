@@ -12,7 +12,6 @@ let errorTimeout;
 function sendMessage(message) {
   vscode.postMessage(message);
 }
-let authorName = "the code author";
 Sentry.init({
   dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
 
@@ -35,7 +34,7 @@ $(document).ready(function () {
       "<button class='run-watermelon'>Run Watermelon</button><br/>"
     );
     $("#ghHolder").append(
-      `<button class='help-link'>Get help from ${authorName}</button>`
+      `<button class='help-link'>Create repo docs</button>`
     );
     $(".run-watermelon").on("click", (event) => {
       sendMessage({ command: "run" });
@@ -151,7 +150,7 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
     $("#ghHolder").append(
-      `<button class='help-link' >Get help from ${authorName}</button>`
+      `<button class='help-link' >Create repo docs</button>`
     );
     $(".help-link").on("click", (event) => {
       sendMessage({ command: "create-docs"});
@@ -179,7 +178,7 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
     $("#ghHolder").append(
-      `<button class='help-link' >Get help from ${authorName}</button>`
+      `<button class='help-link' >Create repo docs</button>`
     );
     $(".help-link").on("click", (event) => {
       sendMessage({ command: "create-docs"});
