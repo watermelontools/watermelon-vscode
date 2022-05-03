@@ -5,7 +5,7 @@ import replaceIssueLinks from "./utils/replaceIssueLinks.js";
 import replaceUserTags from "./utils/replaceUserTags.js";
 const vscode = acquireVsCodeApi();
 
-const link = document.getElementsByClassName("help-link");
+const link = document.getElementsByClassName("create-docs");
 const button = document.getElementsByClassName("run-watermelon");
 
 let errorTimeout;
@@ -34,12 +34,12 @@ $(document).ready(function () {
       "<button class='run-watermelon'>Run Watermelon</button><br/>"
     );
     $("#ghHolder").append(
-      `<button class='help-link'>Create repo docs</button>`
+      `<button class='create-docs'>Create repo docs</button>`
     );
     $(".run-watermelon").on("click", (event) => {
       sendMessage({ command: "run" });
     });
-    $(".help-link").on("click", (event) => {
+    $(".create-docs").on("click", (event) => {
       sendMessage({ command: "create-docs"});
     });
     prs.forEach((pr, index) => {
@@ -150,9 +150,9 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
     $("#ghHolder").append(
-      `<button class='help-link' >Create repo docs</button>`
+      `<button class='create-docs' >Create repo docs</button>`
     );
-    $(".help-link").on("click", (event) => {
+    $(".create-docs").on("click", (event) => {
       sendMessage({ command: "create-docs"});
     });
 
@@ -178,9 +178,9 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
     $("#ghHolder").append(
-      `<button class='help-link' >Create repo docs</button>`
+      `<button class='create-docs' >Create repo docs</button>`
     );
-    $(".help-link").on("click", (event) => {
+    $(".create-docs").on("click", (event) => {
       sendMessage({ command: "create-docs"});
     });
   }
