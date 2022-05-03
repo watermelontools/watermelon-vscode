@@ -22,7 +22,7 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 link[0].addEventListener("click", (event) => {
-  sendMessage({ command: "open-link", link: "https://app.slack.com" });
+  sendMessage({ command: "create-docs"});
 });
 button[0].addEventListener("click", (event) => {
   sendMessage({ command: "run" });
@@ -41,7 +41,7 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
     $(".help-link").on("click", (event) => {
-      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+      sendMessage({ command: "create-docs"});
     });
     prs.forEach((pr, index) => {
       let mdComments = "";
@@ -154,7 +154,7 @@ $(document).ready(function () {
       `<button class='help-link' >Get help from ${authorName}</button>`
     );
     $(".help-link").on("click", (event) => {
-      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+      sendMessage({ command: "create-docs"});
     });
 
     $("#ghHolder").append(
@@ -182,7 +182,7 @@ $(document).ready(function () {
       `<button class='help-link' >Get help from ${authorName}</button>`
     );
     $(".help-link").on("click", (event) => {
-      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+      sendMessage({ command: "create-docs"});
     });
   }
   function removeLoading() {
