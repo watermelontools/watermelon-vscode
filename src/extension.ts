@@ -212,12 +212,21 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           if (vscode.workspace.workspaceFolders) {
             const wsPath = vscode?.workspace?.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
             const filePath = vscode.Uri.file(wsPath + "/wm-paper/index.md");
-            vscode.window.showInformationMessage(filePath.toString());
             wsedit.createFile(filePath, { ignoreIfExists: true });
             vscode.workspace.applyEdit(wsedit);
             vscode.window.showInformationMessage(
               "Created a new file: wm-paper/index.md"
             );
+            vscode.workspace.openTextDocument(filePath).then((doc: vscode.TextDocument) => {
+              vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside, false).then(e => {
+                  e.edit(edit => {
+                      edit.insert(new vscode.Position(0, 0),`# ${repo}`);
+                  });
+              });
+          }, (error: any) => {
+              console.error(error);
+              debugger;
+          });
           }
           break;
         }
