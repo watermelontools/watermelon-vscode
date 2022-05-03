@@ -8,6 +8,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Added imgur as an image source to CSP
 - Added Pr Status indicator to titles
 - Added Codecov as an image source to CSP
+- Moved functions out of main file to help with size and DX
+
 ## [1.1.4]
 - Added github as an image source to CSP
 - Added webflow to image CSP
