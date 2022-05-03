@@ -220,7 +220,13 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
             vscode.workspace.openTextDocument(filePath).then((doc: vscode.TextDocument) => {
               vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside, false).then(e => {
                   e.edit(edit => {
-                      edit.insert(new vscode.Position(0, 0),`# ${repo}`);
+                      edit.insert(new vscode.Position(0, 0),`# ${repo} by ${owner} \n`);
+                      edit.insert(new vscode.Position(1, 0),`\n`);
+                      edit.insert(new vscode.Position(2, 0),`## Intro \n`);
+                      edit.insert(new vscode.Position(3, 0),`\n`);
+                      edit.insert(new vscode.Position(4, 0),`## How to run this project \n`);
+                      edit.insert(new vscode.Position(5, 0),`\n`);
+                      edit.insert(new vscode.Position(6, 0),`## Important links \n`);
                   });
               });
           }, (error: any) => {
