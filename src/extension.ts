@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import * as Path from 'path';
-import * as fs from 'fs';
+import * as Path from "path";
+import * as fs from "fs";
 
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
@@ -32,10 +32,10 @@ let octokit: any;
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
   var extensionPath = Path.join(context.extensionPath, "package.json");
-  var packageFile = JSON.parse(fs.readFileSync(extensionPath, 'utf8'));
+  var packageFile = JSON.parse(fs.readFileSync(extensionPath, "utf8"));
 
   if (packageFile) {
-      console.log(packageFile.version);
+    console.log(packageFile.version);
   }
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
@@ -207,6 +207,20 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           vscode.env.openExternal(vscode.Uri.parse(data.link));
           break;
         }
+        case "create-docs": {
+          const wsedit = new vscode.WorkspaceEdit();
+          if (vscode.workspace.workspaceFolders) {
+            const wsPath = vscode?.workspace?.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
+            const filePath = vscode.Uri.file(wsPath + "/wm-paper/index.md");
+            vscode.window.showInformationMessage(filePath.toString());
+            wsedit.createFile(filePath, { ignoreIfExists: true });
+            vscode.workspace.applyEdit(wsedit);
+            vscode.window.showInformationMessage(
+              "Created a new file: wm-paper/index.md"
+            );
+          }
+          break;
+        }
       }
     });
   }
@@ -218,7 +232,10 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
   }
   public sendSilentMessage(message: any) {
     if (this._view) {
-      this._view.webview.html= this._getHtmlForWebview(this._view.webview, message);
+      this._view.webview.html = this._getHtmlForWebview(
+        this._view.webview,
+        message
+      );
     }
   }
   private _getHtmlForWebview(
