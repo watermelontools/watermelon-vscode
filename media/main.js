@@ -51,6 +51,9 @@ $(document).ready(function () {
       "<button class='run-watermelon'>Run Watermelon</button><br/>"
     );
     $("#ghHolder").append(
+      `<p'>${explanation}</p>`
+    );
+    $("#ghHolder").append(
       `<button class='help-link'>Get help from ${authorName}</button>`
     );
     $(".run-watermelon").on("click", (event) => {
@@ -209,6 +212,9 @@ $(document).ready(function () {
       case "author":
         authorName = message.author;
         break;
+      case "explanation":
+        console.log("message.explanation - main.js: ", message.explanation);
+        explanation = message.explanation;
     }
   });
 });

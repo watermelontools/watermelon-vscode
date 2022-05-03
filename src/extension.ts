@@ -17,6 +17,7 @@ import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import slackhelp from "./utils/analytics/slackhelp";
 import getBlameAuthors from "./utils/getBlameAuthors";
+import explainCode from "./utils/openai/explainCode";
 
 // repo information
 let owner: string | undefined = "";
@@ -26,6 +27,10 @@ let userEmail: string | undefined = "";
 let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
+// Selected block of code
+let selectedBlockOfCode: string | undefined = "";
+// codeExplanation
+let codeExplanation: string | undefined = "";
 
 let octokit: any;
 
@@ -102,6 +107,15 @@ export async function activate(context: vscode.ExtensionContext) {
   octokit = await credentials.getOctokit();
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
+    // // Get text of selected piece of code
+    let selectedCode = "";
+    if (selection.selections.length > 0) {
+      let selectedText = selection;
+      selectedCode= selectedText.textEditor.document.getText(selectedText.selections[0]);
+    }
+    // Replace newlines with \n
+    selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm,"");
+    
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
       selection.selections[0].end.line,
@@ -138,6 +152,7 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
   public static readonly viewType = "watermelon.sidebar";
 
   private _view?: vscode.WebviewView;
+  codeExplanation: any;
 
   constructor(private readonly _extensionUri: vscode.Uri) {}
   public resolveWebviewView(
@@ -163,6 +178,12 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           this.sendMessage({
             command: "loading",
           });
+
+          // Call Open AI's API to explain the code
+          this.codeExplanation = await explainCode({  
+            wrangledBlockOfCode: selectedBlockOfCode as string
+          });
+
           userEmail = await getUserEmail({ octokit });
           localUser = await getLocalUser();
           if (!arrayOfSHAs.length) {
@@ -212,6 +233,9 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
   }
   public sendMessage(message: any) {
     if (this._view) {
+      console.log("this.codeExplanation: ", this.codeExplanation.data);
+      // message.explanation = this.codeExplanation.data;
+      console.log("extension.ts - publicSendMessage  - message: ", message);
       this._view.show?.(true); // `show` is not implemented in 1.49 but is for 1.50 insiders
       this._view.webview.postMessage(message);
     }
@@ -255,7 +279,7 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
         watermelonBannerImageURL,
         nonce,
         scriptUri,
-        message.author
+        message.author,
       );
     } else {
       return getInitialHTML(
