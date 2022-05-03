@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.5]
+- Added imgur as an image source to CSP
+- Added Pr Status indicator to titles
+- Added Codecov as an image source to CSP
 ## [1.1.4]
 - Added github as an image source to CSP
 - Added webflow to image CSP
