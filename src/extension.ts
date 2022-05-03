@@ -108,16 +108,6 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.window.activeTextEditor?.document.uri.fsPath,
       gitAPI
     );
-    let authors = await getBlameAuthors(
-      selection.selections[0].start.line,
-      selection.selections[0].end.line,
-      vscode.window.activeTextEditor?.document.uri.fsPath,
-      gitAPI
-    );
-    provider.sendSilentMessage({
-      command: "author",
-      author: authors[0],
-    });
   });
 
   if (vscode.window.registerWebviewPanelSerializer) {
