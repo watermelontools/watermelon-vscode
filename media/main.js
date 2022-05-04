@@ -199,12 +199,12 @@ $(document).ready(function () {
   }
 
   window.addEventListener("message", (event) => {
-    console.log("messge received", event.data.codeExplanation);
+    console.log("messge received", event.data.explanation);
     const message = event.data; // The JSON data our extension sent
     switch (message.command) {
       case "prs":
         removeLoading();
-        addPRsToDoc(message.data, event.data.codeExplanation);
+        addPRsToDoc(message.data, event.data.explanation);
         break;
       case "loading":
         setLoading();
