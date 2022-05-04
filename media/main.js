@@ -5,14 +5,13 @@ import replaceIssueLinks from "./utils/replaceIssueLinks.js";
 import replaceUserTags from "./utils/replaceUserTags.js";
 const vscode = acquireVsCodeApi();
 
-const link = document.getElementsByClassName("help-link");
+const link = document.getElementsByClassName("create-docs");
 const button = document.getElementsByClassName("run-watermelon");
 
 let errorTimeout;
 function sendMessage(message) {
   vscode.postMessage(message);
 }
-let authorName = "the code author";
 Sentry.init({
   dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
 
@@ -22,7 +21,7 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 link[0].addEventListener("click", (event) => {
-  sendMessage({ command: "open-link", link: "https://app.slack.com" });
+  sendMessage({ command: "create-docs"});
 });
 button[0].addEventListener("click", (event) => {
   sendMessage({ command: "run" });
@@ -35,13 +34,13 @@ $(document).ready(function () {
       "<button class='run-watermelon'>Run Watermelon</button><br/>"
     );
     $("#ghHolder").append(
-      `<button class='help-link'>Get help from ${authorName}</button>`
+      `<button class='create-docs'>Create repo docs</button>`
     );
     $(".run-watermelon").on("click", (event) => {
       sendMessage({ command: "run" });
     });
-    $(".help-link").on("click", (event) => {
-      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+    $(".create-docs").on("click", (event) => {
+      sendMessage({ command: "create-docs"});
     });
     prs.forEach((pr, index) => {
       let mdComments = "";
@@ -151,10 +150,10 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
     $("#ghHolder").append(
-      `<button class='help-link' >Get help from ${authorName}</button>`
+      `<button class='create-docs' >Create repo docs</button>`
     );
-    $(".help-link").on("click", (event) => {
-      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+    $(".create-docs").on("click", (event) => {
+      sendMessage({ command: "create-docs"});
     });
 
     $("#ghHolder").append(
@@ -179,10 +178,10 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
     $("#ghHolder").append(
-      `<button class='help-link' >Get help from ${authorName}</button>`
+      `<button class='create-docs' >Create repo docs</button>`
     );
-    $(".help-link").on("click", (event) => {
-      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+    $(".create-docs").on("click", (event) => {
+      sendMessage({ command: "create-docs"});
     });
   }
   function removeLoading() {

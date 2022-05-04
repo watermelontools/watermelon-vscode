@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import * as Path from 'path';
-import * as fs from 'fs';
+import * as Path from "path";
+import * as fs from "fs";
 
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
@@ -32,10 +32,10 @@ let octokit: any;
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
   var extensionPath = Path.join(context.extensionPath, "package.json");
-  var packageFile = JSON.parse(fs.readFileSync(extensionPath, 'utf8'));
+  var packageFile = JSON.parse(fs.readFileSync(extensionPath, "utf8"));
 
   if (packageFile) {
-      console.log(packageFile.version);
+    console.log(packageFile.version);
   }
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
@@ -108,16 +108,6 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.window.activeTextEditor?.document.uri.fsPath,
       gitAPI
     );
-    let authors = await getBlameAuthors(
-      selection.selections[0].start.line,
-      selection.selections[0].end.line,
-      vscode.window.activeTextEditor?.document.uri.fsPath,
-      gitAPI
-    );
-    provider.sendSilentMessage({
-      command: "author",
-      author: authors[0],
-    });
   });
 
   if (vscode.window.registerWebviewPanelSerializer) {
@@ -207,6 +197,37 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           vscode.env.openExternal(vscode.Uri.parse(data.link));
           break;
         }
+        case "create-docs": {
+          const wsedit = new vscode.WorkspaceEdit();
+          if (vscode.workspace.workspaceFolders) {
+            const wsPath = vscode?.workspace?.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
+            const folderPath = vscode.Uri.file(wsPath + "/wm-paper");
+            const filePath = vscode.Uri.file(wsPath + "/wm-paper/index.md");
+            wsedit.createFile(folderPath, { ignoreIfExists: true })
+            wsedit.createFile(filePath, { ignoreIfExists: true });
+            vscode.workspace.applyEdit(wsedit);
+            vscode.window.showInformationMessage(
+              "Created a new file: wm-paper/index.md"
+            );
+            vscode.workspace.openTextDocument(filePath).then((doc: vscode.TextDocument) => {
+              vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside, false).then(e => {
+                  e.edit(edit => {
+                      edit.insert(new vscode.Position(0, 0),`# ${repo} by ${owner} \n`);
+                      edit.insert(new vscode.Position(1, 0),`\n`);
+                      edit.insert(new vscode.Position(2, 0),`## Intro \n`);
+                      edit.insert(new vscode.Position(3, 0),`\n`);
+                      edit.insert(new vscode.Position(4, 0),`## How to run this project \n`);
+                      edit.insert(new vscode.Position(5, 0),`\n`);
+                      edit.insert(new vscode.Position(6, 0),`## Important links \n`);
+                  });
+              });
+          }, (error: any) => {
+              console.error(error);
+              debugger;
+          });
+          }
+          break;
+        }
       }
     });
   }
@@ -218,7 +239,10 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
   }
   public sendSilentMessage(message: any) {
     if (this._view) {
-      this._view.webview.html= this._getHtmlForWebview(this._view.webview, message);
+      this._view.webview.html = this._getHtmlForWebview(
+        this._view.webview,
+        message
+      );
     }
   }
   private _getHtmlForWebview(
