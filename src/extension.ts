@@ -18,6 +18,7 @@ import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import slackhelp from "./utils/analytics/slackhelp";
 import getBlameAuthors from "./utils/getBlameAuthors";
 import explainCode from "./utils/openai/explainCode";
+import createDocs from "./utils/analytics/createDocs";
 
 // repo information
 let owner: string | undefined = "";
@@ -214,12 +215,8 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           });
           break;
         }
-        case "open-link": {
-          slackhelp();
-          vscode.env.openExternal(vscode.Uri.parse(data.link));
-          break;
-        }
         case "create-docs": {
+          createDocs();
           const wsedit = new vscode.WorkspaceEdit();
           if (vscode.workspace.workspaceFolders) {
             const wsPath = vscode?.workspace?.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
@@ -292,14 +289,20 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
     // Uri to load styles into webview
     //const stylesResetUri = webview.asWebviewUri(styleResetPath);
     const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
-
+    const darkLogo = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "imagotype-white.png")
+    );
+    const lightLogo = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "imagotype-black.png")
+    );
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
     if (message?.author) {
       return getInitialHTML(
         webview,
         stylesMainUri,
-        watermelonBannerImageURL,
+        darkLogo,
+        lightLogo,
         nonce,
         scriptUri,
         message.author,
@@ -308,7 +311,8 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
       return getInitialHTML(
         webview,
         stylesMainUri,
-        watermelonBannerImageURL,
+        darkLogo,
+        lightLogo,
         nonce,
         scriptUri
       );
