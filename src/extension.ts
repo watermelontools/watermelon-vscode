@@ -269,14 +269,20 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
     // Uri to load styles into webview
     //const stylesResetUri = webview.asWebviewUri(styleResetPath);
     const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
-
+    const darkLogo = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "imagotype-white.png")
+    );
+    const lightLogo = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "imagotype-black.png")
+    );
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
     if (message?.author) {
       return getInitialHTML(
         webview,
         stylesMainUri,
-        watermelonBannerImageURL,
+        darkLogo,
+        lightLogo,
         nonce,
         scriptUri,
         message.author
@@ -285,7 +291,8 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
       return getInitialHTML(
         webview,
         stylesMainUri,
-        watermelonBannerImageURL,
+        darkLogo,
+        lightLogo,
         nonce,
         scriptUri
       );
