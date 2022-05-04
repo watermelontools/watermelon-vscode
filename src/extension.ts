@@ -152,7 +152,7 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
   public static readonly viewType = "watermelon.sidebar";
 
   private _view?: vscode.WebviewView;
-  codeExplanation: any;
+  // codeExplanation: any;
 
   constructor(private readonly _extensionUri: vscode.Uri) {}
   public resolveWebviewView(
@@ -180,8 +180,10 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           });
 
           // Call Open AI's API to explain the code
-          this.codeExplanation = await explainCode({  
+          codeExplanation = await explainCode({  
             wrangledBlockOfCode: selectedBlockOfCode as string
+          }).then((res) => {
+            return res.data;
           });
 
           userEmail = await getUserEmail({ octokit });
@@ -233,8 +235,8 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
   }
   public sendMessage(message: any) {
     if (this._view) {
-      console.log("this.codeExplanation: ", this.codeExplanation.data);
-      // message.explanation = this.codeExplanation.data;
+      console.log("codeExplanation - sendMessage extension.ts: ", codeExplanation);
+      message.explanation = codeExplanation;
       console.log("extension.ts - publicSendMessage  - message: ", message);
       this._view.show?.(true); // `show` is not implemented in 1.49 but is for 1.50 insiders
       this._view.webview.postMessage(message);

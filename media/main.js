@@ -46,13 +46,12 @@ $(document).ready(function () {
       .replaceAll("/@", "/");
   };
 
-  const addPRsToDoc = (prs) => {
+  const addPRsToDoc = (prs, codex) => {
+    console.log("codex", codex);
     $("#ghHolder").append(
       "<button class='run-watermelon'>Run Watermelon</button><br/>"
     );
-    $("#ghHolder").append(
-      `<p'>${explanation}</p>`
-    );
+
     $("#ghHolder").append(
       `<button class='help-link'>Get help from ${authorName}</button>`
     );
@@ -62,6 +61,9 @@ $(document).ready(function () {
     $(".help-link").on("click", (event) => {
       sendMessage({ command: "open-link", link: "https://app.slack.com" });
     });
+    $("#ghHolder").append(
+      `<p>${codex}</p>`
+    );
     prs.forEach((pr, index) => {
       let mdComments = "";
       pr.comments.forEach((comment) => {
@@ -197,11 +199,12 @@ $(document).ready(function () {
   }
 
   window.addEventListener("message", (event) => {
+    console.log("messge received", event.data.codeExplanation);
     const message = event.data; // The JSON data our extension sent
     switch (message.command) {
       case "prs":
         removeLoading();
-        addPRsToDoc(message.data);
+        addPRsToDoc(message.data, event.data.codeExplanation);
         break;
       case "loading":
         setLoading();
@@ -212,9 +215,6 @@ $(document).ready(function () {
       case "author":
         authorName = message.author;
         break;
-      case "explanation":
-        console.log("message.explanation - main.js: ", message.explanation);
-        explanation = message.explanation;
     }
   });
 });
