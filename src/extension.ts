@@ -17,7 +17,6 @@ import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import slackhelp from "./utils/analytics/slackhelp";
 import getBlameAuthors from "./utils/getBlameAuthors";
-import debounce from "./utils/debounce";
 
 // repo information
 let owner: string | undefined = "";
