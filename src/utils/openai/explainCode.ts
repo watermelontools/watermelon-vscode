@@ -8,8 +8,7 @@ export default async function explainCode({
   wrangledBlockOfCode: string;
 }) {
   let resp = await axios.post(
-    // `${backendURL}/api/analytics/github/search`,
-    `http://localhost:3001/api/gpt3/explainCode`,
+    `${backendURL}/api/gpt3/explainCode`,
     {
       codeBlock: wrangledBlockOfCode
     }
