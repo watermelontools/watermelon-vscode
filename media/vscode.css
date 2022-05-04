@@ -9,6 +9,9 @@ code {
 .hljs {
   background-color: rgba(0, 0, 0, 0.4);
 }
+.wm-logo{
+  width: 300px;
+}
 details > summary {
   padding: 2px 6px;
   border-bottom: 1px solid lightgray;
@@ -168,5 +171,8 @@ pre {
   }
   h5{
     color: #42423f;
+  }
+  h2{
+    color: #e4e4e4;
   }
 }

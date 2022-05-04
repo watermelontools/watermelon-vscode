@@ -71,12 +71,13 @@ export default function getInitialHTML(
         <link href="${stylesMainUri}" rel="stylesheet">
      </head>
      <body>
-     <picture>
-    <source
+     <picture class="wm-logo">
+       <source
+        width="300"
         srcset="${darkLogo}"
         media="(prefers-color-scheme: dark)">
-    <img src="${lightLogo}" />
-</picture>
+       <img src="${lightLogo}" width="300"/>
+     </picture>
         <p>Watermelon helps you get the context of your code.</p>
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">starring Watermelon on GitHub</a></p>
         <br/>
