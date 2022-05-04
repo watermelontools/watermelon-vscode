@@ -29,10 +29,11 @@ button[0].addEventListener("click", (event) => {
 
 $(document).ready(function () {
 
-  const addPRsToDoc = (prs) => {
+  const addPRsToDoc = (prs, codex) => {
     $("#ghHolder").append(
       "<button class='run-watermelon'>Run Watermelon</button><br/>"
     );
+
     $("#ghHolder").append(
       `<button class='create-docs'>Create repo docs</button>`
     );
@@ -42,6 +43,9 @@ $(document).ready(function () {
     $(".create-docs").on("click", (event) => {
       sendMessage({ command: "create-docs"});
     });
+    $("#ghHolder").append(
+      `<p>${codex}</p>`
+    );
     prs.forEach((pr, index) => {
       let mdComments = "";
       pr.comments.forEach((comment) => {
@@ -195,7 +199,7 @@ $(document).ready(function () {
     switch (message.command) {
       case "prs":
         removeLoading();
-        addPRsToDoc(message.data);
+        addPRsToDoc(message.data, event.data.explanation);
         break;
       case "loading":
         setLoading();
