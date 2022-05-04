@@ -1,16 +1,17 @@
 while (!$) {
   console.log("no $");
 }
+import replaceIssueLinks from "./utils/replaceIssueLinks.js";
+import replaceUserTags from "./utils/replaceUserTags.js";
 const vscode = acquireVsCodeApi();
 
-const link = document.getElementsByClassName("help-link");
+const link = document.getElementsByClassName("create-docs");
 const button = document.getElementsByClassName("run-watermelon");
 
 let errorTimeout;
 function sendMessage(message) {
   vscode.postMessage(message);
 }
-let authorName = "the code author";
 Sentry.init({
   dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
 
@@ -20,31 +21,13 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 link[0].addEventListener("click", (event) => {
-  sendMessage({ command: "open-link", link: "https://app.slack.com" });
+  sendMessage({ command: "create-docs"});
 });
 button[0].addEventListener("click", (event) => {
   sendMessage({ command: "run" });
 });
 
 $(document).ready(function () {
-  const replaceIssueLinks = (text, repo_url) => {
-    let repoLink = repo_url.replace("api.", "").replace("repos/", "");
-    return text
-      .replace(
-        /#([0-9]*)/gm,
-        `<a href="${repoLink}/pull/$1" title="View this issue on github">$&</a>`
-      )
-      .replaceAll(`&<a href="${repoLink}/pull/39">#39</a>;`, "'");
-  };
-
-  const replaceUserTags = (text) => {
-    return text
-      .replace(
-        /\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/gi,
-        `<a href="https://github.com/$&" title="View this user on github">$&</a>`.toLowerCase()
-      )
-      .replaceAll("/@", "/");
-  };
 
   const addPRsToDoc = (prs, codex) => {
     $("#ghHolder").append(
@@ -52,13 +35,13 @@ $(document).ready(function () {
     );
 
     $("#ghHolder").append(
-      `<button class='help-link'>Get help from ${authorName}</button>`
+      `<button class='create-docs'>Create repo docs</button>`
     );
     $(".run-watermelon").on("click", (event) => {
       sendMessage({ command: "run" });
     });
-    $(".help-link").on("click", (event) => {
-      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+    $(".create-docs").on("click", (event) => {
+      sendMessage({ command: "create-docs"});
     });
     $("#ghHolder").append(
       `<p>${codex}</p>`
@@ -87,16 +70,28 @@ $(document).ready(function () {
       });
       $("#ghHolder").append(`
       <details ${!index ? "open" : ""}>
-        <summary><a href="${
-          pr.url
-        }" target="_blank" title="View this PR on github">${
+        <summary class="pr-title">
+        <img class="pr-state" src="${
+          pr.state === "closed"
+            ? "https://raw.githubusercontent.com/primer/octicons/main/icons/git-merge-24.svg"
+            : "https://raw.githubusercontent.com/primer/octicons/main/icons/git-pull-request-24.svg"
+        }"
+        />
+        <a 
+       href="${pr.url}" target="_blank" title="View this PR on github">${
         pr.title
-      }</a></summary>
+      }
+      </a>
+      </summary>
         <div>
         <div class="pr-header">
           <div class="pr-owner">
             <p class="pr-poster" title="View this user on github">
-              <a class="pr-author-combo" href="${pr.userLink}"><img class='pr-author-img' src="${pr.userImage}" />${pr.user}</a>
+              <a class="pr-author-combo" href="${
+                pr.userLink
+              }"><img class='pr-author-img' src="${pr.userImage}" />${
+        pr.user
+      }</a>
             </p>
             <p class="pr-date">
               ${new Date(pr.created_at).toLocaleDateString("en-us", {
@@ -109,11 +104,13 @@ $(document).ready(function () {
           </div>
         </div>
           <div class="pr-body">
-            ${pr?.body ?
-              replaceIssueLinks(
-              replaceUserTags(marked.parse(pr.body)),
-              pr.repo_url)
-              : ""
+            ${
+              pr?.body
+                ? replaceIssueLinks(
+                    replaceUserTags(marked.parse(pr.body)),
+                    pr.repo_url
+                  )
+                : ""
             }
           </div>
           ${mdComments}
@@ -157,10 +154,10 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
     $("#ghHolder").append(
-      `<button class='help-link' >Get help from ${authorName}</button>`
+      `<button class='create-docs' >Create repo docs</button>`
     );
-    $(".help-link").on("click", (event) => {
-      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+    $(".create-docs").on("click", (event) => {
+      sendMessage({ command: "create-docs"});
     });
 
     $("#ghHolder").append(
@@ -185,10 +182,10 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
     $("#ghHolder").append(
-      `<button class='help-link' >Get help from ${authorName}</button>`
+      `<button class='create-docs' >Create repo docs</button>`
     );
-    $(".help-link").on("click", (event) => {
-      sendMessage({ command: "open-link", link: "https://app.slack.com" });
+    $(".create-docs").on("click", (event) => {
+      sendMessage({ command: "create-docs"});
     });
   }
   function removeLoading() {
