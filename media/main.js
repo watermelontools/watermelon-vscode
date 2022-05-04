@@ -47,7 +47,6 @@ $(document).ready(function () {
   };
 
   const addPRsToDoc = (prs, codex) => {
-    console.log("codex", codex);
     $("#ghHolder").append(
       "<button class='run-watermelon'>Run Watermelon</button><br/>"
     );
@@ -199,7 +198,6 @@ $(document).ready(function () {
   }
 
   window.addEventListener("message", (event) => {
-    console.log("messge received", event.data.explanation);
     const message = event.data; // The JSON data our extension sent
     switch (message.command) {
       case "prs":

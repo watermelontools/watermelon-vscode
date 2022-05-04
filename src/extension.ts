@@ -235,9 +235,7 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
   }
   public sendMessage(message: any) {
     if (this._view) {
-      console.log("codeExplanation - sendMessage extension.ts: ", codeExplanation);
       message.explanation = codeExplanation;
-      console.log("extension.ts - publicSendMessage  - message: ", message);
       this._view.show?.(true); // `show` is not implemented in 1.49 but is for 1.50 insiders
       this._view.webview.postMessage(message);
     }
