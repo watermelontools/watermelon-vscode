@@ -4,5 +4,5 @@ export default async function getUserEmail({
     octokit: any;
   }) {
     let octoresp = await octokit.request('GET /user');
-    return octoresp.data?.email;
+    return octoresp?.data?.email ?? "email not found";
   }

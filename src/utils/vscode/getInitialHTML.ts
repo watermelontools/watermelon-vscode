@@ -21,6 +21,8 @@ export default function getInitialHTML(
     "https://*.github.com",
     "https://*.github.io",
     "https://cdn.webflow.com/",
+    "https://codecov.io/",
+    "https://i.imgur.com"
   ];
   let scriptSources = [
     `'nonce-${nonce}'`,
@@ -85,8 +87,8 @@ export default function getInitialHTML(
            <p>Higlight a piece of code to start.</p>
            <p>Click this button to enrich your code with relevant information from GitHub:</p>
            <button class='run-watermelon'>Run Watermelon</button>
-           <p>Click this button to send a Slack message to the owner of the highlighted block of code:</p>
-           <button class='help-link'>Get help from ${author}</button>
+           <p>We can help you document your code:</p>
+           <button class='create-docs'>Create repo docs</button>
            <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a></p>
         </div>
@@ -94,7 +96,7 @@ export default function getInitialHTML(
         <p>Send an issue on <a href="https://github.com/watermelontools/wm-extension/issues">GitHub</a> and join us on <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Slack</a></p>
      </body>
      <footer>
-      <script nonce="${nonce}" src="${scriptUri}"></script>
+      <script nonce="${nonce}" src="${scriptUri}" type="module"></script>
      </footer>
      </html>
   `;

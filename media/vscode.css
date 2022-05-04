@@ -19,6 +19,21 @@ details > summary {
   font-weight: bolder;
   cursor: pointer;
   font-size: large;
+  list-style: none;
+}
+details[open] > summary::after {
+  content: url("https://raw.githubusercontent.com/primer/octicons/main/icons/chevron-down-24.svg");
+}
+details > summary::after {
+  content: url("https://raw.githubusercontent.com/primer/octicons/main/icons/chevron-right-24.svg");
+}
+.pr-title{
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+.pr-state{
+  justify-self: flex-end;
 }
 .pr-header{
   border-radius: 6px 6px 0 0;
@@ -59,7 +74,7 @@ details > summary {
 .comment {
   margin-bottom: 1%;
   border-radius: 6px;
-  border: 1px solid #30363d;
+  border: 1px solid #5b6570;
 }
 .comment-header {
   background-color: rgb(22, 27, 34);
@@ -135,7 +150,7 @@ pre {
   align-self: center;
 }
 
-.help-link {
+.create-docs {
   background-color: rgb(117, 184, 85);
   border: none;
   outline: none;
