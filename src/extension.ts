@@ -142,7 +142,6 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
   public static readonly viewType = "watermelon.sidebar";
 
   private _view?: vscode.WebviewView;
-  // codeExplanation: any;
 
   constructor(private readonly _extensionUri: vscode.Uri) {}
   public resolveWebviewView(
