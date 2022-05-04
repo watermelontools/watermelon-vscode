@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import * as Path from 'path';
-import * as fs from 'fs';
+import * as Path from "path";
+import * as fs from "fs";
 
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
@@ -17,6 +17,8 @@ import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import slackhelp from "./utils/analytics/slackhelp";
 import getBlameAuthors from "./utils/getBlameAuthors";
+import explainCode from "./utils/openai/explainCode";
+import createDocs from "./utils/analytics/createDocs";
 
 // repo information
 let owner: string | undefined = "";
@@ -26,16 +28,20 @@ let userEmail: string | undefined = "";
 let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
+// Selected block of code
+let selectedBlockOfCode: string | undefined = "";
+// codeExplanation
+let codeExplanation: string | undefined = "";
 
 let octokit: any;
 
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
   var extensionPath = Path.join(context.extensionPath, "package.json");
-  var packageFile = JSON.parse(fs.readFileSync(extensionPath, 'utf8'));
+  var packageFile = JSON.parse(fs.readFileSync(extensionPath, "utf8"));
 
   if (packageFile) {
-      console.log(packageFile.version);
+    console.log(packageFile.version);
   }
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
@@ -102,22 +108,21 @@ export async function activate(context: vscode.ExtensionContext) {
   octokit = await credentials.getOctokit();
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
+    // // Get text of selected piece of code
+    let selectedCode = "";
+    if (selection.selections.length > 0) {
+      let selectedText = selection;
+      selectedCode= selectedText.textEditor.document.getText(selectedText.selections[0]);
+    }
+    // Replace newlines with \n
+    selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm,"");
+    
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
       selection.selections[0].end.line,
       vscode.window.activeTextEditor?.document.uri.fsPath,
       gitAPI
     );
-    let authors = await getBlameAuthors(
-      selection.selections[0].start.line,
-      selection.selections[0].end.line,
-      vscode.window.activeTextEditor?.document.uri.fsPath,
-      gitAPI
-    );
-    provider.sendSilentMessage({
-      command: "author",
-      author: authors[0],
-    });
   });
 
   if (vscode.window.registerWebviewPanelSerializer) {
@@ -163,6 +168,14 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           this.sendMessage({
             command: "loading",
           });
+
+          // Call Open AI's API to explain the code
+          codeExplanation = await explainCode({  
+            wrangledBlockOfCode: selectedBlockOfCode as string
+          }).then((res) => {
+            return res.data;
+          });
+
           userEmail = await getUserEmail({ octokit });
           localUser = await getLocalUser();
           if (!arrayOfSHAs.length) {
@@ -202,9 +215,36 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           });
           break;
         }
-        case "open-link": {
-          slackhelp();
-          vscode.env.openExternal(vscode.Uri.parse(data.link));
+        case "create-docs": {
+          createDocs();
+          const wsedit = new vscode.WorkspaceEdit();
+          if (vscode.workspace.workspaceFolders) {
+            const wsPath = vscode?.workspace?.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
+            const folderPath = vscode.Uri.file(wsPath + "/wm-paper");
+            const filePath = vscode.Uri.file(wsPath + "/wm-paper/index.md");
+            wsedit.createFile(folderPath, { ignoreIfExists: true })
+            wsedit.createFile(filePath, { ignoreIfExists: true });
+            vscode.workspace.applyEdit(wsedit);
+            vscode.window.showInformationMessage(
+              "Created a new file: wm-paper/index.md"
+            );
+            vscode.workspace.openTextDocument(filePath).then((doc: vscode.TextDocument) => {
+              vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside, false).then(e => {
+                  e.edit(edit => {
+                      edit.insert(new vscode.Position(0, 0),`# ${repo} by ${owner} \n`);
+                      edit.insert(new vscode.Position(1, 0),`\n`);
+                      edit.insert(new vscode.Position(2, 0),`## Intro \n`);
+                      edit.insert(new vscode.Position(3, 0),`\n`);
+                      edit.insert(new vscode.Position(4, 0),`## How to run this project \n`);
+                      edit.insert(new vscode.Position(5, 0),`\n`);
+                      edit.insert(new vscode.Position(6, 0),`## Important links \n`);
+                  });
+              });
+          }, (error: any) => {
+              console.error(error);
+              debugger;
+          });
+          }
           break;
         }
       }
@@ -212,13 +252,17 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
   }
   public sendMessage(message: any) {
     if (this._view) {
+      message.explanation = codeExplanation;
       this._view.show?.(true); // `show` is not implemented in 1.49 but is for 1.50 insiders
       this._view.webview.postMessage(message);
     }
   }
   public sendSilentMessage(message: any) {
     if (this._view) {
-      this._view.webview.html= this._getHtmlForWebview(this._view.webview, message);
+      this._view.webview.html = this._getHtmlForWebview(
+        this._view.webview,
+        message
+      );
     }
   }
   private _getHtmlForWebview(
@@ -245,23 +289,30 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
     // Uri to load styles into webview
     //const stylesResetUri = webview.asWebviewUri(styleResetPath);
     const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
-
+    const darkLogo = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "imagotype-white.png")
+    );
+    const lightLogo = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "imagotype-black.png")
+    );
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
     if (message?.author) {
       return getInitialHTML(
         webview,
         stylesMainUri,
-        watermelonBannerImageURL,
+        darkLogo,
+        lightLogo,
         nonce,
         scriptUri,
-        message.author
+        message.author,
       );
     } else {
       return getInitialHTML(
         webview,
         stylesMainUri,
-        watermelonBannerImageURL,
+        darkLogo,
+        lightLogo,
         nonce,
         scriptUri
       );

@@ -1,11 +1,11 @@
 {
   "name": "watermelon-tools",
   "description": "Watermelon, find all the historical context of your code",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "publisher": "WatermelonTools",
   "displayName": "Watermelon",
   "private": true,
-  "license": "Apache",
+  "license": "See license.md (Apache)",
   "repository": {
     "type": "git",
     "url": "https://github.com/orgs/watermelontools/"
@@ -73,8 +73,8 @@
     "menus": {
       "editor/context": [
         {
-        "command": "watermelon.start",
-        "when": "editorHasSelection"     
+          "command": "watermelon.start",
+          "when": "editorHasSelection"
         }
       ]
     }
