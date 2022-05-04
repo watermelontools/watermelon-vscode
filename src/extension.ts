@@ -15,8 +15,7 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getUserEmail from "./utils/getUserEmail";
 import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import slackhelp from "./utils/analytics/slackhelp";
-import getBlameAuthors from "./utils/getBlameAuthors";
+import createDocs from "./utils/analytics/createDocs";
 
 // repo information
 let owner: string | undefined = "";
@@ -192,12 +191,8 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
           });
           break;
         }
-        case "open-link": {
-          slackhelp();
-          vscode.env.openExternal(vscode.Uri.parse(data.link));
-          break;
-        }
         case "create-docs": {
+          createDocs();
           const wsedit = new vscode.WorkspaceEdit();
           if (vscode.workspace.workspaceFolders) {
             const wsPath = vscode?.workspace?.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
