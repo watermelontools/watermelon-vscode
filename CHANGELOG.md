@@ -9,6 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Added Pr Status indicator to titles
 - Added Codecov as an image source to CSP
 - Moved functions out of main file to help with size and DX
+- Added "create repo docs" button that replaces "get help from author"
 
 ## [1.1.4]
 - Added github as an image source to CSP
