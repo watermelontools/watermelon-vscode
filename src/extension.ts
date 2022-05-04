@@ -6,7 +6,6 @@ import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import getNonce from "./utils/vscode/getNonce";
 import getGitAPI from "./utils/vscode/getGitAPI";
-import { watermelonBannerImageURL } from "./constants";
 import getInitialHTML from "./utils/vscode/getInitialHTML";
 import getSHAArray from "./utils/getSHAArray";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
@@ -15,8 +14,6 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getUserEmail from "./utils/getUserEmail";
 import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import slackhelp from "./utils/analytics/slackhelp";
-import getBlameAuthors from "./utils/getBlameAuthors";
 import explainCode from "./utils/openai/explainCode";
 import createDocs from "./utils/analytics/createDocs";
 
