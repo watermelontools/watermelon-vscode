@@ -1,4 +1,4 @@
-function setLoading() {
+function setLoading(errorTimeout) {
     $("#ghHolder").replaceWith(`
     <div id="ghHolder">
       <p>Loading...</p>

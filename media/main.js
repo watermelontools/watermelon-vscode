@@ -122,7 +122,7 @@ clampCodeBlocks();
         addPRsToDoc(message.data, event.data.explanation);
         break;
       case "loading":
-        setLoading();
+        setLoading(errorTimeout);
         break;
       case "error":
         setReceivedError(message.error.errorText, errorTimeout);
