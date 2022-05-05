@@ -193,4 +193,7 @@ pre {
   .pr-state{
     filter: invert(1);
   }
+  details > summary::after{
+    filter: invert(1);
+  }
 }
