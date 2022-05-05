@@ -3,6 +3,7 @@ while (!$) {
 }
 import replaceIssueLinks from "./utils/replaceIssueLinks.js";
 import replaceUserTags from "./utils/replaceUserTags.js";
+import dateToHumanReadable from "./utils/dateToHumanReadable.js";
 const vscode = acquireVsCodeApi();
 
 const link = document.getElementsByClassName("create-docs");
@@ -26,14 +27,7 @@ link[0].addEventListener("click", (event) => {
 button[0].addEventListener("click", (event) => {
   sendMessage({ command: "run" });
 });
-const dateToHumanReadable = (dateToTransform) => {
-  return new Date(dateToTransform).toLocaleDateString("en-us", {
-    weekday: "long",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-};
+
 $(document).ready(function () {
   const addPRsToDoc = (prs, codex) => {
     $("#ghHolder").append(
