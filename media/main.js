@@ -7,6 +7,7 @@ import dateToHumanReadable from "./utils/dateToHumanReadable.js";
 import setReceivedError from "./utils/setReceivedError.js";
 import setLoading from "./utils/setLoading.js";
 import removeLoading from "./utils/removeLoading.js";
+import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 const vscode = acquireVsCodeApi();
 
 const link = document.getElementsByClassName("create-docs");
@@ -110,18 +111,7 @@ $(document).ready(function () {
       `);
     });
     hljs.highlightAll();
-    $("code").each(function (index, element) {
-      // replace each with the clamped version and a see more button
-      if ($(this).text().length > 100) {
-        $(this).addClass("clamp");
-        $(this).append("<button class='see-more'>See More</button>");
-      }
-      // now restore the text when the button was clicked
-      $(this).on("click", ".see-more", function () {
-        $(this).parent().removeClass("clamp");
-        $(this).remove();
-      });
-    });
+clampCodeBlocks();
   };
 
   window.addEventListener("message", (event) => {
