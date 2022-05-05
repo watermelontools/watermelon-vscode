@@ -21,14 +21,20 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 link[0].addEventListener("click", (event) => {
-  sendMessage({ command: "create-docs"});
+  sendMessage({ command: "create-docs" });
 });
 button[0].addEventListener("click", (event) => {
   sendMessage({ command: "run" });
 });
-
+const dateToHumanReadable = (dateToTransform) => {
+  return new Date(dateToTransform).toLocaleDateString("en-us", {
+    weekday: "long",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
 $(document).ready(function () {
-
   const addPRsToDoc = (prs, codex) => {
     $("#ghHolder").append(
       "<button class='run-watermelon'>Run Watermelon</button><br/>"
@@ -41,11 +47,9 @@ $(document).ready(function () {
       sendMessage({ command: "run" });
     });
     $(".create-docs").on("click", (event) => {
-      sendMessage({ command: "create-docs"});
+      sendMessage({ command: "create-docs" });
     });
-    $("#ghHolder").append(
-      `<p>${codex}</p>`
-    );
+    $("#ghHolder").append(`<p>${codex}</p>`);
     prs.forEach((pr, index) => {
       let mdComments = "";
       pr.comments.forEach((comment) => {
@@ -55,12 +59,7 @@ $(document).ready(function () {
           <h5 class="comment-author" title="View this user on github">
             <a href="${comment.user.html_url}">${
           comment.user.login
-        }</a> on ${new Date(comment.created_at).toLocaleDateString("en-us", {
-          weekday: "long",
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        })}
+        }</a> on ${dateToHumanReadable(comment.created_at)}
           </h5>
         </div>
         <div class="comment-body">
@@ -94,12 +93,7 @@ $(document).ready(function () {
       }</a>
             </p>
             <p class="pr-date">
-              ${new Date(pr.created_at).toLocaleDateString("en-us", {
-                weekday: "long",
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
+              ${dateToHumanReadable(pr.created_at)}
             </p>
           </div>
         </div>
@@ -157,7 +151,7 @@ $(document).ready(function () {
       `<button class='create-docs' >Create repo docs</button>`
     );
     $(".create-docs").on("click", (event) => {
-      sendMessage({ command: "create-docs"});
+      sendMessage({ command: "create-docs" });
     });
 
     $("#ghHolder").append(
@@ -185,7 +179,7 @@ $(document).ready(function () {
       `<button class='create-docs' >Create repo docs</button>`
     );
     $(".create-docs").on("click", (event) => {
-      sendMessage({ command: "create-docs"});
+      sendMessage({ command: "create-docs" });
     });
   }
   function removeLoading() {
