@@ -1,6 +1,7 @@
 import replaceIssueLinks from "./replaceIssueLinks.js";
 import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
+import parseComments from "./parseComments.js";
 
 const addPRsToDoc = (prs, codex) => {
     $("#ghHolder").append(
@@ -19,21 +20,7 @@ const addPRsToDoc = (prs, codex) => {
     $("#ghHolder").append(`<p>${codex}</p>`);
     prs.forEach((pr, index) => {
       let mdComments = "";
-      pr.comments.forEach((comment) => {
-        mdComments += `
-        <div class="comment">
-        <div class="comment-header">
-          <h5 class="comment-author" title="View this user on github">
-            <a href="${comment.user.html_url}">${
-          comment.user.login
-        }</a> on ${dateToHumanReadable(comment.created_at)}
-          </h5>
-        </div>
-        <div class="comment-body">
-      ${comment?.body ? replaceUserTags(marked.parse(comment.body)) : ""}
-        </div>
-        </div>`;
-      });
+      pr.comments.forEach(comment=> mdComments+= parseComments( comment));
       $("#ghHolder").append(`
       <details ${!index ? "open" : ""}>
         <summary class="pr-title">

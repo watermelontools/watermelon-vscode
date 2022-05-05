@@ -32,8 +32,6 @@ button[0].addEventListener("click", (event) => {
 });
 
 $(document).ready(function () {
-
-
   window.addEventListener("message", (event) => {
     const message = event.data; // The JSON data our extension sent
     switch (message.command) {
