@@ -20,10 +20,10 @@ const addPRsToDoc = (prs, codex) => {
   $("#ghHolder").append(`
   <h3>Code Explanation</h3>
   <p>${codex}</p>`);
+  $("#ghHolder").append(`
+  <h3>Pull Requests</h3>
+  `);
   prs.forEach((pr, index) => {
-    $("#ghHolder").append(`
-    <h3>Pull Requests</h3>
-    `);
     let mdComments = "";
     pr.comments.forEach((comment) => (mdComments += parseComments(comment)));
 
