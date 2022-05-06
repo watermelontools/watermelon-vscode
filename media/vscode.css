@@ -190,4 +190,10 @@ pre {
   h2{
     color: #e4e4e4;
   }
+  .pr-state{
+    filter: invert(1);
+  }
+  details > summary::after{
+    filter: invert(1);
+  }
 }
