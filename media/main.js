@@ -6,16 +6,13 @@ import setLoading from "./utils/setLoading.js";
 import removeLoading from "./utils/removeLoading.js";
 import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
-
-const vscode = acquireVsCodeApi();
+import sendMessage from "./utils/sendVSCodeMessage.js";
 
 const link = document.getElementsByClassName("create-docs");
 const button = document.getElementsByClassName("run-watermelon");
 
 let errorTimeout;
-function sendMessage(message) {
-  vscode.postMessage(message);
-}
+
 Sentry.init({
   dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
 

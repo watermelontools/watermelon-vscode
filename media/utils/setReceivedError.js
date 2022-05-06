@@ -1,3 +1,5 @@
+import sendMessage from "./sendVSCodeMessage.js";
+
 function setReceivedError(errorText, errorTimeout) {
   clearTimeout(errorTimeout);
   $("#ghHolder").replaceWith(`
