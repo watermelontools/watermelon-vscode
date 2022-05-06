@@ -15,7 +15,6 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getUserEmail from "./utils/getUserEmail";
 import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import getBlameAuthors from "./utils/getBlameAuthors";
 import explainCode from "./utils/openai/explainCode";
 import createDocs from "./utils/analytics/createDocs";
 
