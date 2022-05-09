@@ -42,10 +42,10 @@ $(document).ready(function () {
         clampCodeBlocks();
         break;
       case "loading":
-        setLoading(errorTimeout);
+        errorTimeout = setLoading(errorTimeout);
         break;
       case "error":
-        setReceivedError(message.error.errorText, errorTimeout);
+        errorTimeout = setReceivedError(message.error.errorText, errorTimeout);
         break;
       case "author":
         authorName = message.author;
