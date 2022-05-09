@@ -12,6 +12,8 @@ This is an extension to help coders understand code better.
 - A new VSCode instance will come up
 - Open a folder _that isn't this repo_ and start testing
 - All console logging will come up in the "DEBUG CONSOLE"
+## Architecture
+See [architecture.md](architecture.md)
 ## Important links
 
 - [Repo](https://github.com/watermelontools/wm-extension/)
