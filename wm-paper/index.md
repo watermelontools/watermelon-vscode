@@ -1,7 +1,7 @@
 # wm-extension by WatermelonTools
 
 ## Intro
-
+This is an extension to help coders understand code better.
 ## How to run this project
 - Open the repo on VSCode
 -  ```npm i```
