@@ -2,10 +2,11 @@
 
 ```mermaid
 flowchart TD
-    A[Start] --> B{Is it?}
-    B -- Yes --> C[OK]
-    C --> D[Rethink]
-    D --> B
-    B -- No ----> E[End]
+    A[VSCode] --sendMessage--> B{WebView}
+    A --post--> C
+    B -- fetch --> C[The Internet]
+    B --postMessage--> A
+    C --post--> B
+    C --post--> A
     
 ``` 
