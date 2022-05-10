@@ -3,7 +3,7 @@
 ```mermaid
 flowchart TD
     subgraph VSCode
-    A[VSCode] --sendMessage--> B{WebView}
+    A[node server] --sendMessage--> B{WebView}
     B --postMessage--> A
     end
     subgraph The Internet
