@@ -1,4 +1,5 @@
 import dateToHumanReadable from "./dateToHumanReadable.js";
+import sendMessage from "./sendVSCodeMessage.js";
 
 const addBlametoDoc = (blameArray) => {
   console.log(blameArray);
@@ -7,13 +8,19 @@ const addBlametoDoc = (blameArray) => {
   );
 
   $("#ghHolder").append(
-    `<button class='create-docs'>Create repo docs</button>`
+    `<button class='create-docs'>Create repo docs</button><br/>`
+  );
+  $("#ghHolder").append(
+    `<button class='git-blame'>View git blame</button>`
   );
   $(".run-watermelon").on("click", (event) => {
     sendMessage({ command: "run" });
   });
   $(".create-docs").on("click", (event) => {
     sendMessage({ command: "create-docs" });
+  });
+  $(".git-blame").on("click", (event) => {
+    sendMessage({ command: "blame" });
   });
   $("#ghHolder").append(`
     <h3>Commits</h3>
