@@ -17,10 +17,16 @@ const addPRsToDoc = (prs, codex) => {
   $(".create-docs").on("click", (event) => {
     sendMessage({ command: "create-docs" });
   });
-  $("#ghHolder").append(`<p>${codex}</p>`);
+  $("#ghHolder").append(`
+  <h3>Code Explanation</h3>
+  <p>${codex}</p>`);
+  $("#ghHolder").append(`
+  <h3>Pull Requests</h3>
+  `);
   prs.forEach((pr, index) => {
     let mdComments = "";
     pr.comments.forEach((comment) => (mdComments += parseComments(comment)));
+
     $("#ghHolder").append(`
       <details ${!index ? "open" : ""}>
         <summary class="pr-title">
