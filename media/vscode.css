@@ -165,7 +165,8 @@ pre {
   margin-bottom: 1em;
 }
 .table-zebra {
-  background-color: rgba(110, 118, 129, 0.9);
+  background-color: rgba(57, 61, 66, 0.9);
+  color: #e4e4e4;
 }
 @media (prefers-color-scheme: light) {
   html {
