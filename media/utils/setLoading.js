@@ -1,3 +1,5 @@
+import sendMessage from "./sendVSCodeMessage.js";
+
 function setLoading(errorTimeout) {
   $("#ghHolder").replaceWith(`
     <div id="ghHolder">

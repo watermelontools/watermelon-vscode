@@ -2,6 +2,7 @@ import replaceIssueLinks from "./replaceIssueLinks.js";
 import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
+import sendMessage from "./sendVSCodeMessage.js";
 
 const addPRsToDoc = (prs, codex) => {
   $("#ghHolder").append(
