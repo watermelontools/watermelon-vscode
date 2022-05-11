@@ -16,18 +16,17 @@ function setError() {
     </div>
     `);
   $("#ghHolder").append(
-    "<button class='run-watermelon'>Run Watermelon</button><br/>"
-  );
-  $(".run-watermelon").on("click", (event) => {
-    sendMessage({ command: "run" });
-  });
-  $("#ghHolder").append(
-    `<button class='create-docs' >Create repo docs</button>`
+    `<button class='create-docs' >Create Repo Docs</button><br/>`
   );
   $(".create-docs").on("click", (event) => {
     sendMessage({ command: "create-docs" });
   });
-
+  $("#ghHolder").append(
+    "<button class='run-watermelon'>View Pull Requests (Beta)</button><br/>"
+  );
+  $(".run-watermelon").on("click", (event) => {
+    sendMessage({ command: "run" });
+  });
   $("#ghHolder").append(
     "<p>Alternatively, you can <a href='https://github.com/watermelontools/wm-extension#commands'>run with our watermelon.start command</a></p>"
   );
