@@ -22,6 +22,7 @@ const addBlametoDoc = (blameArray) => {
     <table class="blame-table">
       <thead>
         <tr>
+          <th>Commit</th>
           <th>Author</th>
           <th>Message</th>
           <th>Date</th>
@@ -34,6 +35,7 @@ const addBlametoDoc = (blameArray) => {
   blameArray.forEach((blameLine, index) => {
     $(".blame-rows").append(`
       <tr>
+        <td>${blameLine?.hash?.slice(0,7)}</td>
         <td>${blameLine.authorName}</td>
         <td>${blameLine.message}</td>
         <td>${dateToHumanReadable(blameLine.commitDate)}</td>
