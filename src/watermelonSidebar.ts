@@ -1,4 +1,3 @@
-import explainCode from "./utils/openai/explainCode";
 import createDocs from "./utils/analytics/createDocs";
 import getNonce from "./utils/vscode/getNonce";
 import getInitialHTML from "./utils/vscode/getInitialHTML";
@@ -60,14 +59,6 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           this.sendMessage({
             command: "loading",
           });
-
-          // Call Open AI's API to explain the code
-          codeExplanation = await explainCode({
-            wrangledBlockOfCode: selectedBlockOfCode as string,
-          }).then((res) => {
-            return res.data;
-          });
-
           userEmail = await getUserEmail({ octokit });
           localUser = await getLocalUser();
           if (!arrayOfSHAs.length) {
