@@ -89,6 +89,7 @@ export default function getInitialHTML(
            <button class='run-watermelon'>Run Watermelon</button>
            <p>We can help you document your code:</p>
            <button class='create-docs'>Create repo docs</button>
+           <button class='git-blame'>View git blame</button>
            <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a></p>
         </div>
