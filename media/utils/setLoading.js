@@ -6,7 +6,7 @@ function setLoading(errorTimeout) {
       <p>Loading...</p>
     </div>
     `);
-  errorTimeout = setTimeout(setError, 4000);
+  return errorTimeout = setTimeout(setError, 4000);
 }
 function setError() {
   $("#ghHolder").replaceWith(`
