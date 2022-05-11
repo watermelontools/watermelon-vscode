@@ -1,5 +1,5 @@
 code {
-  background-color: rgba(110, 118, 129, 0.4);
+  background-color: rgba(110, 118, 129, 0.9);
   padding: 0.2em 0.4em;
   border-radius: 6px;
   font-size: 90%;
@@ -59,6 +59,7 @@ details > summary::after {
 }
 .pr-date {
   font-style: italic;
+  color: #e4e4e4;
   opacity: 0.5;
 }
 .pr-poster {
@@ -79,6 +80,9 @@ details > summary::after {
 .comment-header {
   background-color: rgb(22, 27, 34);
   padding: 0.1em 0.5em;
+}
+.comment-author{
+  color: #e4e4e4;
 }
 .comment-body {
   margin-top: 1%;
@@ -164,14 +168,14 @@ pre {
   html{
     background-color: #fafafa;
   }
-  p {
+  p, li {
     color: #42423f;
   }
   a {
     color: #db6161;
   }
-  h5{
-    color: #e4e4e4;
+  h1, h2, h3, h4, h5, h6 {
+    color: #929292;
   }
 }
 @media (prefers-color-scheme: dark) {
