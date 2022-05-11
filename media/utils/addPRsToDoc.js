@@ -19,9 +19,6 @@ const addPRsToDoc = (prs, codex) => {
     sendMessage({ command: "create-docs" });
   });
   $("#ghHolder").append(`
-  <h3>Code Explanation</h3>
-  <p>${codex}</p>`);
-  $("#ghHolder").append(`
   <h3>Pull Requests</h3>
   `);
   prs.forEach((pr, index) => {
