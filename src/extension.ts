@@ -14,7 +14,6 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getUserEmail from "./utils/getUserEmail";
 import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import explainCode from "./utils/openai/explainCode";
 import createDocs from "./utils/analytics/createDocs";
 
 // repo information
@@ -164,13 +163,6 @@ class watermelonSidebar implements vscode.WebviewViewProvider {
         case "run": {
           this.sendMessage({
             command: "loading",
-          });
-
-          // Call Open AI's API to explain the code
-          codeExplanation = await explainCode({  
-            wrangledBlockOfCode: selectedBlockOfCode as string
-          }).then((res) => {
-            return res.data;
           });
 
           userEmail = await getUserEmail({ octokit });
