@@ -28,6 +28,7 @@ button[0].addEventListener("click", (event) => {
   sendMessage({ command: "run" });
 });
 
+
 $(document).ready(function () {
   window.addEventListener("message", (event) => {
     const message = event.data; // The JSON data our extension sent
@@ -47,6 +48,9 @@ $(document).ready(function () {
       case "author":
         authorName = message.author;
         break;
+      default:
+        console.log("Unknown command");
+        console.log(message);
     }
   });
 });
