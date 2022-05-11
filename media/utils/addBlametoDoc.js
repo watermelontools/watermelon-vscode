@@ -34,7 +34,7 @@ const addBlametoDoc = (blameArray) => {
     `);
   blameArray.forEach((blameLine, index) => {
     $(".blame-rows").append(`
-      <tr>
+      <tr ${index%2===0? 'class="table-zebra"':""}>
         <td>${blameLine?.hash?.slice(0,7)}</td>
         <td>${blameLine.authorName}</td>
         <td>${blameLine.message}</td>

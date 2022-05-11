@@ -9,7 +9,7 @@ code {
 .hljs {
   background-color: rgba(0, 0, 0, 0.4);
 }
-.wm-logo{
+.wm-logo {
   width: 300px;
 }
 details > summary {
@@ -27,15 +27,15 @@ details[open] > summary::after {
 details > summary::after {
   content: url("https://raw.githubusercontent.com/primer/octicons/main/icons/chevron-right-24.svg");
 }
-.pr-title{
+.pr-title {
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-end;
 }
-.pr-state{
+.pr-state {
   justify-self: flex-end;
 }
-.pr-header{
+.pr-header {
   border-radius: 6px 6px 0 0;
   border: 1px solid #30363d;
   background-color: #30363d;
@@ -44,14 +44,14 @@ details > summary::after {
   display: flex;
   padding: 0.2em 0.4em;
   justify-content: space-between;
-  background-color: rgba(56,139,253,0.15);
+  background-color: rgba(56, 139, 253, 0.15);
 }
-.pr-author-combo{
+.pr-author-combo {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
-.pr-author-img{
+.pr-author-img {
   width: 15px;
   height: 15px;
   border-radius: 50%;
@@ -69,7 +69,7 @@ details > summary::after {
 }
 .pr-body {
   padding: 0.2em 0.4em;
-  border: 1px solid rgba(56,139,253,0.4);
+  border: 1px solid rgba(56, 139, 253, 0.4);
   border-radius: 0 0 6px 6px;
 }
 .comment {
@@ -81,7 +81,7 @@ details > summary::after {
   background-color: rgb(22, 27, 34);
   padding: 0.1em 0.5em;
 }
-.comment-author{
+.comment-author {
   color: #e4e4e4;
 }
 .comment-body {
@@ -97,7 +97,7 @@ a:visited {
 }
 
 a:hover {
-  color:#ad3838;
+  color: #ad3838;
   text-decoration: underline;
 }
 
@@ -164,22 +164,31 @@ pre {
   padding: 0.5em 1em;
   margin-bottom: 1em;
 }
+.table-zebra {
+  background-color: rgba(110, 118, 129, 0.9);
+}
 @media (prefers-color-scheme: light) {
-  html{
+  html {
     background-color: #fafafa;
   }
-  p, li {
+  p,
+  li {
     color: #42423f;
   }
   a {
     color: #db6161;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: #929292;
   }
 }
 @media (prefers-color-scheme: dark) {
-  html{
+  html {
     background-color: #30363d;
   }
   p {
@@ -188,16 +197,16 @@ pre {
   a {
     color: #db6161;
   }
-  h5{
+  h5 {
     color: #42423f;
   }
-  h2{
+  h2 {
     color: #e4e4e4;
   }
-  .pr-state{
+  .pr-state {
     filter: invert(1);
   }
-  details > summary::after{
+  details > summary::after {
     filter: invert(1);
   }
 }
