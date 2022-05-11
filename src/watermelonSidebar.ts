@@ -153,6 +153,9 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
             localUser,
             userEmail,
           }); */
+          this.sendMessage({
+            command: "loading",
+          });
           let blamePromises = await getFullBlame(
             vscode?.window?.activeTextEditor?.selection.start.line ?? 1,
             vscode?.window?.activeTextEditor?.selection.end.line ??

@@ -53,6 +53,7 @@ $(document).ready(function () {
         authorName = message.author;
         break;
       case "blame":
+        removeLoading(errorTimeout);
         addBlametoDoc(message.data);
         break;
       default:
