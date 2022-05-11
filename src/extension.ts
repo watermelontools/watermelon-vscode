@@ -12,7 +12,6 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getUserEmail from "./utils/getUserEmail";
 import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-
 import watermelonSidebar from "./watermelonSidebar";
 
 // repo information

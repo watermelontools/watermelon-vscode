@@ -1,10 +1,12 @@
+import sendMessage from "./sendVSCodeMessage.js";
+
 function setLoading(errorTimeout) {
   $("#ghHolder").replaceWith(`
     <div id="ghHolder">
       <p>Loading...</p>
     </div>
     `);
-  errorTimeout = setTimeout(setError, 4000);
+  return errorTimeout = setTimeout(setError, 4000);
 }
 function setError() {
   $("#ghHolder").replaceWith(`

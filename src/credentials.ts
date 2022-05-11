@@ -1,10 +1,8 @@
 import * as vscode from "vscode";
 import * as Octokit from "@octokit/rest";
-
-const GITHUB_AUTH_PROVIDER_ID = "github";
+import { GITHUB_AUTH_PROVIDER_ID, SCOPES } from "./constants";
 // The GitHub Authentication Provider accepts the scopes described here:
 // https://developer.github.com/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/
-const SCOPES = ["user:email"];
 
 export class Credentials {
   private octokit: Octokit.Octokit | undefined;
