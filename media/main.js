@@ -10,6 +10,7 @@ import sendMessage from "./utils/sendVSCodeMessage.js";
 
 const link = document.getElementsByClassName("create-docs");
 const button = document.getElementsByClassName("run-watermelon");
+const gitBlame = document.getElementsByClassName("git-blame");
 
 let errorTimeout;
 
@@ -27,7 +28,9 @@ link[0].addEventListener("click", (event) => {
 button[0].addEventListener("click", (event) => {
   sendMessage({ command: "run" });
 });
-
+gitBlame[0].addEventListener("click", (event) => {
+  sendMessage({ command: "blame" });
+});
 
 $(document).ready(function () {
   window.addEventListener("message", (event) => {
