@@ -16,7 +16,7 @@ const addBlametoDoc = (blameArray) => {
     sendMessage({ command: "create-docs" });
   });
   $("#ghHolder").append(`
-    <h3>Pull Requests</h3>
+    <h3>Commits</h3>
     `);
   $("#ghHolder").append(`
     <table class="blame-table">
