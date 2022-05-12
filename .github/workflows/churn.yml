@@ -8,7 +8,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Churn
       id: churn
-      run: echo "::set-output name=churnList::$(git log --all -M -C --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort -n)" 
+      run: echo -e "::set-output name=churnList::$(git log --all -M -C --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort -n)" 
 
     - name: Create comment
       uses: peter-evans/create-or-update-comment@v2
