@@ -1,0 +1,30 @@
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Churn
+      id: churn
+      run: |
+       churnList="$(git log --all -M -C --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sed '/1 /d'| sort -r )" 
+       churnList="${churnList//'%'/'%25'}"
+       churnList="${churnList//$'\n'/'%0A'}"
+       churnList="${churnList//$'\r'/'%0D'}"
+       echo $churnList
+       echo "::set-output name=churn::$churnList"
+    - name: Create comment
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        issue-number: 1
+        body: |
+            ## Your code churn per file is
+            ${{ join(steps.churn.outputs.*, '\n') }}
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@master
+      env:
+        SLACK_MESSAGE: ${{join(steps.churn.outputs.*, '\n')}}
+        SLACK_TITLE: Churn
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

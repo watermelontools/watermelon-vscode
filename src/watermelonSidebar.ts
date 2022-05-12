@@ -235,7 +235,7 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
       vscode.Uri.joinPath(this._extensionUri, "media", "imagotype-white.png")
     );
     const lightLogo = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "media", "imagotype-black.png")
+      vscode.Uri.joinPath(this._extensionUri, "media", "imagotype-white.png")
     );
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
