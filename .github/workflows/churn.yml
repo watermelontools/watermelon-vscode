@@ -18,4 +18,4 @@ jobs:
         body: |
           This is a multi-line test comment
             - With GitHub **Markdown** :sparkles:
-            - ${{ steps.churn.outputs }}
+            - ${{ steps.churn.output[0] }}
