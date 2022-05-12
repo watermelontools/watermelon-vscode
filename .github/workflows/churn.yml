@@ -17,4 +17,10 @@ jobs:
         issue-number: 1
         body: |
             ## Your code churn per file is
-            ${{ split(steps.churn.outputs.*, '\n') }}
+            ${{ join(steps.churn.outputs.*, '\n') }}
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@master
+      env:
+        SLACK_MESSAGE: ${{join(steps.churn.outputs.*, '\n')}}
+        SLACK_TITLE: Churn
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
