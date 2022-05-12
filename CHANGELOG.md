@@ -4,6 +4,15 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.6]
+- Fixed docs creation
+- Fixed button reuse
+- Improved visibility of titles
+- Added titles to make clearer the UI
+- Removed code explanation
+- Added ```git blame``` table
+- Added some documentation with our own product 🍉
+- A lot of developer improvements for mantainers (Welcome to contribute!)
 ## [1.1.5]
 - Added imgur as an image source to CSP
 - Added Pr Status indicator to titles
