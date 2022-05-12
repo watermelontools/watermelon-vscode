@@ -9,8 +9,12 @@ jobs:
     - name: Churn
       id: churn
       run: |
-        echo -e "::set-output name=churnList::$(git log --all -M -C --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort -n)" 
-
+       churnList="$(git log --all -M -C --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort -n)" 
+       churnList="${content//'%'/'%25'}"
+       churnList="${content//$'\n'/'%0A'}"
+       churnList="${content//$'\r'/'%0D'}"
+       echo $churnList
+       echo "::set-output name=churn::$churnList"
     - name: Create comment
       uses: peter-evans/create-or-update-comment@v2
       with:
