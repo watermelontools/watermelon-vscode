@@ -166,7 +166,7 @@ pre {
 }
 @media (prefers-color-scheme: light) {
   html{
-    background-color: #30363d;
+    background-color: #333;
   }
   p {
     color: #e4e4e4;
@@ -189,7 +189,7 @@ pre {
 }
 @media (prefers-color-scheme: dark) {
   html{
-    background-color: #30363d;
+    background-color: #333;
   }
   p {
     color: #e4e4e4;
