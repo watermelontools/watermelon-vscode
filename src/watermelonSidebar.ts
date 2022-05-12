@@ -146,13 +146,13 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "blame": {
-          /*           searchType({
-            searchType: "webview.button",
+               searchType({
+            searchType: "blame.button",
             owner,
             repo,
             localUser,
             userEmail,
-          }); */
+          });
           this.sendMessage({
             command: "loading",
           });
