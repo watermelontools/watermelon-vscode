@@ -166,21 +166,30 @@ pre {
 }
 @media (prefers-color-scheme: light) {
   html{
-    background-color: #fafafa;
+    background-color: #333;
   }
-  p, li {
-    color: #42423f;
+  p {
+    color: #e4e4e4;
   }
   a {
     color: #db6161;
   }
-  h1, h2, h3, h4, h5, h6 {
-    color: #929292;
+  h5{
+    color: #42423f;
+  }
+  h2{
+    color: #e4e4e4;
+  }
+  .pr-state{
+    filter: invert(1);
+  }
+  details > summary::after{
+    filter: invert(1);
   }
 }
 @media (prefers-color-scheme: dark) {
   html{
-    background-color: #30363d;
+    background-color: #333;
   }
   p {
     color: #e4e4e4;
