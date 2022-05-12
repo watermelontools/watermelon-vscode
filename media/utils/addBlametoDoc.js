@@ -4,14 +4,13 @@ import sendMessage from "./sendVSCodeMessage.js";
 const addBlametoDoc = (blameArray) => {
   console.log(blameArray);
   $("#ghHolder").append(
-    "<button class='run-watermelon'>Run Watermelon</button><br/>"
-  );
-
-  $("#ghHolder").append(
-    `<button class='create-docs'>Create repo docs</button><br/>`
+    `<button class='create-docs'>Create Repo Docs</button><br/>`
   );
   $("#ghHolder").append(
-    `<button class='git-blame'>View git blame</button>`
+    `<button class='git-blame'>View Git Blame</button>`
+  );
+  $("#ghHolder").append(
+    "<button class='run-watermelon'>View Pull Requests (Beta)</button><br/>"
   );
   $(".run-watermelon").on("click", (event) => {
     sendMessage({ command: "run" });

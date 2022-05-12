@@ -87,10 +87,10 @@ export default function getInitialHTML(
            <p>Higlight a piece of code to start.</p>
            <p>We can help you document your code:</p>
            <button class='create-docs'>Create Repo docs</button>
+           <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
+           <button class='git-blame'>View Git Blame</button>
            <p>Click this button to enrich your code with relevant information from GitHub:</p>
            <button class='run-watermelon'>View Pull Requests (Beta)</button>
-           <p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
-           <button class='git-blame'>View git blame</button>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a></p>
         </div>
         <h2>Need help?</h2>

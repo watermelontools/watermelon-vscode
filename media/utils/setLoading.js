@@ -22,6 +22,12 @@ function setError() {
     sendMessage({ command: "create-docs" });
   });
   $("#ghHolder").append(
+    `<button class='git-blame'>View Git Blame</button>`
+  );
+  $(".create-docs").on("click", (event) => {
+    sendMessage({ command: "git-blame" });
+  });
+  $("#ghHolder").append(
     "<button class='run-watermelon'>View Pull Requests (Beta)</button><br/>"
   );
   $(".run-watermelon").on("click", (event) => {

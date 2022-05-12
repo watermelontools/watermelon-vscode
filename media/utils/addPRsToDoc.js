@@ -8,7 +8,10 @@ const addPRsToDoc = (prs, codex) => {
   $("#ghHolder").append(
     `<button class='create-docs'>Create Repo Docs</button><br/>`
   );
-    $("#ghHolder").append(
+  $("#ghHolder").append(
+    `<button class='git-blame'>View Git Blame</button>`
+  );
+  $("#ghHolder").append(
     "<button class='run-watermelon'>View Pull Requests (Beta)</button><br/>"
   );
   $(".run-watermelon").on("click", (event) => {
@@ -16,6 +19,9 @@ const addPRsToDoc = (prs, codex) => {
   });
   $(".create-docs").on("click", (event) => {
     sendMessage({ command: "create-docs" });
+  });
+  $(".create-docs").on("click", (event) => {
+    sendMessage({ command: "git-blame" });
   });
   $("#ghHolder").append(`
   <h3>Pull Requests</h3>
