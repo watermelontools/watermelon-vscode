@@ -9,7 +9,7 @@ jobs:
     - name: Churn
       id: churn
       run: |
-       churnList="$(git log --all -M -C --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort -n)" 
+       churnList="$(git log --all -M -C --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort )" 
        churnList="${churnList//'%'/'%25'}"
        churnList="${churnList//$'\n'/'%0A'}"
        churnList="${churnList//$'\r'/'%0D'}"
