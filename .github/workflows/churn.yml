@@ -16,6 +16,5 @@ jobs:
       with:
         issue-number: 1
         body: |
-          This is a multi-line test comment
-            - With GitHub **Markdown** :sparkles:
-            - ${{ join(steps.churn.outputs.*, '\n') }}
+            ## Your code churn per file is
+            ${{ join(steps.churn.outputs.*, '\n') }}
