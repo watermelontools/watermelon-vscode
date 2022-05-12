@@ -7,9 +7,11 @@ import removeLoading from "./utils/removeLoading.js";
 import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
 import sendMessage from "./utils/sendVSCodeMessage.js";
+import addBlametoDoc from "./utils/addBlametoDoc.js";
 
 const link = document.getElementsByClassName("create-docs");
 const button = document.getElementsByClassName("run-watermelon");
+const gitBlame = document.getElementsByClassName("git-blame");
 
 let errorTimeout;
 
@@ -26,6 +28,9 @@ link[0].addEventListener("click", (event) => {
 });
 button[0].addEventListener("click", (event) => {
   sendMessage({ command: "run" });
+});
+gitBlame[0].addEventListener("click", (event) => {
+  sendMessage({ command: "blame" });
 });
 
 $(document).ready(function () {
@@ -47,6 +52,13 @@ $(document).ready(function () {
       case "author":
         authorName = message.author;
         break;
+      case "blame":
+        removeLoading(errorTimeout);
+        addBlametoDoc(message.data);
+        break;
+      default:
+        console.log("Unknown command");
+        console.log(message);
     }
   });
 });
