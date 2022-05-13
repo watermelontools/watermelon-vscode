@@ -11,16 +11,34 @@
 [![Slack](https://img.shields.io/badge/Slack%20Community-Watermelon-brightgreen)](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q)
 
 
-Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code**. Watermelon makes you an expert on any file instantly by running `git blame` for you and telling you why a block of code was written that way by someone else.
+Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code**  to document code and view Git Blame. Watermelon makes you an expert on any file instantly by running `git blame` for you and telling you why a block of code was written that way by someone else. We also help you add documentation to your workflow.
+## Features
+Watermelon has 3 features that you can use: 
+* Generate Docs for the Repo
+* View Git Blame
+* View Pull Requests (Beta)
 
-Watermelon allows you to highlight a piece of code to obtain its historical context.  
+Simply click the Watermelon icon on the sidebar. After that you can click any of the 3 different buttons Watermelon has. 
+### Generate Docs for the Repo
+Click to generate a markdown file with our template. The template includes the following sections:
 
-![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/640demo.gif?raw=true)
+* Author
+* Intro 
+* How to run this project
+* Important links
 
-## Usage
-Simply click the Watermelon icon on the sidebar, highlight a piece of code, and then click "Run Watermelon".
+![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/createRepoDocs.gif?raw=true)
+
+### View Git Blame
+Highlight a piece of code, and then click the View Git Blame button. We will run Git Blame for you, and give you a table with the Git commit messages relevant to the piece of code you highlighted.
+
+![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/viewGitBlame.gif?raw=true)
+### View Pull Requests (Beta)
+Highlight a piece of code, and then click the View Pull Requests (Beta) button to run Git Blame on the background. We will get the PR bodies and comments that are relevant to the highlighted piece of code for you. 
 
 Depending on the size of your GitHub history, this might take a few seconds.
+
+![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/viewPRs.gif?raw=true)
 
 Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our `watermelon.start` command</a>
 
@@ -42,6 +60,8 @@ Alternatively, you can search for "Watermelon" in VS Code's built-in extension m
 ## Commands
 
 Watermelon comes with a command that you can run from VS Code's command palette. The result is exactly the same as running a Watermelon query with the green button. Results sit in your sidebar.
+
+Commands for the other 2 features coming soon.
 
 |Command|Description|
 |:---|:---|
