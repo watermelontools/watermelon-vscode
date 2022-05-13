@@ -4,6 +4,8 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.7]
+- Changed analytics to match all buttons
 ## [1.1.6]
 - Fixed docs creation
 - Fixed button reuse
@@ -12,26 +14,26 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Removed code explanation
 - Added ```git blame``` table
 - Added some documentation with our own product 🍉
-- A lot of developer improvements for mantainers (Welcome to contribute!)
+- A lot of developer improvements for maintainers (Welcome to contribute!)
 ## [1.1.5]
 - Added imgur as an image source to CSP
 - Added Pr Status indicator to titles
 - Added Codecov as an image source to CSP
-- Moved functions out of main file to help with size and DX
+- Moved functions out of the main file to help with size and DX
 - Explain code block
 - Added "create repo docs" button that replaces "get help from author"
 
 ## [1.1.4]
-- Added github as an image source to CSP
+- Added GitHub as an image source to CSP
 - Added webflow to image CSP
 - Will now log the extension version to the console on startup
 - The get help button now shows the top committer name instead of "on Slack"
 - Fixed an error where the command would break even when results were fetched
 - Fixed some instances of the get help on Slack button not working
-- Will select whole file if no selection is made
+- Will select the whole file if no selection is made
 - Added CSS to PR header
 - Added a wildcard allow to watermelon.tools in CSP
-- Allow all of github as source for images
+- Allow all of GitHub as a source for images
 - Fixed case where empty PR body or empty comment would break the app
 - Fixed bug that retrieved PRs from unrelated repositories
 - Added Connect-src to CSP
@@ -80,7 +82,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Improvements to README 
 
 ## [0.0.11]
-- PR titles are now links to the PR on github
+- PR titles are now links to the PR on GitHub
 - Changed Markdown parser to MarkedJS
 - General bugfixes
 
@@ -92,7 +94,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Urgent fix: the sidebar never loaded
 
 ## [0.0.5]
-- Now the user has to login, allows viewing private repos
+- Now the user has to login, which allows viewing private repos
 - Removed local terminal dependency, uses only VSCode API
 - Shows an error panel when there are no results
 - *BETA* Adds sidebar panel

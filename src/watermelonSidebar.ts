@@ -10,6 +10,7 @@ import { Credentials } from "./credentials";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import searchType from "./utils/analytics/searchType";
 import getFullBlame from "./utils/getFullBlame";
+import getRepoInfo from "./utils/vscode/getRepoInfo";
 
 // repo information
 let owner: string | undefined = "";
@@ -55,6 +56,9 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
       await credentials.initialize(this._context);
       octokit = await credentials.getOctokit();
       let gitAPI = await getGitAPI();
+      let { repoName, ownerUsername } = await getRepoInfo();
+      repo = repoName;
+      owner = ownerUsername;
       switch (data.command) {
         case "run": {
           this.sendMessage({
@@ -100,7 +104,13 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "create-docs": {
-          createDocs();
+          searchType({
+            searchType: "docs.button",
+            owner,
+            repo,
+            localUser,
+            userEmail,
+          });
           const wsedit = new vscode.WorkspaceEdit();
           if (vscode.workspace.workspaceFolders) {
             const wsPath = vscode?.workspace?.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
@@ -146,7 +156,7 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "blame": {
-               searchType({
+          searchType({
             searchType: "blame.button",
             owner,
             repo,
