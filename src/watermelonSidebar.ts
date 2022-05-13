@@ -10,6 +10,7 @@ import { Credentials } from "./credentials";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import searchType from "./utils/analytics/searchType";
 import getFullBlame from "./utils/getFullBlame";
+import getRepoInfo from "./utils/vscode/getRepoInfo";
 
 // repo information
 let owner: string | undefined = "";
@@ -55,6 +56,9 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
       await credentials.initialize(this._context);
       octokit = await credentials.getOctokit();
       let gitAPI = await getGitAPI();
+      let { repoName, ownerUsername } = await getRepoInfo();
+      repo = repoName;
+      owner = ownerUsername;
       switch (data.command) {
         case "run": {
           this.sendMessage({
