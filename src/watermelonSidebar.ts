@@ -100,7 +100,13 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "create-docs": {
-          createDocs();
+          searchType({
+            searchType: "docs.button",
+            owner,
+            repo,
+            localUser,
+            userEmail,
+          });
           const wsedit = new vscode.WorkspaceEdit();
           if (vscode.workspace.workspaceFolders) {
             const wsPath = vscode?.workspace?.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
@@ -146,7 +152,7 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "blame": {
-               searchType({
+          searchType({
             searchType: "blame.button",
             owner,
             repo,
