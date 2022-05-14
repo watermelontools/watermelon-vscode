@@ -98,16 +98,7 @@ export async function activate(context: vscode.ExtensionContext) {
   });
   octokit = await credentials.getOctokit();
 
-  vscode.window.onDidChangeTextEditorSelection(async (selection) => {
-    // // Get text of selected piece of code
-    let selectedCode = "";
-    if (selection.selections.length > 0) {
-      let selectedText = selection;
-      selectedCode= selectedText.textEditor.document.getText(selectedText.selections[0]);
-    }
-    // Replace newlines with \n
-    selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm,"");
-    
+  vscode.window.onDidChangeTextEditorSelection(async (selection) => {    
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
       selection.selections[0].end.line,
