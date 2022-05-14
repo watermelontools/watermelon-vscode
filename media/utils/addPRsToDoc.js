@@ -3,26 +3,11 @@ import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
 import sendMessage from "./sendVSCodeMessage.js";
+import addActionButtons from "./addActionButtons.js";
 
 const addPRsToDoc = (prs, codex) => {
-  $("#ghHolder").append(
-    `<button class='create-docs'>Create Repo Docs</button><br/>`
-  );
-  $("#ghHolder").append(
-    `<button class='git-blame'>View Git Blame</button>`
-  );
-  $("#ghHolder").append(
-    "<button class='run-watermelon'>View Pull Requests (Beta)</button><br/>"
-  );
-  $(".run-watermelon").on("click", (event) => {
-    sendMessage({ command: "run" });
-  });
-  $(".create-docs").on("click", (event) => {
-    sendMessage({ command: "create-docs" });
-  });
-  $(".create-docs").on("click", (event) => {
-    sendMessage({ command: "git-blame" });
-  });
+
+addActionButtons();
   $("#ghHolder").append(`
   <h3>Pull Requests</h3>
   `);
