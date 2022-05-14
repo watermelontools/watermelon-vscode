@@ -1,3 +1,5 @@
+import sendMessage from "./sendVSCodeMessage.js";
+
 const addActionButtons = () => {
     $("#ghHolder").append(
         `<button class='create-docs'>Create Repo Docs</button><br/>`
