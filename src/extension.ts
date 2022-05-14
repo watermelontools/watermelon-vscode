@@ -23,8 +23,6 @@ let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 // Selected block of code
-// codeExplanation
-let selectedBlockOfCode: string | undefined = "";
 
 let octokit: any;
 
