@@ -57,6 +57,8 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
       octokit = await credentials.getOctokit();
       let gitAPI = await getGitAPI();
       let { repoName, ownerUsername } = await getRepoInfo();
+      userEmail = await getUserEmail({ octokit });
+      localUser = await getLocalUser();
       repo = repoName;
       owner = ownerUsername;
       switch (data.command) {
@@ -64,8 +66,7 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           this.sendMessage({
             command: "loading",
           });
-          userEmail = await getUserEmail({ octokit });
-          localUser = await getLocalUser();
+
           if (!arrayOfSHAs.length) {
             arrayOfSHAs = await getSHAArray(
               1,
