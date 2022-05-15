@@ -21,7 +21,10 @@
     "Comments",
     "PRs",
     "Repo",
-    "Context"
+    "Context",
+    "Pull request",
+    "Blame",
+    "Git"
   ],
   "icon": "images/logo.png",
   "activationEvents": [
