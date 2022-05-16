@@ -48,6 +48,37 @@ export async function activate(context: vscode.ExtensionContext) {
       provider
     )
   );
+  let myStatusBarItem: vscode.StatusBarItem;
+  	// create a new status bar item that we can now manage
+	myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+	myStatusBarItem.command = "watermelon.start";
+	context.subscriptions.push(myStatusBarItem);
+
+	// register some listener that make sure the status bar 
+	// item always up-to-date
+	context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(updateStatusBarItem));
+	context.subscriptions.push(vscode.window.onDidChangeTextEditorSelection(updateStatusBarItem));
+
+	// update status bar item once at start
+	updateStatusBarItem();
+  function updateStatusBarItem(): void {
+    const n = getNumberOfSelectedLines(vscode.window.activeTextEditor);
+    if (n > 0) {
+      myStatusBarItem.text = `$(eye) ${n} line(s) selected`;
+      myStatusBarItem.tooltip= "Click to open Watermelon";
+      myStatusBarItem.show();
+    } else {
+
+      myStatusBarItem.tooltip= "Watermelon: Select lines to view context";
+    }
+  }
+  function getNumberOfSelectedLines(editor: vscode.TextEditor | undefined): number {
+    let lines = 0;
+    if (editor) {
+      lines = editor.selections.reduce((prev, curr) => prev + (curr.end.line - curr.start.line), 0);
+    }
+    return lines;
+  }
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
