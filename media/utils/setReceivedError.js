@@ -1,4 +1,4 @@
-import sendMessage from "./sendVSCodeMessage.js";
+import addActionButtons from "./addActionButtons.js";
 
 function setReceivedError(errorText, errorTimeout) {
   clearTimeout(errorTimeout);
@@ -8,23 +8,6 @@ function setReceivedError(errorText, errorTimeout) {
       <p>Try running a new Watermelon query, please.</p>
     </div>
     `);
-  $("#ghHolder").append(
-    `<button class='create-docs' >Create Repo Docs</button><br/>`
-  );
-  $(".create-docs").on("click", (event) => {
-    sendMessage({ command: "create-docs" });
-  });
-  $("#ghHolder").append(
-    `<button class='git-blame'>View Git Blame</button>`
-  );
-  $(".create-docs").on("click", (event) => {
-    sendMessage({ command: "git-blame" });
-  });
-  $("#ghHolder").append(
-    "<button class='run-watermelon'>View Pull Requests (Beta)</button><br/>"
-  );
-  $(".run-watermelon").on("click", (event) => {
-    sendMessage({ command: "run" });
-  });
+  addActionButtons();
 }
 export default setReceivedError;

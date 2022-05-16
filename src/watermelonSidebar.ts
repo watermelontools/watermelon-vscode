@@ -20,10 +20,7 @@ let userEmail: string | undefined = "";
 let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
-// Selected block of code
-// codeExplanation
-let selectedBlockOfCode: string | undefined = "";
-let codeExplanation: string | undefined = "";
+
 let octokit: any;
 
 export default class watermelonSidebar implements vscode.WebviewViewProvider {
@@ -57,6 +54,8 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
       octokit = await credentials.getOctokit();
       let gitAPI = await getGitAPI();
       let { repoName, ownerUsername } = await getRepoInfo();
+      userEmail = await getUserEmail({ octokit });
+      localUser = await getLocalUser();
       repo = repoName;
       owner = ownerUsername;
       switch (data.command) {
@@ -64,8 +63,7 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           this.sendMessage({
             command: "loading",
           });
-          userEmail = await getUserEmail({ octokit });
-          localUser = await getLocalUser();
+
           if (!arrayOfSHAs.length) {
             arrayOfSHAs = await getSHAArray(
               1,
@@ -204,7 +202,6 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
   }
   public sendMessage(message: any) {
     if (this._view) {
-      message.explanation = codeExplanation;
       this._view.show?.(true); // `show` is not implemented in 1.49 but is for 1.50 insiders
       this._view.webview.postMessage(message);
     }
