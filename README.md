@@ -96,5 +96,5 @@ Watermelon is built by a globally distributed team of developers devoted to maki
 
 ### License
 
-- [Apache License](https://github.com/watermelontools/wm-extension/blob/dev/license.md)
+- [Apache License](license.md)
 
