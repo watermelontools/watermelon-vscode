@@ -64,8 +64,8 @@ export async function activate(context: vscode.ExtensionContext) {
   function updateStatusBarItem(): void {
     const n = getNumberOfSelectedLines(vscode.window.activeTextEditor);
     if (n > 0) {
-      myStatusBarItem.text = `$(eye) ${n} line(s) selected`;
-      myStatusBarItem.tooltip= "Click to open Watermelon";
+      myStatusBarItem.text = `Run Watermelon with the ${n} line(s) selected`;
+      myStatusBarItem.tooltip= "Click here to run Watermelon";
       myStatusBarItem.show();
     } else {
 
