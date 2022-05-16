@@ -7,7 +7,7 @@ const addBlametoDoc = (blameArray) => {
     `<button class='create-docs'>Create Repo Docs</button><br/>`
   );
   $("#ghHolder").append(
-    `<button class='git-blame'>View Git Blame</button>`
+    `<button class='git-blame'>View Git Blame</button><br/>`
   );
   $("#ghHolder").append(
     "<button class='run-watermelon'>View Pull Requests (Beta)</button><br/>"

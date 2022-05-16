@@ -15,7 +15,7 @@ function setReceivedError(errorText, errorTimeout) {
     sendMessage({ command: "create-docs" });
   });
   $("#ghHolder").append(
-    `<button class='git-blame'>View Git Blame</button>`
+    `<button class='git-blame'>View Git Blame</button><br/>`
   );
   $(".create-docs").on("click", (event) => {
     sendMessage({ command: "git-blame" });
