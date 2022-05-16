@@ -107,6 +107,7 @@
   "dependencies": {
     "@octokit/core": "^3.5.1",
     "@octokit/rest": "^18.12.0",
+    "@vscode/extension-telemetry": "^0.5.1",
     "@vscode/test-electron": "^2.1.2",
     "axios": "^0.26.1",
     "glob": "^7.2.0",
