@@ -9,8 +9,8 @@ import getSHAArray from "./utils/getSHAArray";
 import { Credentials } from "./credentials";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import searchType from "./utils/analytics/searchType";
-import getFullBlame from "./utils/getFullBlame";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
+import getBlame from "./utils/getBlame";
 
 // repo information
 let owner: string | undefined = "";
@@ -164,36 +164,10 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           this.sendMessage({
             command: "loading",
           });
-          let blamePromises = await getFullBlame(
-            vscode?.window?.activeTextEditor?.selection.start.line ?? 1,
-            vscode?.window?.activeTextEditor?.selection.end.line ??
-              vscode.window.activeTextEditor?.document.lineCount ??
-              2,
-            vscode.window.activeTextEditor?.document.uri.fsPath,
-            gitAPI
-          );
-          Promise.allSettled(blamePromises).then((results) => {
-            let blames: string[] = [];
-            results.forEach((result) => {
-              if (result.status === "fulfilled") {
-                blames.push(result.value);
-              } else {
-                blames.push(result.reason);
-              }
-            });
-
-            const uniqueBlames = [
-              ...new Map(
-                blames.map((item) =>
-                  // @ts-ignore
-                  [item["message"], item]
-                )
-              ).values(),
-            ];
-            this.sendMessage({
-              command: "blame",
-              data: uniqueBlames,
-            });
+          let uniqueBlames = await getBlame(gitAPI)
+          this.sendMessage({
+            command: "blame",
+            data: uniqueBlames,
           });
           break;
         }
