@@ -13,6 +13,7 @@ import getUserEmail from "./utils/getUserEmail";
 import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import watermelonSidebar from "./watermelonSidebar";
+import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 
 // repo information
 let owner: string | undefined = "";
@@ -56,29 +57,15 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// register some listener that make sure the status bar 
 	// item always up-to-date
-	context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(updateStatusBarItem));
-	context.subscriptions.push(vscode.window.onDidChangeTextEditorSelection(updateStatusBarItem));
-
+	context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(async () => {
+    updateStatusBarItem(myStatusBarItem);
+    }));
+	context.subscriptions.push(vscode.window.onDidChangeTextEditorSelection(async () => {
+    updateStatusBarItem(myStatusBarItem);
+    }));
 	// update status bar item once at start
-	updateStatusBarItem();
-  function updateStatusBarItem(): void {
-    const n = getNumberOfSelectedLines(vscode.window.activeTextEditor);
-    if (n > 0) {
-      myStatusBarItem.text = `Run Watermelon with the ${n} line(s) selected`;
-      myStatusBarItem.tooltip= "Click here to run Watermelon";
-      myStatusBarItem.show();
-    } else {
-
-      myStatusBarItem.tooltip= "Watermelon: Select lines to view context";
-    }
-  }
-  function getNumberOfSelectedLines(editor: vscode.TextEditor | undefined): number {
-    let lines = 0;
-    if (editor) {
-      lines = editor.selections.reduce((prev, curr) => prev + (curr.end.line - curr.start.line), 0);
-    }
-    return lines;
-  }
+	updateStatusBarItem(myStatusBarItem);
+  
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
