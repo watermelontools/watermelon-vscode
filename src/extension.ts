@@ -50,22 +50,29 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
   let myStatusBarItem: vscode.StatusBarItem;
-  	// create a new status bar item that we can now manage
-	myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-	myStatusBarItem.command = "watermelon.start";
-	context.subscriptions.push(myStatusBarItem);
+  // create a new status bar item that we can now manage
+  myStatusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  myStatusBarItem.command = "watermelon.start";
+  context.subscriptions.push(myStatusBarItem);
 
-	// register some listener that make sure the status bar 
-	// item always up-to-date
-	context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(async () => {
-    updateStatusBarItem(myStatusBarItem);
-    }));
-	context.subscriptions.push(vscode.window.onDidChangeTextEditorSelection(async () => {
-    updateStatusBarItem(myStatusBarItem);
-    }));
-	// update status bar item once at start
-	updateStatusBarItem(myStatusBarItem);
-  
+  // register some listener that make sure the status bar
+  // item always up-to-date
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveTextEditor(async () => {
+      updateStatusBarItem(myStatusBarItem);
+    })
+  );
+  context.subscriptions.push(
+    vscode.window.onDidChangeTextEditorSelection(async () => {
+      updateStatusBarItem(myStatusBarItem);
+    })
+  );
+  // update status bar item once at start
+  updateStatusBarItem(myStatusBarItem);
+
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
@@ -123,11 +130,13 @@ export async function activate(context: vscode.ExtensionContext) {
     let selectedCode = "";
     if (selection.selections.length > 0) {
       let selectedText = selection;
-      selectedCode= selectedText.textEditor.document.getText(selectedText.selections[0]);
+      selectedCode = selectedText.textEditor.document.getText(
+        selectedText.selections[0]
+      );
     }
     // Replace newlines with \n
-    selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm,"");
-    
+    selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm, "");
+
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
       selection.selections[0].end.line,
@@ -149,4 +158,3 @@ export async function activate(context: vscode.ExtensionContext) {
     });
   }
 }
-
