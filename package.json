@@ -39,6 +39,11 @@
         "command": "watermelon.start",
         "title": "Start watermelon",
         "category": "watermelon"
+      },
+      {
+        "command": "watermelon.blame",
+        "title": "Get watermelon blame",
+        "category": "watermelon"
       }
     ],
     "views": {
