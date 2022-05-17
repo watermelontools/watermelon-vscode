@@ -99,6 +99,7 @@
     "@vscode/test-electron": "^2.1.2",
     "eslint": "^7.21.0",
     "typescript": "^4.4.3",
+    "mocha": "^9.2.2",
     "vsce": "^2.6.7"
   },
   "dependencies": {
@@ -106,7 +107,6 @@
     "@octokit/rest": "^18.12.0",
     "@vscode/test-electron": "^2.1.2",
     "axios": "^0.26.1",
-    "glob": "^7.2.0",
-    "mocha": "^9.2.2"
+    "octokit": "^1.7.1"
   }
 }
