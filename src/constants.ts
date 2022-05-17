@@ -3,4 +3,4 @@ export const watermelonBannerImageURL =
 export const backendURL = "https://app.watermelon.tools";
 
 export const GITHUB_AUTH_PROVIDER_ID = "github";
-export const SCOPES = ["user:email"];
+export const SCOPES = ["user:email", "repo", "read:org"];
