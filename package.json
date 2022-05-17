@@ -1,7 +1,7 @@
 {
   "name": "watermelon-tools",
   "description": "Watermelon, find all the historical context of your code",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "publisher": "WatermelonTools",
   "displayName": "Watermelon",
   "private": true,
