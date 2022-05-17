@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.2.0]
 - Allow private repo access (requires logging in again)
+- Added scope to allow private repos
 ## [1.1.10]
 - Hotfix on octokit
 ## [1.1.9]
