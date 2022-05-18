@@ -39,7 +39,7 @@ $(document).ready(function () {
     switch (message.command) {
       case "prs":
         removeLoading(errorTimeout);
-        addPRsToDoc(message.data, message.explanation);
+        addPRsToDoc(message.data);
         hljs.highlightAll();
         clampCodeBlocks();
         break;

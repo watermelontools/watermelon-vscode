@@ -13,6 +13,7 @@ import getUserEmail from "./utils/getUserEmail";
 import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import watermelonSidebar from "./watermelonSidebar";
+import getBlame from "./utils/getBlame";
 
 // repo information
 let owner: string | undefined = "";
@@ -23,8 +24,6 @@ let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 // Selected block of code
-// codeExplanation
-let selectedBlockOfCode: string | undefined = "";
 
 let octokit: any;
 
@@ -94,6 +93,27 @@ export async function activate(context: vscode.ExtensionContext) {
       });
     })
   );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("watermelon.blame", async () => {
+      provider.sendMessage({
+        command: "loading",
+      });
+      localUser = await getLocalUser();
+      octokit = await credentials.getOctokit();
+      let uniqueBlames = await getBlame(gitAPI)
+      provider.sendMessage({
+        command: "blame",
+        data: uniqueBlames,
+      });
+      searchType({
+        searchType: "watermelon.blame",
+        owner,
+        repo,
+        localUser,
+        userEmail,
+      });
+    })
+  );
 
   vscode.authentication.getSession("github", []).then((session: any) => {
     setLoggedIn(true);
@@ -101,15 +121,6 @@ export async function activate(context: vscode.ExtensionContext) {
   octokit = await credentials.getOctokit();
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
-    // // Get text of selected piece of code
-    let selectedCode = "";
-    if (selection.selections.length > 0) {
-      let selectedText = selection;
-      selectedCode= selectedText.textEditor.document.getText(selectedText.selections[0]);
-    }
-    // Replace newlines with \n
-    selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm,"");
-    
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
       selection.selections[0].end.line,
