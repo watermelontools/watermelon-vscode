@@ -2,36 +2,15 @@ import createDocs from "./utils/analytics/createDocs";
 import getNonce from "./utils/vscode/getNonce";
 import getInitialHTML from "./utils/vscode/getInitialHTML";
 import * as vscode from "vscode";
-import TelemetryReporter from '@vscode/extension-telemetry';
 import getGitAPI from "./utils/vscode/getGitAPI";
 import getUserEmail from "./utils/getUserEmail";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getSHAArray from "./utils/getSHAArray";
 import { Credentials } from "./credentials";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import getFullBlame from "./utils/getFullBlame";
-import searchType from "./utils/analytics/searchType";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getBlame from "./utils/getBlame";
 
-// all events will be prefixed with this event name
-const extensionId = 'WatermelonTools.watermelon-tools';
-
-// extension version will be reported as a property with each event
-const extensionVersion = '1.1.5';
-
-// the application insights key (also known as instrumentation key)
-const key = '4ed9e755-be2b-460b-9309-426fb5f58c6f';
-
-// telemetry reporter
-let reporter: any;
-
-function activate(context: vscode.ExtensionContext) {
-  // create telemetry reporter on extension activation
-  reporter = new TelemetryReporter(extensionId, extensionVersion, key);
-  // ensure it gets properly disposed. Upon disposal the events will be flushed
-  context.subscriptions.push(reporter);
-}
 
 // repo information
 let owner: string | undefined = "";
