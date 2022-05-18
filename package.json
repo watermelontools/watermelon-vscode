@@ -1,7 +1,7 @@
 {
   "name": "watermelon-tools",
   "description": "Watermelon, find all the historical context of your code",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "publisher": "WatermelonTools",
   "displayName": "Watermelon",
   "private": true,
@@ -119,6 +119,7 @@
   "dependencies": {
     "@octokit/core": "^3.5.1",
     "@octokit/rest": "^18.12.0",
+    "@vscode/extension-telemetry": "^0.5.1",
     "@vscode/test-electron": "^2.1.2",
     "axios": "^0.26.1",
     "octokit": "^1.7.1"
