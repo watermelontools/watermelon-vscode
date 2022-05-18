@@ -69,7 +69,7 @@ Commands for the other 2 features coming soon.
 
 ## Contributing
 
-Check out [Contributing.md](https://github.com/watermelontools/wm-extension/blob/dev/CONTRIBUTING.md) and be aware of the [Code of Conduct](https://github.com/watermelontools/wm-extension/blob/dev/CODE_OF_CONDUCT.md)!
+Check out [Contributing.md](CONTRIBUTING.md) and be aware of the [Code of Conduct](CODE_OF_CONDUCT.md)!
 
 We're an early stage project, therefore we still have the luxury to coordinate via short chats with our contributors. If you're interested in contributing, please join our [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q) community. 
 Alternatively, comment on our issues if you plan to solve one.
@@ -96,5 +96,5 @@ Watermelon is built by a globally distributed team of developers devoted to maki
 
 ### License
 
-- [Apache License](https://github.com/watermelontools/wm-extension/blob/main/LICENSE)
+- [Apache License](license.md)
 
