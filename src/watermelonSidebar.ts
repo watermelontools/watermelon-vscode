@@ -31,6 +31,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
   constructor(private readonly context: vscode.ExtensionContext, public reporter: any) {
     this._extensionUri = context.extensionUri;
     this._context = context;
+    this.reporter = reporter;
   }
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -90,7 +91,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           );
           
           // Send Event to VSC Telemtry Library
-          reporter.sendTelemetryEvent('pullRequests');
+          this.reporter.sendTelemetryEvent('pullRequests');
 
           this.sendMessage({
             command: "prs",
@@ -100,7 +101,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
         }
         case "create-docs": {
           // Send Event to VSC Telemtry Library
-          reporter.sendTelemetryEvent('createDocs');
+          this.reporter.sendTelemetryEvent('createDocs');
 
           const wsedit = new vscode.WorkspaceEdit();
           if (vscode.workspace.workspaceFolders) {
@@ -148,7 +149,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
         }
         case "blame": {
         // Send Event to VSC Telemtry Library
-        reporter.sendTelemetryEvent('viewBlame');
+        this.reporter.sendTelemetryEvent('viewBlame');
 
           this.sendMessage({
             command: "loading",
