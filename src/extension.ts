@@ -14,6 +14,7 @@ import getBlame from "./utils/getBlame";
 import searchType from "./utils/analytics/searchType";
 import getPackageInfo from "./utils/getPackageInfo";
 import TelemetryReporter from "@vscode/extension-telemetry";
+import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 
 // repo information
 let owner: string | undefined = "";
@@ -58,6 +59,30 @@ export async function activate(context: vscode.ExtensionContext) {
       provider
     )
   );
+  let myStatusBarItem: vscode.StatusBarItem;
+  // create a new status bar item that we can now manage
+  myStatusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  myStatusBarItem.command = "watermelon.start";
+  context.subscriptions.push(myStatusBarItem);
+
+  // register some listener that make sure the status bar
+  // item always up-to-date
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveTextEditor(async () => {
+      updateStatusBarItem(myStatusBarItem);
+    })
+  );
+  context.subscriptions.push(
+    vscode.window.onDidChangeTextEditorSelection(async () => {
+      updateStatusBarItem(myStatusBarItem);
+    })
+  );
+  // update status bar item once at start
+  updateStatusBarItem(myStatusBarItem);
+
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
@@ -144,9 +169,4 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
   }
-}
-
-export async function deactivate() {
-  // This will ensure all pending events get flushed
-   reporter.dispose();
 }
