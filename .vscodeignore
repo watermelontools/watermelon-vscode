@@ -10,7 +10,6 @@ vsc-extension-quickstart.md
 **/*.ts
 .env
 .github/**
-node_modules/**
 .eslintrc.json
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
