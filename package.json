@@ -21,7 +21,10 @@
     "Comments",
     "PRs",
     "Repo",
-    "Context"
+    "Context",
+    "Pull request",
+    "Blame",
+    "Git"
   ],
   "icon": "images/logo.png",
   "activationEvents": [
@@ -35,6 +38,11 @@
       {
         "command": "watermelon.start",
         "title": "Start watermelon",
+        "category": "watermelon"
+      },
+      {
+        "command": "watermelon.blame",
+        "title": "Get watermelon blame",
         "category": "watermelon"
       }
     ],
@@ -100,6 +108,7 @@
     "eslint": "^7.21.0",
     "mocha": "^9.2.2",
     "typescript": "^4.4.3",
+    "glob": "^7.2.0",
     "vsce": "^2.6.7"
   },
   "dependencies": {

@@ -1,4 +1,4 @@
-import sendMessage from "./sendVSCodeMessage.js";
+import addActionButtons from "./addActionButtons.js";
 
 function setLoading(errorTimeout) {
   $("#ghHolder").replaceWith(`
@@ -6,7 +6,7 @@ function setLoading(errorTimeout) {
       <p>Loading...</p>
     </div>
     `);
-  return errorTimeout = setTimeout(setError, 4000);
+  return (errorTimeout = setTimeout(setError, 4000));
 }
 function setError() {
   $("#ghHolder").replaceWith(`
@@ -15,24 +15,7 @@ function setError() {
       <p>Try running a new Watermelon query, please.</p>
     </div>
     `);
-  $("#ghHolder").append(
-    `<button class='create-docs' >Create Repo Docs</button><br/>`
-  );
-  $(".create-docs").on("click", (event) => {
-    sendMessage({ command: "create-docs" });
-  });
-  $("#ghHolder").append(
-    `<button class='git-blame'>View Git Blame</button>`
-  );
-  $(".create-docs").on("click", (event) => {
-    sendMessage({ command: "git-blame" });
-  });
-  $("#ghHolder").append(
-    "<button class='run-watermelon'>View Pull Requests (Beta)</button><br/>"
-  );
-  $(".run-watermelon").on("click", (event) => {
-    sendMessage({ command: "run" });
-  });
+  addActionButtons();
   $("#ghHolder").append(
     "<p>Alternatively, you can <a href='https://github.com/watermelontools/wm-extension#commands'>run with our watermelon.start command</a></p>"
   );
