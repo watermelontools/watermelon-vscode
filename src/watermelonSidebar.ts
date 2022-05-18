@@ -114,8 +114,10 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
             const wsPath = vscode?.workspace?.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
             const folderPath = vscode.Uri.file(wsPath + "/wm-paper/");
             const filePath = vscode.Uri.file(wsPath + "/wm-paper/index.md");
+            const archFilePath = vscode.Uri.file(wsPath + "/wm-paper/architecture.md");
             wsedit.createFile(folderPath, { ignoreIfExists: true });
             wsedit.createFile(filePath, { ignoreIfExists: true });
+            wsedit.createFile(archFilePath, { ignoreIfExists: true });
             vscode.workspace.applyEdit(wsedit);
             vscode.window.showInformationMessage(
               "Created a new file: wm-paper/index.md"
@@ -140,6 +142,14 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
                       edit.insert(new vscode.Position(5, 0), `\n`);
                       edit.insert(
                         new vscode.Position(6, 0),
+                        `## Architecture \n`
+                      );
+                      edit.insert(
+                        new vscode.Position(7, 0),
+                        `See [architecture.md](architecture.md) \n`
+                      );
+                      edit.insert(
+                        new vscode.Position(8, 0),
                         `## Important links \n`
                       );
                     });
@@ -150,7 +160,37 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
                 debugger;
               }
             );
-          }
+          
+          vscode.workspace.openTextDocument(archFilePath).then(
+            (doc: vscode.TextDocument) => {
+              vscode.window
+                .showTextDocument(doc, vscode.ViewColumn.Beside, false)
+                .then((e) => {
+                  e.edit((edit) => {
+                    edit.insert(
+                      new vscode.Position(0, 0),
+                      `# ${repo} Architecture \n`
+                    );
+                    edit.insert(new vscode.Position(1, 0), `\n`);
+                    edit.insert(new vscode.Position(2, 0), `## Intro \n`);
+                    edit.insert(new vscode.Position(3, 0), `\n`);
+                    edit.insert(
+                      new vscode.Position(4, 0),
+                      `## How to run this project \n`
+                    );
+                    edit.insert(new vscode.Position(5, 0), `\n`);
+                    edit.insert(
+                      new vscode.Position(6, 0),
+                      `## Important links \n`
+                    );
+                  });
+                });
+            },
+            (error: any) => {
+              console.error(error);
+              debugger;
+            }
+          );
           break;
         }
         case "blame": {
