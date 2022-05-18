@@ -9,8 +9,9 @@ import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import watermelonSidebar from "./watermelonSidebar";
+import WatermelonSidebar from "./watermelonSidebar";
 import getBlame from "./utils/getBlame";
+import searchType from "./utils/analytics/searchType";
 
 // repo information
 let owner: string | undefined = "";
@@ -36,11 +37,11 @@ export async function activate(context: vscode.ExtensionContext) {
   const credentials = new Credentials();
   await credentials.initialize(context);
 
-  const provider = new watermelonSidebar(context);
+  const provider = new WatermelonSidebar(context);
 
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
-      watermelonSidebar.viewType,
+      WatermelonSidebar.viewType,
       provider
     )
   );
@@ -89,7 +90,7 @@ export async function activate(context: vscode.ExtensionContext) {
       });
       localUser = await getLocalUser();
       octokit = await credentials.getOctokit();
-      let uniqueBlames = await getBlame(gitAPI)
+      let uniqueBlames = await getBlame(gitAPI);
       provider.sendMessage({
         command: "blame",
         data: uniqueBlames,
@@ -120,7 +121,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   if (vscode.window.registerWebviewPanelSerializer) {
     // Make sure we register a serializer in activation event
-    vscode.window.registerWebviewPanelSerializer(watermelonSidebar.viewType, {
+    vscode.window.registerWebviewPanelSerializer(WatermelonSidebar.viewType, {
       async deserializeWebviewPanel(
         webviewPanel: vscode.WebviewPanel,
         state: any

@@ -44,7 +44,7 @@ let arrayOfSHAs: string[] = [];
 
 let octokit: any;
 
-export default class watermelonSidebar implements vscode.WebviewViewProvider {
+export default class WatermelonSidebar implements vscode.WebviewViewProvider {
   public static readonly viewType = "watermelon.sidebar";
   public _extensionUri: vscode.Uri;
   private _view?: vscode.WebviewView;
@@ -174,7 +174,7 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           this.sendMessage({
             command: "loading",
           });
-          let uniqueBlames = await getBlame(gitAPI)
+          let uniqueBlames = await getBlame(gitAPI);
           this.sendMessage({
             command: "blame",
             data: uniqueBlames,
