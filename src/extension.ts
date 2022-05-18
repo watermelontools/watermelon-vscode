@@ -50,7 +50,7 @@ export async function activate(context: vscode.ExtensionContext) {
   const credentials = new Credentials();
   await credentials.initialize(context);
 
-  const provider = new WatermelonSidebar(context);
+  const provider = new WatermelonSidebar(context, reporter);
 
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(

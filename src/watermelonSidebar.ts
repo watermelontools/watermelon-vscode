@@ -28,7 +28,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
   public _extensionUri: vscode.Uri;
   private _view?: vscode.WebviewView;
   private _context: vscode.ExtensionContext;
-  constructor(private readonly context: vscode.ExtensionContext) {
+  constructor(private readonly context: vscode.ExtensionContext, public reporter: any) {
     this._extensionUri = context.extensionUri;
     this._context = context;
   }
