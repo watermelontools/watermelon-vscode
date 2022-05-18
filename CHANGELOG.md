@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.2.2]
 - New Telemetry
+- Activate from the counter on the bottom bar 
 ## [1.2.1]
 - Fixes to DX
 ## [1.2.0]
