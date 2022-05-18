@@ -15,3 +15,8 @@ out/test/**
 pull_request_template.md
 src/**
 vsc-extension-quickstart.md
+azure-pipelines.yml
+CODEOWNERS
+createRepoDocs.gif
+640demo.gif
+viewPRs.gif
