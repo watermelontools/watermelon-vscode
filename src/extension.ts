@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import * as Path from "path";
 import * as fs from "fs";
-
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import getGitAPI from "./utils/vscode/getGitAPI";
@@ -9,11 +8,12 @@ import getSHAArray from "./utils/getSHAArray";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
-import getUserEmail from "./utils/getUserEmail";
-import searchType from "./utils/analytics/searchType";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import watermelonSidebar from "./watermelonSidebar";
+import WatermelonSidebar from "./watermelonSidebar";
 import getBlame from "./utils/getBlame";
+import searchType from "./utils/analytics/searchType";
+import getPackageInfo from "./utils/getPackageInfo";
+import TelemetryReporter from "@vscode/extension-telemetry";
 
 // repo information
 let owner: string | undefined = "";
@@ -27,23 +27,34 @@ let arrayOfSHAs: string[] = [];
 
 let octokit: any;
 
+// all events will be prefixed with this event name
+const extensionId = 'WatermelonTools.watermelon-tools';
+
+// extension version will be reported as a property with each event
+const extensionVersion = getPackageInfo().version;
+
+// the application insights key (also known as instrumentation key)
+const key = '4ed9e755-be2b-460b-9309-426fb5f58c6f';
+
+// telemetry reporter
+let reporter: any;
+
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
-  var extensionPath = Path.join(context.extensionPath, "package.json");
-  var packageFile = JSON.parse(fs.readFileSync(extensionPath, "utf8"));
 
-  if (packageFile) {
-    console.log(packageFile.version);
-  }
+  // create telemetry reporter on extension activation
+  reporter = new TelemetryReporter(extensionId, extensionVersion, key);
+  // ensure it gets properly disposed. Upon disposal the events will be flushed
+  context.subscriptions.push(reporter);
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
   await credentials.initialize(context);
 
-  const provider = new watermelonSidebar(context);
+  const provider = new WatermelonSidebar(context, reporter);
 
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
-      watermelonSidebar.viewType,
+      WatermelonSidebar.viewType,
       provider
     )
   );
@@ -83,14 +94,6 @@ export async function activate(context: vscode.ExtensionContext) {
         command: "prs",
         data: issuesWithTitlesAndGroupedComments,
       });
-      userEmail = await getUserEmail({ octokit });
-      searchType({
-        searchType: "watermelon.start",
-        owner,
-        repo,
-        localUser,
-        userEmail,
-      });
     })
   );
   context.subscriptions.push(
@@ -100,7 +103,7 @@ export async function activate(context: vscode.ExtensionContext) {
       });
       localUser = await getLocalUser();
       octokit = await credentials.getOctokit();
-      let uniqueBlames = await getBlame(gitAPI)
+      let uniqueBlames = await getBlame(gitAPI);
       provider.sendMessage({
         command: "blame",
         data: uniqueBlames,
@@ -131,7 +134,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   if (vscode.window.registerWebviewPanelSerializer) {
     // Make sure we register a serializer in activation event
-    vscode.window.registerWebviewPanelSerializer(watermelonSidebar.viewType, {
+    vscode.window.registerWebviewPanelSerializer(WatermelonSidebar.viewType, {
       async deserializeWebviewPanel(
         webviewPanel: vscode.WebviewPanel,
         state: any
@@ -143,3 +146,7 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 }
 
+export async function deactivate() {
+  // This will ensure all pending events get flushed
+   reporter.dispose();
+}

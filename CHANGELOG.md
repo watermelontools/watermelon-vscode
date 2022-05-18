@@ -4,6 +4,11 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+
+## [1.2.2]
+- New Telemetry
+## [1.2.1]
+- Fixes to DX
 ## [1.2.0]
 - Allow private repo access (requires logging in again)
 - Added scope to allow private repos
