@@ -146,3 +146,7 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 }
 
+export async function deactivate() {
+  // This will ensure all pending events get flushed
+   reporter.dispose();
+}
