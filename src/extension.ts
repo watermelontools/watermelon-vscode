@@ -10,6 +10,7 @@ import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import watermelonSidebar from "./watermelonSidebar";
+import getBlame from "./utils/getBlame";
 
 // repo information
 let owner: string | undefined = "";
@@ -81,13 +82,34 @@ export async function activate(context: vscode.ExtensionContext) {
       });
     })
   );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("watermelon.blame", async () => {
+      provider.sendMessage({
+        command: "loading",
+      });
+      localUser = await getLocalUser();
+      octokit = await credentials.getOctokit();
+      let uniqueBlames = await getBlame(gitAPI)
+      provider.sendMessage({
+        command: "blame",
+        data: uniqueBlames,
+      });
+      searchType({
+        searchType: "watermelon.blame",
+        owner,
+        repo,
+        localUser,
+        userEmail,
+      });
+    })
+  );
 
   vscode.authentication.getSession("github", []).then((session: any) => {
     setLoggedIn(true);
   });
   octokit = await credentials.getOctokit();
 
-  vscode.window.onDidChangeTextEditorSelection(async (selection) => {    
+  vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
       selection.selections[0].end.line,

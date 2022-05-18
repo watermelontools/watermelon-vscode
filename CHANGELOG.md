@@ -4,6 +4,15 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.2.0]
+- Allow private repo access (requires logging in again)
+- Added scope to allow private repos
+## [1.1.10]
+- Hotfix on octokit
+## [1.1.9]
+- Hotfix on octokit
+## [1.1.8]
+- Hotfix on octokit
 ## [1.1.7]
 - Changed analytics to match all buttons
 ## [1.1.6]
