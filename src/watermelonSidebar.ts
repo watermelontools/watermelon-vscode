@@ -192,7 +192,9 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
             }
           );
           break;
+          
         }
+      }
         case "blame": {
           searchType({
             searchType: "blame.button",
