@@ -14,6 +14,7 @@ import getBlame from "./utils/getBlame";
 import searchType from "./utils/analytics/searchType";
 import getPackageInfo from "./utils/getPackageInfo";
 import TelemetryReporter from "@vscode/extension-telemetry";
+import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 
 // repo information
 let owner: string | undefined = "";
