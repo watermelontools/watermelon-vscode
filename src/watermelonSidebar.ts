@@ -21,7 +21,7 @@ const extensionId = 'WatermelonTools.watermelon-tools';
 const extensionVersion = '1.1.5';
 
 // the application insights key (also known as instrumentation key)
-const key = process.env.AZURE_APPINSIGHTS_INSTRUMENTATIONKEY as string;
+const key = '4ed9e755-be2b-460b-9309-426fb5f58c6f';
 
 // telemetry reporter
 let reporter: any;
