@@ -42,7 +42,7 @@
       },
       {
         "command": "watermelon.show",
-        "title": "Show watermelon",
+        "title": "Show watermelon"
       },
       {
         "command": "watermelon.blame",
