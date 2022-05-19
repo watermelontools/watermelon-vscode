@@ -4,6 +4,22 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+
+## [1.2.2]
+- New Telemetry
+- Activate from the counter on the bottom bar 
+- Improvements to DX on deploy
+## [1.2.1]
+- Fixes to DX
+## [1.2.0]
+- Allow private repo access (requires logging in again)
+- Added scope to allow private repos
+## [1.1.10]
+- Hotfix on octokit
+## [1.1.9]
+- Hotfix on octokit
+## [1.1.8]
+- Hotfix on octokit
 ## [1.1.7]
 - Changed analytics to match all buttons
 ## [1.1.6]
