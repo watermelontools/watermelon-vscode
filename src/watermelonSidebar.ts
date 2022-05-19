@@ -8,9 +8,9 @@ import getLocalUser from "./utils/vscode/getLocalUser";
 import getSHAArray from "./utils/getSHAArray";
 import { Credentials } from "./credentials";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import searchType from "./utils/analytics/searchType";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getBlame from "./utils/getBlame";
+
 
 // repo information
 let owner: string | undefined = "";
@@ -23,14 +23,15 @@ let arrayOfSHAs: string[] = [];
 
 let octokit: any;
 
-export default class watermelonSidebar implements vscode.WebviewViewProvider {
+export default class WatermelonSidebar implements vscode.WebviewViewProvider {
   public static readonly viewType = "watermelon.sidebar";
   public _extensionUri: vscode.Uri;
   private _view?: vscode.WebviewView;
   private _context: vscode.ExtensionContext;
-  constructor(private readonly context: vscode.ExtensionContext) {
+  constructor(private readonly context: vscode.ExtensionContext, public reporter: any) {
     this._extensionUri = context.extensionUri;
     this._context = context;
+    this.reporter = reporter;
   }
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -88,13 +89,10 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
             (a: any, b: any) => b.comments.length - a.comments.length
           );
-          searchType({
-            searchType: "webview.button",
-            owner,
-            repo,
-            localUser,
-            userEmail,
-          });
+          
+          // Send Event to VSC Telemtry Library
+          this.reporter.sendTelemetryEvent('pullRequests');
+
           this.sendMessage({
             command: "prs",
             data: sortedPRs,
@@ -102,13 +100,9 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "create-docs": {
-          searchType({
-            searchType: "docs.button",
-            owner,
-            repo,
-            localUser,
-            userEmail,
-          });
+          // Send Event to VSC Telemtry Library
+          this.reporter.sendTelemetryEvent('createDocs');
+
           const wsedit = new vscode.WorkspaceEdit();
           if (vscode.workspace.workspaceFolders) {
             const wsPath = vscode?.workspace?.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
@@ -154,17 +148,13 @@ export default class watermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "blame": {
-          searchType({
-            searchType: "blame.button",
-            owner,
-            repo,
-            localUser,
-            userEmail,
-          });
+        // Send Event to VSC Telemtry Library
+        this.reporter.sendTelemetryEvent('viewBlame');
+
           this.sendMessage({
             command: "loading",
           });
-          let uniqueBlames = await getBlame(gitAPI)
+          let uniqueBlames = await getBlame(gitAPI);
           this.sendMessage({
             command: "blame",
             data: uniqueBlames,
