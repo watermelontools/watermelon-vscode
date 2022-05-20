@@ -11,6 +11,7 @@ import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getBlame from "./utils/getBlame";
 
+
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
@@ -27,10 +28,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
   public _extensionUri: vscode.Uri;
   private _view?: vscode.WebviewView;
   private _context: vscode.ExtensionContext;
-  constructor(
-    private readonly context: vscode.ExtensionContext,
-    public reporter: any
-  ) {
+  constructor(private readonly context: vscode.ExtensionContext, public reporter: any) {
     this._extensionUri = context.extensionUri;
     this._context = context;
     this.reporter = reporter;
@@ -91,9 +89,9 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
             (a: any, b: any) => b.comments.length - a.comments.length
           );
-
+          
           // Send Event to VSC Telemtry Library
-          this.reporter.sendTelemetryEvent("pullRequests");
+          this.reporter.sendTelemetryEvent('pullRequests');
 
           this.sendMessage({
             command: "prs",
@@ -103,7 +101,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
         }
         case "create-docs": {
           // Send Event to VSC Telemtry Library
-          this.reporter.sendTelemetryEvent("createDocs");
+          this.reporter.sendTelemetryEvent('createDocs');
 
           const wsedit = new vscode.WorkspaceEdit();
           if (vscode.workspace.workspaceFolders) {
@@ -150,8 +148,8 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "blame": {
-          // Send Event to VSC Telemtry Library
-          this.reporter.sendTelemetryEvent("viewBlame");
+        // Send Event to VSC Telemtry Library
+        this.reporter.sendTelemetryEvent('viewBlame');
 
           this.sendMessage({
             command: "loading",
@@ -160,8 +158,6 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           this.sendMessage({
             command: "blame",
             data: uniqueBlames,
-            repo,
-            owner,
           });
           break;
         }
