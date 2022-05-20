@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.2.3]
 
 - Added right click to get blame
+- Made commits clickable on git blame table
 
 ## [1.2.2]
 
