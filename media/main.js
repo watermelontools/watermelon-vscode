@@ -56,7 +56,9 @@ $(document).ready(function () {
         removeLoading(errorTimeout);
         addBlametoDoc(
           message.data,
-          `https://github.com/${message.owner}/${message.repo}/commit/`
+          message.owner && message.repo
+            ? `https://github.com/${message.owner}/${message.repo}/commit/`
+            : ""
         );
         break;
       default:

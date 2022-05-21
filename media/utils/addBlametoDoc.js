@@ -26,8 +26,13 @@ const addBlametoDoc = (blameArray, commitLink) => {
     $(".blame-rows").append(`
       <tr ${index % 2 === 0 ? 'class="table-zebra"' : ""}>
         <td>
-        <a href='${commitLink}${blameLine?.hash}'>
-        ${blameLine?.hash?.slice(0, 7)}</a>
+        ${
+          commmitLink
+            ? `<a href='${commitLink}${blameLine?.hash}'>
+              ${blameLine?.hash?.slice(0, 7)}
+              </a>`
+            : blameLine?.hash?.slice(0, 7)
+        }
         </td>
         <td>${blameLine.authorName}</td>
         <td>${blameLine.message}</td>
