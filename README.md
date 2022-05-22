@@ -10,31 +10,38 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false#review-details)
 [![Slack](https://img.shields.io/badge/Slack%20Community-Watermelon-brightgreen)](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q)
 
+Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code** to document code and view Git Blame. Watermelon makes you an expert on any file instantly by running `git blame` for you and telling you why a block of code was written that way by someone else. We also help you add documentation to your workflow.
 
-Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code**  to document code and view Git Blame. Watermelon makes you an expert on any file instantly by running `git blame` for you and telling you why a block of code was written that way by someone else. We also help you add documentation to your workflow.
 ## Features
-Watermelon has 3 features that you can use: 
-* Generate Docs for the Repo
-* View Git Blame
-* View Pull Requests (Beta)
 
-Simply click the Watermelon icon on the sidebar. After that you can click any of the 3 different buttons Watermelon has. 
+Watermelon has 3 features that you can use:
+
+- Generate Docs for the Repo
+- View Git Blame
+- View Pull Requests (Beta)
+
+Simply click the Watermelon icon on the sidebar. After that you can click any of the 3 different buttons Watermelon has.
+
 ### Generate Docs for the Repo
+
 Click to generate a markdown file with our template. The template includes the following sections:
 
-* Author
-* Intro 
-* How to run this project
-* Important links
+- Author
+- Intro
+- How to run this project
+- Important links
 
 ![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/createRepoDocs.gif?raw=true)
 
 ### View Git Blame
+
 Highlight a piece of code, and then click the View Git Blame button. We will run Git Blame for you, and give you a table with the Git commit messages relevant to the piece of code you highlighted.
 
 ![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/viewGitBlame.gif?raw=true)
+
 ### View Pull Requests (Beta)
-Highlight a piece of code, and then click the View Pull Requests (Beta) button to run Git Blame on the background. We will get the PR bodies and comments that are relevant to the highlighted piece of code for you. 
+
+Highlight a piece of code, and then click the View Pull Requests (Beta) button to run Git Blame on the background. We will get the PR bodies and comments that are relevant to the highlighted piece of code for you.
 
 Depending on the size of your GitHub history, this might take a few seconds.
 
@@ -42,13 +49,13 @@ Depending on the size of your GitHub history, this might take a few seconds.
 
 Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our `watermelon.start` command</a>
 
-You may also highlight and right click on the code, you will find the 'Start Watermelon' command at the end.
+You may also highlight and right click on the code, you will find the 'Get Pull Requests with Watermelon' command at the end.
 
 ## Requirements
 
-* macOS 10.11+, Windows 10+ or Linux
-* Visual Studio Code v1.63.0+
-* You must have Git locally installed (try `git --version` or [install it now](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
+- macOS 10.11+, Windows 10+ or Linux
+- Visual Studio Code v1.63.0+
+- You must have Git locally installed (try `git --version` or [install it now](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
 
 ## Installation
 
@@ -63,20 +70,20 @@ Watermelon comes with a command that you can run from VS Code's command palette.
 
 Commands for the other 2 features coming soon.
 
-|Command|Description|
-|:---|:---|
-|`watermelon.start`|Get the historical context of the selected block of code|
+| Command            | Description                                              |
+| :----------------- | :------------------------------------------------------- |
+| `watermelon.start` | Get the historical context of the selected block of code |
 
 ## Contributing
 
 Check out [Contributing.md](CONTRIBUTING.md) and be aware of the [Code of Conduct](CODE_OF_CONDUCT.md)!
 
-We're an early stage project, therefore we still have the luxury to coordinate via short chats with our contributors. If you're interested in contributing, please join our [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q) community. 
+We're an early stage project, therefore we still have the luxury to coordinate via short chats with our contributors. If you're interested in contributing, please join our [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q) community.
 Alternatively, comment on our issues if you plan to solve one.
 
 ## Analytics
 
-We track users to improve our application. We store your GitHub username and whether your Watermelon query was successful or not. 
+We track users to improve our application. We store your GitHub username and whether your Watermelon query was successful or not.
 
 **We _don't_ store your code**
 
@@ -86,15 +93,12 @@ We track users to improve our application. We store your GitHub username and whe
 
 [![Forkers repo roster for @watermelontools/wm-extension](https://reporoster.com/forks/dark/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/network/members)
 
-
 ---
 
 #### About Watermelon
 
-Watermelon is built by a globally distributed team of developers devoted to making software development easier. Join our [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q) community, follow us on [Twitter](https://twitter.com/WatermelonTools) and go to the [Watermelon blog](https://watermelon.tools/blog/blog) to get the best programming tips. 
-
+Watermelon is built by a globally distributed team of developers devoted to making software development easier. Join our [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q) community, follow us on [Twitter](https://twitter.com/WatermelonTools) and go to the [Watermelon blog](https://watermelon.tools/blog/blog) to get the best programming tips.
 
 ### License
 
 - [Apache License](license.md)
-
