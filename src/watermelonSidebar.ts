@@ -101,54 +101,6 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           });
           break;
         }
-        case "create-docs": {
-          // Send Event to VSC Telemtry Library
-          this.reporter.sendTelemetryEvent("createDocs");
-
-          const wsedit = new vscode.WorkspaceEdit();
-          if (vscode.workspace.workspaceFolders) {
-            const wsPath = vscode?.workspace?.workspaceFolders[0].uri.fsPath; // gets the path of the first workspace folder
-            const folderPath = vscode.Uri.file(wsPath + "/wm-paper/");
-            const filePath = vscode.Uri.file(wsPath + "/wm-paper/index.md");
-            wsedit.createFile(folderPath, { ignoreIfExists: true });
-            wsedit.createFile(filePath, { ignoreIfExists: true });
-            vscode.workspace.applyEdit(wsedit);
-            vscode.window.showInformationMessage(
-              "Created a new file: wm-paper/index.md"
-            );
-            vscode.workspace.openTextDocument(filePath).then(
-              (doc: vscode.TextDocument) => {
-                vscode.window
-                  .showTextDocument(doc, vscode.ViewColumn.Beside, false)
-                  .then((e) => {
-                    e.edit((edit) => {
-                      edit.insert(
-                        new vscode.Position(0, 0),
-                        `# ${repo} by ${owner} \n`
-                      );
-                      edit.insert(new vscode.Position(1, 0), `\n`);
-                      edit.insert(new vscode.Position(2, 0), `## Intro \n`);
-                      edit.insert(new vscode.Position(3, 0), `\n`);
-                      edit.insert(
-                        new vscode.Position(4, 0),
-                        `## How to run this project \n`
-                      );
-                      edit.insert(new vscode.Position(5, 0), `\n`);
-                      edit.insert(
-                        new vscode.Position(6, 0),
-                        `## Important links \n`
-                      );
-                    });
-                  });
-              },
-              (error: any) => {
-                console.error(error);
-                debugger;
-              }
-            );
-          }
-          break;
-        }
         case "blame": {
           // Send Event to VSC Telemtry Library
           this.reporter.sendTelemetryEvent("viewBlame");

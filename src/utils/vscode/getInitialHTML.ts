@@ -85,8 +85,6 @@ export default function getInitialHTML(
         <br/>
         <div id="ghHolder">
            <p>Higlight a piece of code to start.</p>
-           <p>We can help you document your code:</p>
-           <button class='create-docs'>Create Repo docs</button>
            <p>We will fetch the commit history for you to understand the context of the code</p>
            <button class='git-blame'>View Commit History</button>
            <p>Click this button to enrich your code with relevant information from GitHub:</p>
