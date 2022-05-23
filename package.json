@@ -37,7 +37,7 @@
     "commands": [
       {
         "command": "watermelon.start",
-        "title": "Start watermelon",
+        "title": "Get Pull Requests with Watermelon",
         "category": "watermelon"
       },
       {

@@ -12,7 +12,6 @@
 
 Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code** to document code and view Git Blame. Watermelon makes you an expert on any file instantly by running `git blame` for you and telling you why a block of code was written that way by someone else. We also help you add documentation to your workflow.
 
-Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code**  to document code and view Git Blame. Watermelon makes you an expert on any file instantly by running `git blame` for you and telling you why a block of code was written that way by someone else. We also help you add documentation to your workflow.
 ## Features
 
 Watermelon has 3 features that you can use:
@@ -39,6 +38,7 @@ Click to generate a markdown file with our template. The template includes the f
 Highlight a piece of code, and then click the View Git Blame button. We will run Git Blame for you, and give you a table with the Git commit messages relevant to the piece of code you highlighted.
 
 ![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/viewGitBlame.gif?raw=true)
+
 You may also highlight and right click on the code, you will find the 'Get Watermelon blame' command at the end.
 
 ### View Pull Requests (Beta)
@@ -51,7 +51,7 @@ Depending on the size of your GitHub history, this might take a few seconds.
 
 Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our `watermelon.start` command</a>
 
-You may also highlight and right click on the code, you will find the 'Start Watermelon' command at the end.
+You may also highlight and right click on the code, you will find the 'Get Pull Requests with Watermelon' command at the end.
 
 ## Requirements
 
