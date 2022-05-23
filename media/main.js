@@ -53,13 +53,12 @@ $(document).ready(function () {
         authorName = message.author;
         break;
       case "blame":
+        let commitLink = undefined;
+        if (message.owner && message.repo) {
+          commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
+        }
         removeLoading(errorTimeout);
-        addBlametoDoc(
-          message.data,
-          message.owner && message.repo
-            ? `https://github.com/${message.owner}/${message.repo}/commit/`
-            : ""
-        );
+        addBlametoDoc(message.data, commitLink);
         break;
       default:
         console.log("Unknown command");
