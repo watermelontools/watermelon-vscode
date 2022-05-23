@@ -54,7 +54,12 @@ $(document).ready(function () {
         break;
       case "blame":
         removeLoading(errorTimeout);
-        addBlametoDoc(message.data);
+        addBlametoDoc(
+          message.data,
+          message.owner && message.repo
+            ? `https://github.com/${message.owner}/${message.repo}/commit/`
+            : ""
+        );
         break;
       default:
         console.log("Unknown command");
