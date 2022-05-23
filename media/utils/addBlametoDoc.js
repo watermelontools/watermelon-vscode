@@ -2,7 +2,7 @@ import addActionButtons from "./addActionButtons.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import sendMessage from "./sendVSCodeMessage.js";
 
-const addBlametoDoc = (blameArray, commitLink) => {
+const addBlametoDoc = (blameArray) => {
   console.log(blameArray);
   addActionButtons();
   $("#ghHolder").append(`
