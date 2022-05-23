@@ -83,6 +83,10 @@
         {
           "command": "watermelon.start",
           "when": "editorHasSelection"
+        },
+        {
+          "command": "watermelon.blame",
+          "when": "editorHasSelection"
         }
       ]
     }

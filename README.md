@@ -39,6 +39,8 @@ Highlight a piece of code, and then click the View Git Blame button. We will run
 
 ![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/viewGitBlame.gif?raw=true)
 
+You may also highlight and right click on the code, you will find the 'Get Watermelon blame' command at the end.
+
 ### View Pull Requests (Beta)
 
 Highlight a piece of code, and then click the View Pull Requests (Beta) button to run Git Blame on the background. We will get the PR bodies and comments that are relevant to the highlighted piece of code for you.

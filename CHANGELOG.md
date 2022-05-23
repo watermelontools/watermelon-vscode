@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.2.3]
 
+- Added right click to get blame
 - Changed "Start Watermelon" command with "Get Pull Requests with Watermelon"
 - Instructions will now show up in every screen
 
