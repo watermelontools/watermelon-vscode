@@ -14,7 +14,7 @@ const addActionButtons = () => {
   );
   $("#ghHolder").append(
     `<p>Click this button to enrich your code with relevant information from GitHub:</p>
-    <button class='run-watermelon'>View Pull Requests (Beta)</button><br/>`
+    <button class='run-watermelon'>View Pull Requests</button><br/>`
   );
   $(".run-watermelon").on("click", (event) => {
     sendMessage({ command: "run" });

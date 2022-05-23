@@ -90,7 +90,7 @@ export default function getInitialHTML(
            <p>We will fetch the commit history for you to understand the context of the code</p>
            <button class='git-blame'>View Commit History</button>
            <p>Click this button to enrich your code with relevant information from GitHub:</p>
-           <button class='run-watermelon'>View Pull Requests (Beta)</button>
+           <button class='run-watermelon'>View Pull Requests</button>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a></p>
         </div>
         <h2>Need help?</h2>

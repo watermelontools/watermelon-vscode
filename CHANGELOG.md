@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.2.3]
 
+- Promoted "View PRs" from Beta to stable.
 - "Git blame" now referred to as "Commit History" for clarity
 - Now you can click on the commit id to view on github on the blame table
 - Added right click to get blame
