@@ -17,7 +17,7 @@ Watermelon is an **open-source** integration between **GitHub** and **Visual Stu
 Watermelon has 3 features that you can use:
 
 - View Git Blame
-- View Pull Requests (Beta)
+- View Pull Requests
 
 Simply click the Watermelon icon on the sidebar. After that you can click any of the 2 different buttons Watermelon has.
 
@@ -29,9 +29,9 @@ Highlight a piece of code, and then click the View Git Blame button. We will run
 
 You may also highlight and right click on the code, you will find the 'Get Watermelon blame' command at the end.
 
-### View Pull Requests (Beta)
+### View Pull Requests
 
-Highlight a piece of code, and then click the View Pull Requests (Beta) button to run Git Blame on the background. We will get the PR bodies and comments that are relevant to the highlighted piece of code for you.
+Highlight a piece of code, and then click the View Pull Requests button to run Git Blame on the background. We will get the PR bodies and comments that are relevant to the highlighted piece of code for you.
 
 Depending on the size of your GitHub history, this might take a few seconds.
 

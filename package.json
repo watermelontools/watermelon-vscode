@@ -42,7 +42,7 @@
       },
       {
         "command": "watermelon.blame",
-        "title": "Get watermelon blame",
+        "title": "Get Commit History with Watermelon",
         "category": "watermelon"
       }
     ],
