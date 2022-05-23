@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.2.4]
+
+- Promoted "View PRs" from Beta to stable.
+
 ## [1.2.3]
 
 - Now you can click on the commit id to view on github on the blame table
