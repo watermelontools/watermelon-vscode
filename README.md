@@ -70,11 +70,10 @@ Alternatively, you can search for "Watermelon" in VS Code's built-in extension m
 
 Watermelon comes with a command that you can run from VS Code's command palette. The result is exactly the same as running a Watermelon query with the green button. Results sit in your sidebar.
 
-Commands for the other 2 features coming soon.
-
 | Command            | Description                                              |
 | :----------------- | :------------------------------------------------------- |
 | `watermelon.start` | Get the historical context of the selected block of code |
+| `watermelon.blame` | Get the commit history of the selected block of code     |
 
 ## Contributing
 
