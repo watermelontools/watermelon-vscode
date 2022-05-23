@@ -2,10 +2,7 @@ import sendMessage from "./sendVSCodeMessage.js";
 
 const addActionButtons = () => {
   $("#ghHolder").append(
-    `<p>Higlight a piece of code to start.</p>
-        <p>We can help you document your code:</p>
-        <button class='create-docs'>Create Repo Docs</button>
-        <br/>`
+    `<p>Higlight a piece of code to start.</p>`
   );
   $("#ghHolder").append(
     `<p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
@@ -18,9 +15,6 @@ const addActionButtons = () => {
   );
   $(".run-watermelon").on("click", (event) => {
     sendMessage({ command: "run" });
-  });
-  $(".create-docs").on("click", (event) => {
-    sendMessage({ command: "create-docs" });
   });
   $(".git-blame").on("click", (event) => {
     sendMessage({ command: "blame" });
