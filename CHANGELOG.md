@@ -10,6 +10,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Added right click to get blame
 - Changed "Start Watermelon" command with "Get Pull Requests with Watermelon"
 - Instructions will now show up in every screen
+- Now works on SSH cloned repos
 
 ## [1.2.2]
 
