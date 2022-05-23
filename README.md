@@ -10,28 +10,16 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false#review-details)
 [![Slack](https://img.shields.io/badge/Slack%20Community-Watermelon-brightgreen)](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q)
 
-Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code** to document code and view Git Blame. Watermelon makes you an expert on any file instantly by running `git blame` for you and telling you why a block of code was written that way by someone else. We also help you add documentation to your workflow.
+Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code** to document code and view Git Blame. Watermelon makes you an expert on any file instantly by running `git blame` for you and telling you why a block of code was written that way by someone else.
 
 ## Features
 
 Watermelon has 3 features that you can use:
 
-- Generate Docs for the Repo
 - View Git Blame
 - View Pull Requests (Beta)
 
-Simply click the Watermelon icon on the sidebar. After that you can click any of the 3 different buttons Watermelon has.
-
-### Generate Docs for the Repo
-
-Click to generate a markdown file with our template. The template includes the following sections:
-
-- Author
-- Intro
-- How to run this project
-- Important links
-
-![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/createRepoDocs.gif?raw=true)
+Simply click the Watermelon icon on the sidebar. After that you can click any of the 2 different buttons Watermelon has.
 
 ### View Git Blame
 
