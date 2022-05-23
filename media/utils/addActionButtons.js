@@ -9,7 +9,7 @@ const addActionButtons = () => {
   );
   $("#ghHolder").append(
     `<p>We will fetch the associated PRs and comments for you to understand the context of the code</p>
-        <button class='git-blame'>View Git Blame</button>
+        <button class='git-blame'>View Commit History</button>
         <br/>`
   );
   $("#ghHolder").append(
