@@ -83,6 +83,11 @@ export async function activate(context: vscode.ExtensionContext) {
   // update status bar item once at start
   updateStatusBarItem(myStatusBarItem);
 
+  vscode.languages.registerHoverProvider('javascript', {
+    provideHover(document, position, token) {
+      return new vscode.Hover('I am a hover!');
+    }
+  });
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
