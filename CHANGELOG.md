@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.2.4]
+
+- Now the "see more" button for code blocks sits _outside_ the code block.
+
 ## [1.2.3]
 
 - Promoted "View PRs" from Beta to stable.
