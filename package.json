@@ -42,7 +42,8 @@
       },
       {
         "command": "watermelon.show",
-        "title": "Show watermelon"
+        "title": "Show watermelon",
+        "category": "watermelon"
       },
       {
         "command": "watermelon.blame",
