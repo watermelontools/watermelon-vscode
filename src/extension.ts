@@ -87,6 +87,11 @@ export async function activate(context: vscode.ExtensionContext) {
   repo = repoName;
   owner = ownerUsername;
   context.subscriptions.push(
+    vscode.commands.registerCommand("watermelon.show", async () => {
+      vscode.commands.executeCommand("watermelon.sidebar.focus"); 
+    }));
+
+  context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
       provider.sendMessage({
         command: "loading",

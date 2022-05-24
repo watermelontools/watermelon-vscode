@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.2.4]
 
+- You may reveal the extension with the `Show watermelon` command
 - Now the "see more" button for code blocks sits _outside_ the code block.
 
 ## [1.2.3]
