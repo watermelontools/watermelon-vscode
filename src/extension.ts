@@ -75,11 +75,7 @@ export async function activate(context: vscode.ExtensionContext) {
       updateStatusBarItem(myStatusBarItem);
     })
   );
-  context.subscriptions.push(
-    vscode.window.onDidChangeTextEditorSelection(async () => {
-      updateStatusBarItem(myStatusBarItem);
-    })
-  );
+
   // update status bar item once at start
   updateStatusBarItem(myStatusBarItem);
 
@@ -149,6 +145,7 @@ export async function activate(context: vscode.ExtensionContext) {
   octokit = await credentials.getOctokit();
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
+    updateStatusBarItem(myStatusBarItem);
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
       selection.selections[0].end.line,
