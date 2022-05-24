@@ -29,13 +29,13 @@ let arrayOfSHAs: string[] = [];
 let octokit: any;
 
 // all events will be prefixed with this event name
-const extensionId = 'WatermelonTools.watermelon-tools';
+const extensionId = "WatermelonTools.watermelon-tools";
 
 // extension version will be reported as a property with each event
 const extensionVersion = getPackageInfo().version;
 
 // the application insights key (also known as instrumentation key)
-const key = '4ed9e755-be2b-460b-9309-426fb5f58c6f';
+const key = "4ed9e755-be2b-460b-9309-426fb5f58c6f";
 
 // telemetry reporter
 let reporter: any;
@@ -138,6 +138,8 @@ export async function activate(context: vscode.ExtensionContext) {
       provider.sendMessage({
         command: "blame",
         data: uniqueBlames,
+        owner,
+        repo,
       });
       searchType({
         searchType: "watermelon.blame",

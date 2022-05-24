@@ -1,7 +1,7 @@
 {
   "name": "watermelon-tools",
   "description": "Watermelon, find all the historical context of your code",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "publisher": "WatermelonTools",
   "displayName": "Watermelon",
   "private": true,
@@ -37,7 +37,7 @@
     "commands": [
       {
         "command": "watermelon.start",
-        "title": "Start watermelon",
+        "title": "Get Pull Requests with Watermelon",
         "category": "watermelon"
       },
       {
@@ -46,7 +46,7 @@
       },
       {
         "command": "watermelon.blame",
-        "title": "Get watermelon blame",
+        "title": "Get Commit History with Watermelon",
         "category": "watermelon"
       }
     ],

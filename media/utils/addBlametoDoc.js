@@ -2,8 +2,7 @@ import addActionButtons from "./addActionButtons.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import sendMessage from "./sendVSCodeMessage.js";
 
-const addBlametoDoc = (blameArray) => {
-  console.log(blameArray);
+const addBlametoDoc = (blameArray, commitLink) => {
   addActionButtons();
   $("#ghHolder").append(`
     <h3>Commits</h3>
@@ -25,7 +24,15 @@ const addBlametoDoc = (blameArray) => {
   blameArray.forEach((blameLine, index) => {
     $(".blame-rows").append(`
       <tr ${index % 2 === 0 ? 'class="table-zebra"' : ""}>
-        <td>${blameLine?.hash?.slice(0, 7)}</td>
+        <td>
+        ${
+          commitLink
+            ? `<a href='${commitLink}${blameLine?.hash}'>
+              ${blameLine?.hash?.slice(0, 7)}
+              </a>`
+            : blameLine?.hash?.slice(0, 7)
+        }
+        </td>
         <td>${blameLine.authorName}</td>
         <td>${blameLine.message}</td>
         <td>${dateToHumanReadable(blameLine.commitDate)}</td>

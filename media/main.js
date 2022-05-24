@@ -9,7 +9,6 @@ import addPRsToDoc from "./utils/addPRsToDoc.js";
 import sendMessage from "./utils/sendVSCodeMessage.js";
 import addBlametoDoc from "./utils/addBlametoDoc.js";
 
-const link = document.getElementsByClassName("create-docs");
 const button = document.getElementsByClassName("run-watermelon");
 const gitBlame = document.getElementsByClassName("git-blame");
 
@@ -22,9 +21,6 @@ Sentry.init({
   // of transactions for performance monitoring.
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
-});
-link[0].addEventListener("click", (event) => {
-  sendMessage({ command: "create-docs" });
 });
 button[0].addEventListener("click", (event) => {
   sendMessage({ command: "run" });
@@ -53,8 +49,12 @@ $(document).ready(function () {
         authorName = message.author;
         break;
       case "blame":
+        let commitLink = undefined;
+        if (message.owner && message.repo) {
+          commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
+        }
         removeLoading(errorTimeout);
-        addBlametoDoc(message.data);
+        addBlametoDoc(message.data, commitLink);
         break;
       default:
         console.log("Unknown command");
