@@ -59,9 +59,7 @@ export async function activate(context: vscode.ExtensionContext) {
       provider
     )
   );
-  let myStatusBarItem: vscode.StatusBarItem;
-  // create a new status bar item that we can now manage
-  myStatusBarItem = vscode.window.createStatusBarItem(
+  let myStatusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
     100
   );
