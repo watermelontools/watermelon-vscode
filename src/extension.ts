@@ -15,7 +15,6 @@ import searchType from "./utils/analytics/searchType";
 import getPackageInfo from "./utils/getPackageInfo";
 import TelemetryReporter from "@vscode/extension-telemetry";
 import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
-import getFileChurn from "./utils/getFileChurn";
 
 // repo information
 let owner: string | undefined = "";
@@ -152,10 +151,7 @@ export async function activate(context: vscode.ExtensionContext) {
   });
   octokit = await credentials.getOctokit();
 
-  vscode.window.onDidChangeTextEditorSelection(async (selection) => {
-    let churnResult = getFileChurn(selection.textEditor.document.uri.fsPath);
-    console.log("churn result: ", churnResult);
-    
+  vscode.window.onDidChangeTextEditorSelection(async (selection) => {    
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
       selection.selections[0].end.line,

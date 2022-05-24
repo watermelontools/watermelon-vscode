@@ -1,12 +1,10 @@
 import * as vscode from "vscode";
 import getFullBlame from "./getFullBlame";
 
-async function getNumberOfLineChanges(gitAPI:any) {
+async function getNumberOfLineChanges(gitAPI:any, lineNumber:number) {
     let blamePromises = await getFullBlame(
-        vscode?.window?.activeTextEditor?.selection.start.line ?? 1,
-        vscode?.window?.activeTextEditor?.selection.end.line ??
-        vscode.window.activeTextEditor?.document.lineCount ??
-        2,
+        lineNumber,
+        lineNumber,
         vscode.window.activeTextEditor?.document.uri.fsPath,
         gitAPI
     );
@@ -20,15 +18,7 @@ async function getNumberOfLineChanges(gitAPI:any) {
             }
         });
 
-        const uniqueBlames = [
-            ...new Map(
-                blames.map((item) =>
-                    // @ts-ignore
-                    [item["message"], item]
-                )
-            ).values(),
-        ];
-        return uniqueBlames.length;
+        return blames.length;
     });
 }
 export default getNumberOfLineChanges;
