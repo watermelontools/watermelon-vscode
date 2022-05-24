@@ -62,6 +62,7 @@ Watermelon comes with a command that you can run from VS Code's command palette.
 | :----------------- | :------------------------------------------------------- |
 | `watermelon.start` | Get the historical context of the selected block of code |
 | `watermelon.blame` | Get the commit history of the selected block of code     |
+| `watermelon.show` | Reveal the extension     |
 
 ## Contributing
 
