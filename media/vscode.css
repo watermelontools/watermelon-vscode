@@ -115,6 +115,17 @@ button {
   max-height: 3.5em;
   text-overflow: ellipsis;
 }
+.see-more{
+  cursor: pointer;
+  margin-top: -5px;
+  z-index: 2;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.see-more:hover {
+  margin-bottom: auto;
+}
 
 button:hover {
   background-color: #157241;
