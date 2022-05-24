@@ -41,6 +41,11 @@
         "category": "watermelon"
       },
       {
+        "command": "watermelon.show",
+        "title": "Show watermelon",
+        "category": "watermelon"
+      },
+      {
         "command": "watermelon.blame",
         "title": "Get Commit History with Watermelon",
         "category": "watermelon"
