@@ -151,7 +151,7 @@ export async function activate(context: vscode.ExtensionContext) {
   });
   octokit = await credentials.getOctokit();
 
-  vscode.window.onDidChangeTextEditorSelection(async (selection) => {    
+  vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
       selection.selections[0].end.line,
