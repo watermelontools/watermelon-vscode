@@ -12,10 +12,12 @@ function updateStatusBarItem(myStatusBarItem:vscode.StatusBarItem): void {
     if (n > 0) {
       myStatusBarItem.text = `Run Watermelon with the ${n} line(s) selected`;
       myStatusBarItem.tooltip= "Click here to run Watermelon";
-      myStatusBarItem.show();
+      myStatusBarItem.command = "watermelon.start";
     } else {
-
+      myStatusBarItem.text = `Open Watermelon to see code context`;
       myStatusBarItem.tooltip= "Watermelon: Select lines to view context";
+      myStatusBarItem.command = "watermelon.show";
     }
+    myStatusBarItem.show();
   }
   export default updateStatusBarItem;
