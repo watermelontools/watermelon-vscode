@@ -11,7 +11,6 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import WatermelonSidebar from "./watermelonSidebar";
 import getBlame from "./utils/getBlame";
-import searchType from "./utils/analytics/searchType";
 import getPackageInfo from "./utils/getPackageInfo";
 import TelemetryReporter from "@vscode/extension-telemetry";
 import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
@@ -140,13 +139,6 @@ export async function activate(context: vscode.ExtensionContext) {
         data: uniqueBlames,
         owner,
         repo,
-      });
-      searchType({
-        searchType: "watermelon.blame",
-        owner,
-        repo,
-        localUser,
-        userEmail,
       });
     })
   );
