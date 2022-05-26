@@ -88,7 +88,7 @@ export async function activate(context: vscode.ExtensionContext) {
   owner = ownerUsername;
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.show", async () => {
-      vscode.commands.executeCommand("watermelon.sidebar.focus"); 
+      vscode.commands.executeCommand("watermelon.sidebar.focus");
     }));
 
   context.subscriptions.push(
@@ -145,6 +145,11 @@ export async function activate(context: vscode.ExtensionContext) {
 
   vscode.authentication.getSession("github", []).then((session: any) => {
     setLoggedIn(true);
+    provider.sendMessage({
+      command: "session",
+      loggedIn: true,
+      data: session.account.label,
+    });
   });
   octokit = await credentials.getOctokit();
 
