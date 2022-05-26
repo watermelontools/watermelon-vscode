@@ -85,8 +85,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
   vscode.languages.registerHoverProvider('*', {
     provideHover(document, position, token) {
-      
-      return new vscode.Hover('[I am a hover!](https://github.com)');
+      const content = new vscode.MarkdownString(`[Understand the code context](command:watermelon.show) with Watermelon 🍉`);
+      content.supportHtml = true;
+      content.isTrusted = true;
+      return new vscode.Hover(content);
     }
   });
   let { repoName, ownerUsername } = await getRepoInfo();
@@ -94,7 +96,7 @@ export async function activate(context: vscode.ExtensionContext) {
   owner = ownerUsername;
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.show", async () => {
-      vscode.commands.executeCommand("watermelon.sidebar.focus"); 
+      vscode.commands.executeCommand("watermelon.sidebar.focus");
     }));
 
   context.subscriptions.push(
