@@ -8,6 +8,7 @@ import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
 import sendMessage from "./utils/sendVSCodeMessage.js";
 import addBlametoDoc from "./utils/addBlametoDoc.js";
+import addGHUserInfo from "./utils/addGHUserInfo.js";
 
 const button = document.getElementsByClassName("run-watermelon");
 const gitBlame = document.getElementsByClassName("git-blame");
@@ -33,6 +34,9 @@ $(document).ready(function () {
   window.addEventListener("message", (event) => {
     const message = event.data; // The JSON data our extension sent
     switch (message.command) {
+      case "user":
+        addGHUserInfo(message.data);
+        break;
       case "prs":
         removeLoading(errorTimeout);
         addPRsToDoc(message.data);
