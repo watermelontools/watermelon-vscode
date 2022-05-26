@@ -50,7 +50,6 @@ $(document).ready(function () {
         authorName = message.author;
         break;
       case "session":
-        console.log(message.data);
         addSessionToFooter(message.data);
         break;
       case "blame":
