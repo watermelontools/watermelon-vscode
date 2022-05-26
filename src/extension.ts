@@ -86,6 +86,10 @@ export async function activate(context: vscode.ExtensionContext) {
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
+  provider.sendMessage({
+    command: "versionInfo",
+    data: extensionVersion,
+  });
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.show", async () => {
       vscode.commands.executeCommand("watermelon.sidebar.focus"); 
