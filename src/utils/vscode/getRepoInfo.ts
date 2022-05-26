@@ -16,8 +16,8 @@ export default async function getRepoInfo(): Promise<{
     if (config?.includes("github.com")) {
       repoName = config?.split("/")[4].split(".")[0];
       ownerUsername = config?.split("/")[3];
-    }
-    if (config?.includes("gitlab")) {
+      return { ownerUsername, repoName };
+    } else {
       nonGHRepo();
       return {
         ownerUsername: "watermelon",
