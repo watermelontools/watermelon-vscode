@@ -1,4 +1,5 @@
 import getGitAPI from "./getGitAPI";
+import { nonGHRepo } from "./showErrors";
 
 export default async function getRepoInfo(): Promise<{
   ownerUsername: string;
@@ -12,8 +13,17 @@ export default async function getRepoInfo(): Promise<{
     "remote.origin.url"
   );
   if (config?.includes("https://")) {
-    repoName = config?.split("/")[4].split(".")[0];
-    ownerUsername = config?.split("/")[3];
+    if (config?.includes("github.com")) {
+      repoName = config?.split("/")[4].split(".")[0];
+      ownerUsername = config?.split("/")[3];
+    }
+    if (config?.includes("gitlab")) {
+      nonGHRepo();
+      return {
+        ownerUsername: "watermelon",
+        repoName: "wm-extension"
+      };
+    }
   } else {
     repoName = config?.split("/")[1].split(".")[0] ?? "";
     ownerUsername = config?.split(":")[1].split("/")[0] ?? "";
