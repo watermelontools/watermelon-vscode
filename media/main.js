@@ -8,6 +8,7 @@ import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
 import sendMessage from "./utils/sendVSCodeMessage.js";
 import addBlametoDoc from "./utils/addBlametoDoc.js";
+import addVersionToFooter from "./utils/addVersionToFooter.js";
 
 const button = document.getElementsByClassName("run-watermelon");
 const gitBlame = document.getElementsByClassName("git-blame");
@@ -44,6 +45,9 @@ $(document).ready(function () {
         break;
       case "error":
         errorTimeout = setReceivedError(message.error.errorText, errorTimeout);
+        break;
+      case "versionInfo": 
+        addVersionToFooter(message.data);
         break;
       case "author":
         authorName = message.author;
