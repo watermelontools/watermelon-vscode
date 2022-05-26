@@ -1,9 +1,9 @@
 const addSessionToFooter = (session) => {
-    $('body').append(`
-    <footer>
+    $('footer').append(`
+    <div>
         <div class="footer-container">
-            <p>Session ID: ${session}</p>
+            <p>Local session: ${session}</p>
         </div>
-    </footer>`);
+    </div>`);
 };
 export default addSessionToFooter;
