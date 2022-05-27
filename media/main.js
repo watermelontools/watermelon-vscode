@@ -8,6 +8,9 @@ import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
 import sendMessage from "./utils/sendVSCodeMessage.js";
 import addBlametoDoc from "./utils/addBlametoDoc.js";
+import addGHUserInfo from "./utils/addGHUserInfo.js";
+import addVersionToFooter from "./utils/addVersionToFooter.js";
+import addSessionToFooter from "./utils/addSessionToFooter.js";
 
 const button = document.getElementsByClassName("run-watermelon");
 const gitBlame = document.getElementsByClassName("git-blame");
@@ -33,6 +36,9 @@ $(document).ready(function () {
   window.addEventListener("message", (event) => {
     const message = event.data; // The JSON data our extension sent
     switch (message.command) {
+      case "user":
+        addGHUserInfo(message.data);
+        break;
       case "prs":
         removeLoading(errorTimeout);
         addPRsToDoc(message.data);
@@ -45,8 +51,14 @@ $(document).ready(function () {
       case "error":
         errorTimeout = setReceivedError(message.error.errorText, errorTimeout);
         break;
+      case "versionInfo": 
+        addVersionToFooter(message.data);
+        break;
       case "author":
         authorName = message.author;
+        break;
+      case "session":
+        addSessionToFooter(message.data);
         break;
       case "blame":
         let commitLink = undefined;
