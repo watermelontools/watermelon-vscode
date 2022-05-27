@@ -59,29 +59,23 @@ export async function activate(context: vscode.ExtensionContext) {
       provider
     )
   );
-  let myStatusBarItem: vscode.StatusBarItem;
-  // create a new status bar item that we can now manage
-  myStatusBarItem = vscode.window.createStatusBarItem(
+  let wmStatusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
     100
   );
-  myStatusBarItem.command = "watermelon.start";
-  context.subscriptions.push(myStatusBarItem);
+  wmStatusBarItem.command = "watermelon.start";
+  context.subscriptions.push(wmStatusBarItem);
 
   // register some listener that make sure the status bar
   // item always up-to-date
   context.subscriptions.push(
     vscode.window.onDidChangeActiveTextEditor(async () => {
-      updateStatusBarItem(myStatusBarItem);
+      updateStatusBarItem(wmStatusBarItem);
     })
   );
-  context.subscriptions.push(
-    vscode.window.onDidChangeTextEditorSelection(async () => {
-      updateStatusBarItem(myStatusBarItem);
-    })
-  );
+
   // update status bar item once at start
-  updateStatusBarItem(myStatusBarItem);
+  updateStatusBarItem(wmStatusBarItem);
 
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
@@ -149,6 +143,7 @@ export async function activate(context: vscode.ExtensionContext) {
   octokit = await credentials.getOctokit();
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
+    updateStatusBarItem(wmStatusBarItem);
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
       selection.selections[0].end.line,

@@ -10,12 +10,14 @@ function getNumberOfSelectedLines(editor: vscode.TextEditor | undefined): number
 function updateStatusBarItem(myStatusBarItem:vscode.StatusBarItem): void {
     const n = getNumberOfSelectedLines(vscode.window.activeTextEditor);
     if (n > 0) {
-      myStatusBarItem.text = `Run Watermelon with the ${n} line(s) selected`;
+      myStatusBarItem.text = `Run Watermelon with the ${n} line${n>1? "s": ""} selected`;
       myStatusBarItem.tooltip= "Click here to run Watermelon";
-      myStatusBarItem.show();
+      myStatusBarItem.command = "watermelon.start";
     } else {
-
+      myStatusBarItem.text = `Open Watermelon to see code context`;
       myStatusBarItem.tooltip= "Watermelon: Select lines to view context";
+      myStatusBarItem.command = "watermelon.show";
     }
+    myStatusBarItem.show();
   }
   export default updateStatusBarItem;
