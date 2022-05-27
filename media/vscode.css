@@ -238,3 +238,6 @@ pre {
     filter: invert(1);
   }
 }
+footer{
+  font-size: smaller;
+}
