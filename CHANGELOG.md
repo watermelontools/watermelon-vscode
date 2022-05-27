@@ -4,9 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [1.2.4]
+## [1.2.5]
 
 - _BETA_ Launched browser version for vscode web (and github.dev)
+
 ## [1.2.4]
 
 - You may reveal the extension with the `Show watermelon` command
