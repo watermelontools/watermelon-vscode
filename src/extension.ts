@@ -11,10 +11,10 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import WatermelonSidebar from "./watermelonSidebar";
 import getBlame from "./utils/getBlame";
-import searchType from "./utils/analytics/searchType";
 import getPackageInfo from "./utils/getPackageInfo";
 import TelemetryReporter from "@vscode/extension-telemetry";
 import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
+import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 
 // repo information
 let owner: string | undefined = "";
@@ -60,33 +60,55 @@ export async function activate(context: vscode.ExtensionContext) {
       provider
     )
   );
-  let myStatusBarItem: vscode.StatusBarItem;
-  // create a new status bar item that we can now manage
-  myStatusBarItem = vscode.window.createStatusBarItem(
+  let wmStatusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
     100
   );
-  myStatusBarItem.command = "watermelon.start";
-  context.subscriptions.push(myStatusBarItem);
+  wmStatusBarItem.command = "watermelon.start";
+  context.subscriptions.push(wmStatusBarItem);
 
   // register some listener that make sure the status bar
   // item always up-to-date
   context.subscriptions.push(
     vscode.window.onDidChangeActiveTextEditor(async () => {
-      updateStatusBarItem(myStatusBarItem);
+      updateStatusBarItem(wmStatusBarItem);
     })
   );
-  context.subscriptions.push(
-    vscode.window.onDidChangeTextEditorSelection(async () => {
-      updateStatusBarItem(myStatusBarItem);
-    })
-  );
+
   // update status bar item once at start
-  updateStatusBarItem(myStatusBarItem);
+  updateStatusBarItem(wmStatusBarItem);
 
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
+  provider.sendMessage({
+    command: "versionInfo",
+    data: extensionVersion,
+  });
+  context.subscriptions.push(
+    vscode.commands.registerCommand("watermelon.show", async () => {
+      vscode.commands.executeCommand("watermelon.sidebar.focus");
+    }));
+  context.subscriptions.push(
+    vscode.commands.registerCommand("watermelon.select", async () => {
+      vscode.commands.executeCommand("editor.action.smartSelect.expand");
+    }));
+  context.subscriptions.push(
+    vscode.commands.registerCommand("watermelon.multiSelect", async (times = 4) => {
+      for (let index = 0; index < times; index++) {
+        vscode.commands.executeCommand("editor.action.smartSelect.expand");
+      }
+    }));
+  octokit = await credentials.getOctokit();
+  getGitHubUserInfo({ octokit }).then(async (githubUserInfo) => {
+    provider.sendMessage({
+      command: "user",
+      data: {
+        login: githubUserInfo.login,
+        avatar: githubUserInfo.avatar_url,
+      }
+    });
+  });
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
       provider.sendMessage({
@@ -136,22 +158,21 @@ export async function activate(context: vscode.ExtensionContext) {
         owner,
         repo,
       });
-      searchType({
-        searchType: "watermelon.blame",
-        owner,
-        repo,
-        localUser,
-        userEmail,
-      });
     })
   );
 
   vscode.authentication.getSession("github", []).then((session: any) => {
     setLoggedIn(true);
+    provider.sendMessage({
+      command: "session",
+      loggedIn: true,
+      data: session.account.label,
+    });
   });
   octokit = await credentials.getOctokit();
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
+    updateStatusBarItem(wmStatusBarItem);
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
       selection.selections[0].end.line,

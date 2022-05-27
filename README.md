@@ -14,7 +14,7 @@ Watermelon is an **open-source** integration between **GitHub** and **Visual Stu
 
 ## Features
 
-Watermelon has 3 features that you can use:
+Watermelon has 2 features that you can use:
 
 - View Git Blame
 - View Pull Requests
@@ -62,6 +62,7 @@ Watermelon comes with a command that you can run from VS Code's command palette.
 | :----------------- | :------------------------------------------------------- |
 | `watermelon.start` | Get the historical context of the selected block of code |
 | `watermelon.blame` | Get the commit history of the selected block of code     |
+| `watermelon.show` | Reveal the extension     |
 
 ## Contributing
 

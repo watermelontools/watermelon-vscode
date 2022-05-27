@@ -3,7 +3,6 @@ import getNonce from "./utils/vscode/getNonce";
 import getInitialHTML from "./utils/vscode/getInitialHTML";
 import * as vscode from "vscode";
 import getGitAPI from "./utils/vscode/getGitAPI";
-import getUserEmail from "./utils/getUserEmail";
 import getLocalUser from "./utils/vscode/getLocalUser";
 import getSHAArray from "./utils/getSHAArray";
 import { Credentials } from "./credentials";
@@ -15,7 +14,6 @@ import getBlame from "./utils/getBlame";
 let owner: string | undefined = "";
 let repo: string | undefined = "";
 // user information
-let userEmail: string | undefined = "";
 let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
@@ -57,7 +55,6 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
       octokit = await credentials.getOctokit();
       let gitAPI = await getGitAPI();
       let { repoName, ownerUsername } = await getRepoInfo();
-      userEmail = await getUserEmail({ octokit });
       localUser = await getLocalUser();
       repo = repoName;
       owner = ownerUsername;
@@ -117,6 +114,12 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           });
           break;
         }
+        default:{
+          this.sendMessage({
+            command: "",
+          });
+        }
+
       }
     });
   }

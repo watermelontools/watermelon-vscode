@@ -1,7 +1,7 @@
 {
   "name": "watermelon-tools",
   "description": "Watermelon, find all the historical context of your code",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "publisher": "WatermelonTools",
   "displayName": "Watermelon",
   "private": true,
@@ -38,6 +38,11 @@
       {
         "command": "watermelon.start",
         "title": "Get Pull Requests with Watermelon",
+        "category": "watermelon"
+      },
+      {
+        "command": "watermelon.show",
+        "title": "Show watermelon",
         "category": "watermelon"
       },
       {

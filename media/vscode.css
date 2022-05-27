@@ -12,6 +12,19 @@ code {
 .wm-logo {
   width: 300px;
 }
+.loginHolder{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.loginHolder img{
+  width: 1.5em;
+  height: 1.5em;
+  margin: auto;
+}
+.loginHolder p{
+  flex-grow: 4;
+}
 details > summary {
   padding: 2px 6px;
   border-bottom: 1px solid lightgray;
@@ -115,6 +128,17 @@ button {
   max-height: 3.5em;
   text-overflow: ellipsis;
 }
+.see-more{
+  cursor: pointer;
+  margin-top: -5px;
+  z-index: 2;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.see-more:hover {
+  margin-bottom: auto;
+}
 
 button:hover {
   background-color: #157241;
@@ -213,4 +237,7 @@ pre {
   details > summary::after{
     filter: invert(1);
   }
+}
+footer{
+  font-size: smaller;
 }

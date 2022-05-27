@@ -4,6 +4,17 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.2.4]
+
+- You may reveal the extension with the `Show watermelon` command
+- Now, the "see more" button for code blocks sits _outside_ the code block
+- Improved activity bar text, click to show on startup, click to get PRs on selection
+- Will now display an error when the origin of the repo isn't GitHub
+- Will now show session on footer
+- Will now show extension version on footer
+- Will now show logged in user in header
+- Added internal commands for selecting text
+
 ## [1.2.3]
 
 - Promoted "View PRs" from Beta to stable.
