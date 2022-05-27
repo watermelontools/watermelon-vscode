@@ -6,6 +6,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.2.4]
 
+- _BETA_ Launched browser version for vscode web (and github.dev)
+## [1.2.4]
+
 - You may reveal the extension with the `Show watermelon` command
 - Now, the "see more" button for code blocks sits _outside_ the code block
 - Improved activity bar text, click to show on startup, click to get PRs on selection
