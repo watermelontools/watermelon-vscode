@@ -13,7 +13,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Will now show session on footer
 - Will now show extension version on footer
 - Will now show logged in user in header
-
+- Added internal commands for selecting text
 
 ## [1.2.3]
 
