@@ -12,6 +12,19 @@ code {
 .wm-logo {
   width: 300px;
 }
+.loginHolder{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.loginHolder img{
+  width: 1.5em;
+  height: 1.5em;
+  margin: auto;
+}
+.loginHolder p{
+  flex-grow: 4;
+}
 details > summary {
   padding: 2px 6px;
   border-bottom: 1px solid lightgray;

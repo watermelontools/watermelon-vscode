@@ -14,6 +14,7 @@ import getBlame from "./utils/getBlame";
 import getPackageInfo from "./utils/getPackageInfo";
 import TelemetryReporter from "@vscode/extension-telemetry";
 import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
+import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 
 // repo information
 let owner: string | undefined = "";
@@ -88,7 +89,16 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("watermelon.show", async () => {
       vscode.commands.executeCommand("watermelon.sidebar.focus");
     }));
-
+  octokit = await credentials.getOctokit();
+  getGitHubUserInfo({ octokit }).then(async (githubUserInfo) => {
+    provider.sendMessage({
+      command: "user",
+      data: {
+        login: githubUserInfo.login,
+        avatar: githubUserInfo.avatar_url,
+      }
+    });
+  });
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.start", async () => {
       provider.sendMessage({
