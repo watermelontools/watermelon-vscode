@@ -8,6 +8,7 @@ import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
 import sendMessage from "./utils/sendVSCodeMessage.js";
 import addBlametoDoc from "./utils/addBlametoDoc.js";
+import addSessionToFooter from "./utils/addSessionToFooter.js";
 
 const button = document.getElementsByClassName("run-watermelon");
 const gitBlame = document.getElementsByClassName("git-blame");
@@ -47,6 +48,9 @@ $(document).ready(function () {
         break;
       case "author":
         authorName = message.author;
+        break;
+      case "session":
+        addSessionToFooter(message.data);
         break;
       case "blame":
         let commitLink = undefined;
