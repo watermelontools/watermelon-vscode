@@ -14,7 +14,7 @@ Watermelon is an **open-source** integration between **GitHub** and **Visual Stu
 
 ## Features
 
-Watermelon has 3 features that you can use:
+Watermelon has 2 features that you can use:
 
 - View Git Blame
 - View Pull Requests

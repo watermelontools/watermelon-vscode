@@ -13,3 +13,9 @@ export function noSearchResults() {
     "No search results. Try selecting a bigger piece of code or another file."
   );
 }
+
+export function nonGHRepo() {
+  return vscode.window.showErrorMessage(
+    "We're sorry, we only work with GitHub for now."
+  );
+}
