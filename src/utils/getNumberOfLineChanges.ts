@@ -8,17 +8,20 @@ async function getNumberOfLineChanges(gitAPI:any, lineNumber:number) {
         vscode.window.activeTextEditor?.document.uri.fsPath,
         gitAPI
     );
-    return Promise.allSettled(blamePromises).then((results) => {
-        let blames: string[] = [];
-        results.forEach((result) => {
-            if (result.status === "fulfilled") {
-                blames.push(result.value);
-            } else {
-                blames.push(result.reason);
-            }
-        });
 
-        return blames.length;
+    let blameArray: string[] = [];
+    let blames = await gitAPI?.repositories[0].blame(
+        vscode.window.activeTextEditor?.document.uri.fsPath || "."
+    );
+
+    blames.split("\n").forEach((line: String) => {
+        blameArray.push(line.split(" ")[0]);
     });
+
+    let uniqueBlames = [
+        ...new Set(blameArray),
+    ];
+   
+    return uniqueBlames.length;
 }
 export default getNumberOfLineChanges;
