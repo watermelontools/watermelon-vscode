@@ -47,9 +47,7 @@ export async function activate(context: vscode.ExtensionContext) {
   reporter = new TelemetryReporter(extensionId, extensionVersion, key);
   // ensure it gets properly disposed. Upon disposal the events will be flushed
   context.subscriptions.push(reporter);
-  reporter.sendTelemetryEvent("extensionActivated", {
-    stringProp: "some string",
-  });
+  reporter.sendTelemetryEvent("extensionActivated");
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
   await credentials.initialize(context);
