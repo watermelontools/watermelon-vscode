@@ -5,7 +5,7 @@ With the daily summary feature, Watermelon will become the center of their stand
 
 ## How it looks
 
-![figma](figma.png)
+![proposed-ui](ui.png)
 
 ## Technical challanges
 This is a pretty straightforward feature. 
