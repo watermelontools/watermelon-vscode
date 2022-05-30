@@ -17,6 +17,8 @@ The fact that docs live next to code makes them searchable and linkable.
 
 Markdown looks great everywhere.
 
+Bonus feature: people might write docs just to keep their streak going (green squares on GH profile)
+
 ## How do we measure
 
 No idea, md files created? 
