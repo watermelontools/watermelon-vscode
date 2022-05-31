@@ -81,11 +81,11 @@ export async function activate(context: vscode.ExtensionContext) {
   vscode.languages.registerHoverProvider("*", {
     provideHover(document, position, token) {
       const args = [{ startLine: position.line, endLine: position.line }];
-      const stageCommandUri = vscode.Uri.parse(
+      const startCommandUri = vscode.Uri.parse(
         `command:watermelon.start?${encodeURIComponent(JSON.stringify(args))}`
       );
       const content = new vscode.MarkdownString(
-        `[Understand the code context](${stageCommandUri}) with Watermelon 🍉`
+        `[Understand the code context](${startCommandUri}) with Watermelon 🍉`
       );
       content.supportHtml = true;
       content.isTrusted = true;
@@ -205,20 +205,38 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
   context.subscriptions.push(
-    vscode.commands.registerCommand("watermelon.blame", async () => {
-      provider.sendMessage({
-        command: "loading",
-      });
-      localUser = await getLocalUser();
-      octokit = await credentials.getOctokit();
-      let uniqueBlames = await getBlame(gitAPI);
-      provider.sendMessage({
-        command: "blame",
-        data: uniqueBlames,
-        owner,
-        repo,
-      });
-    })
+    vscode.commands.registerCommand(
+      "watermelon.blame",
+      async (startLine = undefined, endLine = undefined) => {
+        provider.sendMessage({
+          command: "loading",
+        });
+        localUser = await getLocalUser();
+        octokit = await credentials.getOctokit();
+        if (startLine === undefined && endLine === undefined) {
+          let uniqueBlames = await getBlame(gitAPI);
+          provider.sendMessage({
+            command: "blame",
+            data: uniqueBlames,
+            owner,
+            repo,
+          });
+        } else {
+          // sets the cursor on startLine
+          vscode.commands.executeCommand("editor.action.gotoLine", {
+            line: startLine,
+          });
+          vscode.commands.executeCommand("watermelon.select");
+          let uniqueBlames = await getBlame(gitAPI);
+          provider.sendMessage({
+            command: "blame",
+            data: uniqueBlames,
+            owner,
+            repo,
+          });
+        }
+      }
+    )
   );
 
   vscode.authentication.getSession("github", []).then((session: any) => {
