@@ -13,11 +13,18 @@ const addActionButtons = () => {
     `<p>Click this button to enrich your code with relevant information from GitHub:</p>
     <button class='run-watermelon'>View Pull Requests</button><br/>`
   );
+  $("#ghHolder").append(
+    `<p>Click this button to get the most relevant documentation for a piece of code:</p>
+    <button class='run-watermelon'>Get Docs</button><br/>`
+  );
   $(".run-watermelon").on("click", (event) => {
     sendMessage({ command: "run" });
   });
   $(".git-blame").on("click", (event) => {
     sendMessage({ command: "blame" });
+  });
+  $(".git-blame").on("click", (event) => {
+    sendMessage({ command: "read-docs" });
   });
 };
 export default addActionButtons;
