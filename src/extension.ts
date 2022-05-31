@@ -221,11 +221,7 @@ export async function activate(context: vscode.ExtensionContext) {
         localUser = await getLocalUser();
         octokit = await credentials.getOctokit();
         let uniqueBlames = [];
-        if (startLine === undefined && endLine === undefined) {
-          uniqueBlames = await getBlame(gitAPI);
-        } else {
-          uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-        }
+        uniqueBlames = await getBlame(gitAPI, startLine, endLine);
         provider.sendMessage({
           command: "blame",
           data: uniqueBlames,
