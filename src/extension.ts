@@ -220,24 +220,18 @@ export async function activate(context: vscode.ExtensionContext) {
         });
         localUser = await getLocalUser();
         octokit = await credentials.getOctokit();
+        let uniqueBlames = [];
         if (startLine === undefined && endLine === undefined) {
-          let uniqueBlames = await getBlame(gitAPI);
-          provider.sendMessage({
-            command: "blame",
-            data: uniqueBlames,
-            owner,
-            repo,
-          });
+          uniqueBlames = await getBlame(gitAPI);
         } else {
-          // sets the cursor on startLine
-          let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-          provider.sendMessage({
-            command: "blame",
-            data: uniqueBlames,
-            owner,
-            repo,
-          });
+          uniqueBlames = await getBlame(gitAPI, startLine, endLine);
         }
+        provider.sendMessage({
+          command: "blame",
+          data: uniqueBlames,
+          owner,
+          repo,
+        });
       }
     )
   );
