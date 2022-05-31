@@ -118,13 +118,14 @@ export async function activate(context: vscode.ExtensionContext) {
     });
   });
   context.subscriptions.push(
-    vscode.commands.registerCommand("watermelon.start", async () => {
+    vscode.commands.registerCommand("watermelon.start", async (startLine = undefined, endLine = undefined) => {
       provider.sendMessage({
         command: "loading",
       });
       localUser = await getLocalUser();
 
       octokit = await credentials.getOctokit();
+      if(startLine == undefined && endLine == undefined) {
       if (!arrayOfSHAs.length) {
         arrayOfSHAs = await getSHAArray(
           1,
@@ -150,6 +151,7 @@ export async function activate(context: vscode.ExtensionContext) {
         command: "prs",
         data: issuesWithTitlesAndGroupedComments,
       });
+    } else{}
     })
   );
   context.subscriptions.push(
