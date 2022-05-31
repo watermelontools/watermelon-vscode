@@ -84,8 +84,15 @@ export async function activate(context: vscode.ExtensionContext) {
       const startCommandUri = vscode.Uri.parse(
         `command:watermelon.start?${encodeURIComponent(JSON.stringify(args))}`
       );
+      const blameCommandUri = vscode.Uri.parse(
+        `command:watermelon.blame?${encodeURIComponent(JSON.stringify(args))}`
+      );
       const content = new vscode.MarkdownString(
         `[Understand the code context](${startCommandUri}) with Watermelon 🍉`
+      );
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(
+        `[View the history for this line](${blameCommandUri}) with Watermelon 🍉`
       );
       content.supportHtml = true;
       content.isTrusted = true;
@@ -223,11 +230,7 @@ export async function activate(context: vscode.ExtensionContext) {
           });
         } else {
           // sets the cursor on startLine
-          vscode.commands.executeCommand("editor.action.gotoLine", {
-            line: startLine,
-          });
-          vscode.commands.executeCommand("watermelon.select");
-          let uniqueBlames = await getBlame(gitAPI);
+          let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
           provider.sendMessage({
             command: "blame",
             data: uniqueBlames,
