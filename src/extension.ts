@@ -102,6 +102,8 @@ export async function activate(context: vscode.ExtensionContext) {
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
+  reporter.sendTelemetryEvent("repoInfo", { owner, repo });
+
   provider.sendMessage({
     command: "versionInfo",
     data: extensionVersion,

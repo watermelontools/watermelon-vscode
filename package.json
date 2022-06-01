@@ -33,6 +33,7 @@
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
+  "browser": "./out/main.js",
   "contributes": {
     "commands": [
       {
