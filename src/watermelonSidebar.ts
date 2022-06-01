@@ -114,6 +114,20 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           });
           break;
         }
+        case "docs": {
+          // Send Event to VSC Telemtry Library
+          this.reporter.sendTelemetryEvent("getDocs");
+
+          this.sendMessage({
+            command: "loading",
+          });
+
+          this.sendMessage({
+            command: "docs",
+            // data: docs,
+          });
+          break;
+        }
         default:{
           this.sendMessage({
             command: "",
