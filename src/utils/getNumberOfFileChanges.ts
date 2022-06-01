@@ -1,10 +1,10 @@
 import * as vscode from "vscode";
 import getFullBlame from "./getFullBlame";
 
-async function getNumberOfFileChanges(gitAPI:any, lineNumber:number) {
+async function getNumberOfFileChanges(gitAPI:any, filePath:string){
     let blameArray: string[] = [];
     let blames = await gitAPI?.repositories[0].blame(
-        vscode.window.activeTextEditor?.document.uri.fsPath || "."
+        filePath || "."
     );
 
     blames.split("\n").forEach((line: String) => {
