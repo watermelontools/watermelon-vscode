@@ -1,17 +1,17 @@
 import * as vscode from "vscode";
+import TelemetryReporter from "@vscode/extension-telemetry";
 import { Credentials } from "./credentials";
-import getWebviewOptions from "./utils/vscode/getWebViewOptions";
-import getGitAPI from "./utils/vscode/getGitAPI";
+import getBlame from "./utils/getBlame";
 import getSHAArray from "./utils/getSHAArray";
+import getGitAPI from "./utils/vscode/getGitAPI";
+import getPackageInfo from "./utils/getPackageInfo";
+import WatermelonSidebar from "./watermelonSidebar";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
-import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import WatermelonSidebar from "./watermelonSidebar";
-import getBlame from "./utils/getBlame";
-import getPackageInfo from "./utils/getPackageInfo";
-import TelemetryReporter from "@vscode/extension-telemetry";
-import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 import getGitHubUserInfo from "./utils/getGitHubUserInfo";
+import getWebviewOptions from "./utils/vscode/getWebViewOptions";
+import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
+import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 
 // repo information
 let owner: string | undefined = "";
