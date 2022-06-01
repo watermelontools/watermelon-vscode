@@ -31,7 +31,7 @@ const extensionVersion = getPackageInfo().version;
 const key = "4ed9e755-be2b-460b-9309-426fb5f58c6f";
 
 // telemetry reporter
-let reporter: any;
+let reporter: TelemetryReporter;
 
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
