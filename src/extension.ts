@@ -4,7 +4,6 @@ import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import getGitAPI from "./utils/vscode/getGitAPI";
 import getSHAArray from "./utils/getSHAArray";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
-import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import WatermelonSidebar from "./watermelonSidebar";
@@ -19,7 +18,6 @@ let owner: string | undefined = "";
 let repo: string | undefined = "";
 // user information
 let userEmail: string | undefined = "";
-let localUser: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 // Selected block of code
@@ -120,7 +118,6 @@ export async function activate(context: vscode.ExtensionContext) {
       provider.sendMessage({
         command: "loading",
       });
-      localUser = await getLocalUser();
 
       octokit = await credentials.getOctokit();
       if (!arrayOfSHAs.length) {
@@ -155,7 +152,6 @@ export async function activate(context: vscode.ExtensionContext) {
       provider.sendMessage({
         command: "loading",
       });
-      localUser = await getLocalUser();
       octokit = await credentials.getOctokit();
       let uniqueBlames = await getBlame(gitAPI);
       provider.sendMessage({
