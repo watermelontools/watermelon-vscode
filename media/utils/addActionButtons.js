@@ -15,7 +15,7 @@ const addActionButtons = () => {
   );
   $("#ghHolder").append(
     `<p>Click this button to get the most relevant documentation for a piece of code:</p>
-    <button class='run-watermelon'>Get Docs</button><br/>`
+    <button class='get-docs'>Get Docs</button><br/>`
   );
   $(".run-watermelon").on("click", (event) => {
     sendMessage({ command: "run" });
@@ -24,7 +24,7 @@ const addActionButtons = () => {
     sendMessage({ command: "blame" });
   });
   $(".git-blame").on("click", (event) => {
-    sendMessage({ command: "read-docs" });
+    sendMessage({ command: "docs" });
   });
 };
 export default addActionButtons;
