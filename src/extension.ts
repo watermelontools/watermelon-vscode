@@ -1,6 +1,4 @@
 import * as vscode from "vscode";
-import * as Path from "path";
-import * as fs from "fs";
 import { Credentials } from "./credentials";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import getGitAPI from "./utils/vscode/getGitAPI";
