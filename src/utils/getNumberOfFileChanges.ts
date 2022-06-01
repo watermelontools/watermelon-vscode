@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import getFullBlame from "./getFullBlame";
 
-async function getNumberOfLineChanges(gitAPI:any, lineNumber:number) {
+async function getNumberOfFileChanges(gitAPI:any, lineNumber:number) {
     let blamePromises = await getFullBlame(
         lineNumber,
         lineNumber,
@@ -24,4 +24,4 @@ async function getNumberOfLineChanges(gitAPI:any, lineNumber:number) {
    
     return uniqueBlames.length;
 }
-export default getNumberOfLineChanges;
+export default getNumberOfFileChanges;
