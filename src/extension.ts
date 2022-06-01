@@ -16,11 +16,8 @@ import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
-// user information
-let userEmail: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
-// Selected block of code
 
 let octokit: any;
 
