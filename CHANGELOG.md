@@ -5,7 +5,7 @@ All notable changes to the "watermelon" extension will be documented in this fil
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## [1.3.0]
-
+- Added a hover to activate the extension
 - _BETA_ Launched browser version for vscode web (and github.dev)
 - Will now *not* bundle our internal docs
 
