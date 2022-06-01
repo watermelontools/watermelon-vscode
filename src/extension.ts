@@ -81,6 +81,8 @@ export async function activate(context: vscode.ExtensionContext) {
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
+  reporter.sendTelemetryEvent("repoInfo", { owner, repo });
+
   provider.sendMessage({
     command: "versionInfo",
     data: extensionVersion,
@@ -88,17 +90,23 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.show", async () => {
       vscode.commands.executeCommand("watermelon.sidebar.focus");
-    }));
+    })
+  );
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.select", async () => {
       vscode.commands.executeCommand("editor.action.smartSelect.expand");
-    }));
+    })
+  );
   context.subscriptions.push(
-    vscode.commands.registerCommand("watermelon.multiSelect", async (times = 4) => {
-      for (let index = 0; index < times; index++) {
-        vscode.commands.executeCommand("editor.action.smartSelect.expand");
+    vscode.commands.registerCommand(
+      "watermelon.multiSelect",
+      async (times = 4) => {
+        for (let index = 0; index < times; index++) {
+          vscode.commands.executeCommand("editor.action.smartSelect.expand");
+        }
       }
-    }));
+    )
+  );
   octokit = await credentials.getOctokit();
   getGitHubUserInfo({ octokit }).then(async (githubUserInfo) => {
     provider.sendMessage({
@@ -106,7 +114,7 @@ export async function activate(context: vscode.ExtensionContext) {
       data: {
         login: githubUserInfo.login,
         avatar: githubUserInfo.avatar_url,
-      }
+      },
     });
   });
   context.subscriptions.push(
