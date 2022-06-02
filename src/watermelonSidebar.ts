@@ -1,4 +1,3 @@
-import createDocs from "./utils/analytics/createDocs";
 import getNonce from "./utils/vscode/getNonce";
 import getInitialHTML from "./utils/vscode/getInitialHTML";
 import * as vscode from "vscode";
