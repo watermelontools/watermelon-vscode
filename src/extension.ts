@@ -135,6 +135,7 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "watermelon.start",
       async (startLine = undefined, endLine = undefined) => {
+        vscode.commands.executeCommand("watermelon.show");
         provider.sendMessage({
           command: "loading",
         });
@@ -209,6 +210,7 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "watermelon.blame",
       async (startLine = undefined, endLine = undefined) => {
+        vscode.commands.executeCommand("watermelon.show");
         provider.sendMessage({
           command: "loading",
         });
