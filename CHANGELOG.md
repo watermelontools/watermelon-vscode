@@ -5,6 +5,7 @@ All notable changes to the "watermelon" extension will be documented in this fil
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## [1.3.1]
+- Added a newsletter section
 - Commit history table (blame) is now sorted by commit date, newest first
 
 ## [1.3.0]
