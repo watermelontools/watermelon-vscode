@@ -127,10 +127,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           vscode.window.showTextDocument(mdFile, {
             viewColumn: vscode.ViewColumn.Beside
           });
-
-          this.sendMessage({
-            command: "docs",
-          });
+          
           break;
         }
         default:{
