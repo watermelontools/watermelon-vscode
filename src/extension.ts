@@ -158,6 +158,18 @@ export async function activate(context: vscode.ExtensionContext) {
         owner,
         repo,
       });
+    }),
+
+    vscode.commands.registerCommand("watermelon.docs", async () => {
+      //get current filepath with vs code
+      let filePath = vscode.window.activeTextEditor?.document.uri.fsPath as string;
+      let mdFilePath = filePath + ".md";
+      let mdFile = await vscode.workspace.openTextDocument(mdFilePath);
+      
+      // open md file on a split view
+      vscode.window.showTextDocument(mdFile, {
+        viewColumn: vscode.ViewColumn.Beside
+      });
     })
   );
 
