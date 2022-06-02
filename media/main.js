@@ -73,7 +73,7 @@ $(document).ready(function () {
         addBlametoDoc(message.data, commitLink);
         break;
       case "docs":
-        console.log("docs command called")
+        console.log("docs command called");
         break;
       default:
         console.log("Unknown command");

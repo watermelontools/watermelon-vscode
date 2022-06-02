@@ -118,13 +118,18 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           // Send Event to VSC Telemtry Library
           this.reporter.sendTelemetryEvent("getDocs");
 
-          this.sendMessage({
-            command: "loading",
+          //get current filepath with vs code
+          let filePath = vscode.window.activeTextEditor?.document.uri.fsPath as string;
+          let mdFilePath = filePath + ".md";
+          let mdFile = await vscode.workspace.openTextDocument(mdFilePath);
+
+          // open md file on a split view
+          vscode.window.showTextDocument(mdFile, {
+            viewColumn: vscode.ViewColumn.Beside
           });
 
           this.sendMessage({
             command: "docs",
-            // data: docs,
           });
           break;
         }
