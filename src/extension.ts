@@ -83,9 +83,16 @@ export async function activate(context: vscode.ExtensionContext) {
       const content = new vscode.MarkdownString(
         `[Understand the code context](${startCommandUri}) with Watermelon 🍉`
       );
+      const docsCommandUri = vscode.Uri.parse(
+        `command:watermelon.docs?${encodeURIComponent(JSON.stringify(args))}`
+      );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
         `[View the history for this line](${blameCommandUri}) with Watermelon 🍉`
+      );
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(
+        `[Get the docs for this file](${docsCommandUri}) with Watermelon 🍉`
       );
       content.supportHtml = true;
       content.isTrusted = true;
