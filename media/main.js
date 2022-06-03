@@ -34,10 +34,34 @@ gitBlame[0].addEventListener("click", (event) => {
 
 $(document).ready(function () {
   window.addEventListener("message", (event) => {
+
     const message = event.data; // The JSON data our extension sent
     switch (message.command) {
       case "user":
         addGHUserInfo(message.data);
+        break;
+        case "dailySummary":
+          console.log("dailySummary");
+          console.log(message.data);
+        $("#dailySummary").append(`
+          <div>
+          <h3>Pull Requests To Review:</h3>
+          </div>
+          <div>
+          <h3>Were Reviewed</h3>
+          </div>
+          <div id="openIssues">
+          <h3>Open Issues Assigned to you</h3>
+          </div>
+        `);
+        message.data.issues.map((issue) => {
+          $("#openIssues").append(`
+          <div>
+          <a href="${issue.html_url}">${issue.title}</a>
+          </div>
+          `);
+        });
+        
         break;
       case "prs":
         removeLoading(errorTimeout);
@@ -51,7 +75,7 @@ $(document).ready(function () {
       case "error":
         errorTimeout = setReceivedError(message.error.errorText, errorTimeout);
         break;
-      case "versionInfo": 
+      case "versionInfo":
         addVersionToFooter(message.data);
         break;
       case "author":
