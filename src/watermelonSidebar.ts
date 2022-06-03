@@ -121,21 +121,33 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           //get current filepath with vs code
           let filePath = vscode.window.activeTextEditor?.document.uri.fsPath as string;
           let mdFilePath = filePath + ".md";
-          let mdFile = await vscode.workspace.openTextDocument(mdFilePath);
 
-          // open md file on a split view
-          vscode.window.showTextDocument(mdFile, {
-            viewColumn: vscode.ViewColumn.Beside
-          });
+          //define fileystem as fs
+          let fs = require("fs");
+
+          // check if the markdown file exists
+          if (fs.existsSync(mdFilePath)) {
+            // if it does, open it in the editor
+            let mdFile = await vscode.workspace.openTextDocument(mdFilePath);
+
+            // open md file on a split view
+            vscode.window.showTextDocument(mdFile, {
+              viewColumn: vscode.ViewColumn.Beside
+            });
+          } else {
+            // show error message if the markdown file does not exist
+            vscode.window.showErrorMessage(
+              "The documentation for this extension is not available. Please create a markdown file and try again."
+            );
           
           break;
         }
-        default:{
-          this.sendMessage({
-            command: "",
-          });
-        }
-
+      }
+      default:{
+        this.sendMessage({
+          command: "",
+        });
+      }
       }
     });
   }
