@@ -207,24 +207,32 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "watermelon.blame",
-      async (startLine = undefined, endLine = undefined) => {
-        vscode.commands.executeCommand("watermelon.show");
-        provider.sendMessage({
-          command: "loading",
-        });
-        octokit = await credentials.getOctokit();
-        let uniqueBlames = [];
-        uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-        provider.sendMessage({
-          command: "blame",
-          data: uniqueBlames,
-          owner,
-          repo,
-        });
-      }
-    )
+    vscode.commands.registerCommand("watermelon.blame", async () => {
+      provider.sendMessage({
+        command: "loading",
+      });
+      localUser = await getLocalUser();
+      octokit = await credentials.getOctokit();
+      let uniqueBlames = await getBlame(gitAPI);
+      provider.sendMessage({
+        command: "blame",
+        data: uniqueBlames,
+        owner,
+        repo,
+      });
+    }),
+
+    vscode.commands.registerCommand("watermelon.docs", async () => {
+      //get current filepath with vs code
+      let filePath = vscode.window.activeTextEditor?.document.uri.fsPath as string;
+      let mdFilePath = filePath + ".md";
+      let mdFile = await vscode.workspace.openTextDocument(mdFilePath);
+      
+      // open md file on a split view
+      vscode.window.showTextDocument(mdFile, {
+        viewColumn: vscode.ViewColumn.Beside
+      });
+    })
   );
 
   vscode.authentication.getSession("github", []).then((session: any) => {
