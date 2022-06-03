@@ -91,6 +91,8 @@ export default function getInitialHTML(
            <button class='run-watermelon'>View Pull Requests</button>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a></p>
         </div>
+        <h2>Daily Summary</h2>
+        <div id="dailySummary"></div>
         <h2>Newsletter</h2>
         <p><a href="https://airtable.com/shrVrtfgdtFoITWQN">Register to our Newsletter</a> full of cool tips and tricks</p>
  
