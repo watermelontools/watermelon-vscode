@@ -12,6 +12,7 @@ import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
+import getAllIssues from "./utils/github/getAllIssues";
 
 // repo information
 let owner: string | undefined = "";
@@ -101,6 +102,8 @@ export async function activate(context: vscode.ExtensionContext) {
     command: "versionInfo",
     data: extensionVersion,
   });
+
+  console.log("send dailySummary");
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.show", async () => {
       vscode.commands.executeCommand("watermelon.sidebar.focus");
@@ -130,6 +133,12 @@ export async function activate(context: vscode.ExtensionContext) {
         avatar: githubUserInfo.avatar_url,
       },
     });
+  });
+  let allIssues = await getAllIssues({ octokit });
+  console.log("Watermelon Tools is now active!");
+  provider.sendMessage({
+    command: "dailySummary",
+    data: { issues: allIssues },
   });
   context.subscriptions.push(
     vscode.commands.registerCommand(
