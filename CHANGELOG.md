@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.3.1]
 - Added a newsletter section
 - Commit history table (blame) is now sorted by commit date, newest first
+- We now track every time the hover opens
 
 ## [1.3.0]
 - Added a hover to activate the extension
