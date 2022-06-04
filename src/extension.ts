@@ -89,6 +89,7 @@ export async function activate(context: vscode.ExtensionContext) {
       );
       content.supportHtml = true;
       content.isTrusted = true;
+      reporter.sendTelemetryEvent("hover");
       return new vscode.Hover(content);
     },
   });
