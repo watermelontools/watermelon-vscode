@@ -50,6 +50,11 @@
         "command": "watermelon.blame",
         "title": "Get Commit History with Watermelon",
         "category": "watermelon"
+      },
+      {
+        "command": "watermelon.docs",
+        "title": "Get Code Documentation with Watermelon",
+        "category": "watermelon"
       }
     ],
     "views": {
@@ -88,6 +93,10 @@
       "editor/context": [
         {
           "command": "watermelon.start",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "watermelon.blame",
           "when": "editorHasSelection"
         }
       ]
