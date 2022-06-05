@@ -57,7 +57,7 @@ Alternatively, you can search for "Watermelon" in VS Code's built-in extension m
 
 ## Commands
 
-Watermelon comes with a command that you can run from VS Code's command palette. The result is exactly the same as running a Watermelon query with the green button. Results sit in your sidebar.
+Watermelon comes with a few commands that you can run from VS Code's Command Palette. The result is exactly the same as running a Watermelon query with the green button. Results sit in your sidebar.
 
 | Command            | Description                                              |
 | :----------------- | :------------------------------------------------------- |
