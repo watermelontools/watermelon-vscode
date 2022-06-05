@@ -50,26 +50,6 @@ export default function getInitialHTML(
          connect-src ${connectSources.join(" ")}">
          <meta name="viewport" content="width=device-width, initial-scale=1.0">
          <meta charset="UTF-8">
-        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" 
-        async defer fetchpriority="low"
-        nonce="${nonce}"
-        ></script>
-        <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/highlight.min.js" 
-        async defer fetchpriority="low"
-        ></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-        nonce="${nonce}"
-        ></script>
-        <script
-        src="https://browser.sentry-cdn.com/6.19.6/bundle.min.js"
-        nonce="${nonce}"
-        integrity="sha384-XITe7oDiyULCpVPtGc52+ISVyD2MAEbbfpNsmYcfxClZXDw+IA906MSf6rhcdf3L"
-        crossorigin="anonymous"
-        nonce="${nonce}"
-        ></script>
-        <link rel="stylesheet"
-        href="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/styles/default.min.css" 
-        async defer fetchpriority="low">
         <link href="${stylesMainUri}" rel="stylesheet">
      </head>
      <body>
@@ -102,6 +82,27 @@ export default function getInitialHTML(
      <footer>
       <script nonce="${nonce}" src="${scriptUri}" type="module"></script>
       <a href="https://watermelon.tools">Watermelon.tools</a>.
+      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" 
+      async defer fetchpriority="low"
+      nonce="${nonce}"
+      ></script>
+      <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/highlight.min.js" 
+      async defer fetchpriority="low"
+      ></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      nonce="${nonce}"
+      ></script>
+      <script
+      src="https://browser.sentry-cdn.com/6.19.6/bundle.min.js"
+      nonce="${nonce}"
+      integrity="sha384-XITe7oDiyULCpVPtGc52+ISVyD2MAEbbfpNsmYcfxClZXDw+IA906MSf6rhcdf3L"
+      crossorigin="anonymous"
+      nonce="${nonce}"
+      ></script>
+      <link rel="stylesheet"
+      href="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/styles/default.min.css" 
+      async defer fetchpriority="low">
+     
      </footer>
      </html>
   `;
