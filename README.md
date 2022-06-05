@@ -21,13 +21,13 @@ Watermelon has 2 features that you can use:
 
 Simply click the Watermelon icon on the sidebar. After that you can click any of the 2 different buttons Watermelon has.
 
-### View Git Blame
+### View Commit History
 
-Highlight a piece of code, and then click the View Git Blame button. We will run Git Blame for you, and give you a table with the Git commit messages relevant to the piece of code you highlighted.
+Highlight a piece of code, and then click the `View Commit History` button. We will run Git Blame for you, and give you a table with the Git commit messages relevant to the piece of code you highlighted.
 
 ![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/viewGitBlame.gif?raw=true)
 
-You may also highlight and right click on the code, you will find the 'Get Watermelon blame' command at the end.
+You may also highlight and right click on the code, you will find the 'View Commit History with Watermelon' command at the end.
 
 ### View Pull Requests
 
