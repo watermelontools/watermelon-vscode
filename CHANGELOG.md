@@ -11,6 +11,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Added right click to get blame
 - Moved all scripts to webview footer, making it faster to load
 - Extended instructions on how to use
+- Added Daily Summary section
 
 ## [1.3.0]
 - Added a hover to activate the extension

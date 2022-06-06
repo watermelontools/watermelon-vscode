@@ -253,7 +253,6 @@ export async function activate(context: vscode.ExtensionContext) {
       provider.sendMessage({
         command: "loading",
       });
-      localUser = await getLocalUser();
       octokit = await credentials.getOctokit();
       let uniqueBlames = await getBlame(gitAPI);
       provider.sendMessage({
