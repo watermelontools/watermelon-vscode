@@ -14,6 +14,7 @@ import addSessionToFooter from "./utils/addSessionToFooter.js";
 
 const button = document.getElementsByClassName("run-watermelon");
 const gitBlame = document.getElementsByClassName("git-blame");
+const getDocs = document.getElementsByClassName("get-docs");
 
 let errorTimeout;
 
@@ -30,6 +31,9 @@ button[0].addEventListener("click", (event) => {
 });
 gitBlame[0].addEventListener("click", (event) => {
   sendMessage({ command: "blame" });
+});
+getDocs[0].addEventListener("click", (event) => {
+  sendMessage({ command: "docs" });
 });
 
 $(document).ready(function () {
@@ -146,6 +150,9 @@ $(document).ready(function () {
         }
         removeLoading(errorTimeout);
         addBlametoDoc(message.data, commitLink);
+        break;
+      case "docs":
+        console.log("docs command called");
         break;
       default:
         console.log("Unknown command");
