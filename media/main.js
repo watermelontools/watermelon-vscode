@@ -83,7 +83,7 @@ if(message.data.assignedIssues.length > 0) {
 } else {
   $("#assignedIssues").append(`
   <div>
-  <p>You have no issues assigned to you</p>
+  <p>You have no open issues assigned to you 🧘</p>
   </div>
   `);
 }
@@ -98,7 +98,7 @@ if(message.data.creatorIssues.length > 0) {
 } else {
   $("#creatorIssues").append(`
   <div>
-  <p>You have no issues you created</p>
+  <p>You have no open issues created 🌵</p>
   </div>
   `);
 }
@@ -113,7 +113,7 @@ if(message.data.mentionedIssues.length > 0) {
 } else {
   $("#mentionedIssues").append(`
   <div>
-  <p>You have no issues that mention you</p>
+  <p>You have no open issues that mention you 🙊</p>
   </div>
   `);
 }
