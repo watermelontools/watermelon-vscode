@@ -151,7 +151,13 @@ export async function activate(context: vscode.ExtensionContext) {
     creator: username
   });
   console.log(creatorIssues);
-
+  let mentionedIssues = await octokit.rest.issues.listForRepo({
+    owner,
+    repo,
+    state: "open",
+    mentioned: username
+  });
+  console.log(mentionedIssues);
   console.log("Watermelon Tools is now active!");
   provider.sendMessage({
     command: "dailySummary",
@@ -159,6 +165,7 @@ export async function activate(context: vscode.ExtensionContext) {
       issues: allIssues,
       assignedIssues: assignedIssues.data,
       creatorIssues: creatorIssues.data,
+      mentionedIssues: mentionedIssues.data,
     },
   });
   context.subscriptions.push(
