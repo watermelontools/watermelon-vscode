@@ -84,7 +84,7 @@ export async function activate(context: vscode.ExtensionContext) {
         `[Understand the code context](${startCommandUri}) with Watermelon 🍉`
       );
       const docsCommandUri = vscode.Uri.parse(
-        `command:watermelon.docs?${encodeURIComponent(JSON.stringify(args))}`
+        `command:watermelon.docs?`
       );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
