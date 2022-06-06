@@ -12,6 +12,7 @@ import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
+import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
 
 // repo information
 let owner: string | undefined = "";
@@ -71,6 +72,8 @@ export async function activate(context: vscode.ExtensionContext) {
   // update status bar item once at start
   updateStatusBarItem(wmStatusBarItem);
 
+  let numberOfFileChanges = await getNumberOfFileChanges(gitAPI as any, vscode.window.activeTextEditor?.document.fileName) || 0;
+
   vscode.languages.registerHoverProvider("*", {
     provideHover(document, position, token) {
       const args = [{ startLine: position.line, endLine: position.line }];
@@ -93,6 +96,10 @@ export async function activate(context: vscode.ExtensionContext) {
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
         `[Get the docs for this file](${docsCommandUri}) with Watermelon 🍉`
+      );
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(
+        `This file has changed ${numberOfFileChanges} times`
       );
       content.supportHtml = true;
       content.isTrusted = true;
@@ -220,7 +227,7 @@ export async function activate(context: vscode.ExtensionContext) {
       provider.sendMessage({
         command: "loading",
       });
-      localUser = await getLocalUser();
+      // localUser = await getLocalUser();
       octokit = await credentials.getOctokit();
       let uniqueBlames = await getBlame(gitAPI);
       provider.sendMessage({
