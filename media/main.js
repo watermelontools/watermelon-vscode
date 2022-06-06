@@ -45,16 +45,16 @@ $(document).ready(function () {
           console.log(message.data);
         $("#dailySummary").append(`
         <div id="assignedIssues">
-        <h3>Issues Assigned to You</h3>
+        <h3>Issues Assigned to You in this Repo</h3>
         </div>
         <div id="creatorIssues">
-        <h3>Issues You Created</h3>
+        <h3>Issues You Created in this Repo</h3>
         </div>
         <div id="mentionedIssues">
-        <h3>Issues that Mentioned You</h3>
+        <h3>Issues that Mentioned You in this Repo</h3>
         </div>
           <div id="openIssues">
-          <h3>Open Issues Assigned to you</h3>
+          <h3>Open Issues Assigned to You in All of GitHub</h3>
           </div>
         `);
         if (message.data.issues.length > 0) {
