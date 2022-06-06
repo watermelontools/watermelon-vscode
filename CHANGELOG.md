@@ -16,6 +16,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Added a hover to activate the extension
 - _BETA_ Launched browser version for vscode web (and github.dev)
 - Will now *not* bundle our internal docs
+- Added button inside the context box to get the relevant docs for each file
 
 ## [1.2.4]
 
