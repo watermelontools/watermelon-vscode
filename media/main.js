@@ -57,6 +57,7 @@ $(document).ready(function () {
           <h3>Open Issues Assigned to you</h3>
           </div>
         `);
+        if (message.data.issues.length > 0) {
         message.data.issues.map((issue) => {
           $("#openIssues").append(`
           <div>
@@ -64,6 +65,59 @@ $(document).ready(function () {
           </div>
           `);
         });
+      } else {
+        $("#openIssues").append(`
+        <div>
+        <p>You have no open issues assigned to you</p>
+        </div>
+        `);
+      }
+if(message.data.assignedIssues.length > 0) {
+  message.data.assignedIssues.map((issue) => {
+    $("#assignedIssues").append(`
+    <div>
+    <a href="${issue.html_url}">${issue.title}</a>
+    </div>
+    `);
+  });
+} else {
+  $("#assignedIssues").append(`
+  <div>
+  <p>You have no issues assigned to you</p>
+  </div>
+  `);
+}
+if(message.data.creatorIssues.length > 0) {
+  message.data.creatorIssues.map((issue) => {
+    $("#creatorIssues").append(`
+    <div>
+    <a href="${issue.html_url}">${issue.title}</a>
+    </div>
+    `);
+  });
+} else {
+  $("#creatorIssues").append(`
+  <div>
+  <p>You have no issues you created</p>
+  </div>
+  `);
+}
+if(message.data.mentionedIssues.length > 0) {
+  message.data.mentionedIssues.map((issue) => {
+    $("#mentionedIssues").append(`
+    <div>
+    <a href="${issue.html_url}">${issue.title}</a>
+    </div>
+    `);
+  });
+} else {
+  $("#mentionedIssues").append(`
+  <div>
+  <p>You have no issues that mention you</p>
+  </div>
+  `);
+}
+
         
         break;
       case "prs":
