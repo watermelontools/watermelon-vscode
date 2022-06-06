@@ -17,6 +17,7 @@ import getAllIssues from "./utils/github/getAllIssues";
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
+let username: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 
@@ -126,6 +127,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
   octokit = await credentials.getOctokit();
   getGitHubUserInfo({ octokit }).then(async (githubUserInfo) => {
+    username = githubUserInfo.login;
     provider.sendMessage({
       command: "user",
       data: {
@@ -135,10 +137,22 @@ export async function activate(context: vscode.ExtensionContext) {
     });
   });
   let allIssues = await getAllIssues({ octokit });
+  let assignedIssues = await octokit.rest.issues.listForRepo({
+    owner,
+    repo,
+    state: "open",
+    assignee: username
+  });
+  console.log(assignedIssues);
+
   console.log("Watermelon Tools is now active!");
   provider.sendMessage({
     command: "dailySummary",
-    data: { issues: allIssues },
+    data: {
+      issues: allIssues,
+      assignedIssues: assignedIssues.data,
+
+    },
   });
   context.subscriptions.push(
     vscode.commands.registerCommand(
