@@ -44,12 +44,15 @@ $(document).ready(function () {
           console.log("dailySummary");
           console.log(message.data);
         $("#dailySummary").append(`
-          <div>
-          <h3>Pull Requests To Review:</h3>
-          </div>
-          <div>
-          <h3>Were Reviewed</h3>
-          </div>
+        <div id="assignedIssues">
+        <h3>Issues Assigned to You</h3>
+        </div>
+        <div id="creatorIssues">
+        <h3>Issues You Created</h3>
+        </div>
+        <div id="mentionedIssues">
+        <h3>Issues that Mentioned You</h3>
+        </div>
           <div id="openIssues">
           <h3>Open Issues Assigned to you</h3>
           </div>
