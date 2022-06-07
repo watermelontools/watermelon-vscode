@@ -65,6 +65,13 @@ Watermelon comes with a few commands that you can run from VS Code's Command Pal
 | `watermelon.blame` | Get the commit history of the selected block of code     |
 | `watermelon.show` | Reveal the extension     |
 
+## Shortcuts
+
+As an alternative, you can use the following shortcuts:
+
+- `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac) for running the `watermelon.start` command
+- `Ctrl+Shift+H` (`Cmd+Shift+C` on Mac) for running the `watermelon.blame` command
+
 ## Contributing
 
 Check out [Contributing.md](CONTRIBUTING.md) and be aware of the [Code of Conduct](CODE_OF_CONDUCT.md)!
