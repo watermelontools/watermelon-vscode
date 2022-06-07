@@ -111,7 +111,6 @@
     "test-compile": "tsc -p ./",
     "compile": "tsc -p ./",
     "watch": "tsc -w -p ./",
-    "deploy": "vsce publish --yarn",
     "pretest": "npm run compile",
     "test": "node ./out/test/runTest.js"
   },

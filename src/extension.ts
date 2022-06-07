@@ -13,10 +13,12 @@ import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
+import getAllIssues from "./utils/github/getAllIssues";
 
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
+let username: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 
@@ -116,6 +118,8 @@ export async function activate(context: vscode.ExtensionContext) {
     command: "versionInfo",
     data: extensionVersion,
   });
+
+  console.log("send dailySummary");
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.show", async () => {
       vscode.commands.executeCommand("watermelon.sidebar.focus");
@@ -138,6 +142,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
   octokit = await credentials.getOctokit();
   getGitHubUserInfo({ octokit }).then(async (githubUserInfo) => {
+    username = githubUserInfo.login;
     provider.sendMessage({
       command: "user",
       data: {
@@ -145,6 +150,34 @@ export async function activate(context: vscode.ExtensionContext) {
         avatar: githubUserInfo.avatar_url,
       },
     });
+  });
+  let globalIssues = await getAllIssues({ octokit });
+  let assignedIssues = await octokit.rest.issues.listForRepo({
+    owner,
+    repo,
+    state: "open",
+    assignee: username
+  });
+  let creatorIssues = await octokit.rest.issues.listForRepo({
+    owner,
+    repo,
+    state: "open",
+    creator: username
+  });
+  let mentionedIssues = await octokit.rest.issues.listForRepo({
+    owner,
+    repo,
+    state: "open",
+    mentioned: username
+  });
+  provider.sendMessage({
+    command: "dailySummary",
+    data: {
+      globalIssues: globalIssues,
+      assignedIssues: assignedIssues.data,
+      creatorIssues: creatorIssues.data,
+      mentionedIssues: mentionedIssues.data,
+    },
   });
   context.subscriptions.push(
     vscode.commands.registerCommand(
@@ -222,13 +255,13 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
   context.subscriptions.push(
-    vscode.commands.registerCommand("watermelon.blame", async () => {
+    vscode.commands.registerCommand("watermelon.blame", async (startLine = undefined, endLine = undefined) => {
       vscode.commands.executeCommand("watermelon.show");
       provider.sendMessage({
         command: "loading",
       });
       octokit = await credentials.getOctokit();
-      let uniqueBlames = await getBlame(gitAPI);
+      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
       provider.sendMessage({
         command: "blame",
         data: uniqueBlames,

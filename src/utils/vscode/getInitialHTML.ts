@@ -73,6 +73,8 @@ export default function getInitialHTML(
            <button class='get-docs'>Get Docs</button>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a> or by selecting and right clicking on the selection.</p>
         </div>
+        <h2>Daily Summary</h2>
+        <div id="dailySummary"></div>
         <h2>Newsletter</h2>
         <p><a href="https://airtable.com/shrVrtfgdtFoITWQN">Register to our Newsletter</a> full of cool tips and tricks</p>
  
