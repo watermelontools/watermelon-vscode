@@ -215,14 +215,13 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
   context.subscriptions.push(
-    vscode.commands.registerCommand("watermelon.blame", async () => {
+    vscode.commands.registerCommand("watermelon.blame", async (startLine = undefined, endLine = undefined) => {
       vscode.commands.executeCommand("watermelon.show");
       provider.sendMessage({
         command: "loading",
       });
-      localUser = await getLocalUser();
       octokit = await credentials.getOctokit();
-      let uniqueBlames = await getBlame(gitAPI);
+      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
       provider.sendMessage({
         command: "blame",
         data: uniqueBlames,
