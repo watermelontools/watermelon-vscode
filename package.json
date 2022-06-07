@@ -100,7 +100,21 @@
           "when": "editorHasSelection"
         }
       ]
-    }
+    },
+    "keybindings": [
+      {
+        "command": "watermelon.start",
+        "key": "ctrl+shift+C",
+        "mac": "cmd+shift+C",
+        "when": "editorHasSelection"
+      },
+      {
+        "command": "watermelon.blame",
+        "key": "ctrl+shift+H",
+        "mac": "cmd+shift+H",
+        "when": "editorHasSelection"
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx",
