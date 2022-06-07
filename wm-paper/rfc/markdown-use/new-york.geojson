@@ -1,0 +1,96 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "point1"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0,
+                    0
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "point2"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    0,
+                    0
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "collection"
+            },
+            "geometry": {
+                "geometries": [
+                    {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                [
+                                    100.0,
+                                    0.0
+                                ],
+                                [
+                                    101.0,
+                                    0.0
+                                ],
+                                [
+                                    101.0,
+                                    1.0
+                                ],
+                                [
+                                    100.0,
+                                    1.0
+                                ],
+                                [
+                                    100.0,
+                                    0.0
+                                ]
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                [
+                                    100.0,
+                                    0.0
+                                ],
+                                [
+                                    101.0,
+                                    0.0
+                                ],
+                                [
+                                    101.0,
+                                    1.0
+                                ],
+                                [
+                                    100.0,
+                                    1.0
+                                ],
+                                [
+                                    100.0,
+                                    0.0
+                                ]
+                            ]
+                        ]
+                    }
+                ],
+                "type": "GeometryCollection"
+            }
+        }
+    ]
+}

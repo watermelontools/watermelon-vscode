@@ -21,6 +21,10 @@ const addBlametoDoc = (blameArray, commitLink) => {
       </tbody>
     </table>
     `);
+  //sort array by date, newest first
+  blameArray.sort((a, b) => {
+    return new Date(b.commitDate) - new Date(a.commitDate);
+  });
   blameArray.forEach((blameLine, index) => {
     $(".blame-rows").append(`
       <tr ${index % 2 === 0 ? 'class="table-zebra"' : ""}>
