@@ -72,7 +72,7 @@ export async function activate(context: vscode.ExtensionContext) {
   // update status bar item once at start
   updateStatusBarItem(wmStatusBarItem);
 
-  let numberOfFileChanges = await getNumberOfFileChanges(gitAPI as any, vscode.window.activeTextEditor?.document.fileName) || 0;
+  let numberOfFileChanges = await getNumberOfFileChanges( vscode.window.activeTextEditor?.document.uri.fsPath || ".", gitAPI as any) || 0;
 
   vscode.languages.registerHoverProvider("*", {
     provideHover(document, position, token) {
