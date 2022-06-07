@@ -21,14 +21,15 @@ Watermelon has 2 features that you can use:
 
 Simply click the Watermelon icon on the sidebar. After that you can click any of the 2 different buttons Watermelon has.
 
-### View Git Blame
+### View Commit History
 
-Highlight a piece of code, and then click the View Git Blame button. We will run Git Blame for you, and give you a table with the Git commit messages relevant to the piece of code you highlighted.
+Highlight a piece of code, and then click the `View Commit History` button. We will run Git Blame for you, and give you a table with the Git commit messages relevant to the piece of code you highlighted.
 
 ![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/viewGitBlame.gif?raw=true)
 
-You may also highlight and right click on the code, you will find the 'Get Watermelon blame' command at the end.
+You may also highlight and right click on the code, you will find the 'View Commit History with Watermelon' command at the end.
 
+As a final way to use, only with your keyboard, you may pull the Command Palette (<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> on Windows and Linux and <kbd>CMD</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> on Mac)
 ### View Pull Requests
 
 Highlight a piece of code, and then click the View Pull Requests button to run Git Blame on the background. We will get the PR bodies and comments that are relevant to the highlighted piece of code for you.
@@ -56,13 +57,20 @@ Alternatively, you can search for "Watermelon" in VS Code's built-in extension m
 
 ## Commands
 
-Watermelon comes with a command that you can run from VS Code's command palette. The result is exactly the same as running a Watermelon query with the green button. Results sit in your sidebar.
+Watermelon comes with a few commands that you can run from VS Code's Command Palette. The result is exactly the same as running a Watermelon query with the green button. Results sit in your sidebar.
 
 | Command            | Description                                              |
 | :----------------- | :------------------------------------------------------- |
 | `watermelon.start` | Get the historical context of the selected block of code |
 | `watermelon.blame` | Get the commit history of the selected block of code     |
 | `watermelon.show` | Reveal the extension     |
+
+## Shortcuts
+
+As an alternative, you can use the following shortcuts:
+
+- `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac) for running the `watermelon.start` command
+- `Ctrl+Shift+H` (`Cmd+Shift+C` on Mac) for running the `watermelon.blame` command
 
 ## Contributing
 

@@ -1,30 +1,26 @@
 import * as vscode from "vscode";
-import * as Path from "path";
-import * as fs from "fs";
-import { Credentials } from "./credentials";
-import getWebviewOptions from "./utils/vscode/getWebViewOptions";
-import getGitAPI from "./utils/vscode/getGitAPI";
-import getSHAArray from "./utils/getSHAArray";
-import setLoggedIn from "./utils/vscode/setLoggedIn";
-import getLocalUser from "./utils/vscode/getLocalUser";
-import getRepoInfo from "./utils/vscode/getRepoInfo";
-import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import WatermelonSidebar from "./watermelonSidebar";
-import getBlame from "./utils/getBlame";
-import getPackageInfo from "./utils/getPackageInfo";
 import TelemetryReporter from "@vscode/extension-telemetry";
-import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
+import { Credentials } from "./credentials";
+import getBlame from "./utils/getBlame";
+import getSHAArray from "./utils/getSHAArray";
+import getGitAPI from "./utils/vscode/getGitAPI";
+import getPackageInfo from "./utils/getPackageInfo";
+import WatermelonSidebar from "./watermelonSidebar";
+import setLoggedIn from "./utils/vscode/setLoggedIn";
+import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getGitHubUserInfo from "./utils/getGitHubUserInfo";
+import getWebviewOptions from "./utils/vscode/getWebViewOptions";
+import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
+import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
+import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
+import getAllIssues from "./utils/github/getAllIssues";
 
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
-// user information
-let userEmail: string | undefined = "";
-let localUser: string | undefined = "";
+let username: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
-// Selected block of code
 
 let octokit: any;
 
@@ -38,7 +34,7 @@ const extensionVersion = getPackageInfo().version;
 const key = "4ed9e755-be2b-460b-9309-426fb5f58c6f";
 
 // telemetry reporter
-let reporter: any;
+let reporter: TelemetryReporter;
 
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
@@ -78,6 +74,8 @@ export async function activate(context: vscode.ExtensionContext) {
   // update status bar item once at start
   updateStatusBarItem(wmStatusBarItem);
 
+  let numberOfFileChanges = await getNumberOfFileChanges( vscode.window.activeTextEditor?.document.uri.fsPath || ".", gitAPI as any) || 0;
+
   vscode.languages.registerHoverProvider("*", {
     provideHover(document, position, token) {
       const args = [{ startLine: position.line, endLine: position.line }];
@@ -90,12 +88,24 @@ export async function activate(context: vscode.ExtensionContext) {
       const content = new vscode.MarkdownString(
         `[Understand the code context](${startCommandUri}) with Watermelon 🍉`
       );
+      const docsCommandUri = vscode.Uri.parse(
+        `command:watermelon.docs?`
+      );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
         `[View the history for this line](${blameCommandUri}) with Watermelon 🍉`
       );
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(
+        `[Get the docs for this file](${docsCommandUri}) with Watermelon 🍉`
+      );
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(
+        `This file has changed ${numberOfFileChanges} times`
+      );
       content.supportHtml = true;
       content.isTrusted = true;
+      reporter.sendTelemetryEvent("hover");
       return new vscode.Hover(content);
     },
   });
@@ -108,6 +118,8 @@ export async function activate(context: vscode.ExtensionContext) {
     command: "versionInfo",
     data: extensionVersion,
   });
+
+  console.log("send dailySummary");
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.show", async () => {
       vscode.commands.executeCommand("watermelon.sidebar.focus");
@@ -130,6 +142,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
   octokit = await credentials.getOctokit();
   getGitHubUserInfo({ octokit }).then(async (githubUserInfo) => {
+    username = githubUserInfo.login;
     provider.sendMessage({
       command: "user",
       data: {
@@ -138,14 +151,42 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
   });
+  let globalIssues = await getAllIssues({ octokit });
+  let assignedIssues = await octokit.rest.issues.listForRepo({
+    owner,
+    repo,
+    state: "open",
+    assignee: username
+  });
+  let creatorIssues = await octokit.rest.issues.listForRepo({
+    owner,
+    repo,
+    state: "open",
+    creator: username
+  });
+  let mentionedIssues = await octokit.rest.issues.listForRepo({
+    owner,
+    repo,
+    state: "open",
+    mentioned: username
+  });
+  provider.sendMessage({
+    command: "dailySummary",
+    data: {
+      globalIssues: globalIssues,
+      assignedIssues: assignedIssues.data,
+      creatorIssues: creatorIssues.data,
+      mentionedIssues: mentionedIssues.data,
+    },
+  });
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "watermelon.start",
       async (startLine = undefined, endLine = undefined) => {
+        vscode.commands.executeCommand("watermelon.show");
         provider.sendMessage({
           command: "loading",
         });
-        localUser = await getLocalUser();
 
         octokit = await credentials.getOctokit();
         if (startLine === undefined && endLine === undefined) {
@@ -214,24 +255,32 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "watermelon.blame",
-      async (startLine = undefined, endLine = undefined) => {
-        provider.sendMessage({
-          command: "loading",
-        });
-        localUser = await getLocalUser();
-        octokit = await credentials.getOctokit();
-        let uniqueBlames = [];
-        uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-        provider.sendMessage({
-          command: "blame",
-          data: uniqueBlames,
-          owner,
-          repo,
-        });
-      }
-    )
+    vscode.commands.registerCommand("watermelon.blame", async (startLine = undefined, endLine = undefined) => {
+      vscode.commands.executeCommand("watermelon.show");
+      provider.sendMessage({
+        command: "loading",
+      });
+      octokit = await credentials.getOctokit();
+      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+      provider.sendMessage({
+        command: "blame",
+        data: uniqueBlames,
+        owner,
+        repo,
+      });
+    }),
+
+    vscode.commands.registerCommand("watermelon.docs", async () => {
+      //get current filepath with vs code
+      let filePath = vscode.window.activeTextEditor?.document.uri.fsPath as string;
+      let mdFilePath = filePath + ".md";
+      let mdFile = await vscode.workspace.openTextDocument(mdFilePath);
+
+      // open md file on a split view
+      vscode.window.showTextDocument(mdFile, {
+        viewColumn: vscode.ViewColumn.Beside
+      });
+    })
   );
 
   vscode.authentication.getSession("github", []).then((session: any) => {
