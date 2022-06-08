@@ -10,7 +10,7 @@ export default async function getPRsPerSHAS({
   shaArray: string;
 }) {
   let octoresp = await octokit.request(`GET /search/issues?type=Commits`, {
-    org: owner,
+    repo: `${owner}/${repoName}`,
     q: shaArray,
   });
 
