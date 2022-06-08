@@ -1,83 +1,300 @@
 import * as vscode from "vscode";
+import TelemetryReporter from "@vscode/extension-telemetry";
 import { Credentials } from "./credentials";
-import getWebviewOptions from "./utils/vscode/getWebViewOptions";
-import getNonce from "./utils/vscode/getNonce";
-import getGitAPI from "./utils/vscode/getGitAPI";
-import { watermelonBannerImageURL } from "./constants";
-import getInitialHTML from "./utils/vscode/getInitialHTML";
+import getBlame from "./utils/getBlame";
 import getSHAArray from "./utils/getSHAArray";
+import getGitAPI from "./utils/vscode/getGitAPI";
+import getPackageInfo from "./utils/getPackageInfo";
+import WatermelonSidebar from "./watermelonSidebar";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
-import getLocalUser from "./utils/vscode/getLocalUser";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
-import getUserEmail from "./utils/getUserEmail";
-import searchType from "./utils/analytics/searchType";
+import getGitHubUserInfo from "./utils/getGitHubUserInfo";
+import getWebviewOptions from "./utils/vscode/getWebViewOptions";
+import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import slackhelp from "./utils/analytics/slackhelp";
+import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
+import getAllIssues from "./utils/github/getAllIssues";
 
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
-// user information
-let userEmail: string | undefined = "";
-let localUser: string | undefined = "";
+let username: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 
 let octokit: any;
 
+// all events will be prefixed with this event name
+const extensionId = "WatermelonTools.watermelon-tools";
+
+// extension version will be reported as a property with each event
+const extensionVersion = getPackageInfo().version;
+
+// the application insights key (also known as instrumentation key)
+const key = "4ed9e755-be2b-460b-9309-426fb5f58c6f";
+
+// telemetry reporter
+let reporter: TelemetryReporter;
+
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
 
+  // create telemetry reporter on extension activation
+  reporter = new TelemetryReporter(extensionId, extensionVersion, key);
+  // ensure it gets properly disposed. Upon disposal the events will be flushed
+  context.subscriptions.push(reporter);
+  reporter.sendTelemetryEvent("extensionActivated");
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
   await credentials.initialize(context);
 
-  const provider = new watermelonSidebar(context.extensionUri);
+  const provider = new WatermelonSidebar(context, reporter);
 
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
-      watermelonSidebar.viewType,
+      WatermelonSidebar.viewType,
       provider
     )
   );
+  let wmStatusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  wmStatusBarItem.command = "watermelon.start";
+  context.subscriptions.push(wmStatusBarItem);
+
+  // register some listener that make sure the status bar
+  // item always up-to-date
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveTextEditor(async () => {
+      updateStatusBarItem(wmStatusBarItem);
+    })
+  );
+
+  // update status bar item once at start
+  updateStatusBarItem(wmStatusBarItem);
+
+  let numberOfFileChanges = await getNumberOfFileChanges( vscode.window.activeTextEditor?.document.uri.fsPath || ".", gitAPI as any) || 0;
+
+  vscode.languages.registerHoverProvider("*", {
+    provideHover(document, position, token) {
+      const args = [{ startLine: position.line, endLine: position.line }];
+      const startCommandUri = vscode.Uri.parse(
+        `command:watermelon.start?${encodeURIComponent(JSON.stringify(args))}`
+      );
+      const blameCommandUri = vscode.Uri.parse(
+        `command:watermelon.blame?${encodeURIComponent(JSON.stringify(args))}`
+      );
+      const content = new vscode.MarkdownString(
+        `[Understand the code context](${startCommandUri}) with Watermelon 🍉`
+      );
+      const docsCommandUri = vscode.Uri.parse(
+        `command:watermelon.docs?`
+      );
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(
+        `[View the history for this line](${blameCommandUri}) with Watermelon 🍉`
+      );
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(
+        `[Get the docs for this file](${docsCommandUri}) with Watermelon 🍉`
+      );
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(
+        `This file has changed ${numberOfFileChanges} times`
+      );
+      content.supportHtml = true;
+      content.isTrusted = true;
+      reporter.sendTelemetryEvent("hover");
+      return new vscode.Hover(content);
+    },
+  });
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
+  reporter.sendTelemetryEvent("repoInfo", { owner, repo });
+
+  provider.sendMessage({
+    command: "versionInfo",
+    data: extensionVersion,
+  });
+
+  console.log("send dailySummary");
   context.subscriptions.push(
-    vscode.commands.registerCommand("watermelon.start", async () => {
+    vscode.commands.registerCommand("watermelon.show", async () => {
+      vscode.commands.executeCommand("watermelon.sidebar.focus");
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("watermelon.select", async () => {
+      vscode.commands.executeCommand("editor.action.smartSelect.expand");
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "watermelon.multiSelect",
+      async (times = 4) => {
+        for (let index = 0; index < times; index++) {
+          vscode.commands.executeCommand("editor.action.smartSelect.expand");
+        }
+      }
+    )
+  );
+  octokit = await credentials.getOctokit();
+  getGitHubUserInfo({ octokit }).then(async (githubUserInfo) => {
+    username = githubUserInfo.login;
+    provider.sendMessage({
+      command: "user",
+      data: {
+        login: githubUserInfo.login,
+        avatar: githubUserInfo.avatar_url,
+      },
+    });
+  });
+  let globalIssues = await getAllIssues({ octokit });
+  let assignedIssues = await octokit.rest.issues.listForRepo({
+    owner,
+    repo,
+    state: "open",
+    assignee: username
+  });
+  let creatorIssues = await octokit.rest.issues.listForRepo({
+    owner,
+    repo,
+    state: "open",
+    creator: username
+  });
+  let mentionedIssues = await octokit.rest.issues.listForRepo({
+    owner,
+    repo,
+    state: "open",
+    mentioned: username
+  });
+  provider.sendMessage({
+    command: "dailySummary",
+    data: {
+      globalIssues: globalIssues,
+      assignedIssues: assignedIssues.data,
+      creatorIssues: creatorIssues.data,
+      mentionedIssues: mentionedIssues.data,
+    },
+  });
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "watermelon.start",
+      async (startLine = undefined, endLine = undefined) => {
+        vscode.commands.executeCommand("watermelon.show");
+        provider.sendMessage({
+          command: "loading",
+        });
+
+        octokit = await credentials.getOctokit();
+        if (startLine === undefined && endLine === undefined) {
+          if (!arrayOfSHAs.length) {
+            arrayOfSHAs = await getSHAArray(
+              1,
+              vscode.window.activeTextEditor?.document.lineCount ?? 2,
+              vscode.window.activeTextEditor?.document.uri.fsPath,
+              gitAPI
+            );
+          }
+          console.log(arrayOfSHAs);
+
+          let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+            arrayOfSHAs,
+            octokit,
+            owner,
+            repo,
+          });
+          if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
+            return provider.sendMessage({
+              command: "error",
+              error: issuesWithTitlesAndGroupedComments,
+            });
+          }
+
+          provider.sendMessage({
+            command: "prs",
+            data: issuesWithTitlesAndGroupedComments,
+          });
+        } else {
+          vscode.commands.executeCommand("watermelon.multiSelect");
+          arrayOfSHAs = await getSHAArray(
+            startLine > 1 ? startLine - 1 : startLine,
+            endLine + 1,
+            vscode.window.activeTextEditor?.document.uri.fsPath,
+            gitAPI
+          );
+          if (!arrayOfSHAs.length) {
+            arrayOfSHAs = await getSHAArray(
+              1,
+              vscode.window.activeTextEditor?.document.lineCount ?? 2,
+              vscode.window.activeTextEditor?.document.uri.fsPath,
+              gitAPI
+            );
+          }
+
+          let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+            arrayOfSHAs,
+            octokit,
+            owner,
+            repo,
+          });
+          if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
+            return provider.sendMessage({
+              command: "error",
+              error: issuesWithTitlesAndGroupedComments,
+            });
+          }
+          provider.sendMessage({
+            command: "prs",
+            data: issuesWithTitlesAndGroupedComments,
+          });
+        }
+      }
+    )
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("watermelon.blame", async (startLine = undefined, endLine = undefined) => {
+      vscode.commands.executeCommand("watermelon.show");
       provider.sendMessage({
         command: "loading",
       });
-      localUser = await getLocalUser();
       octokit = await credentials.getOctokit();
-
-      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-        arrayOfSHAs,
-        octokit,
-        owner,
-        repo,
-      });
+      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
       provider.sendMessage({
-        command: "prs",
-        data: issuesWithTitlesAndGroupedComments,
-      });
-      userEmail = await getUserEmail({ octokit });
-      searchType({
-        searchType: "watermelon.start",
+        command: "blame",
+        data: uniqueBlames,
         owner,
         repo,
-        localUser,
-        userEmail,
+      });
+    }),
+
+    vscode.commands.registerCommand("watermelon.docs", async () => {
+      //get current filepath with vs code
+      let filePath = vscode.window.activeTextEditor?.document.uri.fsPath as string;
+      let mdFilePath = filePath + ".md";
+      let mdFile = await vscode.workspace.openTextDocument(mdFilePath);
+
+      // open md file on a split view
+      vscode.window.showTextDocument(mdFile, {
+        viewColumn: vscode.ViewColumn.Beside
       });
     })
   );
 
   vscode.authentication.getSession("github", []).then((session: any) => {
     setLoggedIn(true);
+    provider.sendMessage({
+      command: "session",
+      loggedIn: true,
+      data: session.account.label,
+    });
   });
   octokit = await credentials.getOctokit();
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
+    updateStatusBarItem(wmStatusBarItem);
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
       selection.selections[0].end.line,
@@ -88,7 +305,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   if (vscode.window.registerWebviewPanelSerializer) {
     // Make sure we register a serializer in activation event
-    vscode.window.registerWebviewPanelSerializer(watermelonSidebar.viewType, {
+    vscode.window.registerWebviewPanelSerializer(WatermelonSidebar.viewType, {
       async deserializeWebviewPanel(
         webviewPanel: vscode.WebviewPanel,
         state: any
@@ -99,108 +316,3 @@ export async function activate(context: vscode.ExtensionContext) {
     });
   }
 }
-
-class watermelonSidebar implements vscode.WebviewViewProvider {
-  public static readonly viewType = "watermelon.sidebar";
-
-  private _view?: vscode.WebviewView;
-
-  constructor(private readonly _extensionUri: vscode.Uri) {}
-  public resolveWebviewView(
-    webviewView: vscode.WebviewView,
-    context: vscode.WebviewViewResolveContext,
-    _token: vscode.CancellationToken
-  ) {
-    this._view = webviewView;
-
-    webviewView.webview.options = {
-      // Allow scripts in the webview
-      enableScripts: true,
-
-      localResourceRoots: [this._extensionUri],
-    };
-
-    webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
-
-    webviewView.webview.onDidReceiveMessage(async (data) => {
-      switch (data.command) {
-        case "run": {
-          this.sendMessage({
-            command: "loading",
-          });
-          userEmail = await getUserEmail({ octokit });
-          localUser = await getLocalUser();
-
-          let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-            arrayOfSHAs,
-            octokit,
-            owner,
-            repo,
-          });
-          // @ts-ignore
-          let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-            (a: any, b: any) => b.comments.length - a.comments.length
-          );
-          searchType({
-            searchType: "webview.button",
-            owner,
-            repo,
-            localUser,
-            userEmail,
-          });
-          this.sendMessage({
-            command: "prs",
-            data: sortedPRs,
-          });
-          break;
-        }
-        case "open-link": {
-          slackhelp();
-          vscode.env.openExternal(vscode.Uri.parse(data.link));
-          break;
-        }
-      }
-    });
-  }
-  public sendMessage(message: any) {
-    if (this._view) {
-      this._view.show?.(true); // `show` is not implemented in 1.49 but is for 1.50 insiders
-      this._view.webview.postMessage(message);
-    }
-  }
-  private _getHtmlForWebview(webview: vscode.Webview) {
-    // Local path to main script run in the webview
-    const scriptPathOnDisk = vscode.Uri.joinPath(
-      this._extensionUri,
-      "media",
-      "main.js"
-    );
-    // And the uri we use to load this script in the webview
-    const scriptUri = scriptPathOnDisk.with({ scheme: "vscode-resource" });
-
-    // Local path to css styles
-    //const styleResetPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css');
-    const stylesPathMainPath = vscode.Uri.joinPath(
-      this._extensionUri,
-      "media",
-      "vscode.css"
-    );
-
-    // Uri to load styles into webview
-    //const stylesResetUri = webview.asWebviewUri(styleResetPath);
-    const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
-
-    // Use a nonce to only allow specific scripts to be run
-    const nonce = getNonce();
-    return getInitialHTML(
-      webview,
-      stylesMainUri,
-      watermelonBannerImageURL,
-      nonce,
-      scriptUri
-    );
-  }
-}
-/**
- * Manages watermelon webview panel
- */

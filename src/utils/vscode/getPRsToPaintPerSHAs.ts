@@ -15,13 +15,29 @@ export default async function getPRsToPaintPerSHAs({
   octokit: any;
   owner?: string;
   repo?: string;
-}) {
+}): Promise<
+  | {
+      user: any;
+      userImage: string;
+      userLink: string;
+      title: string;
+      comments: any[];
+      created_at: any;
+      body: string;
+      avatar: string;
+      url: string;
+      repo_url: string;
+      state: string;
+    }[]
+  | { errorText: string }
+> {
   let { repoName } = await getRepoInfo();
 
   // takes the first 22 shas and creates a list to send to the gh api
   let joinedArrayOfSHAs = arrayOfSHAs.slice(0, 22).join();
   if (joinedArrayOfSHAs.length < 1) {
-    return noLinesSelected();
+    noLinesSelected();
+    return { errorText: "No lines selected" };
   }
 
   let foundPRs = await getPRsPerSHAS({
@@ -31,7 +47,8 @@ export default async function getPRsToPaintPerSHAs({
     shaArray: joinedArrayOfSHAs,
   });
   if (foundPRs?.length === 0) {
-    return noSearchResults();
+    noSearchResults();
+    return { errorText: "No search results" };
   }
 
   // Increase organizational query counter value
@@ -41,13 +58,15 @@ export default async function getPRsToPaintPerSHAs({
   let issuesWithTitlesAndGroupedComments: {
     user: any;
     userLink: string;
+    userImage: string;
     title: string;
     comments: any[];
     created_at: any;
     body: string;
     avatar: string;
     url: string;
-    repo_url: string
+    repo_url: string;
+    state: string;
   }[] = [];
 
   let prPromises = foundPRs.map(async (issue: { url: any }) => {
@@ -60,12 +79,14 @@ export default async function getPRsToPaintPerSHAs({
       issuesWithTitlesAndGroupedComments.push({
         created_at: issueData.created_at,
         user: issueData.user.login,
+        userImage: issueData.user.avatar_url,
         userLink: issueData.user.html_url,
         title: issueData.title,
         url: issueData.html_url,
         body: issueData.body,
         avatar: issueData.user.avatar_url,
         repo_url: issueData.repository_url,
+        state: issueData.state,
         comments: comments.map((comment: any) => {
           return comment;
         }),

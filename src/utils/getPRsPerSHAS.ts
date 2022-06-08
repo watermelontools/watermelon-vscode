@@ -13,5 +13,7 @@ export default async function getPRsPerSHAS({
     org: owner,
     q: shaArray,
   });
-  return octoresp.data?.items;
+
+  let filteredResults = octoresp.data?.items.filter((item: { url: string | string[]; }) => (item.url.includes(repoName)));
+  return filteredResults;
 }
