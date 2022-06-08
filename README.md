@@ -19,7 +19,7 @@ Watermelon has 3 features that you can use:
 - View Git Blame
 - View Pull Requests
 - Get docs
-- 
+
 Simply click the Watermelon icon on the sidebar. After that you can click any of the 3 different buttons Watermelon has.
 
 ### View Commit History
