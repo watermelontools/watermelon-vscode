@@ -1,6 +1,5 @@
-const vscode = acquireVsCodeApi();
 
 function sendMessage(message) {
-    vscode.postMessage(message);
+    window.vscodeApi.postMessage(message);
   }
   export default sendMessage;
