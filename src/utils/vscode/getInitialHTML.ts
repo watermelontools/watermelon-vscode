@@ -61,7 +61,7 @@ export default function getInitialHTML(
        <img src="${lightLogo}" width="300"/>
      </picture>
         <p>Watermelon helps you get the context of your code.</p>
-        <p>Help us by <a href="https://github.com/watermelontools/wm-extension">starring Watermelon on GitHub</a></p>
+        <p>Help us by <a href="https://github.com/watermelontools/wm-extension">⭐starring Watermelon on GitHub</a></p>
         <br/>
         <div id="ghHolder">
            <p>Higlight a piece of code to start.</p>
