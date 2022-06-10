@@ -45,9 +45,10 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(reporter);
   reporter.sendTelemetryEvent("extensionActivated");
   let gitAPI = await getGitAPI();
+  console.log("gitAPI", gitAPI);
   const credentials = new Credentials();
   await credentials.initialize(context);
-
+  console.log("credentials", credentials);
   const provider = new WatermelonSidebar(context, reporter);
 
   context.subscriptions.push(
@@ -74,8 +75,13 @@ export async function activate(context: vscode.ExtensionContext) {
   // update status bar item once at start
   updateStatusBarItem(wmStatusBarItem);
 
-  let numberOfFileChanges = await getNumberOfFileChanges( vscode.window.activeTextEditor?.document.uri.fsPath || ".", gitAPI as any) || 0;
-
+  let numberOfFileChanges: number = 0;
+  if (vscode.window.activeTextEditor) {
+    numberOfFileChanges = await getNumberOfFileChanges(
+      vscode.window.activeTextEditor?.document.uri.fsPath || ".",
+      gitAPI as any
+    );
+  }
   vscode.languages.registerHoverProvider("*", {
     provideHover(document, position, token) {
       const args = [{ startLine: position.line, endLine: position.line }];
@@ -88,9 +94,7 @@ export async function activate(context: vscode.ExtensionContext) {
       const content = new vscode.MarkdownString(
         `[Understand the code context](${startCommandUri}) with Watermelon 🍉`
       );
-      const docsCommandUri = vscode.Uri.parse(
-        `command:watermelon.docs?`
-      );
+      const docsCommandUri = vscode.Uri.parse(`command:watermelon.docs?`);
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
         `[View the history for this line](${blameCommandUri}) with Watermelon 🍉`
@@ -156,19 +160,19 @@ export async function activate(context: vscode.ExtensionContext) {
     owner,
     repo,
     state: "open",
-    assignee: username
+    assignee: username,
   });
   let creatorIssues = await octokit.rest.issues.listForRepo({
     owner,
     repo,
     state: "open",
-    creator: username
+    creator: username,
   });
   let mentionedIssues = await octokit.rest.issues.listForRepo({
     owner,
     repo,
     state: "open",
-    mentioned: username
+    mentioned: username,
   });
   provider.sendMessage({
     command: "dailySummary",
@@ -255,30 +259,34 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
   context.subscriptions.push(
-    vscode.commands.registerCommand("watermelon.blame", async (startLine = undefined, endLine = undefined) => {
-      vscode.commands.executeCommand("watermelon.show");
-      provider.sendMessage({
-        command: "loading",
-      });
-      octokit = await credentials.getOctokit();
-      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-      provider.sendMessage({
-        command: "blame",
-        data: uniqueBlames,
-        owner,
-        repo,
-      });
-    }),
+    vscode.commands.registerCommand(
+      "watermelon.blame",
+      async (startLine = undefined, endLine = undefined) => {
+        vscode.commands.executeCommand("watermelon.show");
+        provider.sendMessage({
+          command: "loading",
+        });
+        octokit = await credentials.getOctokit();
+        let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+        provider.sendMessage({
+          command: "blame",
+          data: uniqueBlames,
+          owner,
+          repo,
+        });
+      }
+    ),
 
     vscode.commands.registerCommand("watermelon.docs", async () => {
       //get current filepath with vs code
-      let filePath = vscode.window.activeTextEditor?.document.uri.fsPath as string;
+      let filePath = vscode.window.activeTextEditor?.document.uri
+        .fsPath as string;
       let mdFilePath = filePath + ".md";
       let mdFile = await vscode.workspace.openTextDocument(mdFilePath);
 
       // open md file on a split view
       vscode.window.showTextDocument(mdFile, {
-        viewColumn: vscode.ViewColumn.Beside
+        viewColumn: vscode.ViewColumn.Beside,
       });
     })
   );
