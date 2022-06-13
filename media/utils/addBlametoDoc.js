@@ -1,6 +1,5 @@
 import addActionButtons from "./addActionButtons.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
-import sendMessage from "./sendVSCodeMessage.js";
 
 const addBlametoDoc = (blameArray, commitLink) => {
   addActionButtons();
