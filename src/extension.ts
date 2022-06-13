@@ -45,10 +45,8 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(reporter);
   reporter.sendTelemetryEvent("extensionActivated");
   let gitAPI = await getGitAPI();
-  console.log("gitAPI", gitAPI);
   const credentials = new Credentials();
   await credentials.initialize(context);
-  console.log("credentials", credentials);
   const provider = new WatermelonSidebar(context, reporter);
 
   context.subscriptions.push(
@@ -77,11 +75,16 @@ export async function activate(context: vscode.ExtensionContext) {
 
   let numberOfFileChanges: number = 0;
   if (vscode.window.activeTextEditor) {
-    numberOfFileChanges = await getNumberOfFileChanges(
-      vscode.window.activeTextEditor?.document.uri.fsPath || ".",
-      gitAPI as any
-    );
+    try {
+      numberOfFileChanges = await getNumberOfFileChanges(
+        vscode.window.activeTextEditor?.document.uri.fsPath || ".",
+        gitAPI as any
+      );
+    } catch {
+      console.error("numberOfFileChanges", numberOfFileChanges);
+    }
   }
+
   vscode.languages.registerHoverProvider("*", {
     provideHover(document, position, token) {
       const args = [{ startLine: position.line, endLine: position.line }];
@@ -123,7 +126,6 @@ export async function activate(context: vscode.ExtensionContext) {
     data: extensionVersion,
   });
 
-  console.log("send dailySummary");
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.show", async () => {
       vscode.commands.executeCommand("watermelon.sidebar.focus");
@@ -202,7 +204,6 @@ export async function activate(context: vscode.ExtensionContext) {
               gitAPI
             );
           }
-          console.log(arrayOfSHAs);
 
           let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
             arrayOfSHAs,
