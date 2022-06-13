@@ -61,7 +61,7 @@ export default function getInitialHTML(
        <img src="${lightLogo}" width="300"/>
      </picture>
         <p>Watermelon helps you get the context of your code.</p>
-        <p>Help us by <a href="https://github.com/watermelontools/wm-extension">starring Watermelon on GitHub</a></p>
+        <p>Help us by <a href="https://github.com/watermelontools/wm-extension">⭐starring Watermelon on GitHub</a></p>
         <br/>
         <div id="ghHolder">
            <p>Higlight a piece of code to start.</p>
@@ -93,6 +93,7 @@ export default function getInitialHTML(
       ></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
       nonce="${nonce}"
+      async defer fetchpriority="low"
       ></script>
       <script
       src="https://browser.sentry-cdn.com/6.19.6/bundle.min.js"
@@ -100,6 +101,7 @@ export default function getInitialHTML(
       integrity="sha384-XITe7oDiyULCpVPtGc52+ISVyD2MAEbbfpNsmYcfxClZXDw+IA906MSf6rhcdf3L"
       crossorigin="anonymous"
       nonce="${nonce}"
+      async defer fetchpriority="low"
       ></script>
       <link rel="stylesheet"
       href="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/styles/default.min.css" 
