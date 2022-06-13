@@ -71,7 +71,7 @@ export default function getInitialHTML(
            <button class='run-watermelon'>View Pull Requests</button>
            <p>Click this button to get the most relevant documentation for a piece of code:</p>
            <button class='get-docs'>Get Docs</button>
-           <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a> or by selecting and right clicking on the selection.</p>
+           <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a>, by selecting and right clicking on the selection or by using our <a href="https://github.com/watermelontools/wm-extension#shortcuts"><kbd>keyboard</kbd> shortcuts</a>.</p>
         </div>
         <h2>Daily Summary</h2>
         <div id="dailySummary"></div>
