@@ -119,14 +119,10 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("watermelon.show", async () => {
       vscode.commands.executeCommand("watermelon.sidebar.focus");
-    })
-  );
-  context.subscriptions.push(
+    }),
     vscode.commands.registerCommand("watermelon.select", async () => {
       vscode.commands.executeCommand("editor.action.smartSelect.expand");
-    })
-  );
-  context.subscriptions.push(
+    }),
     vscode.commands.registerCommand(
       "watermelon.multiSelect",
       async (times = 4) => {
