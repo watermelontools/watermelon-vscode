@@ -38,20 +38,21 @@ export async function activate(context: vscode.ExtensionContext) {
   await credentials.initialize(context);
   const provider = new WatermelonSidebar(context, reporter);
 
+  let wmStatusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  wmStatusBarItem.command = "watermelon.start";
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
       WatermelonSidebar.viewType,
       provider
     ),
     // ensure reporter gets properly disposed. Upon disposal the events will be flushed
-    reporter
+    reporter,
+    // action bar item
+    wmStatusBarItem
   );
-  let wmStatusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right,
-    100
-  );
-  wmStatusBarItem.command = "watermelon.start";
-  context.subscriptions.push(wmStatusBarItem);
 
   // register some listener that make sure the status bar
   // item always up-to-date
