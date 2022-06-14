@@ -44,6 +44,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
   wmStatusBarItem.command = "watermelon.start";
   context.subscriptions.push(
+    // webview
     vscode.window.registerWebviewViewProvider(
       WatermelonSidebar.viewType,
       provider
@@ -51,12 +52,9 @@ export async function activate(context: vscode.ExtensionContext) {
     // ensure reporter gets properly disposed. Upon disposal the events will be flushed
     reporter,
     // action bar item
-    wmStatusBarItem
-  );
-
-  // register some listener that make sure the status bar
-  // item always up-to-date
-  context.subscriptions.push(
+    wmStatusBarItem,
+    // register some listener that make sure the status bar
+    // item always up-to-date
     vscode.window.onDidChangeActiveTextEditor(async () => {
       updateStatusBarItem(wmStatusBarItem);
     })
