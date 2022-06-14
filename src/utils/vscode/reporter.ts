@@ -1,7 +1,9 @@
 import TelemetryReporter from "@vscode/extension-telemetry";
 import getPackageInfo from "../getPackageInfo";
 import { EXTENSION_ID, TELEMETRY_INSIGHTS_KEY } from "../../constants";
-
+/**
+ * Creates the reporter to send data to azure
+ */
 const analyticsReporter = () => {
   const extensionVersion = getPackageInfo().version;
 
