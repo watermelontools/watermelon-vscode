@@ -14,6 +14,7 @@ import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
 import getAllIssues from "./utils/github/getAllIssues";
+import { EXTENSION_ID, TELEMETRY_INSIGHTS_KEY } from "./constants";
 
 // repo information
 let owner: string | undefined = "";
@@ -24,14 +25,8 @@ let arrayOfSHAs: string[] = [];
 
 let octokit: any;
 
-// all events will be prefixed with this event name
-const extensionId = "WatermelonTools.watermelon-tools";
-
 // extension version will be reported as a property with each event
 const extensionVersion = getPackageInfo().version;
-
-// the application insights key (also known as instrumentation key)
-const key = "4ed9e755-be2b-460b-9309-426fb5f58c6f";
 
 // telemetry reporter
 let reporter: TelemetryReporter;
@@ -40,7 +35,11 @@ export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
 
   // create telemetry reporter on extension activation
-  reporter = new TelemetryReporter(extensionId, extensionVersion, key);
+  reporter = new TelemetryReporter(
+    EXTENSION_ID,
+    extensionVersion,
+    TELEMETRY_INSIGHTS_KEY
+  );
   // ensure it gets properly disposed. Upon disposal the events will be flushed
   context.subscriptions.push(reporter);
   reporter.sendTelemetryEvent("extensionActivated");
