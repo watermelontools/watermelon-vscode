@@ -32,8 +32,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // create telemetry reporter on extension activation
   let reporter = analyticsReporter();
-  // ensure it gets properly disposed. Upon disposal the events will be flushed
-  context.subscriptions.push(reporter);
   reporter.sendTelemetryEvent("extensionActivated");
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
@@ -44,7 +42,9 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.registerWebviewViewProvider(
       WatermelonSidebar.viewType,
       provider
-    )
+    ),
+    // ensure reporter gets properly disposed. Upon disposal the events will be flushed
+    reporter
   );
   let wmStatusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
