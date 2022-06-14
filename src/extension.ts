@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import TelemetryReporter from "@vscode/extension-telemetry";
 import { Credentials } from "./credentials";
 import getBlame from "./utils/getBlame";
 import getSHAArray from "./utils/getSHAArray";
@@ -14,7 +13,7 @@ import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
 import getAllIssues from "./utils/github/getAllIssues";
-import { EXTENSION_ID, TELEMETRY_INSIGHTS_KEY } from "./constants";
+import analyticsReporter from "./utils/vscode/reporter";
 
 // repo information
 let owner: string | undefined = "";
@@ -28,18 +27,11 @@ let octokit: any;
 // extension version will be reported as a property with each event
 const extensionVersion = getPackageInfo().version;
 
-// telemetry reporter
-let reporter: TelemetryReporter;
-
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
 
   // create telemetry reporter on extension activation
-  reporter = new TelemetryReporter(
-    EXTENSION_ID,
-    extensionVersion,
-    TELEMETRY_INSIGHTS_KEY
-  );
+  let reporter = analyticsReporter();
   // ensure it gets properly disposed. Upon disposal the events will be flushed
   context.subscriptions.push(reporter);
   reporter.sendTelemetryEvent("extensionActivated");
