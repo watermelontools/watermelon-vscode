@@ -23,8 +23,6 @@ if (oldState?.command) {
 }
 const button = document.getElementsByClassName("run-watermelon");
 const gitBlame = document.getElementsByClassName("git-blame");
-const getDocs = document.getElementsByClassName("get-docs");
-
 
 Sentry.init({
   dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
@@ -40,9 +38,7 @@ button[0].addEventListener("click", (event) => {
 gitBlame[0].addEventListener("click", (event) => {
   sendMessage({ command: "blame" });
 });
-getDocs[0].addEventListener("click", (event) => {
-  sendMessage({ command: "docs" });
-});
+
 function handleMessage(message) {
   switch (message.command) {
     case "user":
@@ -153,9 +149,6 @@ function handleMessage(message) {
       }
       removeLoading(errorTimeout);
       addBlametoDoc(message.data, commitLink);
-      break;
-    case "docs":
-      console.log("docs command called");
       break;
     default:
       console.log("Unknown command");

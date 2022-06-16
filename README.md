@@ -14,13 +14,12 @@ Watermelon is an **open-source** integration between **GitHub** and **Visual Stu
 
 ## Features
 
-Watermelon has 3 features that you can use:
+Watermelon has 2 features that you can use:
 
 - View Git Blame
 - View Pull Requests
-- Get docs
 
-Simply click the Watermelon icon on the sidebar. After that you can click any of the 3 different buttons Watermelon has.
+Simply click the Watermelon icon on the sidebar. After that you can click any of the 2 different buttons Watermelon has.
 
 ### View Commit History
 
@@ -31,6 +30,7 @@ Highlight a piece of code, and then click the `View Commit History` button. We w
 You may also highlight and right click on the code, you will find the 'View Commit History with Watermelon' command at the end.
 
 As a final way to use, only with your keyboard, you may pull the Command Palette (<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> on Windows and Linux and <kbd>CMD</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> on Mac)
+
 ### View Pull Requests
 
 Highlight a piece of code, and then click the View Pull Requests button to run Git Blame on the background. We will get the PR bodies and comments that are relevant to the highlighted piece of code for you.
@@ -64,7 +64,7 @@ Watermelon comes with a few commands that you can run from VS Code's Command Pal
 | :----------------- | :------------------------------------------------------- |
 | `watermelon.start` | Get the historical context of the selected block of code |
 | `watermelon.blame` | Get the commit history of the selected block of code     |
-| `watermelon.show` | Reveal the extension     |
+| `watermelon.show`  | Reveal the extension                                     |
 
 ## Shortcuts
 
