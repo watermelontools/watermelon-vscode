@@ -20,6 +20,7 @@ import hover from "./utils/components/hover";
 import getAssignedIssues from "./utils/github/getAssignedIssues";
 import getCreatorIssues from "./utils/github/getCreatorIssues";
 import getMentionedIssues from "./utils/github/getMentionedIssues";
+import getDailySummary from "./utils/github/getDailySummary";
 
 // repo information
 let owner: string | undefined = "";
@@ -101,33 +102,15 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
   });
-  let globalIssues = await getAllIssues({ octokit });
-  let assignedIssues = await getAssignedIssues({
+  let dailySummary = await getDailySummary({
     octokit,
     owner,
     repo,
     username: username || "",
   });
-  let creatorIssues = await getCreatorIssues({
-    octokit,
-    owner,
-    repo,
-    creator: username || "",
-  });
-  let mentionedIssues = await getMentionedIssues({
-    octokit,
-    owner,
-    repo,
-    mentioned: username || "",
-  });
   provider.sendMessage({
     command: "dailySummary",
-    data: {
-      globalIssues: globalIssues,
-      assignedIssues: assignedIssues.data,
-      creatorIssues: creatorIssues.data,
-      mentionedIssues: mentionedIssues.data,
-    },
+    data: dailySummary,
   });
   context.subscriptions.push(
     vscode.commands.registerCommand(
