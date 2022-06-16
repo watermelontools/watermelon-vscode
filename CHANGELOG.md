@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Small speed improvements
 - Fixes to a race condition with daily summary
+- Removes "get docs"
 
 ## [1.3.2]
 
