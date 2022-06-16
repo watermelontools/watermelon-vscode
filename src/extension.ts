@@ -9,11 +9,18 @@ import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
-import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
 import getAllIssues from "./utils/github/getAllIssues";
 import analyticsReporter from "./utils/vscode/reporter";
+import statusBarItem, {
+  updateStatusBarItem,
+} from "./utils/components/statusBarItem";
+import hover from "./utils/components/hover";
+import getAssignedIssues from "./utils/github/getAssignedIssues";
+import getCreatorIssues from "./utils/github/getCreatorIssues";
+import getMentionedIssues from "./utils/github/getMentionedIssues";
+import getDailySummary from "./utils/github/getDailySummary";
 
 // repo information
 let owner: string | undefined = "";
@@ -38,11 +45,8 @@ export async function activate(context: vscode.ExtensionContext) {
   await credentials.initialize(context);
   const provider = new WatermelonSidebar(context, reporter);
 
-  let wmStatusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right,
-    100
-  );
-  wmStatusBarItem.command = "watermelon.start";
+  let wmStatusBarItem = statusBarItem();
+
   context.subscriptions.push(
     // webview
     vscode.window.registerWebviewViewProvider(
@@ -74,38 +78,9 @@ export async function activate(context: vscode.ExtensionContext) {
       console.error("numberOfFileChanges", numberOfFileChanges);
     }
   }
+  // create the hover provider
+  let wmHover = hover({ reporter, numberOfFileChanges });
 
-  vscode.languages.registerHoverProvider("*", {
-    provideHover(document, position, token) {
-      const args = [{ startLine: position.line, endLine: position.line }];
-      const startCommandUri = vscode.Uri.parse(
-        `command:watermelon.start?${encodeURIComponent(JSON.stringify(args))}`
-      );
-      const blameCommandUri = vscode.Uri.parse(
-        `command:watermelon.blame?${encodeURIComponent(JSON.stringify(args))}`
-      );
-      const content = new vscode.MarkdownString(
-        `[Understand the code context](${startCommandUri}) with Watermelon 🍉`
-      );
-      const docsCommandUri = vscode.Uri.parse(`command:watermelon.docs?`);
-      content.appendMarkdown(`\n\n`);
-      content.appendMarkdown(
-        `[View the history for this line](${blameCommandUri}) with Watermelon 🍉`
-      );
-      content.appendMarkdown(`\n\n`);
-      content.appendMarkdown(
-        `[Get the docs for this file](${docsCommandUri}) with Watermelon 🍉`
-      );
-      content.appendMarkdown(`\n\n`);
-      content.appendMarkdown(
-        `This file has changed ${numberOfFileChanges} times`
-      );
-      content.supportHtml = true;
-      content.isTrusted = true;
-      reporter.sendTelemetryEvent("hover");
-      return new vscode.Hover(content);
-    },
-  });
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
@@ -127,33 +102,15 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
   });
-  let globalIssues = await getAllIssues({ octokit });
-  let assignedIssues = await octokit.rest.issues.listForRepo({
+  let dailySummary = await getDailySummary({
+    octokit,
     owner,
     repo,
-    state: "open",
-    assignee: username,
-  });
-  let creatorIssues = await octokit.rest.issues.listForRepo({
-    owner,
-    repo,
-    state: "open",
-    creator: username,
-  });
-  let mentionedIssues = await octokit.rest.issues.listForRepo({
-    owner,
-    repo,
-    state: "open",
-    mentioned: username,
+    username: username || "",
   });
   provider.sendMessage({
     command: "dailySummary",
-    data: {
-      globalIssues: globalIssues,
-      assignedIssues: assignedIssues.data,
-      creatorIssues: creatorIssues.data,
-      mentionedIssues: mentionedIssues.data,
-    },
+    data: dailySummary,
   });
   context.subscriptions.push(
     vscode.commands.registerCommand(
