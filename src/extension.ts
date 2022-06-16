@@ -11,7 +11,6 @@ import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
-import getAllIssues from "./utils/github/getAllIssues";
 import analyticsReporter from "./utils/vscode/reporter";
 import statusBarItem, {
   updateStatusBarItem,
@@ -92,16 +91,16 @@ export async function activate(context: vscode.ExtensionContext) {
   });
 
   octokit = await credentials.getOctokit();
-  getGitHubUserInfo({ octokit }).then(async (githubUserInfo) => {
-    username = githubUserInfo.login;
-    provider.sendMessage({
-      command: "user",
-      data: {
-        login: githubUserInfo.login,
-        avatar: githubUserInfo.avatar_url,
-      },
-    });
+  let githubUserInfo = await getGitHubUserInfo({ octokit });
+  let username = githubUserInfo.login;
+  provider.sendMessage({
+    command: "user",
+    data: {
+      login: githubUserInfo.login,
+      avatar: githubUserInfo.avatar_url,
+    },
   });
+
   let dailySummary = await getDailySummary({
     octokit,
     owner,
