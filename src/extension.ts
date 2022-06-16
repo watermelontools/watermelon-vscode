@@ -11,16 +11,17 @@ import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
-import getAllIssues from "./utils/github/getAllIssues";
 import analyticsReporter from "./utils/vscode/reporter";
 import statusBarItem, {
   updateStatusBarItem,
 } from "./utils/components/statusBarItem";
 import hover from "./utils/components/hover";
-import getAssignedIssues from "./utils/github/getAssignedIssues";
-import getCreatorIssues from "./utils/github/getCreatorIssues";
-import getMentionedIssues from "./utils/github/getMentionedIssues";
 import getDailySummary from "./utils/github/getDailySummary";
+import {
+  WATERMELON_HISTORY_COMMAND,
+  WATERMELON_PULLS_COMMAND,
+  WATERMELON_SHOW_COMMAND,
+} from "./constants";
 
 // repo information
 let owner: string | undefined = "";
@@ -92,16 +93,16 @@ export async function activate(context: vscode.ExtensionContext) {
   });
 
   octokit = await credentials.getOctokit();
-  getGitHubUserInfo({ octokit }).then(async (githubUserInfo) => {
-    username = githubUserInfo.login;
-    provider.sendMessage({
-      command: "user",
-      data: {
-        login: githubUserInfo.login,
-        avatar: githubUserInfo.avatar_url,
-      },
-    });
+  let githubUserInfo = await getGitHubUserInfo({ octokit });
+  let username = githubUserInfo.login;
+  provider.sendMessage({
+    command: "user",
+    data: {
+      login: githubUserInfo.login,
+      avatar: githubUserInfo.avatar_url,
+    },
   });
+
   let dailySummary = await getDailySummary({
     octokit,
     owner,
@@ -114,9 +115,9 @@ export async function activate(context: vscode.ExtensionContext) {
   });
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      "watermelon.start",
+      WATERMELON_PULLS_COMMAND,
       async (startLine = undefined, endLine = undefined) => {
-        vscode.commands.executeCommand("watermelon.show");
+        vscode.commands.executeCommand(WATERMELON_SHOW_COMMAND);
         provider.sendMessage({
           command: "loading",
         });
@@ -185,7 +186,7 @@ export async function activate(context: vscode.ExtensionContext) {
         }
       }
     ),
-    vscode.commands.registerCommand("watermelon.show", async () => {
+    vscode.commands.registerCommand(WATERMELON_SHOW_COMMAND, async () => {
       vscode.commands.executeCommand("watermelon.sidebar.focus");
     }),
     vscode.commands.registerCommand("watermelon.select", async () => {
@@ -200,9 +201,9 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     ),
     vscode.commands.registerCommand(
-      "watermelon.blame",
+      WATERMELON_HISTORY_COMMAND,
       async (startLine = undefined, endLine = undefined) => {
-        vscode.commands.executeCommand("watermelon.show");
+        vscode.commands.executeCommand(WATERMELON_SHOW_COMMAND);
         provider.sendMessage({
           command: "loading",
         });
@@ -215,18 +216,7 @@ export async function activate(context: vscode.ExtensionContext) {
           repo,
         });
       }
-    ),
-    vscode.commands.registerCommand("watermelon.docs", async () => {
-      //get current filepath with vs code
-      let filePath = vscode.window.activeTextEditor?.document.uri
-        .fsPath as string;
-      let mdFilePath = filePath + ".md";
-      let mdFile = await vscode.workspace.openTextDocument(mdFilePath);
-      // open md file on a split view
-      vscode.window.showTextDocument(mdFile, {
-        viewColumn: vscode.ViewColumn.Beside,
-      });
-    })
+    )
   );
 
   vscode.authentication.getSession("github", []).then((session: any) => {

@@ -11,3 +11,7 @@ export const SCOPES = ["user:email", "repo", "read:org"];
 export const TELEMETRY_INSIGHTS_KEY = "4ed9e755-be2b-460b-9309-426fb5f58c6f";
 // extension id
 export const EXTENSION_ID = "WatermelonTools.watermelon-tools";
+// Commands
+export const WATERMELON_SHOW_COMMAND = "watermelon.show";
+export const WATERMELON_PULLS_COMMAND = "watermelon.start";
+export const WATERMELON_HISTORY_COMMAND = "watermelon.blame";

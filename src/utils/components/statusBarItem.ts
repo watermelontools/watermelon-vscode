@@ -1,11 +1,15 @@
 import * as vscode from "vscode";
+import {
+  WATERMELON_PULLS_COMMAND,
+  WATERMELON_SHOW_COMMAND,
+} from "../../constants";
 
 const statusBarItem = () => {
   let item: vscode.StatusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
     100
   );
-  item.command = "watermelon.start";
+  item.command = WATERMELON_PULLS_COMMAND;
 
   return item;
 };
@@ -31,11 +35,11 @@ export function updateStatusBarItem(
       n > 1 ? "s" : ""
     } selected`;
     myStatusBarItem.tooltip = "Click here to run Watermelon";
-    myStatusBarItem.command = "watermelon.start";
+    myStatusBarItem.command = WATERMELON_PULLS_COMMAND;
   } else {
     myStatusBarItem.text = `Open Watermelon to see code context`;
     myStatusBarItem.tooltip = "Watermelon: Select lines to view context";
-    myStatusBarItem.command = "watermelon.show";
+    myStatusBarItem.command = WATERMELON_SHOW_COMMAND;
   }
   myStatusBarItem.show();
 }

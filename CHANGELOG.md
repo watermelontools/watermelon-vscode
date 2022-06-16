@@ -7,6 +7,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.3.3]
 
 - Small speed improvements
+- Fixes to a race condition with daily summary
+- Removes "get docs"
 
 ## [1.3.2]
 
@@ -23,6 +25,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Moved all scripts to webview footer, making it faster to load
 - Extended instructions on how to use
 - Added Daily Summary section
+- Added "Get docs" function
 
 ## [1.3.0]
 
