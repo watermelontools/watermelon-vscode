@@ -16,9 +16,6 @@ import statusBarItem, {
   updateStatusBarItem,
 } from "./utils/components/statusBarItem";
 import hover from "./utils/components/hover";
-import getAssignedIssues from "./utils/github/getAssignedIssues";
-import getCreatorIssues from "./utils/github/getCreatorIssues";
-import getMentionedIssues from "./utils/github/getMentionedIssues";
 import getDailySummary from "./utils/github/getDailySummary";
 
 // repo information
