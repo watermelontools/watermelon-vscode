@@ -237,7 +237,6 @@ export async function activate(context: vscode.ExtensionContext) {
       data: session.account.label,
     });
   });
-  octokit = await credentials.getOctokit();
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     updateStatusBarItem(wmStatusBarItem);
