@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.3.3]
 
 - Small speed improvements
+- Fixes to a race condition with daily summary
 
 ## [1.3.2]
 
