@@ -17,6 +17,9 @@ import statusBarItem, {
   updateStatusBarItem,
 } from "./utils/components/statusBarItem";
 import hover from "./utils/components/hover";
+import getAssignedIssues from "./utils/github/getAssignedIssues";
+import getCreatorIssues from "./utils/github/getCreatorIssues";
+import getMentionedIssues from "./utils/github/getMentionedIssues";
 
 // repo information
 let owner: string | undefined = "";
@@ -99,23 +102,23 @@ export async function activate(context: vscode.ExtensionContext) {
     });
   });
   let globalIssues = await getAllIssues({ octokit });
-  let assignedIssues = await octokit.rest.issues.listForRepo({
+  let assignedIssues = await getAssignedIssues({
+    octokit,
     owner,
     repo,
-    state: "open",
-    assignee: username,
+    username: username || "",
   });
-  let creatorIssues = await octokit.rest.issues.listForRepo({
+  let creatorIssues = await getCreatorIssues({
+    octokit,
     owner,
     repo,
-    state: "open",
-    creator: username,
+    creator: username || "",
   });
-  let mentionedIssues = await octokit.rest.issues.listForRepo({
+  let mentionedIssues = await getMentionedIssues({
+    octokit,
     owner,
     repo,
-    state: "open",
-    mentioned: username,
+    mentioned: username || "",
   });
   provider.sendMessage({
     command: "dailySummary",
