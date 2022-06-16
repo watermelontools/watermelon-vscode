@@ -9,11 +9,13 @@ import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
-import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
 import getAllIssues from "./utils/github/getAllIssues";
 import analyticsReporter from "./utils/vscode/reporter";
+import statusBarItem, {
+  updateStatusBarItem,
+} from "./utils/components/statusBarItem";
 
 // repo information
 let owner: string | undefined = "";
@@ -38,11 +40,7 @@ export async function activate(context: vscode.ExtensionContext) {
   await credentials.initialize(context);
   const provider = new WatermelonSidebar(context, reporter);
 
-  let wmStatusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right,
-    100
-  );
-  wmStatusBarItem.command = "watermelon.start";
+  let wmStatusBarItem = statusBarItem();
   context.subscriptions.push(
     // webview
     vscode.window.registerWebviewViewProvider(
