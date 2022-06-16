@@ -1,4 +1,8 @@
 import * as vscode from "vscode";
+import {
+  WATERMELON_HISTORY_COMMAND,
+  WATERMELON_PULLS_COMMAND,
+} from "../../constants";
 
 const hover = ({
   reporter,
@@ -11,10 +15,14 @@ const hover = ({
     provideHover(document, position, token) {
       const args = [{ startLine: position.line, endLine: position.line }];
       const startCommandUri = vscode.Uri.parse(
-        `command:watermelon.start?${encodeURIComponent(JSON.stringify(args))}`
+        `command:${WATERMELON_PULLS_COMMAND}?${encodeURIComponent(
+          JSON.stringify(args)
+        )}`
       );
       const blameCommandUri = vscode.Uri.parse(
-        `command:watermelon.blame?${encodeURIComponent(JSON.stringify(args))}`
+        `command:${WATERMELON_HISTORY_COMMAND}?${encodeURIComponent(
+          JSON.stringify(args)
+        )}`
       );
       const content = new vscode.MarkdownString(
         `[Understand the code context](${startCommandUri}) with Watermelon 🍉`

@@ -17,6 +17,11 @@ import statusBarItem, {
 } from "./utils/components/statusBarItem";
 import hover from "./utils/components/hover";
 import getDailySummary from "./utils/github/getDailySummary";
+import {
+  WATERMELON_HISTORY_COMMAND,
+  WATERMELON_PULLS_COMMAND,
+  WATERMELON_SHOW_COMMAND,
+} from "./constants";
 
 // repo information
 let owner: string | undefined = "";
@@ -110,9 +115,9 @@ export async function activate(context: vscode.ExtensionContext) {
   });
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      "watermelon.start",
+      WATERMELON_PULLS_COMMAND,
       async (startLine = undefined, endLine = undefined) => {
-        vscode.commands.executeCommand("watermelon.show");
+        vscode.commands.executeCommand(WATERMELON_SHOW_COMMAND);
         provider.sendMessage({
           command: "loading",
         });
@@ -181,7 +186,7 @@ export async function activate(context: vscode.ExtensionContext) {
         }
       }
     ),
-    vscode.commands.registerCommand("watermelon.show", async () => {
+    vscode.commands.registerCommand(WATERMELON_SHOW_COMMAND, async () => {
       vscode.commands.executeCommand("watermelon.sidebar.focus");
     }),
     vscode.commands.registerCommand("watermelon.select", async () => {
@@ -196,9 +201,9 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     ),
     vscode.commands.registerCommand(
-      "watermelon.blame",
+      WATERMELON_HISTORY_COMMAND,
       async (startLine = undefined, endLine = undefined) => {
-        vscode.commands.executeCommand("watermelon.show");
+        vscode.commands.executeCommand(WATERMELON_SHOW_COMMAND);
         provider.sendMessage({
           command: "loading",
         });
