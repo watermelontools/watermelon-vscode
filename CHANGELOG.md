@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.3.4]
+
+- Number of file changes on hover now changes on file opening
+
 ## [1.3.3]
 
 - Small speed improvements
