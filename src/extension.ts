@@ -19,7 +19,9 @@ import hover from "./utils/components/hover";
 import getDailySummary from "./utils/github/getDailySummary";
 import {
   WATERMELON_HISTORY_COMMAND,
+  WATERMELON_MULTI_SELECT_COMMAND,
   WATERMELON_PULLS_COMMAND,
+  WATERMELON_SELECT_COMMAND,
   WATERMELON_SHOW_COMMAND,
 } from "./constants";
 
@@ -224,9 +226,12 @@ export async function activate(context: vscode.ExtensionContext) {
       WATERMELON_SHOW_COMMAND,
       showCommandHandler
     ),
-    vscode.commands.registerCommand("watermelon.select", selectCommandHandler),
     vscode.commands.registerCommand(
-      "watermelon.multiSelect",
+      WATERMELON_SELECT_COMMAND,
+      selectCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_MULTI_SELECT_COMMAND,
       multiSelectCommandHandler
     ),
     vscode.commands.registerCommand(
