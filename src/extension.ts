@@ -73,19 +73,8 @@ export async function activate(context: vscode.ExtensionContext) {
   // update status bar item once at start
   updateStatusBarItem(wmStatusBarItem);
 
-  let numberOfFileChanges: number = 0;
-  if (vscode.window.activeTextEditor) {
-    try {
-      numberOfFileChanges = await getNumberOfFileChanges(
-        vscode.window.activeTextEditor?.document.uri.fsPath || ".",
-        gitAPI as any
-      );
-    } catch {
-      console.error("numberOfFileChanges", numberOfFileChanges);
-    }
-  }
   // create the hover provider
-  let wmHover = hover({ reporter, numberOfFileChanges });
+  let wmHover = hover({ reporter });
 
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
