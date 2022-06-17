@@ -87,6 +87,37 @@ export async function activate(context: vscode.ExtensionContext) {
   // create the hover provider
   let wmHover = hover({ reporter, numberOfFileChanges });
 
+  // on changing the active text editor
+  vscode.window.onDidChangeVisibleTextEditors(async (editors) => {
+    if (editors.length > 0) {
+      try {
+        numberOfFileChanges = await getNumberOfFileChanges(
+          vscode.window.activeTextEditor?.document.uri.fsPath || ".",
+          gitAPI as any
+        );
+        wmHover.dispose();
+        wmHover = hover({ reporter, numberOfFileChanges });
+      } catch {
+        console.error("numberOfFileChanges", numberOfFileChanges);
+      }
+    }
+  });
+  vscode.window.onDidChangeActiveTextEditor(async (editor) => {
+    if (editor) {
+      try {
+        numberOfFileChanges = await getNumberOfFileChanges(
+          editor.document.uri.fsPath || ".",
+          gitAPI as any
+        );
+        wmHover.dispose();
+        wmHover = hover({ reporter, numberOfFileChanges });
+      } catch {
+        console.error("numberOfFileChanges", numberOfFileChanges);
+      }
+    }
+  });
+  // create the hover provider
+
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
