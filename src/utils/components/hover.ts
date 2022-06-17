@@ -1,3 +1,4 @@
+import TelemetryReporter from "@vscode/extension-telemetry";
 import * as vscode from "vscode";
 import {
   WATERMELON_HISTORY_COMMAND,
@@ -6,7 +7,7 @@ import {
 import getNumberOfFileChanges from "../getNumberOfFileChanges";
 import getGitAPI from "../vscode/getGitAPI";
 
-const hover = ({ reporter }: { reporter: any }) => {
+const hover = ({ reporter }: { reporter: TelemetryReporter }) => {
   return vscode.languages.registerHoverProvider("*", {
     async provideHover(document, position, token) {
       let gitAPI = await getGitAPI();
