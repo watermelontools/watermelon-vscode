@@ -19,7 +19,9 @@ import hover from "./utils/components/hover";
 import getDailySummary from "./utils/github/getDailySummary";
 import {
   WATERMELON_HISTORY_COMMAND,
+  WATERMELON_MULTI_SELECT_COMMAND,
   WATERMELON_PULLS_COMMAND,
+  WATERMELON_SELECT_COMMAND,
   WATERMELON_SHOW_COMMAND,
 } from "./constants";
 
@@ -113,109 +115,128 @@ export async function activate(context: vscode.ExtensionContext) {
     command: "dailySummary",
     data: dailySummary,
   });
+  let historyCommandHandler = async (
+    startLine = undefined,
+    endLine = undefined
+  ) => {
+    vscode.commands.executeCommand(WATERMELON_SHOW_COMMAND);
+    provider.sendMessage({
+      command: "loading",
+    });
+    octokit = await credentials.getOctokit();
+    let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+    provider.sendMessage({
+      command: "blame",
+      data: uniqueBlames,
+      owner,
+      repo,
+    });
+  };
+  let prsCommandHandler = async (
+    startLine = undefined,
+    endLine = undefined
+  ) => {
+    vscode.commands.executeCommand(WATERMELON_SHOW_COMMAND);
+    provider.sendMessage({
+      command: "loading",
+    });
+
+    octokit = await credentials.getOctokit();
+    if (startLine === undefined && endLine === undefined) {
+      if (!arrayOfSHAs.length) {
+        arrayOfSHAs = await getSHAArray(
+          1,
+          vscode.window.activeTextEditor?.document.lineCount ?? 2,
+          vscode.window.activeTextEditor?.document.uri.fsPath,
+          gitAPI
+        );
+      }
+
+      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+        arrayOfSHAs,
+        octokit,
+        owner,
+        repo,
+      });
+      if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
+        return provider.sendMessage({
+          command: "error",
+          error: issuesWithTitlesAndGroupedComments,
+        });
+      }
+
+      provider.sendMessage({
+        command: "prs",
+        data: issuesWithTitlesAndGroupedComments,
+      });
+    } else {
+      vscode.commands.executeCommand("watermelon.multiSelect");
+      arrayOfSHAs = await getSHAArray(
+        (startLine && startLine > 1 ? startLine - 1 : startLine) ?? 1,
+        endLine
+          ? endLine + 1
+          : vscode.window.activeTextEditor?.document.lineCount ?? 2,
+        vscode.window.activeTextEditor?.document.uri.fsPath,
+        gitAPI
+      );
+      if (!arrayOfSHAs.length) {
+        arrayOfSHAs = await getSHAArray(
+          1,
+          vscode.window.activeTextEditor?.document.lineCount ?? 2,
+          vscode.window.activeTextEditor?.document.uri.fsPath,
+          gitAPI
+        );
+      }
+
+      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+        arrayOfSHAs,
+        octokit,
+        owner,
+        repo,
+      });
+      if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
+        return provider.sendMessage({
+          command: "error",
+          error: issuesWithTitlesAndGroupedComments,
+        });
+      }
+      provider.sendMessage({
+        command: "prs",
+        data: issuesWithTitlesAndGroupedComments,
+      });
+    }
+  };
+  let showCommandHandler = async () => {
+    vscode.commands.executeCommand("watermelon.sidebar.focus");
+  };
+  let selectCommandHandler = async () => {
+    vscode.commands.executeCommand("editor.action.smartSelect.expand");
+  };
+  let multiSelectCommandHandler = async (times = 4) => {
+    for (let index = 0; index < times; index++) {
+      vscode.commands.executeCommand("editor.action.smartSelect.expand");
+    }
+  };
   context.subscriptions.push(
     vscode.commands.registerCommand(
       WATERMELON_PULLS_COMMAND,
-      async (startLine = undefined, endLine = undefined) => {
-        vscode.commands.executeCommand(WATERMELON_SHOW_COMMAND);
-        provider.sendMessage({
-          command: "loading",
-        });
-
-        octokit = await credentials.getOctokit();
-        if (startLine === undefined && endLine === undefined) {
-          if (!arrayOfSHAs.length) {
-            arrayOfSHAs = await getSHAArray(
-              1,
-              vscode.window.activeTextEditor?.document.lineCount ?? 2,
-              vscode.window.activeTextEditor?.document.uri.fsPath,
-              gitAPI
-            );
-          }
-
-          let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-            arrayOfSHAs,
-            octokit,
-            owner,
-            repo,
-          });
-          if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-            return provider.sendMessage({
-              command: "error",
-              error: issuesWithTitlesAndGroupedComments,
-            });
-          }
-
-          provider.sendMessage({
-            command: "prs",
-            data: issuesWithTitlesAndGroupedComments,
-          });
-        } else {
-          vscode.commands.executeCommand("watermelon.multiSelect");
-          arrayOfSHAs = await getSHAArray(
-            startLine > 1 ? startLine - 1 : startLine,
-            endLine + 1,
-            vscode.window.activeTextEditor?.document.uri.fsPath,
-            gitAPI
-          );
-          if (!arrayOfSHAs.length) {
-            arrayOfSHAs = await getSHAArray(
-              1,
-              vscode.window.activeTextEditor?.document.lineCount ?? 2,
-              vscode.window.activeTextEditor?.document.uri.fsPath,
-              gitAPI
-            );
-          }
-
-          let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-            arrayOfSHAs,
-            octokit,
-            owner,
-            repo,
-          });
-          if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-            return provider.sendMessage({
-              command: "error",
-              error: issuesWithTitlesAndGroupedComments,
-            });
-          }
-          provider.sendMessage({
-            command: "prs",
-            data: issuesWithTitlesAndGroupedComments,
-          });
-        }
-      }
+      prsCommandHandler
     ),
-    vscode.commands.registerCommand(WATERMELON_SHOW_COMMAND, async () => {
-      vscode.commands.executeCommand("watermelon.sidebar.focus");
-    }),
-    vscode.commands.registerCommand("watermelon.select", async () => {
-      vscode.commands.executeCommand("editor.action.smartSelect.expand");
-    }),
     vscode.commands.registerCommand(
-      "watermelon.multiSelect",
-      async (times = 4) => {
-        for (let index = 0; index < times; index++) {
-          vscode.commands.executeCommand("editor.action.smartSelect.expand");
-        }
-      }
+      WATERMELON_SHOW_COMMAND,
+      showCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_SELECT_COMMAND,
+      selectCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_MULTI_SELECT_COMMAND,
+      multiSelectCommandHandler
     ),
     vscode.commands.registerCommand(
       WATERMELON_HISTORY_COMMAND,
-      async (startLine = undefined, endLine = undefined) => {
-        vscode.commands.executeCommand(WATERMELON_SHOW_COMMAND);
-        provider.sendMessage({
-          command: "loading",
-        });
-        octokit = await credentials.getOctokit();
-        let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-        provider.sendMessage({
-          command: "blame",
-          data: uniqueBlames,
-          owner,
-          repo,
-        });
-      }
+      historyCommandHandler
     )
   );
 
