@@ -9,3 +9,5 @@
 - [ ] Chore: cleanup/renaming, etc  
 - [ ] RFC  
 ## Notes
+<!--  This is a great place to add images or possible improvements -->
+<!--  Remember you can use "Closes #106" to close Issue 106 (or any number) -->

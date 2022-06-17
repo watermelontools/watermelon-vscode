@@ -14,7 +14,5 @@ export default async function getNumberOfFileChanges(
     }
   }
 
-  console.log(commitCount);
-
   return commitCount;
 }
