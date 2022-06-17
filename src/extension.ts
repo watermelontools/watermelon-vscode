@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import TelemetryReporter from "@vscode/extension-telemetry";
 import { Credentials } from "./credentials";
 import getBlame from "./utils/getBlame";
 import getSHAArray from "./utils/getSHAArray";
@@ -10,59 +9,57 @@ import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
-import updateStatusBarItem from "./utils/vscode/updateStatusBarItem";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
+import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
+import analyticsReporter from "./utils/vscode/reporter";
+import statusBarItem, {
+  updateStatusBarItem,
+} from "./utils/components/statusBarItem";
+import hover from "./utils/components/hover";
+import getDailySummary from "./utils/github/getDailySummary";
+import {
+  WATERMELON_HISTORY_COMMAND,
+  WATERMELON_PULLS_COMMAND,
+  WATERMELON_SHOW_COMMAND,
+} from "./constants";
 
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
+let username: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 
 let octokit: any;
 
-// all events will be prefixed with this event name
-const extensionId = "WatermelonTools.watermelon-tools";
-
 // extension version will be reported as a property with each event
 const extensionVersion = getPackageInfo().version;
-
-// the application insights key (also known as instrumentation key)
-const key = "4ed9e755-be2b-460b-9309-426fb5f58c6f";
-
-// telemetry reporter
-let reporter: TelemetryReporter;
 
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
 
   // create telemetry reporter on extension activation
-  reporter = new TelemetryReporter(extensionId, extensionVersion, key);
-  // ensure it gets properly disposed. Upon disposal the events will be flushed
-  context.subscriptions.push(reporter);
+  let reporter = analyticsReporter();
   reporter.sendTelemetryEvent("extensionActivated");
   let gitAPI = await getGitAPI();
   const credentials = new Credentials();
   await credentials.initialize(context);
-
   const provider = new WatermelonSidebar(context, reporter);
 
+  let wmStatusBarItem = statusBarItem();
+
   context.subscriptions.push(
+    // webview
     vscode.window.registerWebviewViewProvider(
       WatermelonSidebar.viewType,
       provider
-    )
-  );
-  let wmStatusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right,
-    100
-  );
-  wmStatusBarItem.command = "watermelon.start";
-  context.subscriptions.push(wmStatusBarItem);
-
-  // register some listener that make sure the status bar
-  // item always up-to-date
-  context.subscriptions.push(
+    ),
+    // ensure reporter gets properly disposed. Upon disposal the events will be flushed
+    reporter,
+    // action bar item
+    wmStatusBarItem,
+    // register some listener that make sure the status bar
+    // item always up-to-date
     vscode.window.onDidChangeActiveTextEditor(async () => {
       updateStatusBarItem(wmStatusBarItem);
     })
@@ -71,27 +68,20 @@ export async function activate(context: vscode.ExtensionContext) {
   // update status bar item once at start
   updateStatusBarItem(wmStatusBarItem);
 
-  vscode.languages.registerHoverProvider("*", {
-    provideHover(document, position, token) {
-      const args = [{ startLine: position.line, endLine: position.line }];
-      const startCommandUri = vscode.Uri.parse(
-        `command:watermelon.start?${encodeURIComponent(JSON.stringify(args))}`
+  let numberOfFileChanges: number = 0;
+  if (vscode.window.activeTextEditor) {
+    try {
+      numberOfFileChanges = await getNumberOfFileChanges(
+        vscode.window.activeTextEditor?.document.uri.fsPath || ".",
+        gitAPI as any
       );
-      const blameCommandUri = vscode.Uri.parse(
-        `command:watermelon.blame?${encodeURIComponent(JSON.stringify(args))}`
-      );
-      const content = new vscode.MarkdownString(
-        `[Understand the code context](${startCommandUri}) with Watermelon 🍉`
-      );
-      content.appendMarkdown(`\n\n`);
-      content.appendMarkdown(
-        `[View the history for this line](${blameCommandUri}) with Watermelon 🍉`
-      );
-      content.supportHtml = true;
-      content.isTrusted = true;
-      return new vscode.Hover(content);
-    },
-  });
+    } catch {
+      console.error("numberOfFileChanges", numberOfFileChanges);
+    }
+  }
+  // create the hover provider
+  let wmHover = hover({ reporter, numberOfFileChanges });
+
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
@@ -101,35 +91,27 @@ export async function activate(context: vscode.ExtensionContext) {
     command: "versionInfo",
     data: extensionVersion,
   });
-  context.subscriptions.push(
-    vscode.commands.registerCommand("watermelon.show", async () => {
-      vscode.commands.executeCommand("watermelon.sidebar.focus");
-    })
-  );
-  context.subscriptions.push(
-    vscode.commands.registerCommand("watermelon.select", async () => {
-      vscode.commands.executeCommand("editor.action.smartSelect.expand");
-    })
-  );
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "watermelon.multiSelect",
-      async (times = 4) => {
-        for (let index = 0; index < times; index++) {
-          vscode.commands.executeCommand("editor.action.smartSelect.expand");
-        }
-      }
-    )
-  );
+
   octokit = await credentials.getOctokit();
-  getGitHubUserInfo({ octokit }).then(async (githubUserInfo) => {
-    provider.sendMessage({
-      command: "user",
-      data: {
-        login: githubUserInfo.login,
-        avatar: githubUserInfo.avatar_url,
-      },
-    });
+  let githubUserInfo = await getGitHubUserInfo({ octokit });
+  let username = githubUserInfo.login;
+  provider.sendMessage({
+    command: "user",
+    data: {
+      login: githubUserInfo.login,
+      avatar: githubUserInfo.avatar_url,
+    },
+  });
+
+  let dailySummary = await getDailySummary({
+    octokit,
+    owner,
+    repo,
+    username: username || "",
+  });
+  provider.sendMessage({
+    command: "dailySummary",
+    data: dailySummary,
   });
   let historyCommandHandler = async (
     startLine = undefined,
@@ -255,7 +237,6 @@ export async function activate(context: vscode.ExtensionContext) {
       data: session.account.label,
     });
   });
-  octokit = await credentials.getOctokit();
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     updateStatusBarItem(wmStatusBarItem);

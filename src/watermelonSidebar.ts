@@ -113,12 +113,11 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           });
           break;
         }
-        default:{
+        default: {
           this.sendMessage({
             command: "",
           });
         }
-
       }
     });
   }

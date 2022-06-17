@@ -4,10 +4,35 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.3.3]
+
+- Small speed improvements
+- Fixes to a race condition with daily summary
+- Removes "get docs"
+
+## [1.3.2]
+
+- Added non-deployed changes from 1.3.1
+- Added keybindings to allow direct usage
+- Webview now saves state across uses
+
+## [1.3.1]
+
+- Added a newsletter section
+- Commit history table (blame) is now sorted by commit date, newest first
+- We now track every time the hover opens
+- Added right click to get blame
+- Moved all scripts to webview footer, making it faster to load
+- Extended instructions on how to use
+- Added Daily Summary section
+- Added "Get docs" function
+
 ## [1.3.0]
+
 - Added a hover to activate the extension
 - _BETA_ Launched browser version for vscode web (and github.dev)
-- Will now *not* bundle our internal docs
+- Will now _not_ bundle our internal docs
+- Added button inside the context box to get the relevant docs for each file
 
 ## [1.2.4]
 
