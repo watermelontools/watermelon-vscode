@@ -24,6 +24,9 @@ import {
   WATERMELON_SELECT_COMMAND,
   WATERMELON_SHOW_COMMAND,
 } from "./constants";
+import multiSelectCommandHandler from "./utils/commands/multiSelect";
+import selectCommandHandler from "./utils/commands/select";
+import showCommandHandler from "./utils/commands/show";
 
 // repo information
 let owner: string | undefined = "";
@@ -206,17 +209,7 @@ export async function activate(context: vscode.ExtensionContext) {
       });
     }
   };
-  let showCommandHandler = async () => {
-    vscode.commands.executeCommand("watermelon.sidebar.focus");
-  };
-  let selectCommandHandler = async () => {
-    vscode.commands.executeCommand("editor.action.smartSelect.expand");
-  };
-  let multiSelectCommandHandler = async (times = 4) => {
-    for (let index = 0; index < times; index++) {
-      vscode.commands.executeCommand("editor.action.smartSelect.expand");
-    }
-  };
+
   context.subscriptions.push(
     vscode.commands.registerCommand(
       WATERMELON_PULLS_COMMAND,
