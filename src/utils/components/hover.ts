@@ -36,7 +36,9 @@ const hover = ({ reporter }: { reporter: TelemetryReporter }) => {
       );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
-        `This file has changed ${numberOfFileChanges} times`
+        `This file has changed ${numberOfFileChanges} time${
+          numberOfFileChanges > 1 ? "s" : ""
+        }`
       );
       content.supportHtml = true;
       content.isTrusted = true;
