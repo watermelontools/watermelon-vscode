@@ -73,50 +73,8 @@ export async function activate(context: vscode.ExtensionContext) {
   // update status bar item once at start
   updateStatusBarItem(wmStatusBarItem);
 
-  let numberOfFileChanges: number = 0;
-  if (vscode.window.activeTextEditor) {
-    try {
-      numberOfFileChanges = await getNumberOfFileChanges(
-        vscode.window.activeTextEditor?.document.uri.fsPath || ".",
-        gitAPI as any
-      );
-    } catch {
-      console.error("numberOfFileChanges", numberOfFileChanges);
-    }
-  }
   // create the hover provider
-  let wmHover = hover({ reporter, numberOfFileChanges });
-
-  // on changing the active text editor
-  vscode.window.onDidChangeVisibleTextEditors(async (editors) => {
-    if (editors.length > 0) {
-      try {
-        numberOfFileChanges = await getNumberOfFileChanges(
-          vscode.window.activeTextEditor?.document.uri.fsPath || ".",
-          gitAPI as any
-        );
-        wmHover.dispose();
-        wmHover = hover({ reporter, numberOfFileChanges });
-      } catch {
-        console.error("numberOfFileChanges", numberOfFileChanges);
-      }
-    }
-  });
-  vscode.window.onDidChangeActiveTextEditor(async (editor) => {
-    if (editor) {
-      try {
-        numberOfFileChanges = await getNumberOfFileChanges(
-          editor.document.uri.fsPath || ".",
-          gitAPI as any
-        );
-        wmHover.dispose();
-        wmHover = hover({ reporter, numberOfFileChanges });
-      } catch {
-        console.error("numberOfFileChanges", numberOfFileChanges);
-      }
-    }
-  });
-  // create the hover provider
+  let wmHover = hover({ reporter });
 
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
