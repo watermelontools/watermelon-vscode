@@ -3,16 +3,18 @@ import {
   WATERMELON_HISTORY_COMMAND,
   WATERMELON_PULLS_COMMAND,
 } from "../../constants";
+import getNumberOfFileChanges from "../getNumberOfFileChanges";
+import getGitAPI from "../vscode/getGitAPI";
 
-const hover = ({
-  reporter,
-  numberOfFileChanges,
-}: {
-  reporter: any;
-  numberOfFileChanges: number;
-}) => {
+const hover = ({ reporter }: { reporter: any }) => {
   return vscode.languages.registerHoverProvider("*", {
-    provideHover(document, position, token) {
+    async provideHover(document, position, token) {
+      let gitAPI = await getGitAPI();
+
+      let numberOfFileChanges = await getNumberOfFileChanges(
+        document.uri.fsPath || ".",
+        gitAPI as any
+      );
       const args = [{ startLine: position.line, endLine: position.line }];
       const startCommandUri = vscode.Uri.parse(
         `command:${WATERMELON_PULLS_COMMAND}?${encodeURIComponent(
