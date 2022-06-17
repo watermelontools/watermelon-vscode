@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.3.4]
 
-- Number of file changes on hover now changes on file opening
+- Number of file changes on hover now changes on per file
 
 ## [1.3.3]
 
