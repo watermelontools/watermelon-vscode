@@ -11,7 +11,7 @@ const hover = ({
   reporter: any;
   numberOfFileChanges: number;
 }) => {
-  vscode.languages.registerHoverProvider("*", {
+  return vscode.languages.registerHoverProvider("*", {
     provideHover(document, position, token) {
       const args = [{ startLine: position.line, endLine: position.line }];
       const startCommandUri = vscode.Uri.parse(
