@@ -204,24 +204,30 @@ export async function activate(context: vscode.ExtensionContext) {
       });
     }
   };
+  let showCommandHandler = async () => {
+    vscode.commands.executeCommand("watermelon.sidebar.focus");
+  };
+  let selectCommandHandler = async () => {
+    vscode.commands.executeCommand("editor.action.smartSelect.expand");
+  };
+  let multiSelectCommandHandler = async (times = 4) => {
+    for (let index = 0; index < times; index++) {
+      vscode.commands.executeCommand("editor.action.smartSelect.expand");
+    }
+  };
   context.subscriptions.push(
     vscode.commands.registerCommand(
       WATERMELON_PULLS_COMMAND,
       prsCommandHandler
     ),
-    vscode.commands.registerCommand(WATERMELON_SHOW_COMMAND, async () => {
-      vscode.commands.executeCommand("watermelon.sidebar.focus");
-    }),
-    vscode.commands.registerCommand("watermelon.select", async () => {
-      vscode.commands.executeCommand("editor.action.smartSelect.expand");
-    }),
+    vscode.commands.registerCommand(
+      WATERMELON_SHOW_COMMAND,
+      showCommandHandler
+    ),
+    vscode.commands.registerCommand("watermelon.select", selectCommandHandler),
     vscode.commands.registerCommand(
       "watermelon.multiSelect",
-      async (times = 4) => {
-        for (let index = 0; index < times; index++) {
-          vscode.commands.executeCommand("editor.action.smartSelect.expand");
-        }
-      }
+      multiSelectCommandHandler
     ),
     vscode.commands.registerCommand(
       WATERMELON_HISTORY_COMMAND,
