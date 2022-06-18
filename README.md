@@ -14,7 +14,7 @@ Watermelon is an **open-source** integration between **GitHub** and **Visual Stu
 
 ## Features
 
-Watermelon has 2 features that you can use:
+Watermelon has 2 actions that you can use:
 
 - View Git Blame
 - View Pull Requests
@@ -72,6 +72,11 @@ As an alternative, you can use the following shortcuts:
 
 - `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac) for running the `watermelon.start` command
 - `Ctrl+Shift+H` (`Cmd+Shift+C` on Mac) for running the `watermelon.blame` command
+
+## Hover
+
+When hovering over code, Watermelon will offer to run the actions.
+It will also show how many times the hovered file has changed.
 
 ## Contributing
 
