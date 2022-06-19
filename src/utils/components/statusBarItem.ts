@@ -3,6 +3,7 @@ import {
   WATERMELON_PULLS_COMMAND,
   WATERMELON_SHOW_COMMAND,
 } from "../../constants";
+import getPlural from "../others/text/getPlural";
 
 const statusBarItem = () => {
   let item: vscode.StatusBarItem = vscode.window.createStatusBarItem(
@@ -31,9 +32,9 @@ export function updateStatusBarItem(
 ): void {
   const n = getNumberOfSelectedLines(vscode.window.activeTextEditor);
   if (n > 0) {
-    myStatusBarItem.text = `Run Watermelon with the ${n} line${
-      n > 1 ? "s" : ""
-    } selected`;
+    myStatusBarItem.text = `Run Watermelon with the ${n} line${getPlural(
+      n
+    )} selected`;
     myStatusBarItem.tooltip = "Click here to run Watermelon";
     myStatusBarItem.command = WATERMELON_PULLS_COMMAND;
   } else {
