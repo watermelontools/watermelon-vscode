@@ -5,6 +5,7 @@ import {
   WATERMELON_PULLS_COMMAND,
 } from "../../constants";
 import getNumberOfFileChanges from "../getNumberOfFileChanges";
+import getPlural from "../others/text/getPlural";
 import getGitAPI from "../vscode/getGitAPI";
 
 const hover = ({ reporter }: { reporter: TelemetryReporter }) => {
@@ -36,9 +37,9 @@ const hover = ({ reporter }: { reporter: TelemetryReporter }) => {
       );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
-        `This file has changed ${numberOfFileChanges} time${
-          numberOfFileChanges > 1 ? "s" : ""
-        }`
+        `This file has changed ${numberOfFileChanges} time${getPlural(
+          numberOfFileChanges
+        )}`
       );
       content.supportHtml = true;
       content.isTrusted = true;
