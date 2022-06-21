@@ -4,6 +4,11 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.3.5]
+
+- Will now track GitHub Username 
+- General bugfixes
+
 ## [1.3.4]
 
 - Number of file changes on hover now changes per file
