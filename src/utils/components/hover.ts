@@ -28,13 +28,34 @@ const hover = ({ reporter }: { reporter: TelemetryReporter }) => {
           JSON.stringify(args)
         )}`
       );
+
+
       const content = new vscode.MarkdownString(
-        `[Understand the code context](${startCommandUri}) with Watermelon 🍉`
+        `#### Pull Requests`
       );
       content.appendMarkdown(`\n\n`);
+<<<<<<< Updated upstream
+=======
+      content.appendMarkdown( `[Understand the code context](${startCommandUri}) with Watermelon 🍉`);
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(`The most relevant Pull Request is "IFO-332: Improve Render with WebGL" by **@b0rk** on *29/12/2020*`);
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(`#### Commits`);
+      content.appendMarkdown(`\n\n`);
+>>>>>>> Stashed changes
       content.appendMarkdown(
         `[View the history for this line](${blameCommandUri}) with Watermelon 🍉`
       );
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(`The latest commit is "${latestCommit.message}" by **${latestCommit.authorName}** on **${latestCommit.commitDate.toLocaleDateString()}**`);
+
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(`#### Notion`);
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown( `[View docs](${startCommandUri}) with Watermelon 🍉`);
+      content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(`The best documentation document is "RFC: Rendering using better APIs" by **Sebastian Matthews** on *18/11/2020*`);
+      content.appendMarkdown(`\n\n`);
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
         `This file has changed ${numberOfFileChanges} time${getPlural(
