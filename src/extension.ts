@@ -89,6 +89,7 @@ export async function activate(context: vscode.ExtensionContext) {
   octokit = await credentials.getOctokit();
   let githubUserInfo = await getGitHubUserInfo({ octokit });
   let username = githubUserInfo.login;
+  reporter.sendTelemetryEvent("githubUserInfo", { username });
   provider.sendMessage({
     command: "user",
     data: {

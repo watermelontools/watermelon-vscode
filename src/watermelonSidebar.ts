@@ -18,7 +18,9 @@ let localUser: string | undefined = "";
 let arrayOfSHAs: string[] = [];
 
 let octokit: any;
-
+/**
+ * Manages watermelon webview panel
+ */
 export default class WatermelonSidebar implements vscode.WebviewViewProvider {
   public static readonly viewType = "watermelon.sidebar";
   public _extensionUri: vscode.Uri;
@@ -189,6 +191,4 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
     }
   }
 }
-/**
- * Manages watermelon webview panel
- */
+
