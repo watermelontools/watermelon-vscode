@@ -9,7 +9,7 @@ import getLatestCommit from "../others/git/getLatestCommit";
 import getPlural from "../others/text/getPlural";
 import getGitAPI from "../vscode/getGitAPI";
 
-const hover = ({ reporter }: { reporter: TelemetryReporter }) => {
+const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
   return vscode.languages.registerHoverProvider("*", {
     async provideHover(document, position, token) {
       let gitAPI = await getGitAPI();
@@ -46,7 +46,7 @@ const hover = ({ reporter }: { reporter: TelemetryReporter }) => {
       );
       content.supportHtml = true;
       content.isTrusted = true;
-      reporter.sendTelemetryEvent("hover");
+      reporter?.sendTelemetryEvent("hover");
       return new vscode.Hover(content);
     },
   });

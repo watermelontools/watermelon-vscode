@@ -91,7 +91,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           );
 
           // Send Event to VSC Telemtry Library
-          this.reporter.sendTelemetryEvent("pullRequests");
+          this.reporter?.sendTelemetryEvent("pullRequests");
 
           this.sendMessage({
             command: "prs",
@@ -101,7 +101,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
         }
         case "blame": {
           // Send Event to VSC Telemtry Library
-          this.reporter.sendTelemetryEvent("viewBlame");
+          this.reporter?.sendTelemetryEvent("viewBlame");
 
           this.sendMessage({
             command: "loading",
