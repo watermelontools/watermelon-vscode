@@ -5,7 +5,7 @@ import { EXTENSION_ID, TELEMETRY_INSIGHTS_KEY } from "../../constants";
 /**
  * Creates the reporter to send data to azure
  */
-const analyticsReporter = () => {
+const analyticsReporter = (): TelemetryReporter | null => {
   const extensionVersion = getPackageInfo().version;
 
   if (!vscode.env.isTelemetryEnabled) {
