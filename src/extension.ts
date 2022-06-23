@@ -202,10 +202,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      WATERMELON_PULLS_COMMAND,
-      prsCommandHandler
-    ),
-    vscode.commands.registerCommand(
       WATERMELON_SHOW_COMMAND,
       showCommandHandler
     ),
@@ -216,6 +212,10 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       WATERMELON_MULTI_SELECT_COMMAND,
       multiSelectCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_PULLS_COMMAND,
+      prsCommandHandler
     ),
     vscode.commands.registerCommand(
       WATERMELON_HISTORY_COMMAND,
