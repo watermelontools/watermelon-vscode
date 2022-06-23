@@ -1,3 +1,4 @@
+import * as vscode from "vscode";
 import TelemetryReporter from "@vscode/extension-telemetry";
 import getPackageInfo from "../getPackageInfo";
 import { EXTENSION_ID, TELEMETRY_INSIGHTS_KEY } from "../../constants";
@@ -7,6 +8,9 @@ import { EXTENSION_ID, TELEMETRY_INSIGHTS_KEY } from "../../constants";
 const analyticsReporter = () => {
   const extensionVersion = getPackageInfo().version;
 
+  if (!vscode.env.isTelemetryEnabled) {
+    return null;
+  }
   let reporter: TelemetryReporter;
   reporter = new TelemetryReporter(
     EXTENSION_ID,
