@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.3.6]
 
 - Added Commit info on the hover
+- Registered `Show` first to prevent further errors
 
 ## [1.3.5]
 
