@@ -5,7 +5,7 @@ import * as gitURLparse from "git-url-parse";
 export default async function getRepoInfo(): Promise<{
   owner: string;
   repo: string;
-}> {
+} | void> {
   let gitAPI = await getGitAPI();
   let owner: string = "";
   let repo: string = "";
@@ -17,6 +17,9 @@ export default async function getRepoInfo(): Promise<{
     let parsed = gitURLparse(config);
     owner = parsed.owner;
     repo = parsed.name;
+    if (!(parsed.source.includes("github"))) {
+      nonGHRepo();
+    }
   }
 
   return { owner, repo };
