@@ -32,6 +32,9 @@
     "onWebviewPanel:watermelon",
     "onStartupFinished"
   ],
+  "extensionDependencies": [
+    "vscode.git"
+  ],
   "main": "./out/extension.js",
   "browser": "./out/main.js",
   "contributes": {
