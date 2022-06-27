@@ -85,6 +85,8 @@ export async function activate(context: vscode.ExtensionContext) {
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
+  debugLogger(`repo: ${repo}`);
+  debugLogger(`owner: ${owner}`);
   context.workspaceState.update("workspaceState", {
     ...workspaceState,
     repo,
@@ -99,6 +101,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   octokit = await credentials.getOctokit();
   let githubUserInfo = await getGitHubUserInfo({ octokit });
+  debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
   let username = githubUserInfo.login;
   context.globalState.update("startupState", { username });
   reporter.sendTelemetryEvent("githubUserInfo", { username });
@@ -116,6 +119,7 @@ export async function activate(context: vscode.ExtensionContext) {
     repo,
     username: username || "",
   });
+  debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
   provider.sendMessage({
     command: "dailySummary",
     data: dailySummary,
@@ -242,6 +246,7 @@ export async function activate(context: vscode.ExtensionContext) {
       loggedIn: true,
       data: session.account.label,
     });
+    debugLogger(`session: ${JSON.stringify(session)}`);
   });
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
@@ -252,6 +257,7 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.window.activeTextEditor?.document.uri.fsPath,
       gitAPI
     );
+    debugLogger(`arrayOfSHAs: ${JSON.stringify(arrayOfSHAs)}`);
   });
 
   if (vscode.window.registerWebviewPanelSerializer) {
