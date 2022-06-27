@@ -8,6 +8,7 @@ import { Credentials } from "./credentials";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getBlame from "./utils/getBlame";
+import TelemetryReporter from "@vscode/extension-telemetry";
 
 // repo information
 let owner: string | undefined = "";
@@ -28,7 +29,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
   private _context: vscode.ExtensionContext;
   constructor(
     private readonly context: vscode.ExtensionContext,
-    public reporter: any
+    public reporter: TelemetryReporter | null = null
   ) {
     this._extensionUri = context.extensionUri;
     this._context = context;
@@ -91,7 +92,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           );
 
           // Send Event to VSC Telemtry Library
-          this.reporter.sendTelemetryEvent("pullRequests");
+          this.reporter?.sendTelemetryEvent("pullRequests");
 
           this.sendMessage({
             command: "prs",
@@ -101,7 +102,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
         }
         case "blame": {
           // Send Event to VSC Telemtry Library
-          this.reporter.sendTelemetryEvent("viewBlame");
+          this.reporter?.sendTelemetryEvent("viewBlame");
 
           this.sendMessage({
             command: "loading",
