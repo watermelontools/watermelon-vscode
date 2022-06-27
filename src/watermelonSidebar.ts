@@ -51,9 +51,6 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
     webviewView.webview.onDidReceiveMessage(async (data) => {
-      const credentials = new Credentials();
-      await credentials.initialize(this._context);
-      octokit = await credentials.getOctokit();
       let gitAPI = await getGitAPI();
       let { repoName, ownerUsername } = await getRepoInfo();
       localUser = await getLocalUser();
@@ -64,6 +61,9 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           this.sendMessage({
             command: "loading",
           });
+          const credentials = new Credentials();
+          await credentials.initialize(this._context);
+          octokit = await credentials.getOctokit();
 
           if (!arrayOfSHAs.length) {
             arrayOfSHAs = await getSHAArray(
@@ -191,4 +191,3 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
     }
   }
 }
-

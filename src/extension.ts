@@ -53,9 +53,7 @@ export async function activate(context: vscode.ExtensionContext) {
   reporter.sendTelemetryEvent("extensionActivated");
   let gitAPI = await getGitAPI();
   debugLogger(`got gitAPI`);
-  const credentials = new Credentials();
-  debugLogger(`got credentials`);
-  await credentials.initialize(context);
+
   const provider = new WatermelonSidebar(context, reporter);
   debugLogger(`created provider`);
 
@@ -126,7 +124,10 @@ export async function activate(context: vscode.ExtensionContext) {
     provider.sendMessage({
       command: "loading",
     });
-
+    const credentials = new Credentials();
+    debugLogger(`got credentials`);
+    await credentials.initialize(context);
+    debugLogger("intialized credentials");
     octokit = await credentials.getOctokit();
     let githubUserInfo = await getGitHubUserInfo({ octokit });
     debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
