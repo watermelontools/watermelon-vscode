@@ -26,6 +26,7 @@ import {
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import showCommandHandler from "./utils/commands/show";
+import debugLogger from "./utils/vscode/debugLogger";
 
 // repo information
 let owner: string | undefined = "";
@@ -43,12 +44,15 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const startupState: object | undefined =
     context.globalState.get("startupState");
+  debugLogger(`startupState: ${JSON.stringify(startupState)}`);
   const workspaceState: object | undefined =
     context.workspaceState.get("workspaceState");
+  debugLogger(`workspaceState: ${JSON.stringify(workspaceState)}`);
   // create telemetry reporter on extension activation
   let reporter = analyticsReporter();
   reporter.sendTelemetryEvent("extensionActivated");
   let gitAPI = await getGitAPI();
+  debugLogger(`gitAPI: ${JSON.stringify(gitAPI)}`);
   const credentials = new Credentials();
   await credentials.initialize(context);
   const provider = new WatermelonSidebar(context, reporter);
