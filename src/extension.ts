@@ -99,31 +99,6 @@ export async function activate(context: vscode.ExtensionContext) {
     data: extensionVersion,
   });
 
-  octokit = await credentials.getOctokit();
-  let githubUserInfo = await getGitHubUserInfo({ octokit });
-  debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-  let username = githubUserInfo.login;
-  context.globalState.update("startupState", { username });
-  reporter.sendTelemetryEvent("githubUserInfo", { username });
-  provider.sendMessage({
-    command: "user",
-    data: {
-      login: githubUserInfo.login,
-      avatar: githubUserInfo.avatar_url,
-    },
-  });
-
-  let dailySummary = await getDailySummary({
-    octokit,
-    owner,
-    repo,
-    username: username || "",
-  });
-  debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
-  provider.sendMessage({
-    command: "dailySummary",
-    data: dailySummary,
-  });
   let historyCommandHandler = async (
     startLine = undefined,
     endLine = undefined
@@ -150,6 +125,30 @@ export async function activate(context: vscode.ExtensionContext) {
     });
 
     octokit = await credentials.getOctokit();
+    let githubUserInfo = await getGitHubUserInfo({ octokit });
+    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
+    let username = githubUserInfo.login;
+    context.globalState.update("startupState", { username });
+    reporter.sendTelemetryEvent("githubUserInfo", { username });
+    provider.sendMessage({
+      command: "user",
+      data: {
+        login: githubUserInfo.login,
+        avatar: githubUserInfo.avatar_url,
+      },
+    });
+
+    let dailySummary = await getDailySummary({
+      octokit,
+      owner,
+      repo,
+      username: username || "",
+    });
+    debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
+    provider.sendMessage({
+      command: "dailySummary",
+      data: dailySummary,
+    });
     if (startLine === undefined && endLine === undefined) {
       if (!arrayOfSHAs.length) {
         arrayOfSHAs = await getSHAArray(
