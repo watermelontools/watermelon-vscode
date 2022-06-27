@@ -10,7 +10,6 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
 import analyticsReporter from "./utils/vscode/reporter";
 import statusBarItem, {
   updateStatusBarItem,
