@@ -52,12 +52,15 @@ export async function activate(context: vscode.ExtensionContext) {
   let reporter = analyticsReporter();
   reporter.sendTelemetryEvent("extensionActivated");
   let gitAPI = await getGitAPI();
-  debugLogger(`gitAPI: ${JSON.stringify(gitAPI)}`);
+  debugLogger(`got gitAPI`);
   const credentials = new Credentials();
+  debugLogger(`got credentials`);
   await credentials.initialize(context);
   const provider = new WatermelonSidebar(context, reporter);
+  debugLogger(`created provider`);
 
   let wmStatusBarItem = statusBarItem();
+  debugLogger(`created wmStatusBarItem`);
 
   context.subscriptions.push(
     // webview
