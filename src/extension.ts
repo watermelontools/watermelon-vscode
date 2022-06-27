@@ -50,7 +50,7 @@ export async function activate(context: vscode.ExtensionContext) {
   debugLogger(`workspaceState: ${JSON.stringify(workspaceState)}`);
   // create telemetry reporter on extension activation
   let reporter = analyticsReporter();
-  reporter.sendTelemetryEvent("extensionActivated");
+  reporter?.sendTelemetryEvent("extensionActivated");
   let gitAPI = await getGitAPI();
   debugLogger(`got gitAPI`);
 
@@ -66,8 +66,6 @@ export async function activate(context: vscode.ExtensionContext) {
       WatermelonSidebar.viewType,
       provider
     ),
-    // ensure reporter gets properly disposed. Upon disposal the events will be flushed
-    reporter,
     // action bar item
     wmStatusBarItem,
     // register some listener that make sure the status bar
@@ -76,7 +74,12 @@ export async function activate(context: vscode.ExtensionContext) {
       updateStatusBarItem(wmStatusBarItem);
     })
   );
-
+  if (reporter) {
+    context.subscriptions.push(
+      // ensure reporter gets properly disposed. Upon disposal the events will be flushed
+      reporter,
+    );
+  }
   // update status bar item once at start
   updateStatusBarItem(wmStatusBarItem);
 
@@ -93,7 +96,7 @@ export async function activate(context: vscode.ExtensionContext) {
     repo,
     owner,
   });
-  reporter.sendTelemetryEvent("repoInfo", { owner, repo });
+  reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
 
   provider.sendMessage({
     command: "versionInfo",

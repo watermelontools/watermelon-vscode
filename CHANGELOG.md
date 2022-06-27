@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.3.7]
 
 - Will not ask immediately for login, only on getting Pull Requests
+- Telemetry reporter now respects user settings
 
 ## [1.3.6]
 
