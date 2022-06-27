@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.3.7]
+
+- Will not ask immediately for login, only on getting Pull Requests
+
 ## [1.3.6]
 
 - Added Commit info on the hover
@@ -11,7 +15,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.3.5]
 
-- Will now track GitHub Username 
+- Will now track GitHub Username
 - General bugfixes
 
 ## [1.3.4]
