@@ -30,7 +30,6 @@ import showCommandHandler from "./utils/commands/show";
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
-let username: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 
@@ -42,6 +41,8 @@ const extensionVersion = getPackageInfo().version;
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
 
+  const startupState: object | undefined =
+    context.globalState.get("startupState");
   // create telemetry reporter on extension activation
   let reporter = analyticsReporter();
   reporter.sendTelemetryEvent("extensionActivated");
@@ -88,6 +89,7 @@ export async function activate(context: vscode.ExtensionContext) {
   octokit = await credentials.getOctokit();
   let githubUserInfo = await getGitHubUserInfo({ octokit });
   let username = githubUserInfo.login;
+  context.globalState.update("startupState", { username });
   reporter.sendTelemetryEvent("githubUserInfo", { username });
   provider.sendMessage({
     command: "user",
