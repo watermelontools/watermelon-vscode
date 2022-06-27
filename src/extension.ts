@@ -140,8 +140,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
     let dailySummary = await getDailySummary({
       octokit,
-      owner,
-      repo,
+      owner: owner || "",
+      repo: repo || "",
       username: username || "",
     });
     debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
