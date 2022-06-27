@@ -45,7 +45,6 @@ export async function activate(context: vscode.ExtensionContext) {
     context.globalState.get("startupState");
   const workspaceState: object | undefined =
     context.workspaceState.get("workspaceState");
-  console.log(workspaceState);
   // create telemetry reporter on extension activation
   let reporter = analyticsReporter();
   reporter.sendTelemetryEvent("extensionActivated");
