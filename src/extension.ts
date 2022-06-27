@@ -43,6 +43,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const startupState: object | undefined =
     context.globalState.get("startupState");
+  const workspaceState: object | undefined =
+    context.workspaceState.get("workspaceState");
+  console.log(workspaceState);
   // create telemetry reporter on extension activation
   let reporter = analyticsReporter();
   reporter.sendTelemetryEvent("extensionActivated");
@@ -79,6 +82,11 @@ export async function activate(context: vscode.ExtensionContext) {
   let { repoName, ownerUsername } = await getRepoInfo();
   repo = repoName;
   owner = ownerUsername;
+  context.workspaceState.update("workspaceState", {
+    ...workspaceState,
+    repo,
+    owner,
+  });
   reporter.sendTelemetryEvent("repoInfo", { owner, repo });
 
   provider.sendMessage({
