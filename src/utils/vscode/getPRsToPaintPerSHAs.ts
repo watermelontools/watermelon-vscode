@@ -2,7 +2,6 @@ import countOrganizationQueries from "../countOrganizationQueries";
 import getPRsPerSHAS from "../getPRsPerSHAS";
 import getIssue from "../github/getIssue";
 import getIssueComments from "../github/getIssueComments";
-import getRepoInfo from "./getRepoInfo";
 import { noLinesSelected, noSearchResults } from "./showErrors";
 
 export default async function getPRsToPaintPerSHAs({
@@ -17,22 +16,20 @@ export default async function getPRsToPaintPerSHAs({
   repo?: string;
 }): Promise<
   | {
-      user: any;
-      userImage: string;
-      userLink: string;
-      title: string;
-      comments: any[];
-      created_at: any;
-      body: string;
-      avatar: string;
-      url: string;
-      repo_url: string;
-      state: string;
-    }[]
+    user: any;
+    userImage: string;
+    userLink: string;
+    title: string;
+    comments: any[];
+    created_at: any;
+    body: string;
+    avatar: string;
+    url: string;
+    repo_url: string;
+    state: string;
+  }[]
   | { errorText: string }
 > {
-  let { repoName } = await getRepoInfo();
-
   // takes the first 22 shas and creates a list to send to the gh api
   let joinedArrayOfSHAs = arrayOfSHAs.slice(0, 22).join();
   if (joinedArrayOfSHAs.length < 1) {
@@ -42,7 +39,7 @@ export default async function getPRsToPaintPerSHAs({
 
   let foundPRs = await getPRsPerSHAS({
     octokit,
-    repoName,
+    repo: repo?? "",
     owner,
     shaArray: joinedArrayOfSHAs,
   });

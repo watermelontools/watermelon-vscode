@@ -11,6 +11,8 @@ import addBlametoDoc from "./utils/addBlametoDoc.js";
 import addGHUserInfo from "./utils/addGHUserInfo.js";
 import addVersionToFooter from "./utils/addVersionToFooter.js";
 import addSessionToFooter from "./utils/addSessionToFooter.js";
+import addDailySummary from "./utils/addDailySummary.js";
+import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 
 let errorTimeout;
 
@@ -40,109 +42,49 @@ gitBlame[0].addEventListener("click", (event) => {
 });
 
 function handleMessage(message) {
+  webviewDebugLogger(`Received message: ${JSON.stringify(message)}`);
   switch (message.command) {
     case "user":
+      webviewDebugLogger(`Received user: ${JSON.stringify(message.user)}`);
       addGHUserInfo(message.data);
       break;
     case "dailySummary":
-      $("#dailySummary").append(`
-      <div id="assignedIssues">
-      <h3>Issues Assigned to You in this Repo</h3>
-      </div>
-      <div id="creatorIssues">
-      <h3>Issues You Created in this Repo</h3>
-      </div>
-      <div id="mentionedIssues">
-      <h3>Issues that Mentioned You in this Repo</h3>
-      </div>
-        <div id="globalIssues">
-        <h3>Open Issues Assigned to You in All of GitHub</h3>
-        </div>
-      `);
-      if (message.data.globalIssues.length > 0) {
-        message.data.globalIssues.map((issue) => {
-          $("#globalIssues").append(`
-        <div>
-        <a href="${issue.html_url}">${issue.title}</a>
-        </div>
-        `);
-        });
-      } else {
-        $("#globalIssues").append(`
-      <div>
-      <p>You have no open issues assigned to you</p>
-      </div>
-      `);
-      }
-      if (message.data.assignedIssues.length > 0) {
-        message.data.assignedIssues.map((issue) => {
-          $("#assignedIssues").append(`
-  <div>
-  <a href="${issue.html_url}">${issue.title}</a>
-  </div>
-  `);
-        });
-      } else {
-        $("#assignedIssues").append(`
-<div>
-<p>You have no open issues assigned to you 🧘</p>
-</div>
-`);
-      }
-      if (message.data.creatorIssues.length > 0) {
-        message.data.creatorIssues.map((issue) => {
-          $("#creatorIssues").append(`
-  <div>
-  <a href="${issue.html_url}">${issue.title}</a>
-  </div>
-  `);
-        });
-      } else {
-        $("#creatorIssues").append(`
-<div>
-<p>You have no open issues created 🌵</p>
-</div>
-`);
-      }
-      if (message.data.mentionedIssues.length > 0) {
-        message.data.mentionedIssues.map((issue) => {
-          $("#mentionedIssues").append(`
-  <div>
-  <a href="${issue.html_url}">${issue.title}</a>
-  </div>
-  `);
-        });
-      } else {
-        $("#mentionedIssues").append(`
-<div>
-<p>You have no open issues that mention you 🙊</p>
-</div>
-`);
-      }
-
+      webviewDebugLogger(
+        `Received dailySummary: ${JSON.stringify(message.data)}`
+      );
+      addDailySummary(message.data);
       break;
     case "prs":
+      webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       removeLoading(errorTimeout);
       addPRsToDoc(message.data);
       hljs.highlightAll();
       clampCodeBlocks();
       break;
     case "loading":
+      webviewDebugLogger(`Received loading: ${JSON.stringify(message.data)}`);
       errorTimeout = setLoading(errorTimeout);
       break;
     case "error":
+      webviewDebugLogger(`Received error: ${JSON.stringify(message.data)}`);
       errorTimeout = setReceivedError(message.error.errorText, errorTimeout);
       break;
     case "versionInfo":
+      webviewDebugLogger(
+        `Received versionInfo: ${JSON.stringify(message.data)}`
+      );
       addVersionToFooter(message.data);
       break;
     case "author":
+      webviewDebugLogger(`Received author: ${JSON.stringify(message.data)}`);
       authorName = message.author;
       break;
     case "session":
+      webviewDebugLogger(`Received session: ${JSON.stringify(message.data)}`);
       addSessionToFooter(message.data);
       break;
     case "blame":
+      webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
       let commitLink = undefined;
       if (message.owner && message.repo) {
         commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
@@ -151,6 +93,9 @@ function handleMessage(message) {
       addBlametoDoc(message.data, commitLink);
       break;
     default:
+      webviewDebugLogger(
+        `Received unknown command: ${JSON.stringify(message)}`
+      );
       console.log("Unknown command");
       console.log(message);
   }
