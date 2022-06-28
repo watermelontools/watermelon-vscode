@@ -244,7 +244,7 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  vscode.authentication.getSession("github", []).then((session: any) => {
+  vscode.authentication.getSession("github", []).then(async (session: any) => {
     setLoggedIn(true);
     provider.sendMessage({
       command: "session",
@@ -252,6 +252,34 @@ export async function activate(context: vscode.ExtensionContext) {
       data: session.account.label,
     });
     debugLogger(`session: ${JSON.stringify(session)}`);
+    const credentials = new Credentials();
+    debugLogger(`got credentials`);
+    await credentials.initialize(context);
+    debugLogger("intialized credentials");
+    octokit = await credentials.getOctokit();
+    let githubUserInfo = await getGitHubUserInfo({ octokit });
+    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
+    let username = githubUserInfo.login;
+    context.globalState.update("startupState", { username });
+    reporter?.sendTelemetryEvent("githubUserInfo", { username });
+    provider.sendMessage({
+      command: "user",
+      data: {
+        login: githubUserInfo.login,
+        avatar: githubUserInfo.avatar_url,
+      },
+    });
+    let dailySummary = await getDailySummary({
+      octokit,
+      owner: owner || "",
+      repo: repo || "",
+      username: username || "",
+    });
+    debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
+    provider.sendMessage({
+      command: "dailySummary",
+      data: dailySummary,
+    });
   });
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
