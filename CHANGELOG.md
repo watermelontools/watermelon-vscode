@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.3.7]
 
+- Fixes to git url parsing, possibly fixing issues on some edge cases
 - Telemetry reporter now respects user settings
 
 ## [1.3.6]
@@ -15,7 +16,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.3.5]
 
-- Will now track GitHub Username 
+- Will now track GitHub Username
 - General bugfixes
 
 ## [1.3.4]
