@@ -55,8 +55,8 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
       let gitAPI = await getGitAPI();
       let repoInfo = await getRepoInfo();
       localUser = await getLocalUser();
-      repo = repoInfo.repo;
-      owner = repoInfo.owner;
+      repo = repoInfo?.repo;
+      owner = repoInfo?.owner;
       switch (data.command) {
         case "run": {
           this.sendMessage({
