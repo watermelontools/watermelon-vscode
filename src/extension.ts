@@ -77,7 +77,7 @@ export async function activate(context: vscode.ExtensionContext) {
   if (reporter) {
     context.subscriptions.push(
       // ensure reporter gets properly disposed. Upon disposal the events will be flushed
-      reporter,
+      reporter
     );
   }
   // update status bar item once at start
@@ -96,8 +96,7 @@ export async function activate(context: vscode.ExtensionContext) {
     repo,
     owner,
   });
-  reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
-
+  owner && repo && reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
 
   provider.sendMessage({
     command: "versionInfo",
@@ -137,7 +136,7 @@ export async function activate(context: vscode.ExtensionContext) {
     debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
     let username = githubUserInfo.login;
     context.globalState.update("startupState", { username });
-    reporter.sendTelemetryEvent("githubUserInfo", { username });
+    reporter?.sendTelemetryEvent("githubUserInfo", { username });
     provider.sendMessage({
       command: "user",
       data: {
