@@ -79,10 +79,10 @@ export async function activate(context: vscode.ExtensionContext) {
   // create the hover provider
   let wmHover = hover({ reporter });
 
-  let { repoName, ownerUsername } = await getRepoInfo();
-  repo = repoName;
-  owner = ownerUsername;
-  reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
+  let repoInfo = await getRepoInfo();
+  repo = repoInfo?.repo;
+  owner = repoInfo?.owner;
+  owner && repo && reporter.sendTelemetryEvent("repoInfo", { owner, repo });
 
   provider.sendMessage({
     command: "versionInfo",
@@ -100,17 +100,18 @@ export async function activate(context: vscode.ExtensionContext) {
       avatar: githubUserInfo.avatar_url,
     },
   });
-
-  let dailySummary = await getDailySummary({
-    octokit,
-    owner,
-    repo,
-    username: username || "",
-  });
-  provider.sendMessage({
-    command: "dailySummary",
-    data: dailySummary,
-  });
+  if (owner && repo) {
+    let dailySummary = await getDailySummary({
+      octokit,
+      owner,
+      repo,
+      username: username || "",
+    });
+    provider.sendMessage({
+      command: "dailySummary",
+      data: dailySummary,
+    });
+  }
   let historyCommandHandler = async (
     startLine = undefined,
     endLine = undefined
