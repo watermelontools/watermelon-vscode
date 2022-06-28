@@ -10,7 +10,6 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import getNumberOfFileChanges from "./utils/getNumberOfFileChanges";
 import analyticsReporter from "./utils/vscode/reporter";
 import statusBarItem, {
   updateStatusBarItem,
@@ -27,11 +26,11 @@ import {
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import showCommandHandler from "./utils/commands/show";
+import debugLogger from "./utils/vscode/debugLogger";
 
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
-let username: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 
@@ -43,15 +42,23 @@ const extensionVersion = getPackageInfo().version;
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
 
+  const startupState: object | undefined =
+    context.globalState.get("startupState");
+  debugLogger(`startupState: ${JSON.stringify(startupState)}`);
+  const workspaceState: object | undefined =
+    context.workspaceState.get("workspaceState");
+  debugLogger(`workspaceState: ${JSON.stringify(workspaceState)}`);
   // create telemetry reporter on extension activation
   let reporter = analyticsReporter();
   reporter?.sendTelemetryEvent("extensionActivated");
   let gitAPI = await getGitAPI();
-  const credentials = new Credentials();
-  await credentials.initialize(context);
+  debugLogger(`got gitAPI`);
+
   const provider = new WatermelonSidebar(context, reporter);
+  debugLogger(`created provider`);
 
   let wmStatusBarItem = statusBarItem();
+  debugLogger(`created wmStatusBarItem`);
 
   context.subscriptions.push(
     // webview
@@ -82,36 +89,21 @@ export async function activate(context: vscode.ExtensionContext) {
   let repoInfo = await getRepoInfo();
   repo = repoInfo?.repo;
   owner = repoInfo?.owner;
-  owner && repo && reporter.sendTelemetryEvent("repoInfo", { owner, repo });
+  debugLogger(`repo: ${repo}`);
+  debugLogger(`owner: ${owner}`);
+  context.workspaceState.update("workspaceState", {
+    ...workspaceState,
+    repo,
+    owner,
+  });
+  reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
+
 
   provider.sendMessage({
     command: "versionInfo",
     data: extensionVersion,
   });
 
-  octokit = await credentials.getOctokit();
-  let githubUserInfo = await getGitHubUserInfo({ octokit });
-  let username = githubUserInfo.login;
-  reporter?.sendTelemetryEvent("githubUserInfo", { username });
-  provider.sendMessage({
-    command: "user",
-    data: {
-      login: githubUserInfo.login,
-      avatar: githubUserInfo.avatar_url,
-    },
-  });
-  if (owner && repo) {
-    let dailySummary = await getDailySummary({
-      octokit,
-      owner,
-      repo,
-      username: username || "",
-    });
-    provider.sendMessage({
-      command: "dailySummary",
-      data: dailySummary,
-    });
-  }
   let historyCommandHandler = async (
     startLine = undefined,
     endLine = undefined
@@ -120,7 +112,6 @@ export async function activate(context: vscode.ExtensionContext) {
     provider.sendMessage({
       command: "loading",
     });
-    octokit = await credentials.getOctokit();
     let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
     provider.sendMessage({
       command: "blame",
@@ -137,8 +128,35 @@ export async function activate(context: vscode.ExtensionContext) {
     provider.sendMessage({
       command: "loading",
     });
-
+    const credentials = new Credentials();
+    debugLogger(`got credentials`);
+    await credentials.initialize(context);
+    debugLogger("intialized credentials");
     octokit = await credentials.getOctokit();
+    let githubUserInfo = await getGitHubUserInfo({ octokit });
+    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
+    let username = githubUserInfo.login;
+    context.globalState.update("startupState", { username });
+    reporter.sendTelemetryEvent("githubUserInfo", { username });
+    provider.sendMessage({
+      command: "user",
+      data: {
+        login: githubUserInfo.login,
+        avatar: githubUserInfo.avatar_url,
+      },
+    });
+
+    let dailySummary = await getDailySummary({
+      octokit,
+      owner: owner || "",
+      repo: repo || "",
+      username: username || "",
+    });
+    debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
+    provider.sendMessage({
+      command: "dailySummary",
+      data: dailySummary,
+    });
     if (startLine === undefined && endLine === undefined) {
       if (!arrayOfSHAs.length) {
         arrayOfSHAs = await getSHAArray(
@@ -234,6 +252,7 @@ export async function activate(context: vscode.ExtensionContext) {
       loggedIn: true,
       data: session.account.label,
     });
+    debugLogger(`session: ${JSON.stringify(session)}`);
   });
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
@@ -244,6 +263,7 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.window.activeTextEditor?.document.uri.fsPath,
       gitAPI
     );
+    debugLogger(`arrayOfSHAs: ${JSON.stringify(arrayOfSHAs)}`);
   });
 
   if (vscode.window.registerWebviewPanelSerializer) {

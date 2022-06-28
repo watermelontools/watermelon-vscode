@@ -73,6 +73,7 @@ export default function getInitialHTML(
         </div>
         <h2>Daily Summary</h2>
         <div id="dailySummary"></div>
+        You will find all your issues and ToDos here.
         <h2>Newsletter</h2>
         <p><a href="https://airtable.com/shrVrtfgdtFoITWQN">Register to our Newsletter</a> full of cool tips and tricks</p>
  
