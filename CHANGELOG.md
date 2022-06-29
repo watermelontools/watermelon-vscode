@@ -4,6 +4,11 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.0]
+
+- Added icons to the hover to make it more clear
+- Will now execute initial actions when you log in
+
 ## [1.3.7]
 
 - Will not ask immediately for login, only on getting Pull Requests
