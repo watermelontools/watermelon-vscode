@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.0]
+
+- Added a section to sponsor us from the sidebar
+
 ## [1.3.7]
 
 - Will not ask immediately for login, only on getting Pull Requests
