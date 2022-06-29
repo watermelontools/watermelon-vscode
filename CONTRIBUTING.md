@@ -17,5 +17,5 @@ We love community contributions. Please fork the repo and send a PR our way.
 Remember, we'll discuss it publicly, it's a great opportunity to learn.
 
 ## Donations
-Soon, we'll have Github Sponsors to donate!
+[We have Github Sponsors](https://github.com/sponsors/watermelontools)
 For now, send us a message or star :star: the repo to help!
