@@ -13,7 +13,12 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
   return vscode.languages.registerHoverProvider("*", {
     async provideHover(document, position, token) {
       let gitAPI = await getGitAPI();
-      let latestCommit = await getLatestCommit({ startLine: position.line, endLine: position.line, currentlyOpenTabfilePath: document, gitAPI });
+      let latestCommit = await getLatestCommit({
+        startLine: position.line,
+        endLine: position.line,
+        currentlyOpenTabfilePath: document,
+        gitAPI,
+      });
       let numberOfFileChanges = await getNumberOfFileChanges(
         document.uri.fsPath || ".",
         gitAPI as any
@@ -30,13 +35,17 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
         )}`
       );
       const content = new vscode.MarkdownString(
-        `[Understand the code context](${startCommandUri}) with Watermelon 🍉`
+        `$(git-pull-request)[Understand the code context](${startCommandUri}) with Watermelon 🍉`
       );
       content.appendMarkdown(`\n\n`);
-      content.appendMarkdown(`The latest commit is "${latestCommit.message}" by **${latestCommit.authorName}** on **${latestCommit.commitDate.toLocaleDateString()}**`);
+      content.appendMarkdown(
+        `The latest commit is "${latestCommit.message}" by **${
+          latestCommit.authorName
+        }** on **${latestCommit.commitDate.toLocaleDateString()}**`
+      );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
-        `[View the history for this line](${blameCommandUri}) with Watermelon 🍉`
+        `$(git-commit)[View the history for this line](${blameCommandUri}) with Watermelon 🍉`
       );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
@@ -46,6 +55,7 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       );
       content.supportHtml = true;
       content.isTrusted = true;
+      content.supportThemeIcons = true;
       reporter?.sendTelemetryEvent("hover");
       return new vscode.Hover(content);
     },
