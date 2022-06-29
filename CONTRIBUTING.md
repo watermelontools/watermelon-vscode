@@ -5,6 +5,8 @@ For now, we discuss on [Slack](https://join.slack.com/t/watermelonusers/shared_i
 ## Running the extension
 To run, open the folder containing the code on [VSCode](https://code.visualstudio.com/download), and press "F5" or go to the debug panel and click "Run Extension"
 
+When commiting, our all the tests will run to check nothing broke.
+
 ## Issues
 
 If there's something you'd like to see please [open an issue](https://github.com/watermelontools/wm-extension/issues/new).
