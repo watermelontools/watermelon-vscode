@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.4.0]
 
 - Added a section to sponsor us from the sidebar
+- Added icons to the hover to make it more clear
 
 ## [1.3.7]
 
