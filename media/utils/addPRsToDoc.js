@@ -29,22 +29,20 @@ const addPRsToDoc = (prs) => {
     }
       </a>
       </summary>
-        <div>
-        <div class="pr-header">
-          <div class="pr-owner">
+        <div class="Box">
+        <div class="Box-header d-flex">
             <p class="pr-poster" title="View this user on github">
               <a class="pr-author-combo" href="${
                 pr.userLink
               }"><img class='pr-author-img' src="${pr.userImage}" />${
-      pr.user
-    }</a>
+               pr.user
+              }</a>
             </p>
             <p class="pr-date">
-              ${dateToHumanReadable(pr.created_at)}
+               on ${dateToHumanReadable(pr.created_at)}
             </p>
-          </div>
         </div>
-          <div class="pr-body">
+          <div class="Box-body">
             ${
               pr?.body
                 ? (
