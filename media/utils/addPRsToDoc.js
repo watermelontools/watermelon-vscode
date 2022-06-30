@@ -36,10 +36,10 @@ const addPRsToDoc = (prs) => {
                 pr.userLink
               }"><img class='pr-author-img' src="${pr.userImage}" />${
                pr.user
-              }</a>
+              } </a>
             </p>
             <p class="pr-date">
-               on ${dateToHumanReadable(pr.created_at)}
+                on ${dateToHumanReadable(pr.created_at)}
             </p>
         </div>
           <div class="Box-body">

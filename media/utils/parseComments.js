@@ -5,16 +5,16 @@ import dateToHumanReadable from "./dateToHumanReadable.js";
 function parseComments(comment) {
   let mdComments = "";
   mdComments += `
-        <div class="comment">
-        <div class="comment-header">
+        <div class="Box">
+        <div class="Box-header">
           <h5 class="comment-author" title="View this user on github" class='pr-author-combo'>
           <a href="${comment.user.html_url}" >  
           <img src="${comment.user.avatar_url}" class='pr-author-img' style="margin: 0 0 0 0" />
             ${comment.user.login}
-          </a>  on ${dateToHumanReadable(comment.created_at)}
+          </a>  <span class="pr-date"> on ${dateToHumanReadable(comment.created_at)}</span>
           </h5>
         </div>
-        <div class="markdown-body">
+        <div class="Box-body markdown-body">
       ${comment?.body ? replaceUserTags(marked.parse(comment.body)) : ""}
         </div>
         </div>`;

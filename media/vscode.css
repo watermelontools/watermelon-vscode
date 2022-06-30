@@ -39,11 +39,6 @@ details > summary::after {
 .pr-state {
   justify-self: flex-end;
 }
-.pr-header {
-  border-radius: 6px 6px 0 0;
-  border: 1px solid #30363d;
-  background-color: #30363d;
-}
 .pr-owner {
   display: flex;
   padding: 0.2em 0.4em;
@@ -71,26 +66,9 @@ details > summary::after {
   display: flex;
   align-items: center;
 }
-.pr-body {
-  padding: 0.2em 0.4em;
-  border: 1px solid rgba(56, 139, 253, 0.4);
-  border-radius: 0 0 6px 6px;
-}
-.comment {
-  margin-bottom: 1%;
-  border-radius: 6px;
-  border: 1px solid #5b6570;
-}
-.comment-header {
-  background-color: rgb(22, 27, 34);
-  padding: 0.1em 0.5em;
-}
+
 .comment-author {
   color: #e4e4e4;
-}
-.comment-body {
-  margin-top: 1%;
-  padding: 0.1em 0.5em;
 }
 
 a,
