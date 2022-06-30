@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import * as gitUrlParse from "git-url-parse";
+import getRepoInfo from "../../utils/vscode/getRepoInfo";
 
 suite("Git tests", () => {
     const testCases = [
@@ -16,10 +16,10 @@ suite("Git tests", () => {
     ];
     for (let index = 0; index < testCases.length; index++) {
         const element = testCases[index];
-        test(`should parse user, repo, source and protocol from "${element.url}"`, () => {
-            let { owner, name, source, protocol } = gitUrlParse(element.url);
+        test(`should parse user, repo, source and protocol from "${element.url}"`,async () => {
+            let { owner, repo, source, protocol } = await getRepoInfo({ repoURL: element.url });
             assert.strictEqual(owner, "watermelontools");
-            assert.strictEqual(name, "wm-extension");
+            assert.strictEqual(repo, "wm-extension");
             assert.strictEqual(source, "github.com");
             assert.strictEqual(protocol, element.protocol);
         });
