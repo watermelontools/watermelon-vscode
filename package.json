@@ -127,7 +127,7 @@
 		"compile": "tsc -p ./",
 		"watch": "tsc -w -p ./",
 		"pretest": "npm run compile",
-		"test": "npm run pretest | node ./out/test/runTest.js",
+		"test": "node ./out/test/runTest.js",
 		"prepare": "husky install"
 	},
 	"devDependencies": {
