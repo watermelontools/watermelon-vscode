@@ -1,3 +1,4 @@
+@import "primer-core.css";
 code {
   background-color: rgba(110, 118, 129, 0.9);
   padding: 0.2em 0.4em;
@@ -241,3 +242,4 @@ pre {
 footer{
   font-size: smaller;
 }
+
