@@ -52,7 +52,7 @@ export default function getInitialHTML(
          <meta charset="UTF-8">
         <link href="${stylesMainUri}" rel="stylesheet">
      </head>
-     <body>
+     <body data-color-mode="dark" data-light-theme="light" data-dark-theme="dark">
      <picture class="wm-logo">
        <source
         width="300"
