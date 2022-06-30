@@ -10,6 +10,9 @@
 		"type": "git",
 		"url": "https://github.com/orgs/watermelontools/"
 	},
+	"sponsor": {
+   		 "url": "https://github.com/sponsors/watermelontools"
+	},
 	"engines": {
 		"vscode": "^1.63.0"
 	},
