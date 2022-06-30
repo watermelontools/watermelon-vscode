@@ -40,6 +40,7 @@ button[0].addEventListener("click", (event) => {
 gitBlame[0].addEventListener("click", (event) => {
   sendMessage({ command: "blame" });
 });
+marked.use({ gfm: true, breaks: true });
 
 function handleMessage(message) {
   webviewDebugLogger(`Received message: ${JSON.stringify(message)}`);
@@ -58,7 +59,6 @@ function handleMessage(message) {
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       removeLoading(errorTimeout);
       addPRsToDoc(message.data);
-      hljs.highlightAll();
       clampCodeBlocks();
       break;
     case "loading":

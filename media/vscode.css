@@ -1,15 +1,5 @@
 @import "primer-core.css";
-code {
-  background-color: rgba(110, 118, 129, 0.9);
-  padding: 0.2em 0.4em;
-  border-radius: 6px;
-  font-size: 90%;
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
-    Liberation Mono, monospace;
-}
-.hljs {
-  background-color: rgba(0, 0, 0, 0.4);
-}
+
 .wm-logo {
   width: 300px;
 }

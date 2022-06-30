@@ -5,6 +5,7 @@ import parseComments from "./parseComments.js";
 import addActionButtons from "./addActionButtons.js";
 
 const addPRsToDoc = (prs) => {
+  
   addActionButtons();
   $("#ghHolder").append(`
   <h3>Pull Requests</h3>
@@ -46,9 +47,8 @@ const addPRsToDoc = (prs) => {
           <div class="pr-body">
             ${
               pr?.body
-                ? replaceIssueLinks(
-                    replaceUserTags(marked.parse(pr.body)),
-                    pr.repo_url
+                ? (
+                    replaceUserTags(marked.parse(pr.body))
                   )
                 : ""
             }

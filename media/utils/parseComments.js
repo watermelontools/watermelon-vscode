@@ -14,7 +14,7 @@ function parseComments(comment) {
           </a>  on ${dateToHumanReadable(comment.created_at)}
           </h5>
         </div>
-        <div class="comment-body">
+        <div class="markdown-body">
       ${comment?.body ? replaceUserTags(marked.parse(comment.body)) : ""}
         </div>
         </div>`;

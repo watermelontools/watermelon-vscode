@@ -11,8 +11,7 @@ export default function getInitialHTML(
 ): string {
   let styleSources = [
     "'self'",
-    webview.cspSource,
-    "https://unpkg.com/@highlightjs/",
+    webview.cspSource
   ];
   let imageSources = [
     webview.cspSource,
@@ -26,7 +25,6 @@ export default function getInitialHTML(
   ];
   let scriptSources = [
     `'nonce-${nonce}'`,
-    "https://unpkg.com/@highlightjs/",
     "https://browser.sentry-cdn.com/",
     "https://cdn.jsdelivr.net/npm/marked/",
     "https://ajax.googleapis.com/ajax/libs/jquery/",
@@ -90,9 +88,6 @@ export default function getInitialHTML(
       async defer fetchpriority="low"
       nonce="${nonce}"
       ></script>
-      <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/highlight.min.js" 
-      async defer fetchpriority="low"
-      ></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
       nonce="${nonce}"
       async defer fetchpriority="low"
@@ -105,10 +100,6 @@ export default function getInitialHTML(
       nonce="${nonce}"
       async defer fetchpriority="low"
       ></script>
-      <link rel="stylesheet"
-      href="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/styles/default.min.css" 
-      async defer fetchpriority="low">
-     
      </footer>
      </html>
   `;
