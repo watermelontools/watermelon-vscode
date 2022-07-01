@@ -39,7 +39,7 @@
 
 details>summary {
   padding: 2px 6px;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid var(--color-fg-subtle);
   margin-bottom: 1%;
   font-weight: bolder;
   cursor: pointer;
@@ -181,69 +181,6 @@ pre {
   color: #e4e4e4;
 }
 
-@media (prefers-color-scheme: light) {
-  html {
-    background-color: #333;
-  }
-
-  p {
-    color: #e4e4e4;
-  }
-
-  a {
-    color: #db6161;
-  }
-
-  h5 {
-    color: #42423f;
-  }
-
-  h2 {
-    color: #e4e4e4;
-  }
-
-  .pr-state {
-    filter: invert(1);
-  }
-
-  details>summary::after {
-    filter: invert(1);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    background-color: #333;
-  }
-
-  p {
-    color: #e4e4e4;
-  }
-
-  a {
-    color: #db6161;
-  }
-
-  h5 {
-    color: #42423f;
-  }
-
-  h2 {
-    color: #e4e4e4;
-  }
-
-  .pr-state {
-    filter: invert(1);
-  }
-
-  details>summary::after {
-    filter: invert(1);
-  }
-}
-
-footer {
-  font-size: smaller;
-}
 .loader-spinner{
   animation: spinner 1.2s linear infinite;
 }
@@ -254,4 +191,8 @@ footer {
   100% {
     transform: rotate(360deg);
   }
+}
+
+footer {
+  font-size: smaller;
 }
