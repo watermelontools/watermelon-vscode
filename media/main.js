@@ -40,7 +40,6 @@ button[0].addEventListener("click", (event) => {
 gitBlame[0].addEventListener("click", (event) => {
   sendMessage({ command: "blame" });
 });
-marked.use({ gfm: true, breaks: true });
 
 function handleMessage(message) {
   webviewDebugLogger(`Received message: ${JSON.stringify(message)}`);

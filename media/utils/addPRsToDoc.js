@@ -46,7 +46,7 @@ const addPRsToDoc = (prs) => {
             ${
               pr?.body
                 ? (
-                    replaceUserTags(marked.parse(pr.body))
+                    replaceUserTags(marked.parse(pr.body, { gfm: true, breaks: true }))
                   )
                 : ""
             }

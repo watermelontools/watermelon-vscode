@@ -15,7 +15,7 @@ function parseComments(comment) {
           </h5>
         </div>
         <div class="Box-body markdown-body">
-      ${comment?.body ? replaceUserTags(marked.parse(comment.body)) : ""}
+      ${comment?.body ? replaceUserTags(marked.parse(comment.body, { gfm: true, breaks: true })) : ""}
         </div>
         </div>`;
   return mdComments;
