@@ -178,10 +178,12 @@ export async function activate(context: vscode.ExtensionContext) {
           error: issuesWithTitlesAndGroupedComments,
         });
       }
-
+      let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
+        (a: any, b: any) => b.comments.length - a.comments.length
+      );
       provider.sendMessage({
         command: "prs",
-        data: issuesWithTitlesAndGroupedComments,
+        data: sortedPRs,
       });
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
@@ -214,9 +216,12 @@ export async function activate(context: vscode.ExtensionContext) {
           error: issuesWithTitlesAndGroupedComments,
         });
       }
+      let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
+        (a: any, b: any) => b.comments.length - a.comments.length
+      );
       provider.sendMessage({
         command: "prs",
-        data: issuesWithTitlesAndGroupedComments,
+        data: sortedPRs,
       });
     }
   };

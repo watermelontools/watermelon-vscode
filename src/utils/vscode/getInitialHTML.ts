@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 export default function getInitialHTML(
   webview: vscode.Webview,
   stylesMainUri: vscode.Uri,
+  codiconsUri: vscode.Uri,
   darkLogo: vscode.Uri,
   lightLogo: vscode.Uri,
   nonce: string,
@@ -12,7 +13,7 @@ export default function getInitialHTML(
   let styleSources = [
     "'self'",
     webview.cspSource,
-    "https://unpkg.com/@highlightjs/",
+    'sha256-RUgYvsMBjjw/Hs3gLuFfimXhokbGieLHoQliXFrgojQ='
   ];
   let imageSources = [
     webview.cspSource,
@@ -26,7 +27,6 @@ export default function getInitialHTML(
   ];
   let scriptSources = [
     `'nonce-${nonce}'`,
-    "https://unpkg.com/@highlightjs/",
     "https://browser.sentry-cdn.com/",
     "https://cdn.jsdelivr.net/npm/marked/",
     "https://ajax.googleapis.com/ajax/libs/jquery/",
@@ -36,6 +36,10 @@ export default function getInitialHTML(
     "https://*.sentry.io",
     "https://*.sentry.dev",
   ];
+  let fontSources = [
+    "self",
+    webview.cspSource
+  ]
   return `
 
   <!DOCTYPE html>
@@ -47,28 +51,33 @@ export default function getInitialHTML(
          style-src ${styleSources.join(" ")};
          img-src ${imageSources.join(" ")};
          script-src ${scriptSources.join(" ")};
+         font-src ${fontSources.join(" ")};
          connect-src ${connectSources.join(" ")}">
          <meta name="viewport" content="width=device-width, initial-scale=1.0">
          <meta charset="UTF-8">
         <link href="${stylesMainUri}" rel="stylesheet">
+        <link href="${codiconsUri}" rel="stylesheet" />
      </head>
-     <body>
-     <picture class="wm-logo">
+     <body data-color-mode="dark" data-light-theme="light" data-dark-theme="dark">
+     <div class="Header">
+     <picture class="Header-item">
        <source
-        width="300"
         srcset="${darkLogo}"
         media="(prefers-color-scheme: dark)">
-       <img src="${lightLogo}" width="300"/>
+       <img 
+       src="${lightLogo}"/>
+       
      </picture>
+     </div>
         <p>Watermelon helps you get the context of your code.</p>
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">⭐starring Watermelon on GitHub</a></p>
         <br/>
         <div id="ghHolder">
            <p>Higlight a piece of code to start.</p>
            <p>We will fetch the commit history for you to understand the context of the code</p>
-           <button class='git-blame'>View Commit History</button>
+           <button class='git-blame btn btn-primary' type='button'>View Commit History</button>
            <p>Click this button to enrich your code with relevant information from GitHub:</p>
-           <button class='run-watermelon'>View Pull Requests</button>
+           <button class='run-watermelon btn btn-primary' type='button'>View Pull Requests</button>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a>, by selecting and right clicking on the selection or by using our <a href="https://github.com/watermelontools/wm-extension#shortcuts"><kbd>keyboard</kbd> shortcuts</a>.</p>
         </div>
         <h2>Daily Summary</h2>
@@ -90,9 +99,6 @@ export default function getInitialHTML(
       async defer fetchpriority="low"
       nonce="${nonce}"
       ></script>
-      <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/highlight.min.js" 
-      async defer fetchpriority="low"
-      ></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
       nonce="${nonce}"
       async defer fetchpriority="low"
@@ -105,10 +111,6 @@ export default function getInitialHTML(
       nonce="${nonce}"
       async defer fetchpriority="low"
       ></script>
-      <link rel="stylesheet"
-      href="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/styles/default.min.css" 
-      async defer fetchpriority="low">
-     
      </footer>
      </html>
   `;
