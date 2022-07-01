@@ -7,7 +7,7 @@ const addBlametoDoc = (blameArray, commitLink) => {
     <h3>Commits</h3>
     `);
   $("#ghHolder").append(`
-    <table class="Box">
+    <table class="Box anim-fade-in">
       <thead class="Box-header">
         <tr>
           <th>Commit</th>

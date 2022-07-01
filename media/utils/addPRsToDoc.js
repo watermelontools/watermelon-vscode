@@ -15,6 +15,7 @@ const addPRsToDoc = (prs) => {
     pr.comments.forEach((comment) => (mdComments += parseComments(comment)));
 
     $("#ghHolder").append(`
+    <div class="anim-fade-in">
       <details ${!index ? "open" : ""}>
         <summary class="pr-title">
           <div>
@@ -61,6 +62,7 @@ const addPRsToDoc = (prs) => {
           ${mdComments}
         </div>
       </details>
+    </div>
       `);
   });
 };
