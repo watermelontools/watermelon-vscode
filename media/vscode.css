@@ -83,16 +83,6 @@ a:hover {
   text-decoration: underline;
 }
 
-button {
-  background-color: rgb(117, 184, 85);
-  border: none;
-  outline: none;
-  cursor: pointer;
-  font-weight: bold;
-  color: white;
-  padding: 0.5em 1em;
-  margin-bottom: 1em;
-}
 .clamp {
   max-height: 3.5em;
   text-overflow: ellipsis;
@@ -109,27 +99,6 @@ button {
   margin-bottom: auto;
 }
 
-button:hover {
-  background-color: #157241;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  font-weight: bold;
-  color: white;
-  padding: 0.5em 1em;
-  margin-bottom: 1em;
-}
-
-button:active {
-  background-color: #75b855;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  font-weight: bold;
-  color: white;
-  padding: 0.5em 1em;
-  margin-bottom: 1em;
-}
 pre {
   display: flex;
   flex-direction: column;
