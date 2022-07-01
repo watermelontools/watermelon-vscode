@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 export default function getInitialHTML(
   webview: vscode.Webview,
   stylesMainUri: vscode.Uri,
+  codiconsUri: vscode.Uri,
   darkLogo: vscode.Uri,
   lightLogo: vscode.Uri,
   nonce: string,
@@ -11,7 +12,8 @@ export default function getInitialHTML(
 ): string {
   let styleSources = [
     "'self'",
-    webview.cspSource
+    webview.cspSource,
+    'sha256-RUgYvsMBjjw/Hs3gLuFfimXhokbGieLHoQliXFrgojQ='
   ];
   let imageSources = [
     webview.cspSource,
@@ -34,6 +36,10 @@ export default function getInitialHTML(
     "https://*.sentry.io",
     "https://*.sentry.dev",
   ];
+  let fontSources = [
+    "self",
+    webview.cspSource
+  ]
   return `
 
   <!DOCTYPE html>
@@ -45,19 +51,24 @@ export default function getInitialHTML(
          style-src ${styleSources.join(" ")};
          img-src ${imageSources.join(" ")};
          script-src ${scriptSources.join(" ")};
+         font-src ${fontSources.join(" ")};
          connect-src ${connectSources.join(" ")}">
          <meta name="viewport" content="width=device-width, initial-scale=1.0">
          <meta charset="UTF-8">
         <link href="${stylesMainUri}" rel="stylesheet">
+        <link href="${codiconsUri}" rel="stylesheet" />
      </head>
      <body data-color-mode="dark" data-light-theme="light" data-dark-theme="dark">
-     <picture class="wm-logo">
+     <div class="Header">
+     <picture class="Header-item">
        <source
-        width="300"
         srcset="${darkLogo}"
         media="(prefers-color-scheme: dark)">
-       <img src="${lightLogo}" width="300"/>
+       <img 
+       src="${lightLogo}"/>
+       
      </picture>
+     </div>
         <p>Watermelon helps you get the context of your code.</p>
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">⭐starring Watermelon on GitHub</a></p>
         <br/>

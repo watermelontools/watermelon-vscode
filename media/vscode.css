@@ -19,7 +19,9 @@
 .loginHolder p {
   flex-grow: 4;
 }
-
+.Header img{
+  max-width: 40%;
+}
 details>summary {
   padding: 2px 6px;
   border-bottom: 1px solid lightgray;
