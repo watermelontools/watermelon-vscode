@@ -6,7 +6,7 @@ function setLoading(errorTimeout) {
     <p> <i class='codicon codicon-loading loader-spinner'></i>Loading</p>
     </div>
     `);
-  return (errorTimeout = setTimeout(setError, 4000));
+  return (errorTimeout = setTimeout(setError, 5000));
 }
 function setError() {
   $("#ghHolder").replaceWith(`
