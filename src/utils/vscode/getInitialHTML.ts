@@ -71,7 +71,7 @@ export default function getInitialHTML(
       </div>
       <div class="Header-item">
         <div class="icon-holder">
-          <i class="codicon codicon-github replace-user-img"></i>
+          <i class="codicon codicon-github replace-user-img anim-pulse"></i>
         </div>
         <div class="icon-holder">
           <i class="codicon codicon-triangle-down"></i>
