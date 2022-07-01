@@ -60,14 +60,23 @@ export default function getInitialHTML(
      </head>
      <body data-color-mode="dark" data-light-theme="light" data-dark-theme="dark">
      <div class="Header">
-     <picture class="Header-item">
-       <source
-        srcset="${darkLogo}"
-        media="(prefers-color-scheme: dark)">
-       <img 
-       src="${lightLogo}"/>
-       
-     </picture>
+       <div class="Header-item">
+        <picture>
+          <source
+            srcset="${darkLogo}"
+            media="(prefers-color-scheme: dark)">
+          <img 
+          src="${lightLogo}"/>
+        </picture>
+      </div>
+      <div class="Header-item">
+        <div class="icon-holder">
+          <i class="codicon codicon-github replace-user-img"></i>
+        </div>
+        <div class="icon-holder">
+          <i class="codicon codicon-triangle-down"></i>
+      </div>
+      </div>
      </div>
         <p>Watermelon helps you get the context of your code.</p>
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">⭐starring Watermelon on GitHub</a></p>

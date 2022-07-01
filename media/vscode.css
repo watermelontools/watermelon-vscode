@@ -4,24 +4,15 @@
   width: 300px;
 }
 
-.loginHolder {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+.login-image {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 4px;
 }
 
-.loginHolder img {
-  width: 1.5em;
-  height: 1.5em;
-  margin: auto;
-}
-
-.loginHolder p {
-  flex-grow: 4;
-}
-
-.Header img {
-  max-width: 40%;
+picture > img {
+  max-width: 200px;
   min-height: 1.5em;
 }
 
@@ -63,6 +54,21 @@ details[open]>summary .codicon-chevron-right {
   display: none;
 }
 
+.Header {
+  z-index: 32; 
+  display: flex;
+  color: var(--color-header-text);
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.Header-item {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  flex-wrap: nowrap;
+}
 code {
   padding: .2em .4em;
   margin: 0;

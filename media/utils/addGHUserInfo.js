@@ -1,8 +1,6 @@
-const addGHUserInfo = ({login, avatar}) => {
-    $('.wm-logo').after(`
-    <span class='loginHolder'>
-        <img src="${avatar}" />
-        <p>Logged in as ${login}</p>
-    </span>`);
+const addGHUserInfo = ({ login, avatar }) => {
+    $('.replace-user-img').replaceWith(`
+        <img src="${avatar}" class="login-image"/>
+    `);
 };
 export default addGHUserInfo;
