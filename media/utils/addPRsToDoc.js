@@ -17,16 +17,24 @@ const addPRsToDoc = (prs) => {
     $("#ghHolder").append(`
       <details ${!index ? "open" : ""}>
         <summary class="pr-title">
-        ${
-          pr.state === "closed"
-          ? "<i class='codicon codicon-git-merge'></i>"
-            : "<i class='codicon codicon-git-pull-request'></i>"
-        }
-        <a 
-       href="${pr.url}" target="_blank" title="View this PR on github">${
-      pr.title
-    }
-      </a>
+          <div>
+            <div class="details-state">
+              <div class="icon-holder">
+                <i class='codicon codicon-chevron-right'></i>
+                <i class='codicon codicon-chevron-down'></i>
+              </div>
+              <a 
+              href="${pr.url}" target="_blank" title="View this PR on github">${
+              pr.title
+              }</a>
+            </div>
+          </div>
+          <div class="icon-holder">${
+            pr.state === "closed"
+            ? "<i class='codicon codicon-git-merge'></i>"
+              : "<i class='codicon codicon-git-pull-request'></i>"
+          }
+          </div>
       </summary>
         <div class="Box">
         <div class="Box-header d-flex">

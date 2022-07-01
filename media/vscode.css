@@ -19,9 +19,24 @@
 .loginHolder p {
   flex-grow: 4;
 }
-.Header img{
+
+.Header img {
   max-width: 40%;
+  min-height: 1.5em;
 }
+
+.icon-holder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.details-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 details>summary {
   padding: 2px 6px;
   border-bottom: 1px solid lightgray;
@@ -32,12 +47,20 @@ details>summary {
   list-style: none;
 }
 
-details[open]>summary::after {
-  content: url("https://raw.githubusercontent.com/primer/octicons/main/icons/chevron-down-24.svg");
+details:not([open])>summary .codicon-chevron-down {
+  display: none;
 }
 
-details>summary::after {
-  content: url("https://raw.githubusercontent.com/primer/octicons/main/icons/chevron-right-24.svg");
+details[open]>summary .codicon-chevron-down {
+  display: block;
+}
+
+details>summary .codicon-chevron-right {
+  display: block;
+}
+
+details[open]>summary .codicon-chevron-right {
+  display: none;
 }
 
 code {
@@ -50,8 +73,8 @@ code {
 
 .pr-title {
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .pr-state {
