@@ -31,6 +31,13 @@ details[open] > summary::after {
 details > summary::after {
   content: url("https://raw.githubusercontent.com/primer/octicons/main/icons/chevron-right-24.svg");
 }
+code {
+    padding: .2em .4em;
+    margin: 0;
+    font-size: 85%;
+    background-color: var(--color-neutral-muted);
+    border-radius: 6px;
+}
 .pr-title {
   display: flex;
   flex-direction: row-reverse;
