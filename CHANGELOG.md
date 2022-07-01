@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.4.0]
 
+- Gave the UI a facelift using Primer
 - Added icons to the hover to make it more clear
 - Will now execute initial actions when you log in
 - Added a section to sponsor us from the sidebar
