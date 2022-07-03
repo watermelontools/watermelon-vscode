@@ -69,7 +69,7 @@ export default function getInitialHTML(
           src="${lightLogo}"/>
         </picture>
       </div>
-      <details class="Header-item dropdown details-reset d-inline-block position-relative">
+      <details class="dropdown details-reset d-inline-block position-relative">
       <summary class="btn d-flex" aria-haspopup="true">
         <div class="icon-holder">
           <i class="codicon codicon-github replace-user-img anim-pulse"></i>
