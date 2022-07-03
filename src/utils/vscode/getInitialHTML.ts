@@ -92,9 +92,16 @@ export default function getInitialHTML(
         <div class="Box-row">
         <button class="btn">  
          <i class="codicon codicon-mail"></i>
-         <span class="btn-mail">Newsletter</span>
+         <span class="btn-text">Newsletter</span>
          </button>
        </div>
+       <div class="Box-row">
+       <button class="btn">  
+        <i class="codicon codicon-star-full"></i>
+        <span class="btn-text">Star us</span>
+        </button>
+      </div>
+
       </details>
      </div>
         <p>Watermelon helps you get the context of your code.</p>
