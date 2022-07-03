@@ -78,12 +78,17 @@ export default function getInitialHTML(
           <i class="codicon codicon-triangle-down"></i>
         </div>
       </summary>
-      <div class="Box">
-      <ul class="dropdown-menu dropdown-menu-w">
-      <li><a class="dropdown-item" href="#url">Dropdown item</a></li>
-      <li><a class="dropdown-item" href="#url">Dropdown item</a></li>
-      <li><a class="dropdown-item" href="#url">Dropdown item</a></li>
-    </ul>
+      <div class="Box color-shadow-large position-relative">
+      <div class="Box-body">
+
+        <div class="Box-row login-info">
+        </div>
+        <div class="Box-row">
+         <button class="btn color-bg-sponsors-emphasis color-fg-on-emphasis">  
+          <i class="codicon codicon-heart"></i>
+          <span class="btn-text">Sponsor</span>
+        </button>
+
     </div>
       </details>
      </div>
