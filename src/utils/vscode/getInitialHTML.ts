@@ -84,26 +84,29 @@ export default function getInitialHTML(
         <div class="Box-row login-info">
         </div>
         <div class="Box-row">
-         <button class="btn color-bg-sponsors-emphasis color-fg-on-emphasis">  
+        <button class="btn color-bg-sponsors-emphasis color-fg-on-emphasis d-flex width-full flex-row">  
+        <div class="icon-holder">
           <i class="codicon codicon-heart"></i>
+          </div>
           <span class="btn-text">Sponsor</span>
           </button>
         </div>
         <div class="Box-row">
-        <button class="btn">  
-         <i class="codicon codicon-mail"></i>
-         <span class="btn-text">Newsletter</span>
-         </button>
-       </div>
+         <a href="https://airtable.com/shrVrtfgdtFoITWQN">Newsletter</a>
+        </div>
        <div class="Box-row">
-       <button class="btn">  
-        <i class="codicon codicon-star-full"></i>
-        <span class="btn-text">Star us</span>
+       <button class="btn color-bg-attention-emphasis color-fg-on-emphasis d-flex width-full flex-row">  
+              <div class="icon-holder">
+       <i class="codicon codicon-star-full"></i>
+       </div>
+       <span class="btn-text">Star us</span>
         </button>
       </div>
       <div class="Box-row">
       <button class="btn">  
-       <i class="codicon codicon-report"></i>
+      <div class="icon-holder">
+      <i class="codicon codicon-report"></i>
+      </div>
        <span class="btn-text">Issues</span>
        </button>
      </div>
