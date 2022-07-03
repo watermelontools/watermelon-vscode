@@ -103,12 +103,10 @@ export default function getInitialHTML(
         </button>
       </div>
       <div class="Box-row">
-      <button class="btn">  
-      <div class="icon-holder">
-      <i class="codicon codicon-report"></i>
-      </div>
-       <span class="btn-text">Issues</span>
-       </button>
+       <a href="https://github.com/watermelontools/wm-extension/issues">Issues</a>
+       </div>
+       <div class="Box-row">
+       <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Slack</a>
      </div>
       </details>
      </div>
@@ -125,15 +123,8 @@ export default function getInitialHTML(
         </div>
         <h2>Daily Summary</h2>
         <div id="dailySummary"></div>
-        You will find all your issues and ToDos here.
-        <h2>Newsletter</h2>
-        <p><a href="https://airtable.com/shrVrtfgdtFoITWQN">Register to our Newsletter</a> full of cool tips and tricks</p>
- 
-        <h2>Need help?</h2>
-        <p>Send an issue on <a href="https://github.com/watermelontools/wm-extension/issues">GitHub</a> and join us on <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Slack</a></p>
-        <h2>Donate</h2>
-        <p><a href="https://github.com/sponsors/watermelontools">Help our Open Source efforts</a> by donating any amount.</p>
- 
+        You will find all your issues and ToDos here. 
+
      </body>
      <footer>
       <script nonce="${nonce}" src="${scriptUri}" type="module"></script>
