@@ -84,7 +84,7 @@ export default function getInitialHTML(
         <div class="Box-row login-info">
         </div>
         <div class="Box-row">
-        <button class="btn color-bg-sponsors-emphasis color-fg-on-emphasis d-flex width-full flex-row">  
+        <button class="btn color-bg-sponsors-emphasis color-fg-on-emphasis d-flex width-full flex-row flex-items-center">  
         <div class="icon-holder">
           <i class="codicon codicon-heart"></i>
           </div>
@@ -95,7 +95,7 @@ export default function getInitialHTML(
          <a href="https://airtable.com/shrVrtfgdtFoITWQN">Newsletter</a>
         </div>
        <div class="Box-row">
-       <button class="btn color-bg-attention-emphasis color-fg-on-emphasis d-flex width-full flex-row">  
+       <button class="btn color-bg-attention-emphasis color-fg-on-emphasis d-flex width-full flex-row flex-items-center">  
               <div class="icon-holder">
        <i class="codicon codicon-star-full"></i>
        </div>
