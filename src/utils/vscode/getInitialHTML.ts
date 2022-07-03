@@ -87,9 +87,14 @@ export default function getInitialHTML(
          <button class="btn color-bg-sponsors-emphasis color-fg-on-emphasis">  
           <i class="codicon codicon-heart"></i>
           <span class="btn-text">Sponsor</span>
-        </button>
-
-    </div>
+          </button>
+        </div>
+        <div class="Box-row">
+        <button class="btn">  
+         <i class="codicon codicon-mail"></i>
+         <span class="btn-mail">Newsletter</span>
+         </button>
+       </div>
       </details>
      </div>
         <p>Watermelon helps you get the context of your code.</p>
