@@ -101,7 +101,12 @@ export default function getInitialHTML(
         <span class="btn-text">Star us</span>
         </button>
       </div>
-
+      <div class="Box-row">
+      <button class="btn">  
+       <i class="codicon codicon-report"></i>
+       <span class="btn-text">Issues</span>
+       </button>
+     </div>
       </details>
      </div>
         <p>Watermelon helps you get the context of your code.</p>
