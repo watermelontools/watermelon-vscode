@@ -69,14 +69,23 @@ export default function getInitialHTML(
           src="${lightLogo}"/>
         </picture>
       </div>
-      <div class="Header-item">
+      <details class="Header-item dropdown details-reset details-overlay d-inline-block">
+      <summary class="btn d-flex" aria-haspopup="true">
         <div class="icon-holder">
           <i class="codicon codicon-github replace-user-img anim-pulse"></i>
         </div>
         <div class="icon-holder">
           <i class="codicon codicon-triangle-down"></i>
-      </div>
-      </div>
+        </div>
+      </summary>
+      <div class="Box">
+      <ul class="dropdown-menu dropdown-menu-w">
+      <li><a class="dropdown-item" href="#url">Dropdown item</a></li>
+      <li><a class="dropdown-item" href="#url">Dropdown item</a></li>
+      <li><a class="dropdown-item" href="#url">Dropdown item</a></li>
+    </ul>
+    </div>
+      </details>
      </div>
         <p>Watermelon helps you get the context of your code.</p>
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">⭐starring Watermelon on GitHub</a></p>
