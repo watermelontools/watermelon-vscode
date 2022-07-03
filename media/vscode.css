@@ -23,6 +23,7 @@ picture > img {
 }
 .box-dropdown {
   margin-left: -130%;
+  z-index: 20;
 }
 .details-state {
   display: flex;

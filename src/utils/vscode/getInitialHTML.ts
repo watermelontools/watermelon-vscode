@@ -69,7 +69,7 @@ export default function getInitialHTML(
           src="${lightLogo}"/>
         </picture>
       </div>
-      <details class="Header-item dropdown details-reset details-overlay d-inline-block position-relative">
+      <details class="Header-item dropdown details-reset d-inline-block position-relative">
       <summary class="btn d-flex" aria-haspopup="true">
         <div class="icon-holder">
           <i class="codicon codicon-github replace-user-img anim-pulse"></i>
@@ -78,7 +78,7 @@ export default function getInitialHTML(
           <i class="codicon codicon-triangle-down"></i>
         </div>
       </summary>
-      <div class="Box color-shadow-large position-absolute box-dropdown">
+      <div class="Box color-shadow-large position-absolute box-dropdown Box--condensed">
       <div class="Box-body">
 
         <div class="Box-row login-info">
@@ -91,7 +91,7 @@ export default function getInitialHTML(
           <span class="btn-text">Sponsor</span>
           </button>
         </div>
-        <div class="Box-row">
+        <div class="Box-row Box-row--hover-gray">
          <a href="https://airtable.com/shrVrtfgdtFoITWQN">Newsletter</a>
         </div>
        <div class="Box-row">
@@ -102,11 +102,11 @@ export default function getInitialHTML(
        <span class="btn-text">Star us</span>
         </button>
       </div>
-      <div class="Box-row">
-       <a href="https://github.com/watermelontools/wm-extension/issues">Issues</a>
+      <div class="Box-row Box-row--hover-gray">
+       <a href="https://github.com/watermelontools/wm-extension/issues">Send an Issue</a>
        </div>
-       <div class="Box-row">
-       <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Slack</a>
+       <div class="Box-row Box-row--hover-gray">
+       <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Join us on Slack</a>
      </div>
       </details>
      </div>
