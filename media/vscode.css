@@ -21,7 +21,9 @@ picture > img {
   justify-content: center;
   align-items: center;
 }
-
+.box-dropdown {
+  margin-left: -130%;
+}
 .details-state {
   display: flex;
   justify-content: center;

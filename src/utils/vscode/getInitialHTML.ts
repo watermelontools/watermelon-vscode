@@ -69,7 +69,7 @@ export default function getInitialHTML(
           src="${lightLogo}"/>
         </picture>
       </div>
-      <details class="Header-item dropdown details-reset details-overlay d-inline-block">
+      <details class="Header-item dropdown details-reset details-overlay d-inline-block position-relative">
       <summary class="btn d-flex" aria-haspopup="true">
         <div class="icon-holder">
           <i class="codicon codicon-github replace-user-img anim-pulse"></i>
@@ -78,7 +78,7 @@ export default function getInitialHTML(
           <i class="codicon codicon-triangle-down"></i>
         </div>
       </summary>
-      <div class="Box color-shadow-large position-relative">
+      <div class="Box color-shadow-large position-absolute box-dropdown">
       <div class="Box-body">
 
         <div class="Box-row login-info">
