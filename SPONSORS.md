@@ -9,6 +9,9 @@ We deeply thank our sponsors, no matter the size of their donation. Here's a lis
 - jmiguelirarrazaval
 - lopezjurip
 - tomasurvana
+- fdominguezclaro
+- imarquezc
+- smargozzini
 
 ## Subscription
 
