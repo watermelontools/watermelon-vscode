@@ -27,6 +27,7 @@ import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import showCommandHandler from "./utils/commands/show";
 import debugLogger from "./utils/vscode/debugLogger";
+import checkIfUserStarred from "./utils/github/checkIfUserStarred";
 
 // repo information
 let owner: string | undefined = "";
@@ -267,11 +268,14 @@ export async function activate(context: vscode.ExtensionContext) {
     let username = githubUserInfo.login;
     context.globalState.update("startupState", { username });
     reporter?.sendTelemetryEvent("githubUserInfo", { username });
+    let isStarred = await checkIfUserStarred({ octokit });
+
     provider.sendMessage({
       command: "user",
       data: {
         login: githubUserInfo.login,
         avatar: githubUserInfo.avatar_url,
+        isStarred,
       },
     });
     let dailySummary = await getDailySummary({

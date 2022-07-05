@@ -9,6 +9,7 @@ import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getBlame from "./utils/getBlame";
 import TelemetryReporter from "@vscode/extension-telemetry";
+import starWmRepo from "./utils/github/starWmRepo";
 
 // repo information
 let owner: string | undefined = "";
@@ -115,6 +116,16 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           });
           break;
         }
+        case "star": {
+          const credentials = new Credentials();
+          await credentials.initialize(this._context);
+          octokit = await credentials.getOctokit();
+          await starWmRepo({ octokit });
+          this.sendMessage({
+            command: "removedStar",
+          });
+          break;
+        }
         default: {
           this.sendMessage({
             command: "",
@@ -149,7 +160,15 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
     );
     // And the uri we use to load this script in the webview
     const scriptUri = scriptPathOnDisk.with({ scheme: "vscode-resource" });
-		const codiconsUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'node_modules', '@vscode/codicons', 'dist', 'codicon.css'));
+    const codiconsUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(
+        this._extensionUri,
+        "node_modules",
+        "@vscode/codicons",
+        "dist",
+        "codicon.css"
+      )
+    );
     // Local path to css styles
     //const styleResetPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css');
     const stylesPathMainPath = vscode.Uri.joinPath(

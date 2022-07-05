@@ -13,7 +13,7 @@ export default function getInitialHTML(
   let styleSources = [
     "'self'",
     webview.cspSource,
-    'sha256-RUgYvsMBjjw/Hs3gLuFfimXhokbGieLHoQliXFrgojQ='
+    "sha256-RUgYvsMBjjw/Hs3gLuFfimXhokbGieLHoQliXFrgojQ=",
   ];
   let imageSources = [
     webview.cspSource,
@@ -36,10 +36,7 @@ export default function getInitialHTML(
     "https://*.sentry.io",
     "https://*.sentry.dev",
   ];
-  let fontSources = [
-    "self",
-    webview.cspSource
-  ]
+  let fontSources = ["self", webview.cspSource];
   return `
 
   <!DOCTYPE html>
@@ -60,14 +57,55 @@ export default function getInitialHTML(
      </head>
      <body data-color-mode="dark" data-light-theme="light" data-dark-theme="dark">
      <div class="Header">
-     <picture class="Header-item">
-       <source
-        srcset="${darkLogo}"
-        media="(prefers-color-scheme: dark)">
-       <img 
-       src="${lightLogo}"/>
-       
-     </picture>
+       <div class="Header-item">
+        <picture>
+          <source
+            srcset="${darkLogo}"
+            media="(prefers-color-scheme: dark)">
+          <img 
+          src="${lightLogo}"/>
+        </picture>
+      </div>
+      <details class="dropdown details-reset d-inline-block position-relative">
+      <summary class="btn d-flex" aria-haspopup="true">
+        <div class="icon-holder">
+          <i class="codicon codicon-github replace-user-img anim-pulse"></i>
+        </div>
+        <div class="icon-holder">
+          <i class="codicon codicon-triangle-down"></i>
+        </div>
+      </summary>
+      <div class="Box color-shadow-large position-absolute box-dropdown Box--condensed">
+      <div class="Box-body">
+
+        <div class="Box-row login-info">
+        </div>
+        <div class="Box-row">
+        <button class="btn color-bg-sponsors-emphasis color-fg-on-emphasis d-flex width-full flex-row flex-items-center">  
+        <div class="icon-holder">
+          <i class="codicon codicon-heart"></i>
+          </div>
+          <span class="btn-text">Sponsor</span>
+          </button>
+        </div>
+        <div class="Box-row Box-row--hover-gray">
+         <a href="https://airtable.com/shrVrtfgdtFoITWQN">Newsletter</a>
+        </div>
+       <div class="Box-row star-us-row">
+       <button class="btn color-bg-attention-emphasis color-fg-on-emphasis d-flex width-full flex-row flex-items-center" id="starWMRepo">  
+              <div class="icon-holder">
+       <i class="codicon codicon-star-full"></i>
+       </div>
+       <span class="btn-text">Star us</span>
+        </button>
+      </div>
+      <div class="Box-row Box-row--hover-gray">
+       <a href="https://github.com/watermelontools/wm-extension/issues">Send an Issue</a>
+       </div>
+       <div class="Box-row Box-row--hover-gray">
+       <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Join us on Slack</a>
+     </div>
+      </details>
      </div>
         <p>Watermelon helps you get the context of your code.</p>
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">⭐starring Watermelon on GitHub</a></p>
@@ -82,15 +120,8 @@ export default function getInitialHTML(
         </div>
         <h2>Daily Summary</h2>
         <div id="dailySummary"></div>
-        You will find all your issues and ToDos here.
-        <h2>Newsletter</h2>
-        <p><a href="https://airtable.com/shrVrtfgdtFoITWQN">Register to our Newsletter</a> full of cool tips and tricks</p>
- 
-        <h2>Need help?</h2>
-        <p>Send an issue on <a href="https://github.com/watermelontools/wm-extension/issues">GitHub</a> and join us on <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Slack</a></p>
-        <h2>Donate</h2>
-        <p><a href="https://github.com/sponsors/watermelontools">Help our Open Source efforts</a> by donating any amount.</p>
- 
+        You will find all your issues and ToDos here. 
+
      </body>
      <footer>
       <script nonce="${nonce}" src="${scriptUri}" type="module"></script>
