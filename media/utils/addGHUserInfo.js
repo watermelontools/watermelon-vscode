@@ -1,4 +1,4 @@
-const addGHUserInfo = ({ login, avatar }) => {
+const addGHUserInfo = ({ login, avatar, isStarred }) => {
   $(".replace-user-img").replaceWith(`
         <img src="${avatar}" class="login-image"/>
     `);
@@ -7,6 +7,6 @@ const addGHUserInfo = ({ login, avatar }) => {
             Logged in as ${login}
         </p>
     `);
-  $(".star-us-row").remove();
+  isStarred && $(".star-us-row").remove();
 };
 export default addGHUserInfo;

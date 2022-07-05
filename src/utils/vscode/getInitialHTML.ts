@@ -92,7 +92,7 @@ export default function getInitialHTML(
          <a href="https://airtable.com/shrVrtfgdtFoITWQN">Newsletter</a>
         </div>
        <div class="Box-row star-us-row">
-       <button class="btn color-bg-attention-emphasis color-fg-on-emphasis d-flex width-full flex-row flex-items-center">  
+       <button class="btn color-bg-attention-emphasis color-fg-on-emphasis d-flex width-full flex-row flex-items-center" id="starWMRepo">  
               <div class="icon-holder">
        <i class="codicon codicon-star-full"></i>
        </div>
