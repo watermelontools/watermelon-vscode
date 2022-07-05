@@ -22,12 +22,14 @@ import {
   WATERMELON_PULLS_COMMAND,
   WATERMELON_SELECT_COMMAND,
   WATERMELON_SHOW_COMMAND,
+  WATERMELON_STAR_WM_REPO_COMMAND,
 } from "./constants";
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import showCommandHandler from "./utils/commands/show";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
+import starWmRepo from "./utils/github/starWmRepo";
 
 // repo information
 let owner: string | undefined = "";
@@ -226,7 +228,14 @@ export async function activate(context: vscode.ExtensionContext) {
       });
     }
   };
-
+  let starWMRepoCommandHandler = async () => {
+    const credentials = new Credentials();
+    debugLogger(`got credentials`);
+    await credentials.initialize(context);
+    debugLogger("intialized credentials");
+    octokit = await credentials.getOctokit();
+    await starWmRepo({ octokit });
+  };
   context.subscriptions.push(
     vscode.commands.registerCommand(
       WATERMELON_SHOW_COMMAND,
@@ -247,6 +256,10 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       WATERMELON_HISTORY_COMMAND,
       historyCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_STAR_WM_REPO_COMMAND,
+      starWMRepoCommandHandler
     )
   );
 
