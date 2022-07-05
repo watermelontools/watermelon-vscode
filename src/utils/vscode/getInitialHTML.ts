@@ -13,7 +13,7 @@ export default function getInitialHTML(
   let styleSources = [
     "'self'",
     webview.cspSource,
-    'sha256-RUgYvsMBjjw/Hs3gLuFfimXhokbGieLHoQliXFrgojQ='
+    "sha256-RUgYvsMBjjw/Hs3gLuFfimXhokbGieLHoQliXFrgojQ=",
   ];
   let imageSources = [
     webview.cspSource,
@@ -36,10 +36,7 @@ export default function getInitialHTML(
     "https://*.sentry.io",
     "https://*.sentry.dev",
   ];
-  let fontSources = [
-    "self",
-    webview.cspSource
-  ]
+  let fontSources = ["self", webview.cspSource];
   return `
 
   <!DOCTYPE html>
@@ -94,7 +91,7 @@ export default function getInitialHTML(
         <div class="Box-row Box-row--hover-gray">
          <a href="https://airtable.com/shrVrtfgdtFoITWQN">Newsletter</a>
         </div>
-       <div class="Box-row">
+       <div class="Box-row star-us-row">
        <button class="btn color-bg-attention-emphasis color-fg-on-emphasis d-flex width-full flex-row flex-items-center">  
               <div class="icon-holder">
        <i class="codicon codicon-star-full"></i>

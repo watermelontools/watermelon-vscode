@@ -1,12 +1,12 @@
 const addGHUserInfo = ({ login, avatar }) => {
-    $('.replace-user-img').replaceWith(`
+  $(".replace-user-img").replaceWith(`
         <img src="${avatar}" class="login-image"/>
     `);
-    console.log(login)
-    $(".login-info").append(`
+  $(".login-info").append(`
         <p class="login-info-text">
             Logged in as ${login}
         </p>
     `);
+  $(".star-us-row").remove();
 };
 export default addGHUserInfo;
