@@ -75,7 +75,8 @@ As an alternative, you can use the following shortcuts:
 
 ## Hover
 
-When hovering over code, Watermelon will offer to run the actions.
+When hovering over code, Watermelon will offer to run the actions. 
+It will offer the latest commit information, including its title, author and date. 
 It will also show how many times the hovered file has changed.
 
 ## Contributing
