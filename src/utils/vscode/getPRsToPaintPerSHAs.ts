@@ -1,4 +1,3 @@
-import countOrganizationQueries from "../countOrganizationQueries";
 import getPRsPerSHAS from "../getPRsPerSHAS";
 import getIssue from "../github/getIssue";
 import getIssueComments from "../github/getIssueComments";
@@ -47,9 +46,6 @@ export default async function getPRsToPaintPerSHAs({
     noSearchResults();
     return { errorText: "No search results" };
   }
-
-  // Increase organizational query counter value
-  countOrganizationQueries({ organizationName: owner });
 
   // Fetch information
   let issuesWithTitlesAndGroupedComments: {
