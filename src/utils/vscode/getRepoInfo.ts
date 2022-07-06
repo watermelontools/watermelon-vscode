@@ -1,6 +1,6 @@
 import getGitAPI from "./getGitAPI";
 import { nonGHRepo } from "./showErrors";
-import * as gitURLparse from "git-url-parse";
+import gitUrlParse = require("git-url-parse");
 
 export default async function getRepoInfo({ repoURL }: { repoURL?: string  }): Promise<{
   owner: string;
@@ -18,7 +18,7 @@ export default async function getRepoInfo({ repoURL }: { repoURL?: string  }): P
       "remote.origin.url"
     );
     if (config) {
-      let parsed = gitURLparse(config);
+      let parsed = gitUrlParse(config);
       owner = parsed.owner;
       repo = parsed.name;
       source = parsed.source;
@@ -28,7 +28,7 @@ export default async function getRepoInfo({ repoURL }: { repoURL?: string  }): P
       }
     }
   } else {
-    let parsed = gitURLparse(repoURL);
+    let parsed = gitUrlParse(repoURL);
     owner = parsed.owner;
     repo = parsed.name;
     source = parsed.source;
