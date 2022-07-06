@@ -15,7 +15,6 @@ import statusBarItem, {
   updateStatusBarItem,
 } from "./utils/components/statusBarItem";
 import hover from "./utils/components/hover";
-import getDailySummary from "./utils/github/getDailySummary";
 import {
   WATERMELON_HISTORY_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
@@ -146,17 +145,6 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
 
-    let dailySummary = await getDailySummary({
-      octokit,
-      owner: owner || "",
-      repo: repo || "",
-      username: username || "",
-    });
-    debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
-    provider.sendMessage({
-      command: "dailySummary",
-      data: dailySummary,
-    });
     if (startLine === undefined && endLine === undefined) {
       if (!arrayOfSHAs.length) {
         arrayOfSHAs = await getSHAArray(
@@ -278,17 +266,7 @@ export async function activate(context: vscode.ExtensionContext) {
         isStarred,
       },
     });
-    let dailySummary = await getDailySummary({
-      octokit,
-      owner: owner || "",
-      repo: repo || "",
-      username: username || "",
-    });
-    debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
-    provider.sendMessage({
-      command: "dailySummary",
-      data: dailySummary,
-    });
+
   });
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
