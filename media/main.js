@@ -23,9 +23,6 @@ const oldState = vscode.getState();
 if (oldState?.command) {
   handleMessage(oldState);
 }
-const button = document.getElementsByClassName("run-watermelon");
-const gitBlame = document.getElementsByClassName("git-blame");
-const starWMRepo = document.getElementById("starWMRepo");
 Sentry.init({
   dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
 
@@ -33,15 +30,6 @@ Sentry.init({
   // of transactions for performance monitoring.
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
-});
-button[0].addEventListener("click", (event) => {
-  sendMessage({ command: "run" });
-});
-gitBlame[0].addEventListener("click", (event) => {
-  sendMessage({ command: "blame" });
-});
-starWMRepo.addEventListener("click", (event) => {
-  sendMessage({ command: "star" });
 });
 
 function handleMessage(message) {
@@ -111,5 +99,17 @@ $(document).ready(function () {
     const message = event.data; // The JSON data our extension sent
     vscode.setState(message);
     handleMessage(message);
+  });
+  const button = document.getElementsByClassName("run-watermelon");
+  const gitBlame = document.getElementsByClassName("git-blame");
+  const starWMRepo = document.getElementById("starWMRepo");
+  button[0].addEventListener("click", (event) => {
+    sendMessage({ command: "run" });
+  });
+  gitBlame[0].addEventListener("click", (event) => {
+    sendMessage({ command: "blame" });
+  });
+  starWMRepo.addEventListener("click", (event) => {
+    sendMessage({ command: "star" });
   });
 });
