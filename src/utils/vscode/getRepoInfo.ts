@@ -31,7 +31,7 @@ export default async function getRepoInfo({ repoURL, reporter }: { repoURL?: str
           nonGHRepo();
         }
       } else {
-        failedGettingRepoInfo();
+        reporter?.sendTelemetryErrorEvent("getRepoInfo", { "error": "no config" });
       }
     } catch (e: any) {
       reporter?.sendTelemetryErrorEvent("getRepoInfo", { e });
