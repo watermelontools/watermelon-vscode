@@ -3,7 +3,10 @@
 For now, we discuss on [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-18vhxghk6-7YSg30oWqQSZqdOzlkR~Rw). 
 
 ## Running the extension
+
 To run, open the folder containing the code on [VSCode](https://code.visualstudio.com/download), and press "F5" or go to the debug panel and click "Run Extension"
+
+When commiting, our all the tests will run to check nothing broke.
 
 ## Issues
 
@@ -15,5 +18,6 @@ We love community contributions. Please fork the repo and send a PR our way.
 Remember, we'll discuss it publicly, it's a great opportunity to learn.
 
 ## Donations
-Soon, we'll have Github Sponsors to donate!
+
+[We have Github Sponsors](https://github.com/sponsors/watermelontools)
 For now, send us a message or star :star: the repo to help!

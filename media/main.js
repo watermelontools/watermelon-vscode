@@ -25,7 +25,7 @@ if (oldState?.command) {
 }
 const button = document.getElementsByClassName("run-watermelon");
 const gitBlame = document.getElementsByClassName("git-blame");
-
+const starWMRepo = document.getElementById("starWMRepo");
 Sentry.init({
   dsn: "https://48cab31c3ca44781a5be625ec226b48a@o1207913.ingest.sentry.io/6341224",
 
@@ -39,6 +39,9 @@ button[0].addEventListener("click", (event) => {
 });
 gitBlame[0].addEventListener("click", (event) => {
   sendMessage({ command: "blame" });
+});
+starWMRepo.addEventListener("click", (event) => {
+  sendMessage({ command: "star" });
 });
 
 function handleMessage(message) {
@@ -58,7 +61,6 @@ function handleMessage(message) {
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       removeLoading(errorTimeout);
       addPRsToDoc(message.data);
-      hljs.highlightAll();
       clampCodeBlocks();
       break;
     case "loading":
@@ -78,6 +80,9 @@ function handleMessage(message) {
     case "author":
       webviewDebugLogger(`Received author: ${JSON.stringify(message.data)}`);
       authorName = message.author;
+      break;
+    case "removedStar":
+      $(".star-us-row").remove();
       break;
     case "session":
       webviewDebugLogger(`Received session: ${JSON.stringify(message.data)}`);

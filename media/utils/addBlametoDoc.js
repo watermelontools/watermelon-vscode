@@ -7,8 +7,8 @@ const addBlametoDoc = (blameArray, commitLink) => {
     <h3>Commits</h3>
     `);
   $("#ghHolder").append(`
-    <table class="blame-table">
-      <thead>
+    <table class="Box anim-fade-in">
+      <thead class="Box-header">
         <tr>
           <th>Commit</th>
           <th>Author</th>
@@ -26,7 +26,7 @@ const addBlametoDoc = (blameArray, commitLink) => {
   });
   blameArray.forEach((blameLine, index) => {
     $(".blame-rows").append(`
-      <tr ${index % 2 === 0 ? 'class="table-zebra"' : ""}>
+      <tr ${index % 2 === 1 ? 'class="Box-row--gray"' : ""}>
         <td>
         ${
           commitLink

@@ -4,6 +4,14 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.0]
+
+- Gave the UI a facelift using Primer
+- Added icons to the hover to make it more clear
+- Will now execute initial actions when you log in
+- Added a section to sponsor us from the sidebar
+- Will now show comment author profile pic for each comment
+
 ## [1.3.7]
 
 - Will not ask immediately for login, only on getting Pull Requests

@@ -6,6 +6,12 @@ We deeply thank our sponsors, no matter the size of their donation. Here's a lis
 
 - baristaGeek
 - alan-arguello
+- jmiguelirarrazaval
+- lopezjurip
+- tomasurvana
+- fdominguezclaro
+- imarquezc
+- smargozzini
 
 ## Subscription
 
