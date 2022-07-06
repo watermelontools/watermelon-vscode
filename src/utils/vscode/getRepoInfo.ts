@@ -14,7 +14,7 @@ export default async function getRepoInfo({ repoURL }: { repoURL?: string  }): P
   let source: string = "";
   let protocol: string = "";
   if (!repoURL) {
-    let config = await await gitAPI?.repositories[0]?.getConfig(
+    let config = await gitAPI?.repositories[0]?.getConfig(
       "remote.origin.url"
     );
     if (config) {
