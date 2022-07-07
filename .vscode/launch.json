@@ -22,8 +22,11 @@
 			"type": "extensionHost",
 			"request": "launch",
 			"args": [
+				".",
+				"${workspaceFolder}/src/extension.ts",
 				"--extensionDevelopmentPath=${workspaceFolder}",
-				"--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
+				"--extensionTestsPath=${workspaceFolder}/out/test/suite/index",
+				"--disable-extensions"
 			],
 			"outFiles": [
 				"${workspaceFolder}/out/test/**/*.js"
