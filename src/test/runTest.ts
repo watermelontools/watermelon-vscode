@@ -17,7 +17,7 @@ async function main() {
       extensionDevelopmentPath, extensionTestsPath, launchArgs: [
         "--disable-extensions",
         ".",
-        "${workspaceFolder}/src/extension.ts"]
+        "./src/extension.ts"]
     });
   } catch (err) {
     console.error("Failed to run tests");
