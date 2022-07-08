@@ -36,6 +36,8 @@
 	},
 	"activationEvents": [
 		"onCommand:watermelon.start",
+		"onCommand:watermelon.blame",
+		"onCommand:watermelon.show",
 		"onWebviewPanel:watermelon",
 		"onStartupFinished"
 	],
