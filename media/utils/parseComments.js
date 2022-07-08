@@ -1,7 +1,18 @@
 import replaceIssueLinks from "./replaceIssueLinks.js";
 import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
-
+const renderer = {
+  link(href, title, text) {
+    return `
+      <a  class="Truncate" title="${title || href}" href="${href}">
+        <span class="Truncate-text Truncate-text--expandable">
+          ${text}
+        </span>
+      </a>
+           `;
+  }
+};
+marked.use({ renderer });
 function parseComments(comment) {
   let mdComments = "";
   mdComments += `
