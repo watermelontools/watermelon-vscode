@@ -45,7 +45,7 @@
 		"vscode.git"
 	],
 	"main": "./out/extension.js",
-	"browser": "./out/main.js",
+	"browser": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
