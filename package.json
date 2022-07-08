@@ -30,6 +30,10 @@
 		"Git"
 	],
 	"icon": "images/logo.png",
+	"galleryBanner": {
+		"color": "#db6161",
+		"theme": "dark"
+	},
 	"activationEvents": [
 		"onCommand:watermelon.start",
 		"onWebviewPanel:watermelon",
