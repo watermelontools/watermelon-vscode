@@ -89,13 +89,6 @@
 				}
 			]
 		},
-		"viewsWelcome": [
-			{
-				"view": "watermelon",
-				"contents": "You have not yet signed in with GitHub\n[Sign in](command:watermelon.signin)",
-				"when": "config.git.enabled && watermelon.isLoggedInGithub==false"
-			}
-		],
 		"menus": {
 			"editor/context": [
 				{
