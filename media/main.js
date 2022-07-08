@@ -11,7 +11,6 @@ import addBlametoDoc from "./utils/addBlametoDoc.js";
 import addGHUserInfo from "./utils/addGHUserInfo.js";
 import addVersionToFooter from "./utils/addVersionToFooter.js";
 import addSessionToFooter from "./utils/addSessionToFooter.js";
-import addDailySummary from "./utils/addDailySummary.js";
 import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 
 let errorTimeout;
@@ -38,12 +37,6 @@ function handleMessage(message) {
     case "user":
       webviewDebugLogger(`Received user: ${JSON.stringify(message.user)}`);
       addGHUserInfo(message.data);
-      break;
-    case "dailySummary":
-      webviewDebugLogger(
-        `Received dailySummary: ${JSON.stringify(message.data)}`
-      );
-      addDailySummary(message.data);
       break;
     case "prs":
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);

@@ -15,7 +15,6 @@ import statusBarItem, {
   updateStatusBarItem,
 } from "./utils/components/statusBarItem";
 import hover from "./utils/components/hover";
-import getDailySummary from "./utils/github/getDailySummary";
 import {
   WATERMELON_HISTORY_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
@@ -87,22 +86,6 @@ export async function activate(context: vscode.ExtensionContext) {
   // create the hover provider
   let wmHover = hover({ reporter });
 
-  let repoInfo = await getRepoInfo({reporter});
-  repo = repoInfo?.repo;
-  owner = repoInfo?.owner;
-  debugLogger(`repo: ${repo}`);
-  debugLogger(`owner: ${owner}`);
-  context.workspaceState.update("workspaceState", {
-    ...workspaceState,
-    repo,
-    owner,
-  });
-  owner && repo && reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
-
-  provider.sendMessage({
-    command: "versionInfo",
-    data: extensionVersion,
-  });
 
   let historyCommandHandler = async (
     startLine = undefined,
@@ -146,17 +129,6 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
 
-    let dailySummary = await getDailySummary({
-      octokit,
-      owner: owner || "",
-      repo: repo || "",
-      username: username || "",
-    });
-    debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
-    provider.sendMessage({
-      command: "dailySummary",
-      data: dailySummary,
-    });
     if (startLine === undefined && endLine === undefined) {
       if (!arrayOfSHAs.length) {
         arrayOfSHAs = await getSHAArray(
@@ -278,17 +250,7 @@ export async function activate(context: vscode.ExtensionContext) {
         isStarred,
       },
     });
-    let dailySummary = await getDailySummary({
-      octokit,
-      owner: owner || "",
-      repo: repo || "",
-      username: username || "",
-    });
-    debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
-    provider.sendMessage({
-      command: "dailySummary",
-      data: dailySummary,
-    });
+
   });
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
@@ -314,4 +276,20 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
   }
+  let repoInfo = await getRepoInfo({reporter});
+  repo = repoInfo?.repo;
+  owner = repoInfo?.owner;
+  debugLogger(`repo: ${repo}`);
+  debugLogger(`owner: ${owner}`);
+  context.workspaceState.update("workspaceState", {
+    ...workspaceState,
+    repo,
+    owner,
+  });
+  owner && repo && reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
+
+  provider.sendMessage({
+    command: "versionInfo",
+    data: extensionVersion,
+  });
 }
