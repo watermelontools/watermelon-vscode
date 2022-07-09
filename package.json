@@ -114,7 +114,30 @@
 				"mac": "cmd+shift+H",
 				"when": "editorHasSelection"
 			}
-		]
+		],
+		"walkthroughs": [
+			{
+			  "id": "watermelon",
+			  "title": "Become an expert on any file",
+			  "description": "Learn how to use watermelon to find all the historical context of your code",
+			  "steps": [
+				{
+				  "id": "blame",
+				  "title": "View Commit History",
+				  "description": "Select a piece of code and view every commit that changed it. [Run Command](command:getting-started-sample.runCommand)",
+				  "media": { "image": "media/image.png", "altText": "Empty image" },
+				  "completionEvents": ["onCommand:getting-started-sample.runCommand"]
+				},
+				{
+				  "id": "changesetting",
+				  "title": "Change Setting",
+				  "description": "This step will change a setting and check off when the setting has changed\n[Change Setting](command:getting-started-sample.changeSetting)",
+				  "media": { "markdown": "media/markdown.md" },
+				  "completionEvents": ["onSettingChanged:getting-started-sample.sampleSetting"]
+				}
+			  ]
+			}
+		  ]
 	},
 	"scripts": {
 		"lint": "eslint . --ext .ts,.tsx",
