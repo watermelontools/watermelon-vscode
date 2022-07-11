@@ -138,11 +138,30 @@
             }
           },
           {
-            "id": "history-shortcut",
+            "id": "history-shortcut-windows",
             "title": "View Commit History with a Keyboard Shortcut",
-            "description": "Select a piece of code and view every commit that changed it from the keyboard with `Ctrl+Shift+H` (`Cmd+Shift+C` on Mac).",
+            "description": "Select a piece of code and view every commit that changed it from the keyboard with `Ctrl+Shift+H`.",
+            "when": "isWindows",
             "media": {
-              "markdown": "media/walkthrough/shortcut-history.md"
+              "markdown": "media/walkthrough/command-history.md"
+            }
+          },
+          {
+            "id": "history-shortcut-linux",
+            "title": "View Commit History with a Keyboard Shortcut",
+            "description": "Select a piece of code and view every commit that changed it from the keyboard with `Ctrl+Shift+H`.",
+            "when": "isLinux",
+            "media": {
+              "markdown": "media/walkthrough/command-history.md"
+            }
+          },
+          {
+            "id": "history-shortcut-mac",
+            "title": "View Commit History with a Keyboard Shortcut",
+            "description": "Select a piece of code and view every commit that changed it from the keyboard with `Cmd+Shift+C`.",
+            "when": "isMac",
+            "media": {
+              "markdown": "media/walkthrough/command-history.md"
             }
           }
         ]
