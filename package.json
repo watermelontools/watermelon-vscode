@@ -151,7 +151,7 @@
             "description": "Select a piece of code and view every commit that changed it from the keyboard with `Ctrl+Shift+H`.",
             "when": "isWindows",
             "media": {
-              "markdown": "media/walkthrough/command-history.md"
+              "markdown": "media/walkthrough/shortcut-history.md"
             }
           },
           {
@@ -160,7 +160,7 @@
             "description": "Select a piece of code and view every commit that changed it from the keyboard with `Ctrl+Shift+H`.",
             "when": "isLinux",
             "media": {
-              "markdown": "media/walkthrough/command-history.md"
+              "markdown": "media/walkthrough/shortcut-history.md"
             }
           },
           {
@@ -169,7 +169,7 @@
             "description": "Select a piece of code and view every commit that changed it from the keyboard with `Cmd+Shift+C`.",
             "when": "isMac",
             "media": {
-              "markdown": "media/walkthrough/command-history.md"
+              "markdown": "media/walkthrough/shortcut-history.md"
             }
           }
         ]
