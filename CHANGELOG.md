@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.4.3]
 
 - Will now show three different walkthroughs to understand how to use the extension.
+- [BETA] New way to experience the extension on web.
 
 ## [1.4.2]
 
