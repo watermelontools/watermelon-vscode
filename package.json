@@ -181,6 +181,21 @@
             }
           }
         ]
+      },
+      {
+        "id": "watermelon-hover",
+        "title": "View the Context for a line of code",
+        "description": "Understand what you see when you hover code with the Watermelon Hover Panel",
+        "steps": [
+          {
+            "id": "hover",
+            "title": "Understand a LOC context",
+            "description": "Hover over code and view information on it.",
+            "media": {
+              "markdown": "media/walkthrough/hover.md"
+            }
+          }
+        ]
       }
     ]
   },
