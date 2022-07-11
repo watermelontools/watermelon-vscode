@@ -117,8 +117,8 @@
     ],
     "walkthroughs": [
       {
-        "id": "watermelon",
-        "title": "Become an expert on any file",
+        "id": "watermelon-history",
+        "title": "View the Commit History for a piece of code",
         "description": "Learn how to use watermelon to find all the historical context of your code",
         "steps": [
           {
