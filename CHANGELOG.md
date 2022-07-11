@@ -4,9 +4,13 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.3]
+
+- Will now show three different walkthroughs to understand how to use the extension.
+
 ## [1.4.2]
 
-- Loads the webview's event listeners only ehen done
+- Loads the webview's event listeners only when done
 
 ## [1.4.1]
 
