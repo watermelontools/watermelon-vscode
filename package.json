@@ -146,6 +146,14 @@
             }
           },
           {
+            "id": "history-hover",
+            "title": "View Commit History with the Watermelon Hover Panel",
+            "description": "Select a piece of code and view every commit that changed it from the Watermelon Panel.",
+            "media": {
+              "markdown": "media/walkthrough/hover-history.md"
+            }
+          },
+          {
             "id": "history-shortcut-windows",
             "title": "View Commit History with a Keyboard Shortcut",
             "description": "Select a piece of code and view every commit that changed it from the keyboard with `Ctrl+Shift+H`.",
