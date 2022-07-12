@@ -35,10 +35,8 @@ const addDailySummary = (data) => {
     <div id="assignedIssues">
     </div>
     <div id="creatorIssues">
-    <h3>Issues You Created in this Repo</h3>
     </div>
     <div id="mentionedIssues">
-    <h3>Issues that Mentioned You in this Repo</h3>
     </div>
       <div id="globalIssues">
       <h3>Open Issues Assigned to You in All of GitHub</h3>
