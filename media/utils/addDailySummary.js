@@ -103,8 +103,11 @@ const addDailySummary = (data) => {
     });
   } else {
     $("#globalIssues").append(`
-    <div>
-    <p>You have no open issues assigned to you</p>
+    <div class="Box">
+      <div class="blankslate">
+        <h3 class="blankslate-heading">No Open Issues in ANY Repo</h3>
+        <p>There are no issues anywhere. Congrats!🧘</p>
+      </div>
     </div>
     `);
   }
@@ -123,8 +126,11 @@ const addDailySummary = (data) => {
     });
   } else {
     $("#assignedIssues").append(`
-    <div>
-      <p>You have no open issues assigned to you 🧘</p>
+    <div class="Box">
+      <div class="blankslate">
+        <h3 class="blankslate-heading">No Issues Assigned to You in this Repo</h3>
+        <p>You have no open issues that mention you 🙊</p>
+      </div>
     </div>
     `);
   }
@@ -132,7 +138,7 @@ const addDailySummary = (data) => {
     $("#creatorIssues").append(`
       <div class="Box ">
         <div class="Box-header">
-          <h3 class="Box-title">Issues Assigned to You in this Repo</h3>
+          <h3 class="Box-title">Issues Created by You in this Repo</h3>
         </div>
       </div>
       `);
@@ -143,16 +149,19 @@ const addDailySummary = (data) => {
     });
   } else {
     $("#creatorIssues").append(`
-<div>
-<p>You have no open issues created 🌵</p>
-</div>
-`);
+    <div class="Box">
+      <div class="blankslate">
+        <h3 class="blankslate-heading">You have not Created Issues in this Repo</h3>
+        <p>Go ahead and do so 🌵</p>
+      </div>
+    </div>
+    `);
   }
   if (data.mentionedIssues.length > 0) {
     $("#mentionedIssues").append(`
     <div class="Box ">
       <div class="Box-header">
-        <h3 class="Box-title">Issues Assigned to You in this Repo</h3>
+        <h3 class="Box-title">Issues that Mention You in this Repo</h3>
       </div>
     </div>
     `);
@@ -163,10 +172,13 @@ const addDailySummary = (data) => {
     });
   } else {
     $("#mentionedIssues").append(`
-<div>
-<p>You have no open issues that mention you 🙊</p>
-</div>
-`);
+    <div class="Box">
+      <div class="blankslate">
+        <h3 class="blankslate-heading">No Issues Mention You in this Repo</h3>
+        <p>You have no open issues that mention you 🙊</p>
+      </div>
+    </div>
+  `);
   }
 };
 export default addDailySummary;
