@@ -31,13 +31,13 @@ const addDailySummary = (data) => {
       <div class="Box" id="${repoName}">
       <div class="Box-header">
       <h5 class="Box-title Truncate">
-        <span class="Truncate-text">
-          ${globalIssuesPerRepo[repoName][0].repository.owner.login} 
-        </span>
-        /
-        <span class="Truncate-text">
+        <a href="${globalIssuesPerRepo[repoName][0].repository.owner.html_url}" class="Truncate-text">
+          ${globalIssuesPerRepo[repoName][0].repository.owner.login}
+        </a>
+        <span> / </span>
+        <a href="${globalIssuesPerRepo[repoName][0].repository.html_url}"  class="Truncate-text">
           ${globalIssuesPerRepo[repoName][0].repository.name} 
-        </span>
+        </a>
       </h5>
       </div>
       <div class="Box-body">
