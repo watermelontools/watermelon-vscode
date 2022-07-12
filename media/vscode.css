@@ -1,4 +1,5 @@
 @import "primer-core.css";
+@import "primer-product.css";
 
 .wm-logo {
   width: 300px;
@@ -31,7 +32,7 @@ picture > img {
   align-items: center;
 }
 
-details>summary {
+details > summary {
   padding: 2px 6px;
   border-bottom: 1px solid var(--color-fg-subtle);
   margin-bottom: 1%;
@@ -41,24 +42,24 @@ details>summary {
   list-style: none;
 }
 
-details:not([open])>summary .codicon-chevron-down {
+details:not([open]) > summary .codicon-chevron-down {
   display: none;
 }
 
-details[open]>summary .codicon-chevron-down {
+details[open] > summary .codicon-chevron-down {
   display: block;
 }
 
-details>summary .codicon-chevron-right {
+details > summary .codicon-chevron-right {
   display: block;
 }
 
-details[open]>summary .codicon-chevron-right {
+details[open] > summary .codicon-chevron-right {
   display: none;
 }
 
 .Header {
-  z-index: 32; 
+  z-index: 32;
   display: flex;
   color: var(--color-header-text);
   align-items: center;
@@ -73,7 +74,7 @@ details[open]>summary .codicon-chevron-right {
   flex-wrap: nowrap;
 }
 code {
-  padding: .2em .4em;
+  padding: 0.2em 0.4em;
   margin: 0;
   font-size: 85%;
   background-color: var(--color-neutral-muted);
@@ -190,7 +191,7 @@ pre {
   color: #e4e4e4;
 }
 
-.loader-spinner{
+.loader-spinner {
   animation: spinner 1.2s linear infinite;
 }
 @keyframes spinner {
