@@ -28,28 +28,27 @@ const addDailySummary = (data) => {
 
     Object.keys(globalIssuesPerRepo).map((repoName) => {
       $("#globalIssues").append(`
-      <div class="Box" id="${repoName}">
+      <div class="Box Box--condensed" id="${repoName}">
       <div class="Box-header">
-      <h5 class="Box-title Truncate">
-        <a href="${globalIssuesPerRepo[repoName][0].repository.owner.html_url}" class="Truncate-text">
-          ${globalIssuesPerRepo[repoName][0].repository.owner.login}
-        </a>
-        <span> / </span>
-        <a href="${globalIssuesPerRepo[repoName][0].repository.html_url}"  class="Truncate-text">
-          ${globalIssuesPerRepo[repoName][0].repository.name} 
-        </a>
-      </h5>
+        <h5 class="Box-title Truncate">
+          <a href="${globalIssuesPerRepo[repoName][0].repository.owner.html_url}" class="Truncate-text">
+            ${globalIssuesPerRepo[repoName][0].repository.owner.login}
+          </a>
+          <span> / </span>
+          <a href="${globalIssuesPerRepo[repoName][0].repository.html_url}"  class="Truncate-text">
+            ${globalIssuesPerRepo[repoName][0].repository.name} 
+          </a>
+        </h5>
       </div>
-      <div class="Box-body">
-      </div>
+
       </div>
       `);
       globalIssuesPerRepo[repoName].forEach((issue) => {
-        $(`#${repoName} .Box-body`).append(`
+        $(`#${repoName}`).append(`
 
       <div class="Box-row">
       <a href="${issue.html_url}">${issue.title}</a>
-      <p>
+      <p class="text-small">
         By ${
           issue.user.login
         } on <span class="text-light">${dateToHumanReadable(
