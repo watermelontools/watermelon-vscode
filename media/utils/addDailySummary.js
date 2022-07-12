@@ -30,12 +30,17 @@ const addDailySummary = (data) => {
       $("#globalIssues").append(`
       <div class="Box" id="${repoName}">
       <div class="Box-header">
-      <h5 class="Box-title">
-      ${globalIssuesPerRepo[repoName][0].repository.owner.login}/${globalIssuesPerRepo[repoName][0].repository.name} 
+      <h5 class="Box-title Truncate">
+        <span class="Truncate-text">
+          ${globalIssuesPerRepo[repoName][0].repository.owner.login} 
+        </span>
+        /
+        <span class="Truncate-text">
+          ${globalIssuesPerRepo[repoName][0].repository.name} 
+        </span>
       </h5>
       </div>
       <div class="Box-body">
-
       </div>
       </div>
       `);
