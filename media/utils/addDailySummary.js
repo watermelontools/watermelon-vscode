@@ -110,7 +110,7 @@ const addDailySummary = (data) => {
   }
   if (data.assignedIssues.length > 0) {
     $("#assignedIssues").append(`
-    <div class="Box anim-fade-in">
+    <div class="Box ">
       <div class="Box-header">
         <h3 class="Box-title">Issues Assigned to You in this Repo</h3>
       </div>
@@ -130,7 +130,7 @@ const addDailySummary = (data) => {
   }
   if (data.creatorIssues.length > 0) {
     $("#creatorIssues").append(`
-      <div class="Box anim-fade-in">
+      <div class="Box ">
         <div class="Box-header">
           <h3 class="Box-title">Issues Assigned to You in this Repo</h3>
         </div>
@@ -150,7 +150,7 @@ const addDailySummary = (data) => {
   }
   if (data.mentionedIssues.length > 0) {
     $("#mentionedIssues").append(`
-    <div class="Box anim-fade-in">
+    <div class="Box ">
       <div class="Box-header">
         <h3 class="Box-title">Issues Assigned to You in this Repo</h3>
       </div>
