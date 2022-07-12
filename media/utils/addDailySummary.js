@@ -45,7 +45,7 @@ const addDailySummary = (data) => {
       `);
       globalIssuesPerRepo[repoName].forEach((issue) => {
         $(`#${repoName}`).append(`
-      <div class="Box-row d-flex flex-justify-between">
+      <div class="Box-row Box-row--hover-gray d-flex flex-justify-between">
         <div class="Box-row-cell">
           <a href="${issue.html_url}">${issue.title}</a>
           <p class="text-small">
