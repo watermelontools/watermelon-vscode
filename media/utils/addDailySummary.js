@@ -53,7 +53,6 @@ const addDailySummary = (data) => {
       acc[issue.repository.name].push(issue);
       return acc;
     }, {});
-    console.log(globalIssuesPerRepo);
 
     Object.keys(globalIssuesPerRepo).map((repoName) => {
       $("#globalIssues").append(`
