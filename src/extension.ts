@@ -87,22 +87,6 @@ export async function activate(context: vscode.ExtensionContext) {
   // create the hover provider
   let wmHover = hover({ reporter });
 
-  let repoInfo = await getRepoInfo({reporter});
-  repo = repoInfo?.repo;
-  owner = repoInfo?.owner;
-  debugLogger(`repo: ${repo}`);
-  debugLogger(`owner: ${owner}`);
-  context.workspaceState.update("workspaceState", {
-    ...workspaceState,
-    repo,
-    owner,
-  });
-  owner && repo && reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
-
-  provider.sendMessage({
-    command: "versionInfo",
-    data: extensionVersion,
-  });
 
   let historyCommandHandler = async (
     startLine = undefined,
@@ -314,4 +298,20 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
   }
+  let repoInfo = await getRepoInfo({reporter});
+  repo = repoInfo?.repo;
+  owner = repoInfo?.owner;
+  debugLogger(`repo: ${repo}`);
+  debugLogger(`owner: ${owner}`);
+  context.workspaceState.update("workspaceState", {
+    ...workspaceState,
+    repo,
+    owner,
+  });
+  owner && repo && reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
+
+  provider.sendMessage({
+    command: "versionInfo",
+    data: extensionVersion,
+  });
 }

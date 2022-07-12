@@ -19,3 +19,8 @@ export function nonGHRepo() {
     "We're sorry, we only work with GitHub for now."
   );
 }
+export function failedGettingRepoInfo() {
+  return vscode.window.showErrorMessage(
+    "We're sorry, watermelon couldn't get the repo info."
+  );
+}

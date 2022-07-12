@@ -1,5 +1,5 @@
 import getGitAPI from "./getGitAPI";
-import { nonGHRepo } from "./showErrors";
+import { failedGettingRepoInfo, nonGHRepo } from "./showErrors";
 import gitUrlParse = require("git-url-parse");
 import TelemetryReporter from "@vscode/extension-telemetry";
 
@@ -30,6 +30,8 @@ export default async function getRepoInfo({ repoURL, reporter }: { repoURL?: str
         if (!(source.includes("github"))) {
           nonGHRepo();
         }
+      } else {
+        reporter?.sendTelemetryErrorEvent("getRepoInfo", { "error": "no config" });
       }
     } catch (e: any) {
       reporter?.sendTelemetryErrorEvent("getRepoInfo", { e });

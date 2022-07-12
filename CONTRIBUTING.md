@@ -17,6 +17,9 @@ If there's something you'd like to see please [open an issue](https://github.com
 We love community contributions. Please fork the repo and send a PR our way. 
 Remember, we'll discuss it publicly, it's a great opportunity to learn.
 
+## Brand
+We prefer to use [Codicons](https://microsoft.github.io/vscode-codicons/dist/codicon.html) and [Primer Design](https://primer.style/) for our extension, but are elastic in UI decisions.
+
 ## Donations
 
 [We have Github Sponsors](https://github.com/sponsors/watermelontools)
