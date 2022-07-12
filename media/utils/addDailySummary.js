@@ -119,23 +119,27 @@ const addDailySummary = (data) => {
     data.assignedIssues.map((issue) => {
       $("#assignedIssues .Box").append(`
       ${issueBox(issue)}
-
       `);
     });
   } else {
     $("#assignedIssues").append(`
-<div>
-<p>You have no open issues assigned to you 🧘</p>
-</div>
-`);
+    <div>
+      <p>You have no open issues assigned to you 🧘</p>
+    </div>
+    `);
   }
   if (data.creatorIssues.length > 0) {
+    $("#creatorIssues").append(`
+      <div class="Box anim-fade-in">
+        <div class="Box-header">
+          <h3 class="Box-title">Issues Assigned to You in this Repo</h3>
+        </div>
+      </div>
+      `);
     data.creatorIssues.map((issue) => {
-      $("#creatorIssues").append(`
-<div>
-<a href="${issue.html_url}">${issue.title}</a>
-</div>
-`);
+      $("#creatorIssues .Box").append(`
+        ${issueBox(issue)}
+        `);
     });
   } else {
     $("#creatorIssues").append(`
@@ -145,12 +149,17 @@ const addDailySummary = (data) => {
 `);
   }
   if (data.mentionedIssues.length > 0) {
+    $("#mentionedIssues").append(`
+    <div class="Box anim-fade-in">
+      <div class="Box-header">
+        <h3 class="Box-title">Issues Assigned to You in this Repo</h3>
+      </div>
+    </div>
+    `);
     data.mentionedIssues.map((issue) => {
-      $("#mentionedIssues").append(`
-<div>
-<a href="${issue.html_url}">${issue.title}</a>
-</div>
-`);
+      $("#mentionedIssues .Box").append(`
+      ${issueBox(issue)}
+      `);
     });
   } else {
     $("#mentionedIssues").append(`
