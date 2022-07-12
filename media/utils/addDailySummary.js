@@ -1,3 +1,4 @@
+import dateToHumanReadable from "./dateToHumanReadable.js";
 const addDailySummary = (data) => {
   $("#dailySummary").empty();
   $("#dailySummary").append(`
@@ -15,12 +16,44 @@ const addDailySummary = (data) => {
       </div>
     `);
   if (data.globalIssues.length > 0) {
-    data.globalIssues.map((issue) => {
+    // create an array per repository
+    const globalIssuesPerRepo = data.globalIssues.reduce((acc, issue) => {
+      if (!acc[issue.repository.name]) {
+        acc[issue.repository.name] = [];
+      }
+      acc[issue.repository.name].push(issue);
+      return acc;
+    }, {});
+    console.log(globalIssuesPerRepo);
+
+    Object.keys(globalIssuesPerRepo).map((repoName) => {
       $("#globalIssues").append(`
-      <div>
-      <a href="${issue.html_url}">${issue.title}</a>
+      <div class="Box" id="${repoName}">
+      <div class="Box-header">
+      <h5 class="Box-title">
+      ${globalIssuesPerRepo[repoName][0].repository.owner.login}/${globalIssuesPerRepo[repoName][0].repository.name} 
+      </h5>
+      </div>
+      <div class="Box-body">
+
+      </div>
       </div>
       `);
+      globalIssuesPerRepo[repoName].forEach((issue) => {
+        $(`#${repoName} .Box-body`).append(`
+
+      <div class="Box-row">
+      <a href="${issue.html_url}">${issue.title}</a>
+      <p>
+        By ${
+          issue.user.login
+        } on <span class="text-light">${dateToHumanReadable(
+          issue.created_at
+        )}</span>
+      </p>
+      </div>
+      `);
+      });
     });
   } else {
     $("#globalIssues").append(`
