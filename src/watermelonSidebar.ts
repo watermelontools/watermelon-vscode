@@ -127,6 +127,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "link": {
+          this.reporter?.sendTelemetryEvent(data.source, { link: data.link });
           vscode.env.openExternal(vscode.Uri.parse(data.link));
           break;
         }
