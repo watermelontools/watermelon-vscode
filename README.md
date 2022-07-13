@@ -31,7 +31,7 @@ In the image below you can see how hovering over a line of code provides us the 
 - The latest commit message for that line
 - The level of churn for the file that you're currently in
 
-If you want to do a deeper reserach about the code context history, simply click one of the buttons in the context box.
+If you want to do a deeper research about the code context history, simply click one of the links in the context box.
 
 ### View Commit History
 
