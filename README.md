@@ -26,7 +26,7 @@ Simply click the Watermelon icon on the sidebar. After that you can click any of
 
 Highlight a piece of code, and then click the `View Commit History` button. We will run Git Blame for you, and give you a table with the Git commit messages relevant to the piece of code you highlighted.
 
-![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/viewGitBlame.gif?raw=true)
+![commit-hisotry](https://user-images.githubusercontent.com/47119689/178702441-d0afccbd-5230-456e-a9fb-56b36e36a146.gif)
 
 You may also highlight and right click on the code, you will find the 'View Commit History with Watermelon' command at the end.
 
@@ -38,7 +38,7 @@ Highlight a piece of code, and then click the View Pull Requests button to run G
 
 Depending on the size of your GitHub history, this might take a few seconds.
 
-![watermelon screenshot](https://github.com/watermelontools/wm-extension/blob/dev/viewPRs.gif?raw=true)
+![pull-request](https://user-images.githubusercontent.com/47119689/178702586-d94d72b6-8457-406d-8f38-df6382cc436c.gif)
 
 Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our `watermelon.start` command</a>
 
