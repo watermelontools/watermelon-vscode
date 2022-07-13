@@ -61,7 +61,7 @@ Get an overview of which issues and PR reviews are assigned to you. Both on the 
 
 To use it, open the Watermelon sidebar.
 
-![pull-request](https://i.ibb.co/RCym1hF/Screen-Shot-2022-07-13-at-5-03-48-PM.png)
+![daily-summary](https://i.ibb.co/RCym1hF/Screen-Shot-2022-07-13-at-5-03-48-PM.png)
 
 ## Requirements
 
