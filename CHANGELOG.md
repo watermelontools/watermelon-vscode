@@ -4,10 +4,18 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [1.4.3]
+## [1.4.5]
+
+- Better daily summary UI
+
+## [1.4.4]
 
 - Will now show three different walkthroughs to understand how to use the extension.
 - [BETA] New way to experience the extension on web.
+
+## [1.4.3]
+
+- Skipped, sorry!
 
 ## [1.4.2]
 
