@@ -9,3 +9,4 @@ package-lock.json
 .vscode/settings.json
 @types/*.js
 @types/*.js.map
+.vscode-test-web/
