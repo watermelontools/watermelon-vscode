@@ -27,7 +27,6 @@ In the image below you can see how hovering over a line of code provides us the 
 
 ![hover](https://github.com/watermelontools/wm-extension/blob/dev/hover-showcase.gif?raw=true)
 
-- The most relevant PR for that line
 - The latest commit message for that line
 - The amount of changes for the file that you're currently in, usually called churn
 
