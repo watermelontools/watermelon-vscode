@@ -18,6 +18,7 @@ import hover from "./utils/components/hover";
 import getDailySummary from "./utils/github/getDailySummary";
 import {
   WATERMELON_HISTORY_COMMAND,
+  WATERMELON_LOGIN_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
   WATERMELON_PULLS_COMMAND,
   WATERMELON_SELECT_COMMAND,
@@ -87,6 +88,30 @@ export async function activate(context: vscode.ExtensionContext) {
   // create the hover provider
   let wmHover = hover({ reporter });
 
+  let loginCommandHandler = async () => {
+    const credentials = new Credentials();
+    debugLogger(`got credentials`);
+    await credentials.initialize(context);
+    debugLogger("intialized credentials");
+    octokit = await credentials.getOctokit();
+    let githubUserInfo = await getGitHubUserInfo({ octokit });
+    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
+    let username = githubUserInfo.login;
+    context.globalState.update("startupState", { username });
+    reporter?.sendTelemetryEvent("githubUserInfo", { username });
+    provider.sendMessage({
+      command: "user",
+      data: {
+        login: githubUserInfo.login,
+        avatar: githubUserInfo.avatar_url,
+      },
+    });
+    if (credentials) {
+      setLoggedIn(true);
+      reporter?.sendTelemetryEvent("login");
+      updateStatusBarItem(wmStatusBarItem);
+    }
+  };
 
   let historyCommandHandler = async (
     startLine = undefined,
@@ -231,6 +256,10 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       WATERMELON_HISTORY_COMMAND,
       historyCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_LOGIN_COMMAND,
+      loginCommandHandler
     )
   );
 
@@ -298,7 +327,7 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
   }
-  let repoInfo = await getRepoInfo({reporter});
+  let repoInfo = await getRepoInfo({ reporter });
   repo = repoInfo?.repo;
   owner = repoInfo?.owner;
   debugLogger(`repo: ${repo}`);

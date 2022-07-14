@@ -59,6 +59,11 @@
         "category": "watermelon"
       },
       {
+        "command": "watermelon.login",
+        "title": "Login to watermelon using Github",
+        "category": "watermelon"
+      },
+      {
         "command": "watermelon.blame",
         "title": "Get Commit History with Watermelon",
         "category": "watermelon"
