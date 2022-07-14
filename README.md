@@ -25,7 +25,7 @@ The main UI to use Watermelon is the context box you see when you hover over lin
 
 In the image below you can see how hovering over a line of code provides us the following data:
 
-![hover](https://i.ibb.co/rdvgVnS/hover-showcase.gif)
+![hover](https://github.com/watermelontools/wm-extension/blob/dev/hover-showcase.gif?raw=true)
 
 - The most relevant PR for that line
 - The latest commit message for that line
@@ -61,7 +61,7 @@ Get an overview of which issues and PR reviews are assigned to you. Both on the 
 
 To use it, open the Watermelon sidebar.
 
-![daily-summary](https://i.ibb.co/RCym1hF/Screen-Shot-2022-07-13-at-5-03-48-PM.png)
+![daily-summary](https://github.com/watermelontools/wm-extension/blob/dev/daily-summary-showcase.png?raw=true)
 
 ## Requirements
 
