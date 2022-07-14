@@ -1,4 +1,6 @@
 import dateToHumanReadable from "./dateToHumanReadable.js";
+import sendLinkToOpen from "./sendLinkToOpen.js";
+
 const issueBox = (issue) => {
   return `
   <div class="Box-row Box-row--hover-gray d-flex flex-justify-between">
@@ -177,5 +179,14 @@ const addDailySummary = (data) => {
     </div>
   `);
   }
+  $("#dailySummary")
+    .find("a")
+    .each(function (element) {
+      $(this).on("click", function (e) {
+        e.preventDefault();
+        let link = $(this).attr("href");
+        sendLinkToOpen({ link, source: "dailySummary" });
+      });
+    });
 };
 export default addDailySummary;

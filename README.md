@@ -61,23 +61,24 @@ Alternatively, you can search for "Watermelon" in VS Code's built-in extension m
 
 Watermelon comes with a few commands that you can run from VS Code's Command Palette. The result is exactly the same as running a Watermelon query with the green button. Results sit in your sidebar.
 
-| Command            | Description                                              |
-| :----------------- | :------------------------------------------------------- |
-| `watermelon.start` | Get the historical context of the selected block of code |
-| `watermelon.blame` | Get the commit history of the selected block of code     |
-| `watermelon.show`  | Reveal the extension                                     |
+| Command                | Description                                              |
+| :--------------------- | :------------------------------------------------------- |
+| `watermelon.start`     | Get the historical context of the selected block of code |
+| `watermelon.blame`     | Get the commit history of the selected block of code     |
+| `watermelon.show`      | Reveal the extension                                     |
+| `watermelon.recommend` | Add the extension to the list of recommended             |
 
 ## Shortcuts
 
 As an alternative, you can use the following shortcuts:
 
-- `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac) for running the `watermelon.start` command
-- `Ctrl+Shift+H` (`Cmd+Shift+C` on Mac) for running the `watermelon.blame` command
+- `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac) to view Pull Requests
+- `Ctrl+Shift+H` (`Cmd+Shift+C` on Mac) to view the Commit History
 
 ## Hover
 
-When hovering over code, Watermelon will offer to run the actions. 
-It will offer the latest commit information, including its title, author and date. 
+When hovering over code, Watermelon will offer to run the actions.
+It will offer the latest commit information, including its title, author and date.
 It will also show how many times the hovered file has changed.
 
 ## Contributing
@@ -89,7 +90,7 @@ Alternatively, comment on our issues if you plan to solve one.
 
 ## Analytics
 
-We track users to improve our application. We store your GitHub username and whether your Watermelon query was successful or not.
+We track user actions in an anonymous manner to improve our application. We store your GitHub username, repo name and organization.
 
 **We _don't_ store your code**
 

@@ -91,6 +91,7 @@ function handleMessage(message) {
       );
       console.log("Unknown command");
       console.log(message);
+      break;
   }
 }
 
