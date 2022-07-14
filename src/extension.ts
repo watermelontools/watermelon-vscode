@@ -17,6 +17,7 @@ import statusBarItem, {
 import hover from "./utils/components/hover";
 import getDailySummary from "./utils/github/getDailySummary";
 import {
+  WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
   WATERMELON_HISTORY_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
   WATERMELON_PULLS_COMMAND,
@@ -87,6 +88,12 @@ export async function activate(context: vscode.ExtensionContext) {
   // create the hover provider
   let wmHover = hover({ reporter });
 
+  let addToRecommendedCommandHandler = async () => {
+    vscode.commands.executeCommand(
+      "workbench.extensions.action.addExtensionToWorkspaceRecommendations",
+      "WatermelonTools.watermelon-tools"
+    );
+  };
 
   let historyCommandHandler = async (
     startLine = undefined,
@@ -231,6 +238,10 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       WATERMELON_HISTORY_COMMAND,
       historyCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
+      addToRecommendedCommandHandler
     )
   );
 
@@ -298,7 +309,7 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
   }
-  let repoInfo = await getRepoInfo({reporter});
+  let repoInfo = await getRepoInfo({ reporter });
   repo = repoInfo?.repo;
   owner = repoInfo?.owner;
   debugLogger(`repo: ${repo}`);

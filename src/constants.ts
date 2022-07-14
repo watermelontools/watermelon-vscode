@@ -17,3 +17,4 @@ export const WATERMELON_PULLS_COMMAND = "watermelon.start";
 export const WATERMELON_HISTORY_COMMAND = "watermelon.blame";
 export const WATERMELON_SELECT_COMMAND = "watermelon.select";
 export const WATERMELON_MULTI_SELECT_COMMAND = "watermelon.multiSelect";
+export const WATERMELON_ADD_TO_RECOMMENDED_COMMAND = "watermelon.recommend";
