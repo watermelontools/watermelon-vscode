@@ -11,16 +11,26 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false#review-details)
 [![Slack](https://img.shields.io/badge/Slack%20Community-Watermelon-brightgreen)](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q)
 
-Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code** to document code and view Git Blame. Watermelon makes you an expert on any file instantly by running `git blame` for you and telling you why a block of code was written that way by someone else.
+Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code** to help developers go beyond Git Blame. Watermelon makes you an expert on any file instantly by running `git blame` for you and telling you why a block of code was written that way by someone else.
 
 ## Features
 
-Watermelon has 2 actions that you can use:
+Watermelon has 3 main features that you can use:
 
 - View Git Blame
 - View Pull Requests
+- Daily Summary
 
-Simply click the Watermelon icon on the sidebar. After that you can click any of the 2 different buttons Watermelon has.
+The main UI to use Watermelon is the context box you see when you hover over lines of code with our extension installed. This UI is complemented with the sidebar we have.
+
+In the image below you can see how hovering over a line of code provides us the following data:
+
+![hover](https://github.com/watermelontools/wm-extension/blob/dev/hover-showcase.gif?raw=true)
+
+- The latest commit message for that line
+- The amount of changes for the file that you're currently in, usually called churn
+
+If you want to do a deeper research about the code context history, simply click one of the links in the context box.
 
 ### View Commit History
 
@@ -43,6 +53,14 @@ Depending on the size of your GitHub history, this might take a few seconds.
 Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our `watermelon.start` command</a>
 
 You may also highlight and right click on the code, you will find the 'Get Pull Requests with Watermelon' command at the end.
+
+### Daily Summary
+
+Get an overview of which issues and PR reviews are assigned to you. Both on the current repository and across all GitHub. 
+
+To use it, open the Watermelon sidebar.
+
+![daily-summary](https://github.com/watermelontools/wm-extension/blob/dev/daily-summary-showcase.png?raw=true)
 
 ## Requirements
 
@@ -74,12 +92,6 @@ As an alternative, you can use the following shortcuts:
 
 - `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac) to view Pull Requests
 - `Ctrl+Shift+H` (`Cmd+Shift+C` on Mac) to view the Commit History
-
-## Hover
-
-When hovering over code, Watermelon will offer to run the actions.
-It will offer the latest commit information, including its title, author and date.
-It will also show how many times the hovered file has changed.
 
 ## Contributing
 
