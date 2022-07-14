@@ -41,11 +41,8 @@
     "onWebviewPanel:watermelon",
     "onStartupFinished"
   ],
-  "extensionDependencies": [
-    "vscode.git"
-  ],
   "main": "./out/extension.js",
-  "browser": "./out/extension.js",
+  "browser": "./out/main.js",
   "contributes": {
     "commands": [
       {
@@ -276,7 +273,8 @@
     "watch": "tsc -w -p ./",
     "pretest": "npm run compile",
     "test": "node ./out/test/runTest.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "open-in-browser": "vscode-test-web --extensionDevelopmentPath=."
   },
   "devDependencies": {
     "@types/git-url-parse": "^9.0.1",
@@ -288,6 +286,7 @@
     "@typescript-eslint/eslint-plugin": "^4.16.0",
     "@typescript-eslint/parser": "^4.16.0",
     "@vscode/test-electron": "^2.1.2",
+    "@vscode/test-web": "^0.0.27",
     "esbuild": "^0.14.39",
     "eslint": "^7.21.0",
     "glob": "^7.2.0",
