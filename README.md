@@ -71,8 +71,8 @@ Watermelon comes with a few commands that you can run from VS Code's Command Pal
 
 As an alternative, you can use the following shortcuts:
 
-- `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac) for running the `watermelon.start` command
-- `Ctrl+Shift+H` (`Cmd+Shift+C` on Mac) for running the `watermelon.blame` command
+- `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac) to view Pull Requests 
+- `Ctrl+Shift+H` (`Cmd+Shift+C` on Mac) to view the Commit History
 
 ## Hover
 
