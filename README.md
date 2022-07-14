@@ -29,7 +29,7 @@ In the image below you can see how hovering over a line of code provides us the 
 
 - The most relevant PR for that line
 - The latest commit message for that line
-- The level of churn for the file that you're currently in
+- The amount of changes for the file that you're currently in, usually called churn
 
 If you want to do a deeper research about the code context history, simply click one of the links in the context box.
 
