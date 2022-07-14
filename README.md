@@ -90,7 +90,7 @@ Alternatively, comment on our issues if you plan to solve one.
 
 ## Analytics
 
-We track users to improve our application. We store your GitHub username and whether your Watermelon query was successful or not.
+We track user actions in an anonymous manner to improve our application. We store your GitHub username, repo name and organization.
 
 **We _don't_ store your code**
 
