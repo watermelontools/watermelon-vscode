@@ -43,6 +43,14 @@ const extensionVersion = getPackageInfo().version;
 
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
+  const gutterVS = vscode.window.createTextEditorDecorationType({
+    gutterIconPath: `${context.extensionPath}/images/gutter/vs.png`,
+    gutterIconSize: "cover",
+  });
+  const gutterSmiley = vscode.window.createTextEditorDecorationType({
+    gutterIconPath: `${context.extensionPath}/images/gutter/smiley.svg`,
+    gutterIconSize: "contain",
+  });
 
   const startupState: object | undefined =
     context.globalState.get("startupState");
@@ -294,6 +302,28 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.window.activeTextEditor?.document.uri.fsPath,
       gitAPI
     );
+    const smileyDecorations: vscode.DecorationOptions[] = [];
+    const smileyDecoration = {
+      range: new vscode.Range(
+        new vscode.Position(selection.selections[0].start.line, 0),
+        new vscode.Position(selection.selections[0].start.line + 1, 0)
+      ),
+    };
+    smileyDecorations.push(smileyDecoration);
+    vscode.window.activeTextEditor?.setDecorations(
+      gutterSmiley,
+      smileyDecorations
+    );
+    const vsDecorations: vscode.DecorationOptions[] = [];
+    const vsDecoration = {
+      range: new vscode.Range(
+        new vscode.Position(selection.selections[0].end.line - 1, 0),
+        new vscode.Position(selection.selections[0].end.line, 0)
+      ),
+      hover: "vscode decoration",
+    };
+    vsDecorations.push(vsDecoration);
+    vscode.window.activeTextEditor?.setDecorations(gutterVS, vsDecorations);
     debugLogger(`arrayOfSHAs: ${JSON.stringify(arrayOfSHAs)}`);
   });
 
