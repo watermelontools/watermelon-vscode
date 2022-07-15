@@ -11,7 +11,7 @@ flowchart TD
     C[github]
         subgraph Analytics
         D[watermelon]
-        E[sentry]
+        E[Azure]
         end
     end
     C --fetch--> A
