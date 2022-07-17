@@ -56,7 +56,7 @@ You may also highlight and right click on the code, you will find the 'Get Pull 
 
 ### Daily Summary
 
-Get an overview of which issues and PR reviews are assigned to you. Both on the current repository and across all GitHub. 
+Get an overview of which issues and PR reviews are assigned to you. Both on the current repository and across all GitHub.
 
 To use it, open the Watermelon sidebar.
 
@@ -66,6 +66,7 @@ To use it, open the Watermelon sidebar.
 
 - macOS 10.11+, Windows 10+ or Linux
 - Visual Studio Code v1.63.0+
+  - You may try it also in [VSCodium](https://www.vscodium.com/) with limited capabilities.
 - You must have Git locally installed (try `git --version` or [install it now](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
 
 ## Installation
