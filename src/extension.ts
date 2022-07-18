@@ -26,7 +26,6 @@ import {
 } from "./constants";
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
-import showCommandHandler from "./utils/commands/show";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
 
@@ -217,7 +216,10 @@ export async function activate(context: vscode.ExtensionContext) {
       });
     }
   };
-
+  let showCommandHandler = async () => {
+    vscode.commands.executeCommand("watermelon.sidebar.focus");
+    reporter?.sendTelemetryEvent("showCommand");
+  };
   context.subscriptions.push(
     vscode.commands.registerCommand(
       WATERMELON_SHOW_COMMAND,
