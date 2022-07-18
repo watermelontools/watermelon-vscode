@@ -39,9 +39,9 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
-        `The latest commit was made by **${
+        `The latest commit was made by <a href="mailto:${latestCommit.authorEmail}">$(mail)${
           latestCommit.authorName
-        }** on **${latestCommit.commitDate.toLocaleDateString()}**:
+        }</a> on **${latestCommit.commitDate.toLocaleDateString()}**:
         `
       );
       content.appendMarkdown(`\n`);
