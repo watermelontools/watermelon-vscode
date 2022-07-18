@@ -39,10 +39,13 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
-        `The latest commit is "${latestCommit.message}" by **${
+        `The latest commit was made by **${
           latestCommit.authorName
-        }** on **${latestCommit.commitDate.toLocaleDateString()}**`
+        }** on **${latestCommit.commitDate.toLocaleDateString()}**:
+        `
       );
+      content.appendMarkdown(`\n`);
+      content.appendMarkdown(latestCommit.message);
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
         `$(git-commit)[View the history for this line](${blameCommandUri}) with Watermelon 🍉`
