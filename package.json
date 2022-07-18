@@ -39,7 +39,8 @@
     "onCommand:watermelon.blame",
     "onCommand:watermelon.show",
     "onWebviewPanel:watermelon",
-    "onStartupFinished"
+    "onStartupFinished",
+    "onLanguage:javascript"
   ],
   "extensionDependencies": [
     "vscode.git"
@@ -48,6 +49,10 @@
   "browser": "./out/extension.js",
   "contributes": {
     "commands": [
+      {
+        "command": "watermelon.addConsoleLog",
+        "title": "Add Console Log"
+      },
       {
         "command": "watermelon.start",
         "title": "Get Pull Requests with Watermelon",
