@@ -1,27 +1,13 @@
 import getNonce from "./utils/vscode/getNonce";
 import getInitialHTML from "./utils/vscode/getInitialHTML";
 import * as vscode from "vscode";
-import getGitAPI from "./utils/vscode/getGitAPI";
-import getLocalUser from "./utils/vscode/getLocalUser";
-import getSHAArray from "./utils/getSHAArray";
 import { Credentials } from "./credentials";
-import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import getRepoInfo from "./utils/vscode/getRepoInfo";
-import getBlame from "./utils/getBlame";
 import TelemetryReporter from "@vscode/extension-telemetry";
 import starWmRepo from "./utils/github/starWmRepo";
 import {
   WATERMELON_HISTORY_COMMAND,
   WATERMELON_PULLS_COMMAND,
 } from "./constants";
-
-// repo information
-let owner: string | undefined = "";
-let repo: string | undefined = "";
-// user information
-let localUser: string | undefined = "";
-// selected shas
-let arrayOfSHAs: string[] = [];
 
 let octokit: any;
 /**
@@ -56,11 +42,6 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
     webviewView.webview.onDidReceiveMessage(async (data) => {
-      let gitAPI = await getGitAPI();
-      let repoInfo = await getRepoInfo({});
-      localUser = await getLocalUser();
-      repo = repoInfo?.repo;
-      owner = repoInfo?.owner;
       switch (data.command) {
         case "run": {
           this.sendMessage({
