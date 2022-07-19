@@ -10,6 +10,10 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getBlame from "./utils/getBlame";
 import TelemetryReporter from "@vscode/extension-telemetry";
 import starWmRepo from "./utils/github/starWmRepo";
+import {
+  WATERMELON_HISTORY_COMMAND,
+  WATERMELON_PULLS_COMMAND,
+} from "./constants";
 
 // repo information
 let owner: string | undefined = "";
@@ -62,42 +66,9 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           this.sendMessage({
             command: "loading",
           });
-          const credentials = new Credentials();
-          await credentials.initialize(this._context);
-          octokit = await credentials.getOctokit();
-
-          if (!arrayOfSHAs.length) {
-            arrayOfSHAs = await getSHAArray(
-              1,
-              vscode.window.activeTextEditor?.document.lineCount ?? 2,
-              vscode.window.activeTextEditor?.document.uri.fsPath,
-              gitAPI
-            );
-          }
-          let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-            arrayOfSHAs,
-            octokit,
-            owner,
-            repo,
-          });
-          if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-            return this.sendMessage({
-              command: "error",
-              error: issuesWithTitlesAndGroupedComments,
-            });
-          }
-          // @ts-ignore
-          let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-            (a: any, b: any) => b.comments.length - a.comments.length
-          );
-
+          vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
           // Send Event to VSC Telemtry Library
           this.reporter?.sendTelemetryEvent("pullRequests");
-
-          this.sendMessage({
-            command: "prs",
-            data: sortedPRs,
-          });
           break;
         }
         case "blame": {
@@ -107,13 +78,8 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           this.sendMessage({
             command: "loading",
           });
-          let uniqueBlames = await getBlame(gitAPI);
-          this.sendMessage({
-            command: "blame",
-            data: uniqueBlames,
-            owner,
-            repo,
-          });
+          vscode.commands.executeCommand(WATERMELON_HISTORY_COMMAND);
+
           break;
         }
         case "star": {
