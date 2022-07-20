@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.7]
+
+- Changed how the buttons on the webview work to match commands
+
 ## [1.4.6]
 
 - New `watermelon.recommend` command, to recommend a watermelon to everyone on the repo
