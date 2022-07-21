@@ -11,6 +11,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.4.6]
 
 - New `watermelon.recommend` command, to recommend a watermelon to everyone on the repo
+- New `watermelon.login` command, to login using GitHub from your keyboard
+- We now track every time the `watermelon.show` command is called 
 
 ## [1.4.5]
 

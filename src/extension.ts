@@ -19,6 +19,7 @@ import getDailySummary from "./utils/github/getDailySummary";
 import {
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
   WATERMELON_HISTORY_COMMAND,
+  WATERMELON_LOGIN_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
   WATERMELON_PULLS_COMMAND,
   WATERMELON_SELECT_COMMAND,
@@ -26,7 +27,6 @@ import {
 } from "./constants";
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
-import showCommandHandler from "./utils/commands/show";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
 
@@ -88,6 +88,30 @@ export async function activate(context: vscode.ExtensionContext) {
   // create the hover provider
   let wmHover = hover({ reporter });
 
+  let loginCommandHandler = async () => {
+    const credentials = new Credentials();
+    debugLogger(`got credentials`);
+    await credentials.initialize(context);
+    debugLogger("intialized credentials");
+    octokit = await credentials.getOctokit();
+    let githubUserInfo = await getGitHubUserInfo({ octokit });
+    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
+    let username = githubUserInfo.login;
+    context.globalState.update("startupState", { username });
+    reporter?.sendTelemetryEvent("githubUserInfo", { username });
+    provider.sendMessage({
+      command: "user",
+      data: {
+        login: githubUserInfo.login,
+        avatar: githubUserInfo.avatar_url,
+      },
+    });
+    if (credentials) {
+      setLoggedIn(true);
+      reporter?.sendTelemetryEvent("login");
+      updateStatusBarItem(wmStatusBarItem);
+    }
+  };
   let addToRecommendedCommandHandler = async () => {
     vscode.commands.executeCommand(
       "workbench.extensions.action.addExtensionToWorkspaceRecommendations",
@@ -217,7 +241,10 @@ export async function activate(context: vscode.ExtensionContext) {
       });
     }
   };
-
+  let showCommandHandler = async () => {
+    vscode.commands.executeCommand("watermelon.sidebar.focus");
+    reporter?.sendTelemetryEvent("showCommand");
+  };
   context.subscriptions.push(
     vscode.commands.registerCommand(
       WATERMELON_SHOW_COMMAND,
@@ -238,6 +265,10 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       WATERMELON_HISTORY_COMMAND,
       historyCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_LOGIN_COMMAND,
+      loginCommandHandler
     ),
     vscode.commands.registerCommand(
       WATERMELON_ADD_TO_RECOMMENDED_COMMAND,

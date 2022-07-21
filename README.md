@@ -85,6 +85,7 @@ Watermelon comes with a few commands that you can run from VS Code's Command Pal
 | `watermelon.blame`     | Get the commit history of the selected block of code     |
 | `watermelon.show`      | Reveal the extension                                     |
 | `watermelon.recommend` | Add the extension to the list of recommended             |
+| `watermelon.login`     | Login using GitHub                                       |
 
 ## Shortcuts
 
