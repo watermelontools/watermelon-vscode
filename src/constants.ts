@@ -19,3 +19,4 @@ export const WATERMELON_SELECT_COMMAND = "watermelon.select";
 export const WATERMELON_MULTI_SELECT_COMMAND = "watermelon.multiSelect";
 export const WATERMELON_LOGIN_COMMAND = "watermelon.login";
 export const WATERMELON_ADD_TO_RECOMMENDED_COMMAND = "watermelon.recommend";
+export const WATERMELON_OPEN_LINK_COMMAND = "watermelon.openLink";
