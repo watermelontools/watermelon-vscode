@@ -52,7 +52,7 @@ export default function getInitialHTML(
          connect-src ${connectSources.join(" ")}">
          <meta name="viewport" content="width=device-width, initial-scale=1.0">
          <meta charset="UTF-8">
-        <link href="${stylesMainUri}" rel="stylesheet">
+        <link href="${stylesMainUri}" rel="stylesheet"/>
         <link href="${codiconsUri}" rel="stylesheet" />
      </head>
      <body data-color-mode="dark" data-light-theme="light" data-dark-theme="dark">
