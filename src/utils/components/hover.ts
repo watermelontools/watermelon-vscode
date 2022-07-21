@@ -2,6 +2,7 @@ import TelemetryReporter from "@vscode/extension-telemetry";
 import * as vscode from "vscode";
 import {
   WATERMELON_HISTORY_COMMAND,
+  WATERMELON_OPEN_LINK_COMMAND,
   WATERMELON_PULLS_COMMAND,
 } from "../../constants";
 import getNumberOfFileChanges from "../getNumberOfFileChanges";
@@ -34,14 +35,22 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
           JSON.stringify(args)
         )}`
       );
+      const mailtoLinkCommandUri = vscode.Uri.parse(
+        `command:${WATERMELON_OPEN_LINK_COMMAND}?${encodeURIComponent(
+          JSON.stringify({
+            url: `mailto:${latestCommit.authorEmail}`,
+            source: "hover",
+          })
+        )}`
+      );
       const content = new vscode.MarkdownString(
         `$(git-pull-request)[Understand the code context](${startCommandUri}) with Watermelon 🍉`
       );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
-        `The latest commit was made by <a href="mailto:${latestCommit.authorEmail}">$(mail)${
+        `The latest commit was made by [$(mail)${
           latestCommit.authorName
-        }</a> on **${latestCommit.commitDate.toLocaleDateString()}**:
+        }](${mailtoLinkCommandUri}) on **${latestCommit.commitDate.toLocaleDateString()}**:
         `
       );
       content.appendMarkdown(`\n`);
