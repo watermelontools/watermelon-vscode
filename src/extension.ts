@@ -21,6 +21,7 @@ import {
   WATERMELON_HISTORY_COMMAND,
   WATERMELON_LOGIN_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
+  WATERMELON_OPEN_LINK_COMMAND,
   WATERMELON_PULLS_COMMAND,
   WATERMELON_SELECT_COMMAND,
   WATERMELON_SHOW_COMMAND,
@@ -245,6 +246,20 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.executeCommand("watermelon.sidebar.focus");
     reporter?.sendTelemetryEvent("showCommand");
   };
+  let linkCommandHandler = async ({
+    url,
+    source,
+  }: {
+    url: string;
+    source?: string;
+  }) => {
+    vscode.commands.executeCommand("watermelon.sidebar.focus");
+    vscode.commands.executeCommand("vscode.open", vscode.Uri.parse(url));
+    reporter?.sendTelemetryEvent("linkCommand", {
+      url,
+      source: source || "unknown",
+    });
+  };
   context.subscriptions.push(
     vscode.commands.registerCommand(
       WATERMELON_SHOW_COMMAND,
@@ -273,6 +288,10 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
       addToRecommendedCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_OPEN_LINK_COMMAND,
+      linkCommandHandler
     )
   );
 
