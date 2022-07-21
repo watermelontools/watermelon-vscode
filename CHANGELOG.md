@@ -4,15 +4,12 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [1.4.7]
-
-- You can now email the committer from the hover
-
 ## [1.4.6]
 
 - New `watermelon.recommend` command, to recommend a watermelon to everyone on the repo
 - New `watermelon.login` command, to login using GitHub from your keyboard
 - We now track every time the `watermelon.show` command is called 
+- You can now email the committer from the hover
 
 ## [1.4.5]
 
