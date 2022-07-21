@@ -19,9 +19,15 @@ Remember, we'll discuss it publicly, it's a great opportunity to learn.
 
 ### Sources
 
+#### VSCode
+
 - [The Offical VSCode API docs](https://code.visualstudio.com/api/references/vscode-api)
+- [Offial VSCode API Samples](https://github.com/microsoft/vscode-extension-samples)
 - [Haxe](https://vshaxe.github.io/vscode-extern/)
 - [VCSCode can do that?](https://vscodecandothat.com/)
+
+#### Octokit (SDK for GitHub)
+- [Octokit](https://octokit.github.io/)
 
 ## Brand
 We prefer to use [Codicons](https://microsoft.github.io/vscode-codicons/dist/codicon.html) and [Primer Design](https://primer.style/) for our extension, but are elastic in UI decisions.
