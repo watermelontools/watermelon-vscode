@@ -48,9 +48,11 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
-        `The latest commit was made by [$(mail)${
-          latestCommit.authorName
-        }](${mailtoLinkCommandUri}) on **${latestCommit.commitDate.toLocaleDateString()}**:
+        `The latest commit was made by ${
+          latestCommit.authorEmail
+            ? `[$(mail)${latestCommit.authorName}](${mailtoLinkCommandUri})`
+            : `*${latestCommit.authorName}*`
+        } on **${latestCommit.commitDate.toLocaleDateString()}**:
         `
       );
       content.appendMarkdown(`\n`);
