@@ -10,6 +10,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - New `watermelon.login` command, to login using GitHub from your keyboard
 - We now track every time the `watermelon.show` command is called 
 - You can now email the committer from the hover
+- Changed how the buttons on the webview work to match commands
 
 ## [1.4.5]
 
