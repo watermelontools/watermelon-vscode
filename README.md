@@ -40,7 +40,7 @@ Highlight a piece of code, and then click the `View Commit History` button. We w
 
 You may also highlight and right click on the code, you will find the 'View Commit History with Watermelon' command at the end.
 
-As a final way to use, only with your keyboard, you may pull the Command Palette (<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> on Windows and Linux and <kbd>CMD</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> on Mac)
+As a final way to use, only with your keyboard, you may pull the Command Palette (<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> on Windows and Linux and <kbd>CMD</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> on Mac) and type "Get commit history with Watermelon".
 
 ### View Pull Requests
 
