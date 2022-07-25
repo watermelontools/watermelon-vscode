@@ -1,5 +1,6 @@
 import addActionButtons from "./addActionButtons.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
+import replaceHyperlinks from "./replaceHyperlinks.js";
 
 const addBlametoDoc = (blameArray, commitLink) => {
   addActionButtons();
@@ -37,7 +38,7 @@ const addBlametoDoc = (blameArray, commitLink) => {
         }
         </td>
         <td>${blameLine.authorName}</td>
-        <td>${blameLine.message}</td>
+        <td>${replaceHyperlinks(blameLine.message)}</td>
         <td>${dateToHumanReadable(blameLine.commitDate)}</td>
       </tr>
       `);
