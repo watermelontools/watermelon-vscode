@@ -16,12 +16,6 @@ function setError() {
     </div>
     `);
   addActionButtons();
-  $("#ghHolder").append(
-    "<p>Alternatively, you can <a href='https://github.com/watermelontools/wm-extension#commands'>run with our watermelon.start command</a></p>"
-  );
-  $("#ghHolder").append(
-    "<p>Select a piece of code to start. Then run the Watermelon VS Code Command by pressing <kbd>CTRL</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> (or <kbd>CMD</kbd> + <kbd>SHIFT</kbd> + <kbd>P</kbd> in Mac) and type > <code>start watermelon</code></p>"
-  );
 }
 
 export default setLoading;

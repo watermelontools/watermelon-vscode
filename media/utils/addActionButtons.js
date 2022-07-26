@@ -5,16 +5,18 @@ const addActionButtons = () => {
   $("#ghHolder").append(
     `
     <div class="anim-fade-in">
-      <p>We will fetch the commit history for you to understand the context of the code</p>
+      <br/>
       <button class="git-blame btn btn-primary" type="button">View Commit History</button>
+      <br/>
     </div>
         `
   );
   $("#ghHolder").append(
     `
     <div class="anim-fade-in">
-      <p>Click this button to enrich your code with relevant information from GitHub:</p>
+      <br/>
       <button class="run-watermelon btn btn-primary" type="button">View Pull Requests</button>
+      <br/>
     </div>
     `
   );
