@@ -6,6 +6,7 @@ import setLoading from "./utils/setLoading.js";
 import removeLoading from "./utils/removeLoading.js";
 import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
+import addContextToDoc from "./utils/addContextToDoc.js";
 import sendMessage from "./utils/sendVSCodeMessage.js";
 import addBlametoDoc from "./utils/addBlametoDoc.js";
 import addGHUserInfo from "./utils/addGHUserInfo.js";
@@ -46,11 +47,30 @@ function handleMessage(message) {
       addDailySummary(message.data);
       break;
     case "prs":
-      webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
-      removeLoading(errorTimeout);
-      addPRsToDoc(message.data);
-      clampCodeBlocks();
+      // all the context
+      let commitLink = undefined;
+      if (message.owner && message.repo) {
+        commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
+      }
+      console.log("case prs message.data", message.data);
+      addContextToDoc(message.data, commitLink);
+
+      // // prs
+      // webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
+      // removeLoading(errorTimeout);
+      // addPRsToDoc(message.data);
+      // clampCodeBlocks();
+
+      // // blame
+      // webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
+      // let commitLink = undefined;
+      // if (message.owner && message.repo) {
+      //   commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
+      // }
+      // removeLoading(errorTimeout);
+      // addBlametoDoc(message.data, commitLink);
       break;
+      // break;
     case "loading":
       webviewDebugLogger(`Received loading: ${JSON.stringify(message.data)}`);
       errorTimeout = setLoading(errorTimeout);
@@ -76,33 +96,16 @@ function handleMessage(message) {
       webviewDebugLogger(`Received session: ${JSON.stringify(message.data)}`);
       addSessionToFooter(message.data);
       break;
-    case "blame":
-      webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
-      let commitLink = undefined;
-      if (message.owner && message.repo) {
-        commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
-      }
-      removeLoading(errorTimeout);
-      addBlametoDoc(message.data, commitLink);
-      break;
-    case "wholeContext":
-      console.log("case wholeContext");
-      // // PRs
-      // webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
-      // removeLoading(errorTimeout);
-      // addPRsToDoc(message.data);
-      // clampCodeBlocks();
-      // // break;
-
-      // // blame
-      // webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
-      // let commitLink = undefined;
-      // if (message.owner && message.repo) {
-      //   commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
-      // }
-      // removeLoading(errorTimeout);
-      // addBlametoDoc(message.data, commitLink);
-      // break;
+    // case "blame":
+    //   console.log("case blame message.data ", message.data);
+    //   webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
+    //   let commitLink = undefined;
+    //   if (message.owner && message.repo) {
+    //     commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
+    //   }
+    //   removeLoading(errorTimeout);
+    //   addBlametoDoc(message.data, commitLink);
+    //   break;
     default:
       webviewDebugLogger(
         `Received unknown command: ${JSON.stringify(message)}`
@@ -123,7 +126,6 @@ $(document).ready(function () {
   const button = document.getElementsByClassName("run-watermelon");
   const gitBlame = document.getElementsByClassName("git-blame");
   const starWMRepo = document.getElementById("starWMRepo");
-  const wholeContextButton = document.getElementsByClassName("whole-context-button");
 
   button[0].addEventListener("click", (event) => {
     sendMessage({ command: "run" });
@@ -133,9 +135,6 @@ $(document).ready(function () {
   });
   starWMRepo.addEventListener("click", (event) => {
     sendMessage({ command: "star" });
-  });
-  wholeContextButton[0].addEventListener("click", (event) => {
-    sendMessage({ command: "wholeContext" });
   });
 
 });
