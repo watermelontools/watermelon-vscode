@@ -85,6 +85,24 @@ function handleMessage(message) {
       removeLoading(errorTimeout);
       addBlametoDoc(message.data, commitLink);
       break;
+    case "wholeContext":
+      console.log("case wholeContext");
+      // // PRs
+      // webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
+      // removeLoading(errorTimeout);
+      // addPRsToDoc(message.data);
+      // clampCodeBlocks();
+      // // break;
+
+      // // blame
+      // webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
+      // let commitLink = undefined;
+      // if (message.owner && message.repo) {
+      //   commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
+      // }
+      // removeLoading(errorTimeout);
+      // addBlametoDoc(message.data, commitLink);
+      // break;
     default:
       webviewDebugLogger(
         `Received unknown command: ${JSON.stringify(message)}`
@@ -101,9 +119,12 @@ $(document).ready(function () {
     vscode.setState(message);
     handleMessage(message);
   });
+
   const button = document.getElementsByClassName("run-watermelon");
   const gitBlame = document.getElementsByClassName("git-blame");
   const starWMRepo = document.getElementById("starWMRepo");
+  const wholeContextButton = document.getElementsByClassName("whole-context-button");
+
   button[0].addEventListener("click", (event) => {
     sendMessage({ command: "run" });
   });
@@ -113,4 +134,8 @@ $(document).ready(function () {
   starWMRepo.addEventListener("click", (event) => {
     sendMessage({ command: "star" });
   });
+  wholeContextButton[0].addEventListener("click", (event) => {
+    sendMessage({ command: "wholeContext" });
+  });
+
 });

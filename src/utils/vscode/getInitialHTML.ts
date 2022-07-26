@@ -111,6 +111,7 @@ export default function getInitialHTML(
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">⭐starring Watermelon on GitHub</a></p>
         <br/>
         <div id="ghHolder">
+           <button class='whole-context-button btn btn-primary' type='button'>Get Code Context</button>
            <p>Higlight a piece of code to start.</p>
            <p>We will fetch the commit history for you to understand the context of the code</p>
            <button class='git-blame btn btn-primary' type='button'>View Commit History</button>
