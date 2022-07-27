@@ -38,7 +38,7 @@ const addBlametoDoc = (blameArray, commitLink) => {
         }
         </td>
         <td>${blameLine.authorName}</td>
-        <td>${replaceHyperlinks(blameLine.message)}</td>
+        <td>${(blameLine.message)}</td>
         <td>${dateToHumanReadable(blameLine.commitDate)}</td>
       </tr>
       `);

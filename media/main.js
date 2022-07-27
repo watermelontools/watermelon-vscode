@@ -46,9 +46,17 @@ function handleMessage(message) {
       addDailySummary(message.data);
       break;
     case "prs":
-      webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
+      console.log("Received PRs: ", message.data);
+      webviewDebugLogger((message.data), true);
       removeLoading(errorTimeout);
-      addPRsToDoc(message.data);
+
+      webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
+      let commitLink = undefined;
+      if (message.owner && message.repo) {
+        commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
+      }
+      addBlametoDoc(message.data.uniqueBlames, commitLink);
+      addPRsToDoc(message.data.sortedPRs);
       clampCodeBlocks();
       break;
     case "loading":
@@ -75,15 +83,6 @@ function handleMessage(message) {
     case "session":
       webviewDebugLogger(`Received session: ${JSON.stringify(message.data)}`);
       addSessionToFooter(message.data);
-      break;
-    case "blame":
-      webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
-      let commitLink = undefined;
-      if (message.owner && message.repo) {
-        commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
-      }
-      removeLoading(errorTimeout);
-      addBlametoDoc(message.data, commitLink);
       break;
     default:
       webviewDebugLogger(
