@@ -6,8 +6,10 @@ import setLoading from "./utils/setLoading.js";
 import removeLoading from "./utils/removeLoading.js";
 import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
+import addSinglePRToDoc from "./utils/addSinglePRToDoc.js";
 import sendMessage from "./utils/sendVSCodeMessage.js";
 import addBlametoDoc from "./utils/addBlametoDoc.js";
+import addSingleBlametoDoc from "./utils/addSingleBlameToDoc.js";
 import addGHUserInfo from "./utils/addGHUserInfo.js";
 import addVersionToFooter from "./utils/addVersionToFooter.js";
 import addSessionToFooter from "./utils/addSessionToFooter.js";
@@ -55,8 +57,8 @@ function handleMessage(message) {
       if (message.owner && message.repo) {
         commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
       }
-      addBlametoDoc(message.data.uniqueBlames, commitLink);
-      addPRsToDoc(message.data.sortedPRs);
+      addSingleBlametoDoc(message.data.uniqueBlames, commitLink);
+      addSinglePRToDoc(message.data.sortedPRs);
       clampCodeBlocks();
       break;
     case "loading":

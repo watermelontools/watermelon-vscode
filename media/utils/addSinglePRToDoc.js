@@ -3,7 +3,7 @@ import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
 
-const addPRsToDoc = (prs) => {
+const addSinglePRToDoc = (prs) => {
   
   $("#ghHolder").append(`
   <h3>Most Relevant PR</h3>
@@ -65,4 +65,4 @@ const addPRsToDoc = (prs) => {
   });
 };
 
-export default addPRsToDoc;
+export default addSinglePRToDoc;
