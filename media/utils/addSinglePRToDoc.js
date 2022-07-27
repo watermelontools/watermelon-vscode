@@ -8,13 +8,13 @@ const addSinglePRToDoc = (prs) => {
   $("#ghHolder").append(`
   <h3>Most Relevant PR</h3>
   `);
-  prs.forEach((pr, index) => {
+
     let mdComments = "";
-    pr.comments.forEach((comment) => (mdComments += parseComments(comment)));
+    prs[0].comments.forEach((comment) => (mdComments += parseComments(comment)));
 
     $("#ghHolder").append(`
     <div class="anim-fade-in">
-      <details ${!index ? "open" : ""}>
+      <details ${!0 ? "open" : ""}>
         <summary class="pr-title">
           <div>
             <div class="details-state">
@@ -23,13 +23,13 @@ const addSinglePRToDoc = (prs) => {
                 <i class='codicon codicon-chevron-down'></i>
               </div>
               <a 
-              href="${pr.url}" target="_blank" title="View this PR on github">${
-              pr.title
+              href="${prs[0].url}" target="_blank" title="View this PR on github">${
+                prs[0].title
               }</a>
             </div>
           </div>
           <div class="icon-holder">${
-            pr.state === "closed"
+            prs[0].state === "closed"
             ? "<i class='codicon codicon-git-merge'></i>"
               : "<i class='codicon codicon-git-pull-request'></i>"
           }
@@ -39,20 +39,20 @@ const addSinglePRToDoc = (prs) => {
         <div class="Box-header d-flex">
             <p class="pr-poster" title="View this user on github">
               <a class="pr-author-combo" href="${
-                pr.userLink
-              }"><img class='pr-author-img' src="${pr.userImage}" />${
-               pr.user
+                prs[0].userLink
+              }"><img class='pr-author-img' src="${prs[0].userImage}" />${
+                prs[0].user
               } </a>
             </p>
             <p class="pr-date">
-                on ${dateToHumanReadable(pr.created_at)}
+                on ${dateToHumanReadable(prs[0].created_at)}
             </p>
         </div>
           <div class="Box-body">
             ${
-              pr?.body
+                prs[0]?.body
                 ? (
-                    replaceUserTags(marked.parse(pr.body, { gfm: true, breaks: true }))
+                    replaceUserTags(marked.parse(prs[0].body, { gfm: true, breaks: true }))
                   )
                 : ""
             }
@@ -62,7 +62,6 @@ const addSinglePRToDoc = (prs) => {
       </details>
     </div>
       `);
-  });
 };
 
 export default addSinglePRToDoc;
