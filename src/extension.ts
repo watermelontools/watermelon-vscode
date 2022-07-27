@@ -50,12 +50,7 @@ export async function activate(context: vscode.ExtensionContext) {
   debugLogger(`got gitAPI`);
 
   const provider = new WatermelonSidebar(context, reporter);
-  debugLogger(`created provider`);
-
-  let wmStatusBarItem = statusBarItem();
-  debugLogger(`created wmStatusBarItem`);
-
-  context.subscriptions.push(
+  debugLogger(`cr
     // webview
     vscode.window.registerWebviewViewProvider(
       WatermelonSidebar.viewType,
