@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.4.7]
 
+- Commit messages now allow markdown, including lists
+
 ## [1.4.6]
 
 - New `watermelon.recommend` command, to recommend a watermelon to everyone on the repo
