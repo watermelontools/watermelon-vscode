@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.4.7]
 
 - Commit messages now allow markdown, including lists
+- Added a Draft PR indicator 
 
 ## [1.4.6]
 
