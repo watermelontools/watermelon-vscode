@@ -3,16 +3,13 @@ import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
 
-const addPRsToDoc = (prs) => {
-  $("#ghHolder").append(`
-  <h3>Pull Requests</h3>
-  `);
+const paintPRs = (prs) => {
+  console.log("paintPRs prs ", prs);
   prs.forEach((pr, index) => {
-    if (index === 0) {
-      let mdComments = "";
-      pr.comments.forEach((comment) => (mdComments += parseComments(comment)));
+    let mdComments = "";
+    pr.comments.forEach((comment) => (mdComments += parseComments(comment)));
 
-      $("#ghHolder").append(`
+    $("#ghHolder").append(`
     <div class="anim-fade-in">
       <details ${!index ? "open" : ""}>
         <summary class="pr-title">
@@ -24,8 +21,8 @@ const addPRsToDoc = (prs) => {
               </div>
               <a 
               href="${pr.url}" target="_blank" title="View this PR on github">${
-        pr.title
-      }</a>
+      pr.title
+    }</a>
             </div>
           </div>
           <div class="icon-holder">${
@@ -41,8 +38,8 @@ const addPRsToDoc = (prs) => {
               <a class="pr-author-combo" href="${
                 pr.userLink
               }"><img class='pr-author-img' src="${pr.userImage}" />${
-        pr.user
-      } </a>
+      pr.user
+    } </a>
             </p>
             <p class="pr-date">
                 on ${dateToHumanReadable(pr.created_at)}
@@ -62,8 +59,14 @@ const addPRsToDoc = (prs) => {
       </details>
     </div>
       `);
-    }
   });
+};
+const addPRsToDoc = (allPRs) => {
+  $("#ghHolder").append(`
+  <h3>Pull Requests</h3>
+  `);
+  let firstPR = allPRs.shift();
+  paintPRs([firstPR]);
 };
 
 export default addPRsToDoc;
