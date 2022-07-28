@@ -79,7 +79,9 @@ const addPRsToDoc = (allPRs) => {
   `);
   let firstPR = allPRs.shift();
   paintPRs([firstPR]);
-  addViewAllPRsButton(allPRs);
+  if (allPRs.length > 0) {
+    addViewAllPRsButton(allPRs);
+  }
 };
 
 export default addPRsToDoc;
