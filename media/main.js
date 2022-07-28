@@ -47,30 +47,22 @@ function handleMessage(message) {
       addDailySummary(message.data);
       break;
     case "prs":
-      // all the context
+      // prs
+      webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
+      removeLoading(errorTimeout);
+      addPRsToDoc(message.data);
+      clampCodeBlocks();
+
+      // blame
+      webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
       let commitLink = undefined;
       if (message.owner && message.repo) {
         commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
       }
-      console.log("case prs message.data", message.data);
-      addContextToDoc(message.data, commitLink);
-
-      // // prs
-      // webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
-      // removeLoading(errorTimeout);
-      // addPRsToDoc(message.data);
-      // clampCodeBlocks();
-
-      // // blame
-      // webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
-      // let commitLink = undefined;
-      // if (message.owner && message.repo) {
-      //   commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
-      // }
-      // removeLoading(errorTimeout);
-      // addBlametoDoc(message.data, commitLink);
+      removeLoading(errorTimeout);
+      addBlametoDoc(message.data, commitLink);
       break;
-      // break;
+    // break;
     case "loading":
       webviewDebugLogger(`Received loading: ${JSON.stringify(message.data)}`);
       errorTimeout = setLoading(errorTimeout);
@@ -136,5 +128,4 @@ $(document).ready(function () {
   starWMRepo.addEventListener("click", (event) => {
     sendMessage({ command: "star" });
   });
-
 });
