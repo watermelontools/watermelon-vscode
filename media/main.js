@@ -5,10 +5,8 @@ import setReceivedError from "./utils/setReceivedError.js";
 import removeLoading from "./utils/removeLoading.js";
 import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
-import addSinglePRToDoc from "./utils/addSinglePRToDoc.js";
 import sendMessage from "./utils/sendVSCodeMessage.js";
 import addBlametoDoc from "./utils/addBlametoDoc.js";
-import addSingleBlametoDoc from "./utils/addSingleBlameToDoc.js";
 import addGHUserInfo from "./utils/addGHUserInfo.js";
 import addVersionToFooter from "./utils/addVersionToFooter.js";
 import addSessionToFooter from "./utils/addSessionToFooter.js";
@@ -47,7 +45,6 @@ function handleMessage(message) {
       addDailySummary(message.data);
       break;
     case "prs":
-      console.log("Received PRs: ", message.data);
       webviewDebugLogger((message.data), true);
       removeLoading(errorTimeout);
 
@@ -56,8 +53,11 @@ function handleMessage(message) {
       if (message.owner && message.repo) {
         commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
       }
-      addSingleBlametoDoc(message.data.uniqueBlames, commitLink);
-      addSinglePRToDoc(message.data.sortedPRs);
+      let sortedBlameArray = message.data.uniqueBlames.sort((a, b) => {
+        new Date(b.commitDate) - new Date(a.commitDate);
+      });
+      addBlametoDoc([sortedBlameArray[0]], commitLink);
+      addPRsToDoc([message.data.sortedPRs[0]]);
       clampCodeBlocks();
       break;
     case "loading":
