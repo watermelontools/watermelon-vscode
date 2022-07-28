@@ -13,6 +13,7 @@ import addVersionToFooter from "./utils/addVersionToFooter.js";
 import addSessionToFooter from "./utils/addSessionToFooter.js";
 import addDailySummary from "./utils/addDailySummary.js";
 import webviewDebugLogger from "./utils/webviewDebugLogger.js";
+import addActionButtons from "./utils/addActionButtons.js";
 
 let errorTimeout;
 
@@ -46,20 +47,22 @@ function handleMessage(message) {
       addDailySummary(message.data);
       break;
     case "prs":
-      // prs
-      webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       removeLoading(errorTimeout);
-      addPRsToDoc(message.data);
-      clampCodeBlocks();
 
+      // action buttons
+      addActionButtons();
       // blame
       webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
       let commitLink = undefined;
       if (message.owner && message.repo) {
         commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
       }
-      removeLoading(errorTimeout);
       addBlametoDoc(message.data, commitLink);
+      // prs
+      webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
+      addPRsToDoc(message.data);
+      clampCodeBlocks();
+
       break;
     // break;
     case "loading":

@@ -2,10 +2,8 @@ import replaceIssueLinks from "./replaceIssueLinks.js";
 import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
-import addActionButtons from "./addActionButtons.js";
 
 const addPRsToDoc = (prs) => {
-  addActionButtons();
   $("#ghHolder").append(`
   <h3>Pull Requests</h3>
   `);

@@ -1,9 +1,6 @@
-import addActionButtons from "./addActionButtons.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
-import replaceHyperlinks from "./replaceHyperlinks.js";
 
 const addBlametoDoc = (blameArray, commitLink) => {
-  addActionButtons();
   $("#ghHolder").append(`
     <h3>Commits</h3>
     `);
