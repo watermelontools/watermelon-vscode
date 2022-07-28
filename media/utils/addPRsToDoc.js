@@ -5,16 +5,16 @@ import parseComments from "./parseComments.js";
 import addActionButtons from "./addActionButtons.js";
 
 const addPRsToDoc = (prs) => {
-  
   addActionButtons();
   $("#ghHolder").append(`
   <h3>Pull Requests</h3>
   `);
   prs.forEach((pr, index) => {
-    let mdComments = "";
-    pr.comments.forEach((comment) => (mdComments += parseComments(comment)));
+    if (index === 0) {
+      let mdComments = "";
+      pr.comments.forEach((comment) => (mdComments += parseComments(comment)));
 
-    $("#ghHolder").append(`
+      $("#ghHolder").append(`
     <div class="anim-fade-in">
       <details ${!index ? "open" : ""}>
         <summary class="pr-title">
@@ -26,13 +26,13 @@ const addPRsToDoc = (prs) => {
               </div>
               <a 
               href="${pr.url}" target="_blank" title="View this PR on github">${
-              pr.title
-              }</a>
+        pr.title
+      }</a>
             </div>
           </div>
           <div class="icon-holder">${
             pr.state === "closed"
-            ? "<i class='codicon codicon-git-merge'></i>"
+              ? "<i class='codicon codicon-git-merge'></i>"
               : "<i class='codicon codicon-git-pull-request'></i>"
           }
           </div>
@@ -43,8 +43,8 @@ const addPRsToDoc = (prs) => {
               <a class="pr-author-combo" href="${
                 pr.userLink
               }"><img class='pr-author-img' src="${pr.userImage}" />${
-               pr.user
-              } </a>
+        pr.user
+      } </a>
             </p>
             <p class="pr-date">
                 on ${dateToHumanReadable(pr.created_at)}
@@ -53,8 +53,8 @@ const addPRsToDoc = (prs) => {
           <div class="Box-body">
             ${
               pr?.body
-                ? (
-                    replaceUserTags(marked.parse(pr.body, { gfm: true, breaks: true }))
+                ? replaceUserTags(
+                    marked.parse(pr.body, { gfm: true, breaks: true })
                   )
                 : ""
             }
@@ -64,6 +64,7 @@ const addPRsToDoc = (prs) => {
       </details>
     </div>
       `);
+    }
   });
 };
 

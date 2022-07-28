@@ -25,8 +25,10 @@ const addBlametoDoc = (blameArray, commitLink) => {
   blameArray.sort((a, b) => {
     return new Date(b.commitDate) - new Date(a.commitDate);
   });
+
   blameArray.forEach((blameLine, index) => {
-    $(".blame-rows").append(`
+    if (index === 0) {
+      $(".blame-rows").append(`
       <tr ${index % 2 === 1 ? 'class="Box-row--gray"' : ""}>
         <td>
         ${
@@ -38,10 +40,11 @@ const addBlametoDoc = (blameArray, commitLink) => {
         }
         </td>
         <td>${blameLine.authorName}</td>
-        <td>${(blameLine.message)}</td>
+        <td>${blameLine.message}</td>
         <td>${dateToHumanReadable(blameLine.commitDate)}</td>
       </tr>
       `);
+    }
   });
 };
 
