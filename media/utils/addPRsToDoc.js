@@ -61,12 +61,25 @@ const paintPRs = (prs) => {
       `);
   });
 };
+const addViewAllPRsButton = (allPRs) => {
+  $("#ghHolder").append(`
+    <div class="anim-fade-in">
+      <button class="btn btn-primary btn-sm" id="viewAllPRs">View all PRs</button>
+    </div>
+  `);
+  $("#viewAllPRs").on("click", (event) => {
+    paintPRs(allPRs);
+    $("#viewAllPRs").remove();
+  });
+};
+
 const addPRsToDoc = (allPRs) => {
   $("#ghHolder").append(`
   <h3>Pull Requests</h3>
   `);
   let firstPR = allPRs.shift();
   paintPRs([firstPR]);
+  addViewAllPRsButton(allPRs);
 };
 
 export default addPRsToDoc;
