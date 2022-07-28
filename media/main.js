@@ -2,7 +2,6 @@ while (!$) {
   console.log("no $");
 }
 import setReceivedError from "./utils/setReceivedError.js";
-import setLoading from "./utils/setLoading.js";
 import removeLoading from "./utils/removeLoading.js";
 import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
@@ -63,7 +62,6 @@ function handleMessage(message) {
       break;
     case "loading":
       webviewDebugLogger(`Received loading: ${JSON.stringify(message.data)}`);
-      errorTimeout = setLoading(errorTimeout);
       break;
     case "error":
       webviewDebugLogger(`Received error: ${JSON.stringify(message.data)}`);
