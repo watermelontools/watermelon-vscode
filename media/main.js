@@ -63,7 +63,6 @@ function handleMessage(message) {
       clampCodeBlocks();
 
       break;
-    // break;
     case "loading":
       webviewDebugLogger(`Received loading: ${JSON.stringify(message.data)}`);
       errorTimeout = setLoading(errorTimeout);
@@ -89,16 +88,6 @@ function handleMessage(message) {
       webviewDebugLogger(`Received session: ${JSON.stringify(message.data)}`);
       addSessionToFooter(message.data);
       break;
-    // case "blame":
-    //   console.log("case blame message.data ", message.data);
-    //   webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
-    //   let commitLink = undefined;
-    //   if (message.owner && message.repo) {
-    //     commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
-    //   }
-    //   removeLoading(errorTimeout);
-    //   addBlametoDoc(message.data, commitLink);
-    //   break;
     default:
       webviewDebugLogger(
         `Received unknown command: ${JSON.stringify(message)}`
@@ -117,14 +106,10 @@ $(document).ready(function () {
   });
 
   const button = document.getElementsByClassName("run-watermelon");
-  const gitBlame = document.getElementsByClassName("git-blame");
   const starWMRepo = document.getElementById("starWMRepo");
 
   button[0].addEventListener("click", (event) => {
     sendMessage({ command: "run" });
-  });
-  gitBlame[0].addEventListener("click", (event) => {
-    sendMessage({ command: "blame" });
   });
   starWMRepo.addEventListener("click", (event) => {
     sendMessage({ command: "star" });
