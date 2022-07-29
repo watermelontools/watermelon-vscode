@@ -14,8 +14,5 @@ const addActionButtons = () => {
   $(".run-watermelon").on("click", (event) => {
     sendMessage({ command: "run" });
   });
-  $(".whole-context-button").on("click", (event) => {
-    sendMessage({ command: "wholeContext" });
-  });
 };
 export default addActionButtons;

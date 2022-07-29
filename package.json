@@ -38,7 +38,6 @@
     "onCommand:watermelon.start",
     "onCommand:watermelon.blame",
     "onCommand:watermelon.show",
-    "onCommand:watermelon.wholeContext",
     "onWebviewPanel:watermelon",
     "onStartupFinished"
   ],
@@ -72,11 +71,6 @@
       {
         "command": "watermelon.recommend",
         "title": "Add Watermelon to recommended extensions",
-        "category": "watermelon"
-      },
-      {
-        "command": "watermelon.wholeContext",
-        "title": "Get the whole code context with Watermelon",
         "category": "watermelon"
       }
     ],
