@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Commit messages now allow markdown, including lists
 - Added a Draft PR indicator 
+- Sidebar UI reorganized to show a single commit and a single PR in a single view
 
 ## [1.4.6]
 
