@@ -4,7 +4,6 @@ import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
 
 const paintPRs = (prs) => {
-  console.log("paintPRs prs ", prs);
   prs.forEach((pr, index) => {
     let mdComments = "";
     pr.comments.forEach((comment) => (mdComments += parseComments(comment)));
