@@ -121,11 +121,11 @@ export async function activate(context: vscode.ExtensionContext) {
     );
   };
 
-  let wholeContextCommandHandler = async() => {
+  let wholeContextCommandHandler = async () => {
     console.log("whole context command handler");
 
     provider.sendMessage({
-      command: "wholeContext"
+      command: "wholeContext",
     });
   };
 
@@ -208,9 +208,11 @@ export async function activate(context: vscode.ExtensionContext) {
       let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
         (a: any, b: any) => b.comments.length - a.comments.length
       );
+      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+
       provider.sendMessage({
         command: "prs",
-        data: sortedPRs,
+        data: { sortedPRs, uniqueBlames },
       });
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
@@ -246,9 +248,11 @@ export async function activate(context: vscode.ExtensionContext) {
       let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
         (a: any, b: any) => b.comments.length - a.comments.length
       );
+      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+
       provider.sendMessage({
         command: "prs",
-        data: sortedPRs,
+        data: { sortedPRs, uniqueBlames },
       });
     }
   };
@@ -293,7 +297,7 @@ export async function activate(context: vscode.ExtensionContext) {
     ),
     vscode.commands.registerCommand(
       WATERMELON_WHOLE_CONTEXT_COMMAND,
-      wholeContextCommandHandler,
+      wholeContextCommandHandler
     ),
     vscode.commands.registerCommand(
       WATERMELON_LOGIN_COMMAND,

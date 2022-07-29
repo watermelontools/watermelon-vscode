@@ -48,7 +48,6 @@ function handleMessage(message) {
       break;
     case "prs":
       removeLoading(errorTimeout);
-
       // action buttons
       addActionButtons();
       // blame
@@ -57,10 +56,10 @@ function handleMessage(message) {
       if (message.owner && message.repo) {
         commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
       }
-      addBlametoDoc(message.data, commitLink);
+      addBlametoDoc(message.data.uniqueBlames, commitLink);
       // prs
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
-      addPRsToDoc(message.data);
+      addPRsToDoc(message.data.sortedPRs);
       clampCodeBlocks();
 
       break;
