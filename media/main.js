@@ -60,7 +60,6 @@ function handleMessage(message) {
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       addPRsToDoc(message.data.sortedPRs);
       clampCodeBlocks();
-
       break;
     case "loading":
       webviewDebugLogger(`Received loading: ${JSON.stringify(message.data)}`);
@@ -102,10 +101,8 @@ $(document).ready(function () {
     vscode.setState(message);
     handleMessage(message);
   });
-
   const button = document.getElementsByClassName("run-watermelon");
   const starWMRepo = document.getElementById("starWMRepo");
-
   button[0].addEventListener("click", (event) => {
     sendMessage({ command: "run" });
   });

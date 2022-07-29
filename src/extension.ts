@@ -129,7 +129,6 @@ export async function activate(context: vscode.ExtensionContext) {
       command: "loading",
     });
   };
-
   let prsCommandHandler = async (
     startLine = undefined,
     endLine = undefined
