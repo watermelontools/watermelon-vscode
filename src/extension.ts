@@ -137,13 +137,6 @@ export async function activate(context: vscode.ExtensionContext) {
     provider.sendMessage({
       command: "loading",
     });
-    let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-    provider.sendMessage({
-      command: "blame",
-      data: uniqueBlames,
-      owner,
-      repo,
-    });
   };
 
   let prsCommandHandler = async (

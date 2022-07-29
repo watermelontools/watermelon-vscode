@@ -58,11 +58,13 @@ const addBlametoDoc = (blameArray, commitLink) => {
       </tbody>
     </table>
     `);
-  const firstCommit = blameArray.shift();
-
+  let sortedBlameArray = blameArray.sort((a, b) => {
+    new Date(b.commitDate) - new Date(a.commitDate);
+  });
+  const firstCommit = sortedBlameArray.shift();
   paintBlameTable([firstCommit], commitLink);
-  if (blameArray.length > 0) {
-    addViewMoreCommitsButton(blameArray, commitLink);
+  if (sortedBlameArray.length > 0) {
+    addViewMoreCommitsButton(sortedBlameArray, commitLink);
   }
 };
 

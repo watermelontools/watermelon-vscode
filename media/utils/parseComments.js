@@ -22,11 +22,11 @@ function parseComments(comment) {
           <a href="${comment.user.html_url}" >  
           <img src="${comment.user.avatar_url}" class='pr-author-img'/>
             ${comment.user.login}
-          </a>  <span class="pr-date"> on ${dateToHumanReadable(comment.created_at)}</span>
+          </a>  <span class="pr-date"> on ${dateToHumanReadable(comment?.created_at)}</span>
           </h5>
         </div>
         <div class="Box-body markdown-body">
-      ${comment?.body ? replaceUserTags(marked.parse(comment.body, { gfm: true, breaks: true })) : ""}
+      ${comment.body ? replaceUserTags(marked.parse(comment.body, { gfm: true, breaks: true })) : ""}
         </div>
         </div>`;
   return mdComments;

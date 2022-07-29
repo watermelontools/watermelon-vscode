@@ -6,8 +6,9 @@ import parseComments from "./parseComments.js";
 const paintPRs = (prs) => {
   prs.forEach((pr, index) => {
     let mdComments = "";
-    pr.comments.forEach((comment) => (mdComments += parseComments(comment)));
-
+    if (pr.comments > 0) {
+      pr.comments?.forEach((comment) => (mdComments += parseComments(comment)));
+    }
     $("#ghHolder").append(`
     <div class="anim-fade-in">
       <details ${!index ? "open" : ""}>
@@ -25,7 +26,9 @@ const paintPRs = (prs) => {
             </div>
           </div>
           <div class="icon-holder">${
-            pr.state === "closed"
+            pr.draft
+              ? "<i class='codicon codicon-git-pull-request-draft'></i>"
+              : pr.state === "closed"
               ? "<i class='codicon codicon-git-merge'></i>"
               : "<i class='codicon codicon-git-pull-request'></i>"
           }
