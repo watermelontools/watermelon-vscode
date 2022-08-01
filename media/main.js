@@ -45,7 +45,7 @@ function handleMessage(message) {
       addDailySummary(message.data);
       break;
     case "prs":
-      webviewDebugLogger((message.data), true);
+      webviewDebugLogger((message.data));
       removeLoading(errorTimeout);
 
       webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
