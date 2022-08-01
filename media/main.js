@@ -60,9 +60,6 @@ function handleMessage(message) {
       addPRsToDoc([message.data.sortedPRs[0]]);
       clampCodeBlocks();
       break;
-    case "loading":
-      webviewDebugLogger(`Received loading: ${JSON.stringify(message.data)}`);
-      break;
     case "error":
       webviewDebugLogger(`Received error: ${JSON.stringify(message.data)}`);
       errorTimeout = setReceivedError(message.error.errorText, errorTimeout);
