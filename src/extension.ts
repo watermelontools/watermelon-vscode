@@ -128,13 +128,7 @@ export async function activate(context: vscode.ExtensionContext) {
     provider.sendMessage({
       command: "loading",
     });
-    let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-    provider.sendMessage({
-      command: "blame",
-      data: uniqueBlames,
-      owner,
-      repo,
-    });
+
   };
   let prsCommandHandler = async (
     startLine = undefined,
@@ -198,9 +192,11 @@ export async function activate(context: vscode.ExtensionContext) {
       let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
         (a: any, b: any) => b.comments.length - a.comments.length
       );
+    let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+
       provider.sendMessage({
         command: "prs",
-        data: sortedPRs,
+        data: {sortedPRs, uniqueBlames},
       });
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
@@ -236,9 +232,11 @@ export async function activate(context: vscode.ExtensionContext) {
       let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
         (a: any, b: any) => b.comments.length - a.comments.length
       );
+    let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+
       provider.sendMessage({
         command: "prs",
-        data: sortedPRs,
+        data: {sortedPRs, uniqueBlames},
       });
     }
   };
