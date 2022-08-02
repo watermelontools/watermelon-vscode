@@ -46,6 +46,7 @@ function handleMessage(message) {
       addDailySummary(message.data);
       break;
     case "prs":
+      webviewDebugLogger(message.data);
       removeLoading(errorTimeout);
       // action buttons
       addActionButtons();
@@ -60,9 +61,6 @@ function handleMessage(message) {
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       addPRsToDoc(message.data.sortedPRs);
       clampCodeBlocks();
-      break;
-    case "loading":
-      webviewDebugLogger(`Received loading: ${JSON.stringify(message.data)}`);
       break;
     case "error":
       webviewDebugLogger(`Received error: ${JSON.stringify(message.data)}`);
