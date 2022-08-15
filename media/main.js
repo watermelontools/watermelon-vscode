@@ -2,7 +2,6 @@ while (!$) {
   console.log("no $");
 }
 import setReceivedError from "./utils/setReceivedError.js";
-import setLoading from "./utils/setLoading.js";
 import removeLoading from "./utils/removeLoading.js";
 import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
@@ -46,14 +45,20 @@ function handleMessage(message) {
       addDailySummary(message.data);
       break;
     case "prs":
-      webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
+      webviewDebugLogger((message.data));
       removeLoading(errorTimeout);
-      addPRsToDoc(message.data);
+
+      webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
+      let commitLink = undefined;
+      if (message.owner && message.repo) {
+        commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
+      }
+      let sortedBlameArray = message.data.uniqueBlames.sort((a, b) => {
+        new Date(b.commitDate) - new Date(a.commitDate);
+      });
+      addBlametoDoc([sortedBlameArray[0]], commitLink);
+      addPRsToDoc([message.data.sortedPRs[0]]);
       clampCodeBlocks();
-      break;
-    case "loading":
-      webviewDebugLogger(`Received loading: ${JSON.stringify(message.data)}`);
-      errorTimeout = setLoading(errorTimeout);
       break;
     case "error":
       webviewDebugLogger(`Received error: ${JSON.stringify(message.data)}`);
@@ -75,15 +80,6 @@ function handleMessage(message) {
     case "session":
       webviewDebugLogger(`Received session: ${JSON.stringify(message.data)}`);
       addSessionToFooter(message.data);
-      break;
-    case "blame":
-      webviewDebugLogger(`Received blame: ${JSON.stringify(message.data)}`);
-      let commitLink = undefined;
-      if (message.owner && message.repo) {
-        commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
-      }
-      removeLoading(errorTimeout);
-      addBlametoDoc(message.data, commitLink);
       break;
     default:
       webviewDebugLogger(

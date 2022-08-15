@@ -59,8 +59,18 @@
         "category": "watermelon"
       },
       {
+        "command": "watermelon.login",
+        "title": "Login to watermelon using Github",
+        "category": "watermelon"
+      },
+      {
         "command": "watermelon.blame",
         "title": "Get Commit History with Watermelon",
+        "category": "watermelon"
+      },
+      {
+        "command": "watermelon.recommend",
+        "title": "Add Watermelon to recommended extensions",
         "category": "watermelon"
       }
     ],

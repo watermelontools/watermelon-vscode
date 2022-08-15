@@ -1,23 +1,13 @@
 import getNonce from "./utils/vscode/getNonce";
 import getInitialHTML from "./utils/vscode/getInitialHTML";
 import * as vscode from "vscode";
-import getGitAPI from "./utils/vscode/getGitAPI";
-import getLocalUser from "./utils/vscode/getLocalUser";
-import getSHAArray from "./utils/getSHAArray";
 import { Credentials } from "./credentials";
-import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
-import getRepoInfo from "./utils/vscode/getRepoInfo";
-import getBlame from "./utils/getBlame";
 import TelemetryReporter from "@vscode/extension-telemetry";
 import starWmRepo from "./utils/github/starWmRepo";
-
-// repo information
-let owner: string | undefined = "";
-let repo: string | undefined = "";
-// user information
-let localUser: string | undefined = "";
-// selected shas
-let arrayOfSHAs: string[] = [];
+import {
+  WATERMELON_HISTORY_COMMAND,
+  WATERMELON_PULLS_COMMAND,
+} from "./constants";
 
 let octokit: any;
 /**
@@ -52,52 +42,14 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
     webviewView.webview.onDidReceiveMessage(async (data) => {
-      let gitAPI = await getGitAPI();
-      let repoInfo = await getRepoInfo({});
-      localUser = await getLocalUser();
-      repo = repoInfo?.repo;
-      owner = repoInfo?.owner;
       switch (data.command) {
         case "run": {
           this.sendMessage({
             command: "loading",
           });
-          const credentials = new Credentials();
-          await credentials.initialize(this._context);
-          octokit = await credentials.getOctokit();
-
-          if (!arrayOfSHAs.length) {
-            arrayOfSHAs = await getSHAArray(
-              1,
-              vscode.window.activeTextEditor?.document.lineCount ?? 2,
-              vscode.window.activeTextEditor?.document.uri.fsPath,
-              gitAPI
-            );
-          }
-          let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-            arrayOfSHAs,
-            octokit,
-            owner,
-            repo,
-          });
-          if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-            return this.sendMessage({
-              command: "error",
-              error: issuesWithTitlesAndGroupedComments,
-            });
-          }
-          // @ts-ignore
-          let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-            (a: any, b: any) => b.comments.length - a.comments.length
-          );
-
+          vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
           // Send Event to VSC Telemtry Library
           this.reporter?.sendTelemetryEvent("pullRequests");
-
-          this.sendMessage({
-            command: "prs",
-            data: sortedPRs,
-          });
           break;
         }
         case "blame": {
@@ -107,13 +59,8 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           this.sendMessage({
             command: "loading",
           });
-          let uniqueBlames = await getBlame(gitAPI);
-          this.sendMessage({
-            command: "blame",
-            data: uniqueBlames,
-            owner,
-            repo,
-          });
+          vscode.commands.executeCommand(WATERMELON_HISTORY_COMMAND);
+
           break;
         }
         case "star": {

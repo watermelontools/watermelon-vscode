@@ -15,18 +15,19 @@ export default async function getPRsToPaintPerSHAs({
   repo?: string;
 }): Promise<
   | {
-    user: any;
-    userImage: string;
-    userLink: string;
-    title: string;
-    comments: any[];
-    created_at: any;
-    body: string;
-    avatar: string;
-    url: string;
-    repo_url: string;
-    state: string;
-  }[]
+      user: any;
+      userImage: string;
+      userLink: string;
+      title: string;
+      comments: any[];
+      created_at: any;
+      body: string;
+      avatar: string;
+      url: string;
+      repo_url: string;
+      state: string;
+      draft: boolean;
+    }[]
   | { errorText: string }
 > {
   // takes the first 22 shas and creates a list to send to the gh api
@@ -38,7 +39,7 @@ export default async function getPRsToPaintPerSHAs({
 
   let foundPRs = await getPRsPerSHAS({
     octokit,
-    repo: repo?? "",
+    repo: repo ?? "",
     owner,
     shaArray: joinedArrayOfSHAs,
   });
@@ -60,6 +61,7 @@ export default async function getPRsToPaintPerSHAs({
     url: string;
     repo_url: string;
     state: string;
+    draft: boolean;
   }[] = [];
 
   let prPromises = foundPRs.map(async (issue: { url: any }) => {
@@ -80,6 +82,7 @@ export default async function getPRsToPaintPerSHAs({
         avatar: issueData.user.avatar_url,
         repo_url: issueData.repository_url,
         state: issueData.state,
+        draft: issueData.draft,
         comments: comments.map((comment: any) => {
           return comment;
         }),

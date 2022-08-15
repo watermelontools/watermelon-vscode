@@ -17,15 +17,17 @@ import statusBarItem, {
 import hover from "./utils/components/hover";
 import getDailySummary from "./utils/github/getDailySummary";
 import {
+  WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
   WATERMELON_HISTORY_COMMAND,
+  WATERMELON_LOGIN_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
+  WATERMELON_OPEN_LINK_COMMAND,
   WATERMELON_PULLS_COMMAND,
   WATERMELON_SELECT_COMMAND,
   WATERMELON_SHOW_COMMAND,
 } from "./constants";
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
-import showCommandHandler from "./utils/commands/show";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
 
@@ -87,6 +89,36 @@ export async function activate(context: vscode.ExtensionContext) {
   // create the hover provider
   let wmHover = hover({ reporter });
 
+  let loginCommandHandler = async () => {
+    const credentials = new Credentials();
+    debugLogger(`got credentials`);
+    await credentials.initialize(context);
+    debugLogger("intialized credentials");
+    octokit = await credentials.getOctokit();
+    let githubUserInfo = await getGitHubUserInfo({ octokit });
+    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
+    let username = githubUserInfo.login;
+    context.globalState.update("startupState", { username });
+    reporter?.sendTelemetryEvent("githubUserInfo", { username });
+    provider.sendMessage({
+      command: "user",
+      data: {
+        login: githubUserInfo.login,
+        avatar: githubUserInfo.avatar_url,
+      },
+    });
+    if (credentials) {
+      setLoggedIn(true);
+      reporter?.sendTelemetryEvent("login");
+      updateStatusBarItem(wmStatusBarItem);
+    }
+  };
+  let addToRecommendedCommandHandler = async () => {
+    vscode.commands.executeCommand(
+      "workbench.extensions.action.addExtensionToWorkspaceRecommendations",
+      "WatermelonTools.watermelon-tools"
+    );
+  };
 
   let historyCommandHandler = async (
     startLine = undefined,
@@ -96,13 +128,7 @@ export async function activate(context: vscode.ExtensionContext) {
     provider.sendMessage({
       command: "loading",
     });
-    let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-    provider.sendMessage({
-      command: "blame",
-      data: uniqueBlames,
-      owner,
-      repo,
-    });
+
   };
   let prsCommandHandler = async (
     startLine = undefined,
@@ -166,9 +192,11 @@ export async function activate(context: vscode.ExtensionContext) {
       let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
         (a: any, b: any) => b.comments.length - a.comments.length
       );
+    let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+
       provider.sendMessage({
         command: "prs",
-        data: sortedPRs,
+        data: {sortedPRs, uniqueBlames},
       });
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
@@ -204,13 +232,32 @@ export async function activate(context: vscode.ExtensionContext) {
       let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
         (a: any, b: any) => b.comments.length - a.comments.length
       );
+    let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+
       provider.sendMessage({
         command: "prs",
-        data: sortedPRs,
+        data: {sortedPRs, uniqueBlames},
       });
     }
   };
-
+  let showCommandHandler = async () => {
+    vscode.commands.executeCommand("watermelon.sidebar.focus");
+    reporter?.sendTelemetryEvent("showCommand");
+  };
+  let linkCommandHandler = async ({
+    url,
+    source,
+  }: {
+    url: string;
+    source?: string;
+  }) => {
+    vscode.commands.executeCommand("watermelon.sidebar.focus");
+    vscode.commands.executeCommand("vscode.open", vscode.Uri.parse(url));
+    reporter?.sendTelemetryEvent("linkCommand", {
+      url,
+      source: source || "unknown",
+    });
+  };
   context.subscriptions.push(
     vscode.commands.registerCommand(
       WATERMELON_SHOW_COMMAND,
@@ -231,6 +278,18 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       WATERMELON_HISTORY_COMMAND,
       historyCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_LOGIN_COMMAND,
+      loginCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
+      addToRecommendedCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_OPEN_LINK_COMMAND,
+      linkCommandHandler
     )
   );
 
@@ -298,7 +357,7 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
   }
-  let repoInfo = await getRepoInfo({reporter});
+  let repoInfo = await getRepoInfo({ reporter });
   repo = repoInfo?.repo;
   owner = repoInfo?.owner;
   debugLogger(`repo: ${repo}`);

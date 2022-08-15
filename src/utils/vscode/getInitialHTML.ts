@@ -52,7 +52,7 @@ export default function getInitialHTML(
          connect-src ${connectSources.join(" ")}">
          <meta name="viewport" content="width=device-width, initial-scale=1.0">
          <meta charset="UTF-8">
-        <link href="${stylesMainUri}" rel="stylesheet">
+        <link href="${stylesMainUri}" rel="stylesheet"/>
         <link href="${codiconsUri}" rel="stylesheet" />
      </head>
      <body data-color-mode="dark" data-light-theme="light" data-dark-theme="dark">
@@ -112,10 +112,8 @@ export default function getInitialHTML(
         <br/>
         <div id="ghHolder">
            <p>Higlight a piece of code to start.</p>
-           <p>We will fetch the commit history for you to understand the context of the code</p>
-           <button class='git-blame btn btn-primary' type='button'>View Commit History</button>
            <p>Click this button to enrich your code with relevant information from GitHub:</p>
-           <button class='run-watermelon btn btn-primary' type='button'>View Pull Requests</button>
+           <button class='run-watermelon btn btn-primary' type='button'>Get Code Context</button>
            <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a>, by selecting and right clicking on the selection or by using our <a href="https://github.com/watermelontools/wm-extension#shortcuts"><kbd>keyboard</kbd> shortcuts</a>.</p>
         </div>
         <h2>Daily Summary</h2>
