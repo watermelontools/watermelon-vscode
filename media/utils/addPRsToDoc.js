@@ -3,11 +3,7 @@ import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
 
-const addPRsToDoc = (prs) => {
-
-  $("#ghHolder").append(`
-  <h3>Most Relevant PR</h3>
-  `);
+const paintPRs = (prs) => {
   prs.forEach((pr, index) => {
     let mdComments = "";
     if (pr.comments > 0) {
@@ -66,6 +62,28 @@ const addPRsToDoc = (prs) => {
     </div>
       `);
   });
+};
+const addViewAllPRsButton = (allPRs) => {
+  $("#ghHolder").append(`
+    <div class="anim-fade-in">
+      <button class="btn btn-primary btn-sm" id="viewAllPRs">View all PRs</button>
+    </div>
+  `);
+  $("#viewAllPRs").on("click", (event) => {
+    paintPRs(allPRs);
+    $("#viewAllPRs").remove();
+  });
+};
+
+const addPRsToDoc = (allPRs) => {
+  $("#ghHolder").append(`
+  <h3>Pull Requests</h3>
+  `);
+  let firstPR = allPRs.shift();
+  paintPRs([firstPR]);
+  if (allPRs.length > 0) {
+    addViewAllPRsButton(allPRs);
+  }
 };
 
 export default addPRsToDoc;
