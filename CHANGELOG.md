@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.5.1]
 
-- Allows the user to see more than one co mmit and PR when requested
+- Allows the user to see more than one commit and PR when requested
 
 ## [1.5.0]
 
