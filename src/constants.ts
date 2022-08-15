@@ -14,7 +14,6 @@ export const EXTENSION_ID = "WatermelonTools.watermelon-tools";
 // Commands
 export const WATERMELON_SHOW_COMMAND = "watermelon.show";
 export const WATERMELON_PULLS_COMMAND = "watermelon.start";
-export const WATERMELON_HISTORY_COMMAND = "watermelon.blame";
 export const WATERMELON_SELECT_COMMAND = "watermelon.select";
 export const WATERMELON_MULTI_SELECT_COMMAND = "watermelon.multiSelect";
 export const WATERMELON_LOGIN_COMMAND = "watermelon.login";
