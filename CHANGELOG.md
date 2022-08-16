@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.5.1]
+
+- Talk to the CTO button
+
 ## [1.5.0]
 
 - Commit messages now allow markdown, including lists
