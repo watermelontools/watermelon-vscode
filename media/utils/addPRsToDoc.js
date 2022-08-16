@@ -66,7 +66,7 @@ const paintPRs = (prs) => {
 const addViewAllPRsButton = (allPRs) => {
   $("#ghHolder").append(`
     <div class="anim-fade-in">
-      <button class="btn btn-primary btn-sm" id="viewAllPRs">View all PRs</button>
+      <button class="btn btn-primary btn-sm" id="viewAllPRs">View More Pull Requests</button>
     </div>
   `);
   $("#viewAllPRs").on("click", (event) => {

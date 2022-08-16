@@ -4,7 +4,6 @@ import * as assert from "assert";
 // as well as import your extension to test it
 import * as vscode from "vscode";
 import {
-  WATERMELON_HISTORY_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
   WATERMELON_PULLS_COMMAND,
   WATERMELON_SELECT_COMMAND,
@@ -58,7 +57,6 @@ suite("Watermelon extension tests", () => {
           WATERMELON_SELECT_COMMAND,
           WATERMELON_MULTI_SELECT_COMMAND,
           WATERMELON_PULLS_COMMAND,
-          WATERMELON_HISTORY_COMMAND,
         ];
 
         assert.strictEqual(
