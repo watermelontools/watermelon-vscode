@@ -104,7 +104,10 @@ export default function getInitialHTML(
        </div>
        <div class="Box-row Box-row--hover-gray">
        <a href="https://discord.gg/xNDFXx9447">Join us on Discord</a>
-     </div>
+      </div>
+      <div class="Box-row Box-row--hover-gray">
+        <a href="https://cal.pv.dev/esteban-dalel-watermelon-tools/half-hour-chat">Talk to the CTO</a>
+      </div>
       </details>
      </div>
         <p>Watermelon helps you get the context of your code.</p>
