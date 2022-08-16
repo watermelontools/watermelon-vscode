@@ -241,6 +241,14 @@ export async function activate(context: vscode.ExtensionContext) {
   };
   let showCommandHandler = async () => {
     vscode.commands.executeCommand("watermelon.sidebar.focus");
+
+    // Save on local storage the current state of the count for watermelon sidebar opens
+    const retrievedOpeningCountValue = context.globalState.get<Number>("sidebarOpeningCount");
+    // If show hasn't been called yet, retrieve 0, then increase it to 1 to store such value
+    let retrievedValue = retrievedOpeningCountValue?.valueOf() || 0;
+    let increasedValue = retrievedValue + 1;
+    context.globalState.update("sidebarOpeningCount", increasedValue);
+
     reporter?.sendTelemetryEvent("showCommand");
   };
   let linkCommandHandler = async ({

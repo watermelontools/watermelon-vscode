@@ -2,6 +2,7 @@ import sendMessage from "./sendVSCodeMessage.js";
 
 const addActionButtons = () => {
   $("#ghHolder").append(`<p>Higlight a piece of code to start.</p>`);
+  // $("#ghHolder").append(`<p>Retrieved memento: ${stateValue}</p>`);
   $("#ghHolder").append(
     `
     <div class="anim-fade-in">
