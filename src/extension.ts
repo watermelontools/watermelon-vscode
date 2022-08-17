@@ -230,6 +230,17 @@ export async function activate(context: vscode.ExtensionContext) {
     }
   };
   let showCommandHandler = async () => {
+    // @ts-ignore
+    context.globalState.update("ja", context.globalState.get("ja") + 1);
+    if (
+      context.globalState.get<number>("ja") &&
+      // @ts-ignore
+      context.globalState.get<Number>("ja") % 3 === 0
+    ) {
+      provider.sendMessage({
+        command: "talkToCTO",
+      });
+    }
     vscode.commands.executeCommand("watermelon.sidebar.focus");
     reporter?.sendTelemetryEvent("showCommand");
   };
@@ -295,6 +306,7 @@ export async function activate(context: vscode.ExtensionContext) {
     debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
     let username = githubUserInfo.login;
     context.globalState.update("startupState", { username });
+    context.globalState.update("ja", 0);
     reporter?.sendTelemetryEvent("githubUserInfo", { username });
     let isStarred = await checkIfUserStarred({ octokit });
 
