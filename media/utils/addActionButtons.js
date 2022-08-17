@@ -1,8 +1,13 @@
 import sendMessage from "./sendVSCodeMessage.js";
 
 const addActionButtons = () => {
+  let sidebarOpeningCount = 3;
+  let ctoData = `<p></p>`;
+  if (sidebarOpeningCount % 3 === 0) {
+    ctoData = `<p>Wanna give us feedback? <a href="https://cal.pv.dev/esteban-dalel-watermelon-tools/half-hour-chat">Talk to the CTO</a></p>`;
+  }
+  $('#ghHolder').append(ctoData);
   $("#ghHolder").append(`<p>Higlight a piece of code to start.</p>`);
-  // $("#ghHolder").append(`<p>Retrieved memento: ${stateValue}</p>`);
   $("#ghHolder").append(
     `
     <div class="anim-fade-in">
