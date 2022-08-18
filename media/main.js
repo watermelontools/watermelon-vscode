@@ -33,7 +33,7 @@ Sentry.init({
 });
 
 function handleMessage(message) {
-  webviewDebugLogger(message.command, true);
+  webviewDebugLogger(message.command);
   switch (message.command) {
     case "user":
       webviewDebugLogger(`Received user: ${JSON.stringify(message.user)}`);
@@ -85,7 +85,7 @@ function handleMessage(message) {
       break;
     case "talkToCTO":
       $(".action-buttons").append(
-        `<a href="https://cal.pv.dev/esteban-dalel-watermelon-tools/half-hour-chat">Talk to the CTO</a>`
+        `<p>Wanna give us feedback? <a href="https://cal.pv.dev/esteban-dalel-watermelon-tools/half-hour-chat">Talk to the CTO</a></p>`
       );
 
       break;
