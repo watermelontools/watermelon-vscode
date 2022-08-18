@@ -4,10 +4,7 @@ import * as vscode from "vscode";
 import { Credentials } from "./credentials";
 import TelemetryReporter from "@vscode/extension-telemetry";
 import starWmRepo from "./utils/github/starWmRepo";
-import {
-  WATERMELON_HISTORY_COMMAND,
-  WATERMELON_PULLS_COMMAND,
-} from "./constants";
+import { WATERMELON_PULLS_COMMAND } from "./constants";
 
 let octokit: any;
 /**
@@ -50,17 +47,6 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
           // Send Event to VSC Telemtry Library
           this.reporter?.sendTelemetryEvent("pullRequests");
-          break;
-        }
-        case "blame": {
-          // Send Event to VSC Telemtry Library
-          this.reporter?.sendTelemetryEvent("viewBlame");
-
-          this.sendMessage({
-            command: "loading",
-          });
-          vscode.commands.executeCommand(WATERMELON_HISTORY_COMMAND);
-
           break;
         }
         case "star": {

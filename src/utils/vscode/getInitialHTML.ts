@@ -111,10 +111,7 @@ export default function getInitialHTML(
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">⭐starring Watermelon on GitHub</a></p>
         <br/>
         <div id="ghHolder">
-           <p>Higlight a piece of code to start.</p>
-           <p>Click this button to enrich your code with relevant information from GitHub:</p>
            <button class='run-watermelon btn btn-primary' type='button'>Get Code Context</button>
-           <p>Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our watermelon.start command</a>, by selecting and right clicking on the selection or by using our <a href="https://github.com/watermelontools/wm-extension#shortcuts"><kbd>keyboard</kbd> shortcuts</a>.</p>
         </div>
         <h2>Daily Summary</h2>
         <div id="dailySummary"></div>

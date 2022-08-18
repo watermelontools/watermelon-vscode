@@ -14,8 +14,5 @@ const addActionButtons = () => {
   $(".run-watermelon").on("click", (event) => {
     sendMessage({ command: "run" });
   });
-  $(".git-blame").on("click", (event) => {
-    sendMessage({ command: "blame" });
-  });
 };
 export default addActionButtons;

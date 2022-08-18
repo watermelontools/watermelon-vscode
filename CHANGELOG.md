@@ -4,10 +4,14 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.5.1]
+
+- Allows the user to see more than one commit and PR when requested
+
 ## [1.5.0]
 
 - Commit messages now allow markdown, including lists
-- Added a Draft PR indicator 
+- Added a Draft PR indicator
 - Sidebar UI reorganized to show a single commit and a single PR in a single view
 
 ## [1.4.6]

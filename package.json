@@ -36,7 +36,6 @@
   },
   "activationEvents": [
     "onCommand:watermelon.start",
-    "onCommand:watermelon.blame",
     "onCommand:watermelon.show",
     "onWebviewPanel:watermelon",
     "onStartupFinished"
@@ -50,7 +49,7 @@
     "commands": [
       {
         "command": "watermelon.start",
-        "title": "Get Pull Requests with Watermelon",
+        "title": "Get Code Context with Watermelon",
         "category": "watermelon"
       },
       {
@@ -61,11 +60,6 @@
       {
         "command": "watermelon.login",
         "title": "Login to watermelon using Github",
-        "category": "watermelon"
-      },
-      {
-        "command": "watermelon.blame",
-        "title": "Get Commit History with Watermelon",
         "category": "watermelon"
       },
       {
@@ -104,10 +98,6 @@
         {
           "command": "watermelon.start",
           "when": "editorHasSelection"
-        },
-        {
-          "command": "watermelon.blame",
-          "when": "editorHasSelection"
         }
       ]
     },
@@ -116,12 +106,6 @@
         "command": "watermelon.start",
         "key": "ctrl+shift+C",
         "mac": "cmd+shift+C",
-        "when": "editorHasSelection"
-      },
-      {
-        "command": "watermelon.blame",
-        "key": "ctrl+shift+H",
-        "mac": "cmd+shift+H",
         "when": "editorHasSelection"
       }
     ],

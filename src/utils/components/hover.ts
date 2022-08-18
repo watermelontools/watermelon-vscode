@@ -1,7 +1,6 @@
 import TelemetryReporter from "@vscode/extension-telemetry";
 import * as vscode from "vscode";
 import {
-  WATERMELON_HISTORY_COMMAND,
   WATERMELON_OPEN_LINK_COMMAND,
   WATERMELON_PULLS_COMMAND,
 } from "../../constants";
@@ -30,11 +29,6 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
           JSON.stringify(args)
         )}`
       );
-      const blameCommandUri = vscode.Uri.parse(
-        `command:${WATERMELON_HISTORY_COMMAND}?${encodeURIComponent(
-          JSON.stringify(args)
-        )}`
-      );
       const mailtoLinkCommandUri = vscode.Uri.parse(
         `command:${WATERMELON_OPEN_LINK_COMMAND}?${encodeURIComponent(
           JSON.stringify({
@@ -55,10 +49,6 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       );
       content.appendMarkdown(`\n`);
       content.appendMarkdown(latestCommit.message);
-      content.appendMarkdown(`\n\n`);
-      content.appendMarkdown(
-        `$(git-commit)[View the history for this line](${blameCommandUri}) with Watermelon 🍉`
-      );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
         `This file has changed ${numberOfFileChanges} time${getPlural(
