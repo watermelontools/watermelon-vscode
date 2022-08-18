@@ -5,8 +5,10 @@ const addActionButtons = () => {
   $("#ghHolder").append(
     `
     <div class="anim-fade-in">
+    <div class="action-buttons">
       <p>Click this button to enrich your code with relevant information from GitHub:</p>
       <button class="run-watermelon btn btn-primary" type="button">Get Code Context</button>
+    </div>
     </div>
     `
   );
