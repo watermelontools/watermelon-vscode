@@ -13,6 +13,7 @@ We deeply thank our sponsors, no matter the size of their donation. Here's a lis
 - imarquezc
 - smargozzini
 - cortesvictorhh
+- kchaxcer
 
 ## Subscription
 
