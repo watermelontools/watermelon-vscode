@@ -15,3 +15,4 @@ We deeply thank our sponsors, no matter the size of their donation. Here's a lis
 - kchaxcer
 - pyankoff
 - UchennaOkafor
+- dugdaniels
