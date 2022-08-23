@@ -54,7 +54,7 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       content.appendMarkdown(latestCommit.message.split("\n")[1] || "");
       content.appendMarkdown(`\n\n`);
       if (latestCommit.message.split("\n").length > 2) {
-        content.appendMarkdown(`(git-commit)[See the other ${latestCommit.message.split("\n").length - 2} commit message lines](${startCommandUri})`);
+        content.appendMarkdown(`$(git-commit)[See the other ${latestCommit.message.split("\n").length - 2} commit message lines](${startCommandUri})`);
         content.appendMarkdown(`\n\n`);
       }
       content.appendMarkdown(
