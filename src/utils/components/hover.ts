@@ -38,8 +38,9 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
         )}`
       );
       const content = new vscode.MarkdownString(
-        `$(git-pull-request)[Understand the code context](${startCommandUri}) with Watermelon 🍉`
-      );
+        `$(github-inverted)[ View the code context](${startCommandUri}) with Watermelon 🍉`
+        );
+      
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
         `The latest commit was made by [$(mail)${
@@ -48,8 +49,14 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
         `
       );
       content.appendMarkdown(`\n`);
-      content.appendMarkdown(latestCommit.message);
+      content.appendMarkdown(latestCommit.message.split("\n")[0]);
       content.appendMarkdown(`\n\n`);
+      content.appendMarkdown(latestCommit.message.split("\n")[1] || "");
+      content.appendMarkdown(`\n\n`);
+      if (latestCommit.message.split("\n").length > 2) {
+        content.appendMarkdown(`$(git-commit)[See the other ${latestCommit.message.split("\n").length - 2} commit message lines](${startCommandUri})`);
+        content.appendMarkdown(`\n\n`);
+      }
       content.appendMarkdown(
         `This file has changed ${numberOfFileChanges} time${getPlural(
           numberOfFileChanges
