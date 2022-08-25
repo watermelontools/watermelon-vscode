@@ -43,7 +43,7 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
             <td>
              <a style="color:#fff;background-color:#238636;" href="${startCommandUri}">
                  <span style="color:#fff;background-color:#238636;">
-                  &nbsp;$(github-inverted)View the code context with Watermelon 🍉&nbsp;
+                  <strong>&nbsp;$(github-inverted)View the code context with Watermelon 🍉&nbsp;</strong>
                 </span> 
               </a>
              </td>
