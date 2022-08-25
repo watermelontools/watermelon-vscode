@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.5.2]
 
 - Will show the user a prompt to talk to the CTO every third use
+- The hover link will look more like a button
 
 ## [1.5.1]
 
