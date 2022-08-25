@@ -38,9 +38,19 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
         )}`
       );
       const content = new vscode.MarkdownString(
-        `$(github-inverted)[ View the code context](${startCommandUri}) with Watermelon 🍉`
-        );
-      
+        `<table>
+          <tr>
+            <td>
+             <a style="color:#fff;background-color:#238636;" href="${startCommandUri}">
+                 <span style="color:#fff;background-color:#238636;">
+                  &nbsp;$(github-inverted)View the code context with Watermelon 🍉&nbsp;
+                </span> 
+              </a>
+             </td>
+           </tr>
+         </table>
+        `
+      );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
         `The latest commit was made by [$(mail)${
@@ -54,7 +64,11 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       content.appendMarkdown(latestCommit.message.split("\n")[1] || "");
       content.appendMarkdown(`\n\n`);
       if (latestCommit.message.split("\n").length > 2) {
-        content.appendMarkdown(`$(git-commit)[See the other ${latestCommit.message.split("\n").length - 2} commit message lines](${startCommandUri})`);
+        content.appendMarkdown(
+          `$(git-commit)[See the other ${
+            latestCommit.message.split("\n").length - 2
+          } commit message lines](${startCommandUri})`
+        );
         content.appendMarkdown(`\n\n`);
       }
       content.appendMarkdown(
