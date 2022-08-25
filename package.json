@@ -29,7 +29,7 @@
     "Blame",
     "Git"
   ],
-  "icon": "images/logo.png",
+  "icon": "images/logoTransparentBackground.png",
   "galleryBanner": {
     "color": "#db6161",
     "theme": "dark"
