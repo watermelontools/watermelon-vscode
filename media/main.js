@@ -5,6 +5,7 @@ import setReceivedError from "./utils/setReceivedError.js";
 import removeLoading from "./utils/removeLoading.js";
 import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
+import addJiraTicketsToDailySummary from "./utils/addJiraTicketsToDailySummary.js";
 import sendMessage from "./utils/sendVSCodeMessage.js";
 import addBlametoDoc from "./utils/addBlametoDoc.js";
 import addGHUserInfo from "./utils/addGHUserInfo.js";
@@ -60,6 +61,7 @@ function handleMessage(message) {
       // prs
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       addPRsToDoc(message.data.sortedPRs);
+      addJiraTicketsToDailySummary(message.data.sortedPRs[0].title);
       clampCodeBlocks();
       break;
     case "error":
