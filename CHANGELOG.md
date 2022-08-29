@@ -4,6 +4,11 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.5.2]
+
+- Will show the user a prompt to talk to the CTO every third use
+- The hover link will look more like a button
+
 ## [1.5.1]
 
 - Allows the user to see more than one commit and PR when requested

@@ -103,7 +103,7 @@ export default function getInitialHTML(
        <a href="https://github.com/watermelontools/wm-extension/issues">Send an Issue</a>
        </div>
        <div class="Box-row Box-row--hover-gray">
-       <a href="https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q">Join us on Slack</a>
+       <a href="https://discord.com/invite/xNDFXx9447">Join us on Discord</a>
      </div>
       </details>
      </div>
