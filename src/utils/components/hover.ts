@@ -37,19 +37,14 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
           })
         )}`
       );
-      const content = new vscode.MarkdownString(
-        `<table>
-          <tr>
-            <td>
-             <a style="color:#fff;background-color:#238636;" href="${startCommandUri}">
-                 <span style="color:#fff;background-color:#238636;">
-                  <strong>&nbsp;$(github-inverted)View the code context with Watermelon 🍉&nbsp;</strong>
-                </span> 
-              </a>
-             </td>
-           </tr>
-         </table>
-        `
+      const content: vscode.MarkdownString = new vscode.MarkdownString(
+        `<strong>
+          <a href="${startCommandUri}">
+            <span style="color:#fff;background-color:#238636;">
+              &nbsp;$(github-inverted)View the code context with Watermelon 🍉&nbsp;&nbsp;
+            </span>
+          </a>
+        </strong>`
       );
       content.appendMarkdown(`\n\n`);
       content.appendMarkdown(
