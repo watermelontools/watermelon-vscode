@@ -1,7 +1,7 @@
 {
   "name": "watermelon-tools",
   "description": "Watermelon, find all the historical context of your code",
-  "version": "1.4.5",
+  "version": "1.5.1",
   "publisher": "WatermelonTools",
   "displayName": "Watermelon",
   "private": true,
@@ -29,7 +29,7 @@
     "Blame",
     "Git"
   ],
-  "icon": "images/logo.png",
+  "icon": "images/logoTransparentBackground.png",
   "galleryBanner": {
     "color": "#db6161",
     "theme": "dark"
