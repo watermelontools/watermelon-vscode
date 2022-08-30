@@ -115,6 +115,7 @@ export default function getInitialHTML(
         </div>
         <h2>Daily Summary</h2>
         <div id="dailySummary"></div>
+        <div id="jiraHolder"></div>
         You will find all your issues and ToDos here. 
 
      </body>
