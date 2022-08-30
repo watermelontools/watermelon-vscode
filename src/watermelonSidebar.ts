@@ -4,7 +4,10 @@ import * as vscode from "vscode";
 import { Credentials } from "./credentials";
 import TelemetryReporter from "@vscode/extension-telemetry";
 import starWmRepo from "./utils/github/starWmRepo";
-import { WATERMELON_PULLS_COMMAND } from "./constants";
+import {
+  WATERMELON_LOGIN_COMMAND,
+  WATERMELON_PULLS_COMMAND,
+} from "./constants";
 
 let octokit: any;
 /**
@@ -62,6 +65,12 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
         case "link": {
           this.reporter?.sendTelemetryEvent(data.source, { link: data.link });
           vscode.env.openExternal(vscode.Uri.parse(data.link));
+          break;
+        }
+        case "login": {
+          vscode.commands.executeCommand(WATERMELON_LOGIN_COMMAND);
+          this.reporter?.sendTelemetryEvent("login");
+          vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
           break;
         }
         default: {

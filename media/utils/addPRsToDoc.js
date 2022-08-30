@@ -1,4 +1,4 @@
-import replaceIssueLinks from "./replaceIssueLinks.js";
+import sendMessage from "./sendVSCodeMessage.js";
 import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
@@ -79,6 +79,17 @@ const addPRsToDoc = (allPRs) => {
   $("#ghHolder").append(`
   <h3>Pull Requests</h3>
   `);
+  if (allPRs.error) {
+    $("#ghHolder").append(`
+    <p>You are not logged in to GitHub</p>
+    <button class="login-watermelon btn" type="button">Get Code Context</button>
+    `);
+
+    $(".login-watermelon").on("click", (event) => {
+      sendMessage({ command: "login" });
+    });
+    return;
+  }
   let firstPR = allPRs.shift();
   paintPRs([firstPR]);
   if (allPRs.length > 0) {
