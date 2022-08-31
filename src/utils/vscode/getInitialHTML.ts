@@ -114,8 +114,9 @@ export default function getInitialHTML(
            <button class='run-watermelon btn btn-primary' type='button'>Get Code Context</button>
         </div>
         <h2>Daily Summary</h2>
-        <div id="dailySummary"></div>
         <div id="jiraHolder"></div>
+        <br/>
+        <div id="dailySummary"></div>
         You will find all your issues and ToDos here. 
 
      </body>

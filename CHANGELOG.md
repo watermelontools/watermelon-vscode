@@ -4,8 +4,7 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-# [1.5.2]
-- Hover context box enhancements
+# [1.6.0]
 - Daily summary now shows currently open Jira tickets that are assigned to the user
 
 ## [1.5.1]
