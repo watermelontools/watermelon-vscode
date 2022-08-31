@@ -47,6 +47,12 @@
   "main": "./out/extension.js",
   "browser": "./out/extension.js",
   "contributes": {
+    "authentication": [
+      {
+        "id": "watermelon",
+        "label": "Watermelon Login"
+      }
+    ],
     "commands": [
       {
         "command": "watermelon.start",
