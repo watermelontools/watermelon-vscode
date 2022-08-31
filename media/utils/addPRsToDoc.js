@@ -82,7 +82,7 @@ const addPRsToDoc = (allPRs) => {
   if (allPRs.error) {
     $("#ghHolder").append(`
     <p>You are not logged in to GitHub</p>
-    <button class="login-watermelon btn" type="button">Get Code Context</button>
+    <button class="login-watermelon btn" type="button">Login to GitHub</button>
     `);
 
     $(".login-watermelon").on("click", (event) => {
