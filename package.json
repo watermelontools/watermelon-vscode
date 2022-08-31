@@ -35,6 +35,7 @@
     "theme": "dark"
   },
   "activationEvents": [
+    "onAuthenticationRequest:watermelon",
     "onCommand:watermelon.start",
     "onCommand:watermelon.show",
     "onWebviewPanel:watermelon",
