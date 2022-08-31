@@ -29,6 +29,8 @@ import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
+import { WatermelonAuthenticationProvider } from "./auth";
+import axios from "axios";
 
 // repo information
 let owner: string | undefined = "";
@@ -74,7 +76,13 @@ export async function activate(context: vscode.ExtensionContext) {
     // item always up-to-date
     vscode.window.onDidChangeActiveTextEditor(async () => {
       updateStatusBarItem(wmStatusBarItem);
-    })
+    }),
+    // allow wm auth
+    vscode.authentication.registerAuthenticationProvider(
+      WatermelonAuthenticationProvider.id,
+      "Watermelon Auth",
+      new WatermelonAuthenticationProvider(context)
+    )
   );
   if (reporter) {
     context.subscriptions.push(
@@ -89,27 +97,39 @@ export async function activate(context: vscode.ExtensionContext) {
   let wmHover = hover({ reporter });
 
   let loginCommandHandler = async () => {
-    const credentials = new Credentials();
-    debugLogger(`got credentials`);
-    await credentials.initialize(context);
-    debugLogger("intialized credentials");
-    octokit = await credentials.getOctokit();
-    let githubUserInfo = await getGitHubUserInfo({ octokit });
-    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-    let username = githubUserInfo.login;
-    context.globalState.update("startupState", { username });
-    reporter?.sendTelemetryEvent("githubUserInfo", { username });
-    provider.sendMessage({
-      command: "user",
-      data: {
-        login: githubUserInfo.login,
-        avatar: githubUserInfo.avatar_url,
-      },
-    });
-    if (credentials) {
-      setLoggedIn(true);
-      reporter?.sendTelemetryEvent("login");
-      updateStatusBarItem(wmStatusBarItem);
+    // Get our PAT session.
+    const session = await vscode.authentication.getSession(
+      WatermelonAuthenticationProvider.id,
+      [],
+      { createIfNone: true }
+    );
+
+    try {
+      // Make a request to the Azure DevOps API. Keep in mind that this particular API only works with PAT's with
+      // 'all organizations' access.
+      const req = await axios.get(
+        "https://app.vssps.visualstudio.com/_apis/profile/profiles/me?api-version=6.0",
+        {
+          headers: {
+            authorization: `Basic ${Buffer.from(
+              `:${session.accessToken}`
+            ).toString("base64")}`,
+            "content-type": "application/json",
+          },
+        }
+      );
+      if (req.status === 200) {
+        throw new Error(req.statusText);
+      }
+      const res = await req;
+      vscode.window.showInformationMessage(`Hello ${res.data.displayName}`);
+    } catch (e: any) {
+      if (e.message === "Unauthorized") {
+        vscode.window.showErrorMessage(
+          "Failed to get profile. You need to use a PAT that has access to all organizations. Please sign out and try again."
+        );
+      }
+      throw e;
     }
   };
   let addToRecommendedCommandHandler = async () => {
@@ -231,7 +251,10 @@ export async function activate(context: vscode.ExtensionContext) {
   };
   let showCommandHandler = async () => {
     // @ts-ignore
-    context.globalState.update("openSidebarCount", context.globalState.get("openSidebarCount") + 1);
+    context.globalState.update(
+      "openSidebarCount",
+      (context.globalState.get("openSidebarCount") as number) + 1
+    );
     if (
       context.globalState.get<number>("openSidebarCount") &&
       // @ts-ignore

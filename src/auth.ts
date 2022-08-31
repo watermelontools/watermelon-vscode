@@ -4,273 +4,153 @@ import {
   AuthenticationProviderAuthenticationSessionsChangeEvent,
   AuthenticationSession,
   Disposable,
-  env,
+  Event,
   EventEmitter,
   ExtensionContext,
-  ProgressLocation,
-  Uri,
-  UriHandler,
   window,
 } from "vscode";
-import { PromiseAdapter, promiseFromEvent } from "./utils/authUtils";
-import { randomUUID } from "crypto";
-import axios from "axios";
-export const AUTH_TYPE = `watermelon`;
-const AUTH_NAME = `watermelon`;
-const CLIENT_ID = `3GUryQ7ldAeKEuD2obYnppsnmj58eP5u`;
-const AUTH0_DOMAIN = `dev-txghew0y.us.auth0.com`;
-const SESSIONS_SECRET_KEY = `${AUTH_TYPE}.sessions`;
 
-class UriEventHandler extends EventEmitter<Uri> implements UriHandler {
-  public handleUri(uri: Uri) {
-    this.fire(uri);
-  }
+class WatermelonAuthSession implements AuthenticationSession {
+  // We don't know the user's account name, so we'll just use a constant
+  readonly account = {
+    id: WatermelonAuthenticationProvider.id,
+    label: "Watermelon Auth",
+  };
+  // This id isn't used for anything in this example, so we set it to a constant
+  readonly id = WatermelonAuthenticationProvider.id;
+  // We don't know what scopes the PAT has, so we have an empty array here.
+  readonly scopes = [];
+
+  /**
+   *
+   * @param accessToken The personal access token to use for authentication
+   */
+  constructor(public readonly accessToken: string) {}
 }
 
 export class WatermelonAuthenticationProvider
   implements AuthenticationProvider, Disposable
 {
-  private _sessionChangeEmitter =
+  static id = "WatermelonAuth";
+  private static secretKey = "WatermelonAuth";
+
+  // this property is used to determine if the token has been changed in another window of VS Code.
+  // It is used in the checkForUpdates function.
+  private currentToken: Promise<string | undefined> | undefined;
+  private initializedDisposable: Disposable | undefined;
+
+  private _onDidChangeSessions =
     new EventEmitter<AuthenticationProviderAuthenticationSessionsChangeEvent>();
-  private _disposable: Disposable;
-  private _pendingStates: string[] = [];
-  private _codeExchangePromises = new Map<
-    string,
-    { promise: Promise<string>; cancel: EventEmitter<void> }
-  >();
-  private _uriHandler = new UriEventHandler();
-
-  constructor(private readonly context: ExtensionContext) {
-    this._disposable = Disposable.from(
-      authentication.registerAuthenticationProvider(
-        AUTH_TYPE,
-        AUTH_NAME,
-        this,
-        { supportsMultipleAccounts: false }
-      ),
-      window.registerUriHandler(this._uriHandler)
-    );
+  get onDidChangeSessions(): Event<AuthenticationProviderAuthenticationSessionsChangeEvent> {
+    return this._onDidChangeSessions.event;
   }
 
-  get onDidChangeSessions() {
-    return this._sessionChangeEmitter.event;
+  constructor(private readonly context: ExtensionContext) {}
+
+  dispose(): void {
+    this.initializedDisposable?.dispose();
   }
 
-  get redirectUri() {
-    const publisher = this.context.extension.packageJSON.publisher;
-    const name = this.context.extension.packageJSON.name;
-    return `${env.uriScheme}://${publisher}.${name}`;
-  }
+  private ensureInitialized(): void {
+    if (this.initializedDisposable === undefined) {
+      void this.cacheTokenFromStorage();
 
-  /**
-   * Get the existing sessions
-   * @param scopes
-   * @returns
-   */
-  public async getSessions(
-    scopes?: string[]
-  ): Promise<readonly AuthenticationSession[]> {
-    const allSessions = await this.context.secrets.get(SESSIONS_SECRET_KEY);
-
-    if (allSessions) {
-      return JSON.parse(allSessions) as AuthenticationSession[];
-    }
-
-    return [];
-  }
-
-  /**
-   * Create a new auth session
-   * @param scopes
-   * @returns
-   */
-  public async createSession(scopes: string[]): Promise<AuthenticationSession> {
-    try {
-      const token = await this.login(scopes);
-      if (!token) {
-        throw new Error(`Auth0 login failure`);
-      }
-
-      const userinfo: { name: string; email: string; id: string } =
-        await this.getUserInfo(token);
-
-      const session: AuthenticationSession = {
-        id: userinfo.id,
-        accessToken: token,
-        account: {
-          label: userinfo.name,
-          id: userinfo.email,
-        },
-        scopes: [],
-      };
-
-      await this.context.secrets.store(
-        SESSIONS_SECRET_KEY,
-        JSON.stringify([session])
+      this.initializedDisposable = Disposable.from(
+        // This onDidChange event happens when the secret storage changes in _any window_ since
+        // secrets are shared across all open windows.
+        this.context.secrets.onDidChange((e) => {
+          if (e.key === WatermelonAuthenticationProvider.secretKey) {
+            void this.checkForUpdates();
+          }
+        }),
+        // This fires when the user initiates a "silent" auth flow via the Accounts menu.
+        authentication.onDidChangeSessions((e) => {
+          if (e.provider.id === WatermelonAuthenticationProvider.id) {
+            void this.checkForUpdates();
+          }
+        })
       );
-
-      this._sessionChangeEmitter.fire({
-        added: [session],
-        removed: [],
-        changed: [],
-      });
-
-      return session;
-    } catch (e) {
-      window.showErrorMessage(`Sign in failed: ${e}`);
-      throw e;
     }
   }
 
-  /**
-   * Remove an existing session
-   * @param sessionId
-   */
-  public async removeSession(sessionId: string): Promise<void> {
-    const allSessions = await this.context.secrets.get(SESSIONS_SECRET_KEY);
-    if (allSessions) {
-      let sessions = JSON.parse(allSessions) as AuthenticationSession[];
-      const sessionIdx = sessions.findIndex((s) => s.id === sessionId);
-      const session = sessions[sessionIdx];
-      sessions.splice(sessionIdx, 1);
+  // This is a crucial function that handles whether or not the token has changed in
+  // a different window of VS Code and sends the necessary event if it has.
+  private async checkForUpdates(): Promise<void> {
+    const added: AuthenticationSession[] = [];
+    const removed: AuthenticationSession[] = [];
+    const changed: AuthenticationSession[] = [];
 
-      await this.context.secrets.store(
-        SESSIONS_SECRET_KEY,
-        JSON.stringify(sessions)
-      );
+    const previousToken = await this.currentToken;
+    const session = (await this.getSessions())[0];
 
-      if (session) {
-        this._sessionChangeEmitter.fire({
-          added: [],
-          removed: [session],
-          changed: [],
-        });
-      }
+    if (session?.accessToken && !previousToken) {
+      added.push(session);
+    } else if (!session?.accessToken && previousToken) {
+      removed.push(session);
+    } else if (session?.accessToken !== previousToken) {
+      changed.push(session);
+    } else {
+      return;
     }
-  }
 
-  /**
-   * Dispose the registered services
-   */
-  public async dispose() {
-    this._disposable.dispose();
-  }
-
-  /**
-   * Log in to Auth0
-   */
-  private async login(scopes: string[] = []) {
-    return await window.withProgress<string>(
-      {
-        location: ProgressLocation.Notification,
-        title: "Signing in to Auth0...",
-        cancellable: true,
-      },
-      async (_, token) => {
-        const stateId = randomUUID();
-
-        this._pendingStates.push(stateId);
-
-        const scopeString = scopes.join(" ");
-
-        if (!scopes.includes("openid")) {
-          scopes.push("openid");
-        }
-        if (!scopes.includes("profile")) {
-          scopes.push("profile");
-        }
-        if (!scopes.includes("email")) {
-          scopes.push("email");
-        }
-
-        const searchParams = new URLSearchParams([
-          ["response_type", "token"],
-          ["client_id", CLIENT_ID],
-          ["redirect_uri", this.redirectUri],
-          ["state", stateId],
-          ["scope", scopes.join(" ")],
-          ["prompt", "login"],
-        ]);
-        const uri = Uri.parse(
-          `https://${AUTH0_DOMAIN}/authorize?${searchParams.toString()}`
-        );
-        await env.openExternal(uri);
-
-        let codeExchangePromise = this._codeExchangePromises.get(scopeString);
-        if (!codeExchangePromise) {
-          codeExchangePromise = promiseFromEvent(
-            this._uriHandler.event,
-            this.handleUri(scopes)
-          );
-          this._codeExchangePromises.set(scopeString, codeExchangePromise);
-        }
-
-        try {
-          return await Promise.race([
-            codeExchangePromise.promise,
-            new Promise<string>((_, reject) =>
-              setTimeout(() => reject("Cancelled"), 60000)
-            ),
-            promiseFromEvent<any, any>(
-              token.onCancellationRequested,
-              (_, __, reject) => {
-                reject("User Cancelled");
-              }
-            ).promise,
-          ]);
-        } finally {
-          this._pendingStates = this._pendingStates.filter(
-            (n) => n !== stateId
-          );
-          codeExchangePromise?.cancel.fire();
-          this._codeExchangePromises.delete(scopeString);
-        }
-      }
-    );
-  }
-
-  /**
-   * Handle the redirect to VS Code (after sign in from Auth0)
-   * @param scopes
-   * @returns
-   */
-  private handleUri: (
-    scopes: readonly string[]
-  ) => PromiseAdapter<Uri, string> =
-    (scopes) => async (uri, resolve, reject) => {
-      const query = new URLSearchParams(uri.fragment);
-      const access_token = query.get("access_token");
-      const state = query.get("state");
-
-      if (!access_token) {
-        reject(new Error("No token"));
-        return;
-      }
-      if (!state) {
-        reject(new Error("No state"));
-        return;
-      }
-
-      // Check if it is a valid auth request started by the extension
-      if (!this._pendingStates.some((n) => n === state)) {
-        reject(new Error("State not found"));
-        return;
-      }
-
-      resolve(access_token);
-    };
-
-  /**
-   * Get the user info from Auth0
-   * @param token
-   * @returns
-   */
-  private async getUserInfo(token: string): Promise<any> {
-    const response = await axios.get(`https://${AUTH0_DOMAIN}/userinfo`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    void this.cacheTokenFromStorage();
+    this._onDidChangeSessions.fire({
+      added: added,
+      removed: removed,
+      changed: changed,
     });
-    return await response;
+  }
+
+  private cacheTokenFromStorage() {
+    this.currentToken = this.context.secrets.get(
+      WatermelonAuthenticationProvider.secretKey
+    ) as Promise<string | undefined>;
+    return this.currentToken;
+  }
+
+  // This function is called first when `vscode.authentication.getSessions` is called.
+  async getSessions(
+    _scopes?: string[]
+  ): Promise<readonly AuthenticationSession[]> {
+    this.ensureInitialized();
+    const token = await this.cacheTokenFromStorage();
+    return token ? [new WatermelonAuthSession(token)] : [];
+  }
+
+  // This function is called after `this.getSessions` is called and only when:
+  // - `this.getSessions` returns nothing but `createIfNone` was set to `true` in `vscode.authentication.getSessions`
+  // - `vscode.authentication.getSessions` was called with `forceNewSession: true`
+  // - The end user initiates the "silent" auth flow via the Accounts menu
+  async createSession(_scopes: string[]): Promise<AuthenticationSession> {
+    this.ensureInitialized();
+
+    // Prompt for the PAT.
+    const token = await window.showInputBox({
+      ignoreFocusOut: true,
+      placeHolder: "Email",
+      prompt: "Type the email to use for Magic Link.",
+      password: false,
+    });
+
+    // Note: this example doesn't do any validation of the token beyond making sure it's not empty.
+    if (!token) {
+      throw new Error("Email is required");
+    }
+
+    // Don't set `currentToken` here, since we want to fire the proper events in the `checkForUpdates` call
+    await this.context.secrets.store(
+      WatermelonAuthenticationProvider.secretKey,
+      token
+    );
+    console.log("Successfully logged in to Watermelon");
+
+    return new WatermelonAuthSession(token);
+  }
+
+  // This function is called when the end user signs out of the account.
+  async removeSession(_sessionId: string): Promise<void> {
+    await this.context.secrets.delete(
+      WatermelonAuthenticationProvider.secretKey
+    );
   }
 }
