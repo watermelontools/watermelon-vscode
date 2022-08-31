@@ -241,6 +241,10 @@ export async function activate(context: vscode.ExtensionContext) {
         command: "prs",
         data: { sortedPRs: { error: "not logged in" }, uniqueBlames },
       });
+      provider.sendMessage({
+        command: "dailySummary",
+        data: { error: "not logged in" },
+      });
     }
   };
   let showCommandHandler = async () => {
