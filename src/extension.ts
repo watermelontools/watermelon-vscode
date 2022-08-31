@@ -392,3 +392,9 @@ export async function activate(context: vscode.ExtensionContext) {
     data: extensionVersion,
   });
 }
+
+// Not used yet
+// Allows cleanup
+export function deactivate() {
+}
+
