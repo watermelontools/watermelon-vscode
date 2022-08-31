@@ -166,6 +166,22 @@ export async function activate(context: vscode.ExtensionContext) {
         );
       }
 
+      // call our API to get assigned Jira tickets here
+      // let jiraTickets = fetch('https://app.watermelontools.com/api/jira/getAssignedTicketsInProgress', {
+      //     method: 'POST',
+      //     body: JSON.stringify({
+      //         "email": 'estebanvargas94@gmail.com'
+      //     })
+      // })
+      // .then(response => response.json())
+      // .then(data => {
+      //     console.log(data);
+      //     paintJiraTickets(data);
+      // })
+      // .catch(error => {
+      //     console.log(error);
+      // });
+
       let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
         arrayOfSHAs,
         octokit,

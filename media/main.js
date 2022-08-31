@@ -44,6 +44,7 @@ function handleMessage(message) {
       webviewDebugLogger(
         `Received dailySummary: ${JSON.stringify(message.data)}`
       );
+      // addJiraTicketsToDailySummary(message.data.jiraTickets);
       addDailySummary(message.data);
       break;
     case "prs":
@@ -61,7 +62,6 @@ function handleMessage(message) {
       // prs
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       addPRsToDoc(message.data.sortedPRs);
-      addJiraTicketsToDailySummary(message.data.sortedPRs[0].title);
       clampCodeBlocks();
       break;
     case "error":
