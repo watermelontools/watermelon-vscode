@@ -7,9 +7,16 @@ import {
   Event,
   EventEmitter,
   ExtensionContext,
+  Uri,
+  UriHandler,
   window,
 } from "vscode";
-
+import { PromiseAdapter } from "./utils/authUtils";
+class UriEventHandler extends EventEmitter<Uri> implements UriHandler {
+  public handleUri(uri: Uri) {
+    this.fire(uri);
+  }
+}
 class WatermelonAuthSession implements AuthenticationSession {
   // We don't know the user's account name, so we'll just use a constant
   readonly account = {
@@ -50,6 +57,12 @@ export class WatermelonAuthenticationProvider
   dispose(): void {
     this.initializedDisposable?.dispose();
   }
+  public static handleUri: (
+    scopes: readonly string[]
+  ) => PromiseAdapter<Uri, string> =
+    (scopes) => async (uri, resolve, reject) => {
+      console.log("uri", uri);
+    };
 
   private ensureInitialized(): void {
     if (this.initializedDisposable === undefined) {
