@@ -27,7 +27,7 @@ class UriEventHandler extends EventEmitter<Uri> implements UriHandler {
   }
 }
 
-export class Auth0AuthenticationProvider
+export class WatermelonAuthenticationProvider
   implements AuthenticationProvider, Disposable
 {
   private _sessionChangeEmitter =
