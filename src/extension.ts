@@ -145,27 +145,6 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
 
-    let dailySummary = await getDailySummary({
-      octokit,
-      owner: owner || "",
-      repo: repo || "",
-      username: username || "",
-    });
-    debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
-    provider.sendMessage({
-      command: "dailySummary",
-      data: dailySummary,
-    });
-    if (startLine === undefined && endLine === undefined) {
-      if (!arrayOfSHAs.length) {
-        arrayOfSHAs = await getSHAArray(
-          1,
-          vscode.window.activeTextEditor?.document.lineCount ?? 2,
-          vscode.window.activeTextEditor?.document.uri.fsPath,
-          gitAPI
-        );
-      }
-
       // call our API to get assigned Jira tickets here
       // let jiraTickets = fetch('https://app.watermelontools.com/api/jira/getAssignedTicketsInProgress', {
       //     method: 'POST',
@@ -181,6 +160,50 @@ export async function activate(context: vscode.ExtensionContext) {
       // .catch(error => {
       //     console.log(error);
       // });
+    
+    // for testing purposes
+    const jiraTickets = [
+      {
+        key: "WMT-1",
+        fields: {
+          summary: "This is a test ticket",
+          status: {
+            name: "In Progress",
+          },
+        }
+      },
+      {
+        key: "WMT-2",
+        fields: {
+          summary: "This is a long test ticket that should be truncated to fit in the sidebar if it is too long. This is a long test ticket that should be truncated to fit in the sidebar if it is too long.", 
+          status: {
+            name: "In Progress",
+          },
+        }
+      }
+    ];
+
+
+    let dailySummary = await getDailySummary({
+      octokit,
+      owner: owner || "",
+      repo: repo || "",
+      username: username || "",
+    });
+    debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
+    provider.sendMessage({
+      command: "dailySummary",
+      data: {dailySummary, jiraTickets},
+    });
+    if (startLine === undefined && endLine === undefined) {
+      if (!arrayOfSHAs.length) {
+        arrayOfSHAs = await getSHAArray(
+          1,
+          vscode.window.activeTextEditor?.document.lineCount ?? 2,
+          vscode.window.activeTextEditor?.document.uri.fsPath,
+          gitAPI
+        );
+      }
 
       let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
         arrayOfSHAs,

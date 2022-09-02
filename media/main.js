@@ -44,8 +44,8 @@ function handleMessage(message) {
       webviewDebugLogger(
         `Received dailySummary: ${JSON.stringify(message.data)}`
       );
-      // addJiraTicketsToDailySummary(message.data.jiraTickets);
-      addDailySummary(message.data);
+      addJiraTicketsToDailySummary(message.data.jiraTickets);
+      addDailySummary(message.data.dailySummary);
       break;
     case "prs":
       webviewDebugLogger(message.data);
