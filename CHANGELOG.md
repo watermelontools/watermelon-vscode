@@ -8,6 +8,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Watermelon is now an authentication provider, to allow us to connect to all your services
 
+## [1.5.3]
+
+- Will allow the user to use some features without logging into GitHub
+
 ## [1.5.2]
 
 - Will show the user a prompt to talk to the CTO every third use
