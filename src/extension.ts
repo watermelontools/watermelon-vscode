@@ -82,7 +82,24 @@ export async function activate(context: vscode.ExtensionContext) {
       WatermelonAuthenticationProvider.id,
       "Watermelon Auth",
       new WatermelonAuthenticationProvider(context)
-    )
+    ),
+    vscode.window.registerUriHandler({
+      handleUri(uri) {
+        // show a hello message
+        vscode.window.showInformationMessage("URI" + uri);
+        const urlSearchParams = new URLSearchParams(uri.query);
+        const params = Object.fromEntries(urlSearchParams.entries());
+        context.secrets.store("watermelonToken", params.token);
+        context.secrets.store("watermelonEmail", params.email);
+        vscode.authentication.getSession(
+          WatermelonAuthenticationProvider.id,
+          [],
+          {
+            createIfNone: true,
+          }
+        );
+      },
+    })
   );
   if (reporter) {
     context.subscriptions.push(
@@ -103,33 +120,10 @@ export async function activate(context: vscode.ExtensionContext) {
       [],
       { createIfNone: true }
     );
-
-    try {
-      // Make a request to the Azure DevOps API. Keep in mind that this particular API only works with PAT's with
-      // 'all organizations' access.
-      const req = await axios.get(
-        "https://app.vssps.visualstudio.com/_apis/profile/profiles/me?api-version=6.0",
-        {
-          headers: {
-            authorization: `Basic ${Buffer.from(
-              `:${session.accessToken}`
-            ).toString("base64")}`,
-            "content-type": "application/json",
-          },
-        }
-      );
-      if (req.status === 200) {
-        throw new Error(req.statusText);
-      }
-      const res = await req;
-      vscode.window.showInformationMessage(`Hello ${res.data.displayName}`);
-    } catch (e: any) {
-      if (e.message === "Unauthorized") {
-        vscode.window.showErrorMessage(
-          "Failed to get profile. You need to use a PAT that has access to all organizations. Please sign out and try again."
-        );
-      }
-      throw e;
+    if (session) {
+      // We have a session, so we're logged in.
+      setLoggedIn(true);
+      vscode.window.showInformationMessage(`Welcome ${session.account.label}`);
     }
   };
   let addToRecommendedCommandHandler = async () => {
