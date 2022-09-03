@@ -8,31 +8,30 @@ import {
   EventEmitter,
   ExtensionContext,
   Uri,
-  UriHandler,
-  window,
+  env,
 } from "vscode";
-import { PromiseAdapter } from "./utils/authUtils";
-class UriEventHandler extends EventEmitter<Uri> implements UriHandler {
-  public handleUri(uri: Uri) {
-    this.fire(uri);
-  }
-}
+
 class WatermelonAuthSession implements AuthenticationSession {
-  // We don't know the user's account name, so we'll just use a constant
   readonly account = {
     id: WatermelonAuthenticationProvider.id,
-    label: "Watermelon Auth",
+    label: `${this.email}`,
   };
   // This id isn't used for anything in this example, so we set it to a constant
   readonly id = WatermelonAuthenticationProvider.id;
-  // We don't know what scopes the PAT has, so we have an empty array here.
+  // Currently no scopes are supported
   readonly scopes = [];
 
   /**
    *
    * @param accessToken The personal access token to use for authentication
+   * @param email The email address of the user
    */
-  constructor(public readonly accessToken: string) {}
+  constructor(
+    public readonly accessToken: string,
+    private readonly email: string
+  ) {
+    this.email = email;
+  }
 }
 
 export class WatermelonAuthenticationProvider
@@ -44,6 +43,7 @@ export class WatermelonAuthenticationProvider
   // this property is used to determine if the token has been changed in another window of VS Code.
   // It is used in the checkForUpdates function.
   private currentToken: Promise<string | undefined> | undefined;
+  private currentEmail: Promise<string | undefined> | undefined;
   private initializedDisposable: Disposable | undefined;
 
   private _onDidChangeSessions =
@@ -57,12 +57,6 @@ export class WatermelonAuthenticationProvider
   dispose(): void {
     this.initializedDisposable?.dispose();
   }
-  public static handleUri: (
-    scopes: readonly string[]
-  ) => PromiseAdapter<Uri, string> =
-    (scopes) => async (uri, resolve, reject) => {
-      console.log("uri", uri);
-    };
 
   private ensureInitialized(): void {
     if (this.initializedDisposable === undefined) {
@@ -94,6 +88,7 @@ export class WatermelonAuthenticationProvider
     const changed: AuthenticationSession[] = [];
 
     const previousToken = await this.currentToken;
+    const previousEmail = await this.currentEmail;
     const session = (await this.getSessions())[0];
 
     if (session?.accessToken && !previousToken) {
@@ -115,19 +110,33 @@ export class WatermelonAuthenticationProvider
   }
 
   private cacheTokenFromStorage() {
-    this.currentToken = this.context.secrets.get(
-      WatermelonAuthenticationProvider.secretKey
-    ) as Promise<string | undefined>;
+    this.currentToken = this.context.secrets.get("watermelonToken") as Promise<
+      string | undefined
+    >;
+
     return this.currentToken;
   }
+  private cacheEmailFromStorage() {
+    this.currentEmail = this.context.secrets.get("watermelonEmail") as Promise<
+      string | undefined
+    >;
+    return this.currentEmail;
+  }
 
-  // This function is called first when `vscode.authentication.getSessions` is called.
+  // This function is called first when `vscode.authentication.getSession is called.
   async getSessions(
     _scopes?: string[]
   ): Promise<readonly AuthenticationSession[]> {
     this.ensureInitialized();
     const token = await this.cacheTokenFromStorage();
-    return token ? [new WatermelonAuthSession(token)] : [];
+    const email = await this.cacheEmailFromStorage();
+    let tokenResolved = await token;
+    let emailResolved = await email;
+    if (tokenResolved && emailResolved) {
+      let session = new WatermelonAuthSession(tokenResolved, emailResolved);
+      return [session];
+    }
+    return [];
   }
 
   // This function is called after `this.getSessions` is called and only when:
@@ -137,27 +146,20 @@ export class WatermelonAuthenticationProvider
   async createSession(_scopes: string[]): Promise<AuthenticationSession> {
     this.ensureInitialized();
 
-    // Prompt for the PAT.
-    const token = await window.showInputBox({
-      ignoreFocusOut: true,
-      placeHolder: "Email",
-      prompt: "Type the email to use for Magic Link.",
-      password: false,
-    });
-
-    // Note: this example doesn't do any validation of the token beyond making sure it's not empty.
-    if (!token) {
-      throw new Error("Email is required");
-    }
+    env.openExternal(
+      Uri.parse(`https://app.watermelontools.com/${env.uriScheme}`)
+    );
 
     // Don't set `currentToken` here, since we want to fire the proper events in the `checkForUpdates` call
-    await this.context.secrets.store(
-      WatermelonAuthenticationProvider.secretKey,
-      token
-    );
+    let token = await this.cacheTokenFromStorage();
+    let email = await this.cacheEmailFromStorage();
+    if (!token || !email) {
+      throw new Error("No token or email found");
+    }
     console.log("Successfully logged in to Watermelon");
-
-    return new WatermelonAuthSession(token);
+    let session = new WatermelonAuthSession(token, email);
+    console.log(session);
+    return session;
   }
 
   // This function is called when the end user signs out of the account.
@@ -165,5 +167,9 @@ export class WatermelonAuthenticationProvider
     await this.context.secrets.delete(
       WatermelonAuthenticationProvider.secretKey
     );
+    this.currentEmail = undefined;
+    this.currentToken = undefined;
+    await this.context.secrets.delete("watermelonToken");
+    await this.context.secrets.delete("watermelonEmail");
   }
 }
