@@ -31,6 +31,7 @@ import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
+import axios from "axios";
 
 // repo information
 let owner: string | undefined = "";
@@ -189,6 +190,15 @@ export async function activate(context: vscode.ExtensionContext) {
           (a: any, b: any) => b.comments.length - a.comments.length
         );
         let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+
+        // Jira
+        const response = await axios.post(
+          "https://app.watermelontools.com/api/jira/getMostRelevantJiraTicket", {
+            // TODO: Make this email programmatic
+            user: "estebandalelr@gmail.com",
+            pr_title: sortedPRs[0].title,
+          },
+        );
 
         provider.sendMessage({
           command: "prs",

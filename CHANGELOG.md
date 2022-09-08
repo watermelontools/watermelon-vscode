@@ -4,6 +4,9 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+
+## [1.6.0]
+- Get code context button now retrieves the most relevant Jira ticket, if the user is authenticated with Jira. 
 ## [1.5.3]
 
 - Will allow the user to use some features without logging into GitHub
