@@ -146,15 +146,14 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
 
-    let jiraTickets: never[] = [];
     // // call our API to get assigned Jira tickets here
-    // const response = await axios.post(
-    //   "https://app.watermelontools.com/api/jira/getAssignedTicketsInProgress", {
-    //     // TODO: Make this email programmatic
-    //     user: "estebandalelr@gmail.com"
-    //   },
-    // );
-    // const jiraTickets = response.data;
+    const response = await axios.post(
+      "https://app.watermelontools.com/api/jira/getAssignedTicketsInProgress", {
+        // TODO: Make this email programmatic
+        user: "estebandalelr@gmail.com"
+      },
+    );
+    const jiraTickets = response.data;
 
     let dailySummary = await getDailySummary({
       octokit,
