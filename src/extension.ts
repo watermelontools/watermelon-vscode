@@ -29,6 +29,7 @@ import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
+import axios from "axios";
 
 // repo information
 let owner: string | undefined = "";
@@ -145,44 +146,15 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
 
-      // call our API to get assigned Jira tickets here
-      // let jiraTickets = fetch('https://app.watermelontools.com/api/jira/getAssignedTicketsInProgress', {
-      //     method: 'POST',
-      //     body: JSON.stringify({
-      //         "email": 'estebanvargas94@gmail.com'
-      //     })
-      // })
-      // .then(response => response.json())
-      // .then(data => {
-      //     console.log(data);
-      //     paintJiraTickets(data);
-      // })
-      // .catch(error => {
-      //     console.log(error);
-      // });
-    
-    // for testing purposes
-    const jiraTickets = [
-      {
-        key: "WMT-1",
-        fields: {
-          summary: "This is a test ticket",
-          status: {
-            name: "In Progress",
-          },
-        }
-      },
-      {
-        key: "WMT-2",
-        fields: {
-          summary: "This is a long test ticket that should be truncated to fit in the sidebar if it is too long. This is a long test ticket that should be truncated to fit in the sidebar if it is too long.", 
-          status: {
-            name: "In Progress",
-          },
-        }
-      }
-    ];
-
+    let jiraTickets: never[] = [];
+    // // call our API to get assigned Jira tickets here
+    // const response = await axios.post(
+    //   "https://app.watermelontools.com/api/jira/getAssignedTicketsInProgress", {
+    //     // TODO: Make this email programmatic
+    //     user: "estebandalelr@gmail.com"
+    //   },
+    // );
+    // const jiraTickets = response.data;
 
     let dailySummary = await getDailySummary({
       octokit,
@@ -193,7 +165,7 @@ export async function activate(context: vscode.ExtensionContext) {
     debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
     provider.sendMessage({
       command: "dailySummary",
-      data: {dailySummary, jiraTickets},
+      data: { dailySummary, jiraTickets },
     });
     if (startLine === undefined && endLine === undefined) {
       if (!arrayOfSHAs.length) {
