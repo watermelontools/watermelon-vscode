@@ -298,6 +298,7 @@
     "@vscode/test-electron": "^2.1.2",
     "axios": "^0.26.1",
     "git-url-parse": "^11.6.0",
+    "isomorphic-fetch": "^3.0.0",
     "octokit": "^1.7.1"
   },
   "__metadata": {
