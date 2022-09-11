@@ -110,10 +110,11 @@ export default function getInitialHTML(
         <p>Watermelon helps you get the context of your code.</p>
         <p>Help us by <a href="https://github.com/watermelontools/wm-extension">⭐starring Watermelon on GitHub</a></p>
         <br/>
+        <div id="mostRelevantJiraTicketHolder"></div>
+        <br/>
         <div id="ghHolder">
            <button class='run-watermelon btn btn-primary' type='button'>Get Code Context</button>
         </div>
-        <div id="mostRelevantJiraTicketHolder"></div>
         <h2>Daily Summary</h2>
         <div id="dailySummary"></div>
         You will find all your issues and ToDos here. 

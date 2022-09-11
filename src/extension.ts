@@ -195,7 +195,7 @@ export async function activate(context: vscode.ExtensionContext) {
         const mostRelevantJiraTicket = await getMostRelevantJiraTicket({
           userEmail: "estebanvargas94@gmail.com",
           prTitle: sortedPRs[0].title,
-        });
+        }) || {};
         
         provider.sendMessage({
           command: "prs",
