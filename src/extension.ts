@@ -17,6 +17,7 @@ import statusBarItem, {
 import hover from "./utils/components/hover";
 import getDailySummary from "./utils/github/getDailySummary";
 import {
+  backendURL,
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
   WATERMELON_LOGIN_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
@@ -30,6 +31,7 @@ import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
 import axios from "axios";
+import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
 
 // repo information
 let owner: string | undefined = "";
@@ -146,14 +148,10 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
 
-    // // call our API to get assigned Jira tickets here
-    const response = await axios.post(
-      "https://app.watermelontools.com/api/jira/getAssignedTicketsInProgress", {
-        // TODO: Make this email programmatic
-        user: "estebandalelr@gmail.com"
-      },
-    );
-    const jiraTickets = response.data;
+    // call our API to get assigned Jira tickets here
+    const jiraTickets = await getAssignedJiraTickets({
+      userEmail: "estebanvargas94@gmail.com",
+    });
 
     let dailySummary = await getDailySummary({
       octokit,

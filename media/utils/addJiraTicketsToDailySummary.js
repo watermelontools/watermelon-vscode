@@ -8,8 +8,8 @@ const addJiraTicketsToDailySummary = (jiraTickets) => {
               <h5 class="Box-title Truncate">
                   ${ticket?.key}
               </h5>
-              <span style="color: green">${ticket?.fields.status.name}</span>
-              <p>${ticket?.fields.summary}</p>
+              <span style="color: green">${ticket?.fields?.status?.name}</span>
+              <p>${ticket?.fields?.summary}</p>
             </div>
             `);
     } else {
@@ -18,8 +18,8 @@ const addJiraTicketsToDailySummary = (jiraTickets) => {
               <h5 class="Box-title Truncate">
                 ${ticket?.key}
               </h5>
-              <span style="color: red">${ticket.fields.status.name}</span>
-              <p>${ticket?.fields.summary}</p>
+              <span style="color: red">${ticket?.fields?.status?.name}</span>
+              <p>${ticket?.fields?.summary}</p>
             </div>
             `);
     }
