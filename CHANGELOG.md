@@ -6,6 +6,17 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 # [1.6.0]
 - Daily summary now shows currently open Jira tickets that are assigned to the user
+- Watermelon is now an authentication provider, to allow us to connect to all your services
+
+## [1.5.3]
+
+- Will allow the user to use some features without logging into GitHub
+
+## [1.5.2]
+
+- Will show the user a prompt to talk to the CTO every third use
+- The hover link will look more like a button
+>>>>>>> feature/authenticator-provider
 
 ## [1.5.1]
 

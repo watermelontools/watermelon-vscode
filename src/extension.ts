@@ -18,6 +18,8 @@ import hover from "./utils/components/hover";
 import getDailySummary from "./utils/github/getDailySummary";
 import {
   backendURL,
+  GITHUB_AUTH_PROVIDER_ID,
+  SCOPES,
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
   WATERMELON_LOGIN_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
@@ -32,6 +34,7 @@ import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
 import axios from "axios";
 import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
+import { WatermelonAuthenticationProvider } from "./auth";
 
 // repo information
 let owner: string | undefined = "";
@@ -77,6 +80,29 @@ export async function activate(context: vscode.ExtensionContext) {
     // item always up-to-date
     vscode.window.onDidChangeActiveTextEditor(async () => {
       updateStatusBarItem(wmStatusBarItem);
+    }),
+    // allow wm auth
+    vscode.authentication.registerAuthenticationProvider(
+      WatermelonAuthenticationProvider.id,
+      "Watermelon Auth",
+      new WatermelonAuthenticationProvider(context)
+    ),
+    vscode.window.registerUriHandler({
+      handleUri(uri) {
+        // show a hello message
+        vscode.window.showInformationMessage("URI" + uri);
+        const urlSearchParams = new URLSearchParams(uri.query);
+        const params = Object.fromEntries(urlSearchParams.entries());
+        context.secrets.store("watermelonToken", params.token);
+        context.secrets.store("watermelonEmail", params.email);
+        vscode.authentication.getSession(
+          WatermelonAuthenticationProvider.id,
+          [],
+          {
+            createIfNone: true,
+          }
+        );
+      },
     })
   );
   if (reporter) {
@@ -92,27 +118,16 @@ export async function activate(context: vscode.ExtensionContext) {
   let wmHover = hover({ reporter });
 
   let loginCommandHandler = async () => {
-    const credentials = new Credentials();
-    debugLogger(`got credentials`);
-    await credentials.initialize(context);
-    debugLogger("intialized credentials");
-    octokit = await credentials.getOctokit();
-    let githubUserInfo = await getGitHubUserInfo({ octokit });
-    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-    let username = githubUserInfo.login;
-    context.globalState.update("startupState", { username });
-    reporter?.sendTelemetryEvent("githubUserInfo", { username });
-    provider.sendMessage({
-      command: "user",
-      data: {
-        login: githubUserInfo.login,
-        avatar: githubUserInfo.avatar_url,
-      },
-    });
-    if (credentials) {
+    // Get our PAT session.
+    const session = await vscode.authentication.getSession(
+      WatermelonAuthenticationProvider.id,
+      [],
+      { createIfNone: true }
+    );
+    if (session) {
+      // We have a session, so we're logged in.
       setLoggedIn(true);
-      reporter?.sendTelemetryEvent("login");
-      updateStatusBarItem(wmStatusBarItem);
+      vscode.window.showInformationMessage(`Welcome ${session.account.label}`);
     }
   };
   let addToRecommendedCommandHandler = async () => {
@@ -130,114 +145,144 @@ export async function activate(context: vscode.ExtensionContext) {
     provider.sendMessage({
       command: "loading",
     });
-    const credentials = new Credentials();
-    debugLogger(`got credentials`);
-    await credentials.initialize(context);
-    debugLogger("intialized credentials");
-    octokit = await credentials.getOctokit();
-    let githubUserInfo = await getGitHubUserInfo({ octokit });
-    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-    let username = githubUserInfo.login;
-    context.globalState.update("startupState", { username });
-    reporter?.sendTelemetryEvent("githubUserInfo", { username });
-    provider.sendMessage({
-      command: "user",
-      data: {
-        login: githubUserInfo.login,
-        avatar: githubUserInfo.avatar_url,
-      },
-    });
+    const session = await vscode.authentication.getSession(
+      WatermelonAuthenticationProvider.id,
+      []
+    );
+    if (session) {
+      const credentials = new Credentials();
+      debugLogger(`got credentials`);
+      await credentials.initialize(context);
+      debugLogger("intialized credentials");
+      octokit = await credentials.getOctokit();
+      let githubUserInfo = await getGitHubUserInfo({ octokit });
+      debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
+      let username = githubUserInfo.login;
+      context.globalState.update("startupState", { username });
+      reporter?.sendTelemetryEvent("githubUserInfo", { username });
+      provider.sendMessage({
+        command: "user",
+        data: {
+          login: githubUserInfo.login,
+          avatar: githubUserInfo.avatar_url,
+        },
+      });
 
     // call our API to get assigned Jira tickets here
     const jiraTickets = await getAssignedJiraTickets({
-      userEmail: "estebanvargas94@gmail.com",
+      userEmail: session.account.label,
     });
 
-    let dailySummary = await getDailySummary({
-      octokit,
-      owner: owner || "",
-      repo: repo || "",
-      username: username || "",
-    });
-    debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
-    provider.sendMessage({
-      command: "dailySummary",
-      data: { dailySummary, jiraTickets },
-    });
-    if (startLine === undefined && endLine === undefined) {
-      if (!arrayOfSHAs.length) {
+      let dailySummary = await getDailySummary({
+        octokit,
+        owner: owner || "",
+        repo: repo || "",
+        username: username || "",
+      });
+      debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
+      provider.sendMessage({
+        command: "dailySummary",
+        data: { dailySummary, jiraTickets },
+      });
+      if (startLine === undefined && endLine === undefined) {
+        if (!arrayOfSHAs.length) {
+          arrayOfSHAs = await getSHAArray(
+            1,
+            vscode.window.activeTextEditor?.document.lineCount ?? 2,
+            vscode.window.activeTextEditor?.document.uri.fsPath,
+            gitAPI
+          );
+        }
+
+        let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+          arrayOfSHAs,
+          octokit,
+          owner,
+          repo,
+        });
+        if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
+          return provider.sendMessage({
+            command: "error",
+            error: issuesWithTitlesAndGroupedComments,
+          });
+        }
+        let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
+          (a: any, b: any) => b.comments.length - a.comments.length
+        );
+        let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+
+        provider.sendMessage({
+          command: "prs",
+          data: { sortedPRs, uniqueBlames },
+        });
+      } else {
+        vscode.commands.executeCommand("watermelon.multiSelect");
         arrayOfSHAs = await getSHAArray(
-          1,
-          vscode.window.activeTextEditor?.document.lineCount ?? 2,
+          (startLine && startLine > 1 ? startLine - 1 : startLine) ?? 1,
+          endLine
+            ? endLine + 1
+            : vscode.window.activeTextEditor?.document.lineCount ?? 2,
           vscode.window.activeTextEditor?.document.uri.fsPath,
           gitAPI
         );
-      }
+        if (!arrayOfSHAs.length) {
+          arrayOfSHAs = await getSHAArray(
+            1,
+            vscode.window.activeTextEditor?.document.lineCount ?? 2,
+            vscode.window.activeTextEditor?.document.uri.fsPath,
+            gitAPI
+          );
+        }
 
-      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-        arrayOfSHAs,
-        octokit,
-        owner,
-        repo,
-      });
-      if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-        return provider.sendMessage({
-          command: "error",
-          error: issuesWithTitlesAndGroupedComments,
+        let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+          arrayOfSHAs,
+          octokit,
+          owner,
+          repo,
+        });
+        if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
+          return provider.sendMessage({
+            command: "error",
+            error: issuesWithTitlesAndGroupedComments,
+          });
+        }
+        let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
+          (a: any, b: any) => b.comments.length - a.comments.length
+        );
+        let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+
+        provider.sendMessage({
+          command: "prs",
+          data: { sortedPRs, uniqueBlames },
         });
       }
-      let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-        (a: any, b: any) => b.comments.length - a.comments.length
-      );
-      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-
-      provider.sendMessage({
-        command: "prs",
-        data: { sortedPRs, uniqueBlames },
-      });
     } else {
-      vscode.commands.executeCommand("watermelon.multiSelect");
-      arrayOfSHAs = await getSHAArray(
-        (startLine && startLine > 1 ? startLine - 1 : startLine) ?? 1,
-        endLine
-          ? endLine + 1
-          : vscode.window.activeTextEditor?.document.lineCount ?? 2,
-        vscode.window.activeTextEditor?.document.uri.fsPath,
-        gitAPI
-      );
-      if (!arrayOfSHAs.length) {
-        arrayOfSHAs = await getSHAArray(
-          1,
-          vscode.window.activeTextEditor?.document.lineCount ?? 2,
-          vscode.window.activeTextEditor?.document.uri.fsPath,
-          gitAPI
-        );
-      }
-
-      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-        arrayOfSHAs,
-        octokit,
-        owner,
-        repo,
-      });
-      if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-        return provider.sendMessage({
-          command: "error",
-          error: issuesWithTitlesAndGroupedComments,
-        });
-      }
-      let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-        (a: any, b: any) => b.comments.length - a.comments.length
-      );
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-
       provider.sendMessage({
         command: "prs",
-        data: { sortedPRs, uniqueBlames },
+        data: { sortedPRs: { error: "not logged in" }, uniqueBlames },
+      });
+      provider.sendMessage({
+        command: "dailySummary",
+        data: { error: "not logged in" },
       });
     }
   };
   let showCommandHandler = async () => {
+    // @ts-ignore
+    context.globalState.update(
+      "openSidebarCount",
+      (context.globalState.get("openSidebarCount") as number) + 1
+    );
+    if (
+      context.globalState.get<number>("openSidebarCount") &&
+      // @ts-ignore
+      context.globalState.get<Number>("openSidebarCount") % 3 === 0
+    ) {
+      provider.sendMessage({
+        command: "talkToCTO",
+      });
+    }
     vscode.commands.executeCommand("watermelon.sidebar.focus");
     reporter?.sendTelemetryEvent("showCommand");
   };
@@ -303,6 +348,7 @@ export async function activate(context: vscode.ExtensionContext) {
     debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
     let username = githubUserInfo.login;
     context.globalState.update("startupState", { username });
+    context.globalState.update("openSidebarCount", 0);
     reporter?.sendTelemetryEvent("githubUserInfo", { username });
     let isStarred = await checkIfUserStarred({ octokit });
 
@@ -366,4 +412,9 @@ export async function activate(context: vscode.ExtensionContext) {
     command: "versionInfo",
     data: extensionVersion,
   });
+}
+
+// Not used yet
+// Allows cleanup
+export function deactivate() {
 }
