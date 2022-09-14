@@ -32,6 +32,7 @@ import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
 import getMostRelevantJiraTicket from "./utils/jira/getMostRelevantJiraTicket";
+import { WatermelonAuthenticationProvider } from "./auth";
 
 // repo information
 let owner: string | undefined = "";
@@ -77,6 +78,29 @@ export async function activate(context: vscode.ExtensionContext) {
     // item always up-to-date
     vscode.window.onDidChangeActiveTextEditor(async () => {
       updateStatusBarItem(wmStatusBarItem);
+    }),
+    // allow wm auth
+    vscode.authentication.registerAuthenticationProvider(
+      WatermelonAuthenticationProvider.id,
+      "Watermelon Auth",
+      new WatermelonAuthenticationProvider(context)
+    ),
+    vscode.window.registerUriHandler({
+      handleUri(uri) {
+        // show a hello message
+        vscode.window.showInformationMessage("URI" + uri);
+        const urlSearchParams = new URLSearchParams(uri.query);
+        const params = Object.fromEntries(urlSearchParams.entries());
+        context.secrets.store("watermelonToken", params.token);
+        context.secrets.store("watermelonEmail", params.email);
+        vscode.authentication.getSession(
+          WatermelonAuthenticationProvider.id,
+          [],
+          {
+            createIfNone: true,
+          }
+        );
+      },
     })
   );
   if (reporter) {
@@ -92,27 +116,16 @@ export async function activate(context: vscode.ExtensionContext) {
   let wmHover = hover({ reporter });
 
   let loginCommandHandler = async () => {
-    const credentials = new Credentials();
-    debugLogger(`got credentials`);
-    await credentials.initialize(context);
-    debugLogger("intialized credentials");
-    octokit = await credentials.getOctokit();
-    let githubUserInfo = await getGitHubUserInfo({ octokit });
-    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-    let username = githubUserInfo.login;
-    context.globalState.update("startupState", { username });
-    reporter?.sendTelemetryEvent("githubUserInfo", { username });
-    provider.sendMessage({
-      command: "user",
-      data: {
-        login: githubUserInfo.login,
-        avatar: githubUserInfo.avatar_url,
-      },
-    });
-    if (credentials) {
+    // Get our PAT session.
+    const session = await vscode.authentication.getSession(
+      WatermelonAuthenticationProvider.id,
+      [],
+      { createIfNone: true }
+    );
+    if (session) {
+      // We have a session, so we're logged in.
       setLoggedIn(true);
-      reporter?.sendTelemetryEvent("login");
-      updateStatusBarItem(wmStatusBarItem);
+      vscode.window.showInformationMessage(`Welcome ${session.account.label}`);
     }
   };
   let addToRecommendedCommandHandler = async () => {
@@ -131,8 +144,8 @@ export async function activate(context: vscode.ExtensionContext) {
       command: "loading",
     });
     const session = await vscode.authentication.getSession(
-      GITHUB_AUTH_PROVIDER_ID,
-      SCOPES
+      WatermelonAuthenticationProvider.id,
+      []
     );
     if (session) {
       const credentials = new Credentials();
@@ -193,7 +206,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
         // Jira
         const mostRelevantJiraTicket = await getMostRelevantJiraTicket({
-          userEmail: "estebanvargas94@gmail.com",
+          userEmail: session.account.label,
           prTitle: sortedPRs[0].title,
         }) || {};
         
