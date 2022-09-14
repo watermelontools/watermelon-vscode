@@ -18,6 +18,7 @@ import hover from "./utils/components/hover";
 import getDailySummary from "./utils/github/getDailySummary";
 import {
   backendURL,
+  EXTENSION_ID,
   GITHUB_AUTH_PROVIDER_ID,
   SCOPES,
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
@@ -133,7 +134,7 @@ export async function activate(context: vscode.ExtensionContext) {
   let addToRecommendedCommandHandler = async () => {
     vscode.commands.executeCommand(
       "workbench.extensions.action.addExtensionToWorkspaceRecommendations",
-      "WatermelonTools.watermelon-tools"
+      EXTENSION_ID
     );
   };
 
@@ -416,5 +417,4 @@ export async function activate(context: vscode.ExtensionContext) {
 
 // Not used yet
 // Allows cleanup
-export function deactivate() {
-}
+export function deactivate() {}
