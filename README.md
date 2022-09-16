@@ -56,6 +56,8 @@ You may also highlight and right click on the code, you will find the 'Get Pull 
 
 Get an overview of which issues and PR reviews are assigned to you. Both on the current repository and across all GitHub. 
 
+Also, login to Jira to view your Tickets in Progress.
+
 To use it, open the Watermelon sidebar.
 
 ![daily-summary](https://github.com/watermelontools/wm-extension/blob/dev/daily-summary-showcase.png?raw=true)
