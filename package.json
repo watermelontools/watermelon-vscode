@@ -17,6 +17,7 @@
     "vscode": "^1.63.0"
   },
   "categories": [
+    "Debuggers",
     "Other"
   ],
   "keywords": [
