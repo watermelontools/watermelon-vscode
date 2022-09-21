@@ -27,12 +27,7 @@ export default function getInitialHTML(
     "https://codecov.io/",
     "https://i.imgur.com",
   ];
-  let scriptSources = [
-    `'nonce-${nonce}'`,
-    "https://browser.sentry-cdn.com/",
-    "https://cdn.jsdelivr.net/npm/marked/",
-    "https://ajax.googleapis.com/ajax/libs/jquery/",
-  ];
+  let scriptSources = [`'nonce-${nonce}'`];
   let connectSources = [
     "https://*.ingest.sentry.io",
     "https://*.sentry.io",
