@@ -87,18 +87,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
       this._view.webview.postMessage(message);
     }
   }
-  public sendSilentMessage(message: any) {
-    if (this._view) {
-      this._view.webview.html = this._getHtmlForWebview(
-        this._view.webview,
-        message
-      );
-    }
-  }
-  private _getHtmlForWebview(
-    webview: vscode.Webview,
-    message: { author?: string } = {}
-  ) {
+  private _getHtmlForWebview(webview: vscode.Webview) {
     // Local path to main script run in the webview
     const scriptPathOnDisk = vscode.Uri.joinPath(
       this._extensionUri,
