@@ -87,18 +87,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
       this._view.webview.postMessage(message);
     }
   }
-  public sendSilentMessage(message: any) {
-    if (this._view) {
-      this._view.webview.html = this._getHtmlForWebview(
-        this._view.webview,
-        message
-      );
-    }
-  }
-  private _getHtmlForWebview(
-    webview: vscode.Webview,
-    message: { author?: string } = {}
-  ) {
+  private _getHtmlForWebview(webview: vscode.Webview) {
     // Local path to main script run in the webview
     const scriptPathOnDisk = vscode.Uri.joinPath(
       this._extensionUri,
@@ -107,6 +96,15 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
     );
     // And the uri we use to load this script in the webview
     const scriptUri = scriptPathOnDisk.with({ scheme: "vscode-resource" });
+    const jqueryUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "jquery.min.js")
+    );
+    const sentryUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "sentry.min.js")
+    );
+    const markedUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "marked.min.js")
+    );
     const codiconsUri = webview.asWebviewUri(
       vscode.Uri.joinPath(
         this._extensionUri,
@@ -135,27 +133,18 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
     );
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
-    if (message?.author) {
-      return getInitialHTML(
-        webview,
-        stylesMainUri,
-        codiconsUri,
-        darkLogo,
-        lightLogo,
-        nonce,
-        scriptUri,
-        message.author
-      );
-    } else {
-      return getInitialHTML(
-        webview,
-        stylesMainUri,
-        codiconsUri,
-        darkLogo,
-        lightLogo,
-        nonce,
-        scriptUri
-      );
-    }
+
+    return getInitialHTML(
+      webview,
+      stylesMainUri,
+      codiconsUri,
+      darkLogo,
+      lightLogo,
+      nonce,
+      scriptUri,
+      jqueryUri,
+      sentryUri,
+      markedUri
+    );
   }
 }
