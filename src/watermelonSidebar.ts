@@ -107,6 +107,15 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
     );
     // And the uri we use to load this script in the webview
     const scriptUri = scriptPathOnDisk.with({ scheme: "vscode-resource" });
+    const jqueryUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "jquery.min.js")
+    );
+    const sentryUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "sentry.min.js")
+    );
+    const markedUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "marked.min.js")
+    );
     const codiconsUri = webview.asWebviewUri(
       vscode.Uri.joinPath(
         this._extensionUri,
@@ -135,27 +144,18 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
     );
     // Use a nonce to only allow specific scripts to be run
     const nonce = getNonce();
-    if (message?.author) {
-      return getInitialHTML(
-        webview,
-        stylesMainUri,
-        codiconsUri,
-        darkLogo,
-        lightLogo,
-        nonce,
-        scriptUri,
-        message.author
-      );
-    } else {
-      return getInitialHTML(
-        webview,
-        stylesMainUri,
-        codiconsUri,
-        darkLogo,
-        lightLogo,
-        nonce,
-        scriptUri
-      );
-    }
+
+    return getInitialHTML(
+      webview,
+      stylesMainUri,
+      codiconsUri,
+      darkLogo,
+      lightLogo,
+      nonce,
+      scriptUri,
+      jqueryUri,
+      sentryUri,
+      markedUri
+    );
   }
 }
