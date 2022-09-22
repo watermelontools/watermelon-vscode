@@ -8,7 +8,9 @@ export default function getInitialHTML(
   lightLogo: vscode.Uri,
   nonce: string,
   scriptUri: vscode.Uri,
-  author: string = "the author"
+  jqueryUri: vscode.Uri,
+  sentryUri: vscode.Uri,
+  markedUri: vscode.Uri
 ): string {
   let styleSources = [
     "'self'",
@@ -25,12 +27,7 @@ export default function getInitialHTML(
     "https://codecov.io/",
     "https://i.imgur.com",
   ];
-  let scriptSources = [
-    `'nonce-${nonce}'`,
-    "https://browser.sentry-cdn.com/",
-    "https://cdn.jsdelivr.net/npm/marked/",
-    "https://ajax.googleapis.com/ajax/libs/jquery/",
-  ];
+  let scriptSources = [`'nonce-${nonce}'`];
   let connectSources = [
     "https://*.ingest.sentry.io",
     "https://*.sentry.io",
@@ -54,6 +51,14 @@ export default function getInitialHTML(
          <meta charset="UTF-8">
         <link href="${stylesMainUri}" rel="stylesheet"/>
         <link href="${codiconsUri}" rel="stylesheet" />
+        <script nonce="${nonce}" src="${jqueryUri}" 
+        async defer fetchpriority="low"></script>
+        <script nonce="${nonce}" src="${sentryUri}" 
+        async defer fetchpriority="low"
+        integrity="sha384-XITe7oDiyULCpVPtGc52+ISVyD2MAEbbfpNsmYcfxClZXDw+IA906MSf6rhcdf3L"
+      crossorigin="anonymous"></script>
+        <script nonce="${nonce}" src="${markedUri}"
+        async defer fetchpriority="low"></script>
      </head>
      <body data-color-mode="dark" data-light-theme="light" data-dark-theme="dark">
      <div class="Header">
@@ -121,22 +126,6 @@ export default function getInitialHTML(
      <footer>
       <script nonce="${nonce}" src="${scriptUri}" type="module"></script>
       <a href="https://watermelon.tools">Watermelon.tools</a>.
-      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" 
-      async defer fetchpriority="low"
-      nonce="${nonce}"
-      ></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-      nonce="${nonce}"
-      async defer fetchpriority="low"
-      ></script>
-      <script
-      src="https://browser.sentry-cdn.com/6.19.6/bundle.min.js"
-      nonce="${nonce}"
-      integrity="sha384-XITe7oDiyULCpVPtGc52+ISVyD2MAEbbfpNsmYcfxClZXDw+IA906MSf6rhcdf3L"
-      crossorigin="anonymous"
-      nonce="${nonce}"
-      async defer fetchpriority="low"
-      ></script>
      </footer>
      </html>
   `;

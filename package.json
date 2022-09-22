@@ -17,6 +17,7 @@
     "vscode": "^1.63.0"
   },
   "categories": [
+    "Debuggers",
     "Other"
   ],
   "keywords": [
@@ -35,6 +36,7 @@
     "theme": "dark"
   },
   "activationEvents": [
+    "onAuthenticationRequest:watermelon",
     "onCommand:watermelon.start",
     "onCommand:watermelon.show",
     "onWebviewPanel:watermelon",
@@ -46,6 +48,12 @@
   "main": "./out/extension.js",
   "browser": "./out/extension.js",
   "contributes": {
+    "authentication": [
+      {
+        "id": "watermelon",
+        "label": "Watermelon Login"
+      }
+    ],
     "commands": [
       {
         "command": "watermelon.start",
@@ -276,7 +284,7 @@
     "@types/git-url-parse": "^9.0.1",
     "@types/glob": "^7.2.0",
     "@types/mocha": "^9.1.1",
-    "@types/node": "^12.12.0",
+    "@types/node": "^18.7.14",
     "@types/vscode": "^1.63.0",
     "@types/vscode-webview": "^1.57.0",
     "@typescript-eslint/eslint-plugin": "^4.16.0",
@@ -298,7 +306,8 @@
     "@vscode/test-electron": "^2.1.2",
     "axios": "^0.26.1",
     "git-url-parse": "^11.6.0",
-    "octokit": "^1.7.1"
+    "octokit": "^1.7.1",
+    "uuid": "^8.3.2"
   },
   "__metadata": {
     "id": "128b4bc5-518d-431c-8054-a44cb1281b98",
