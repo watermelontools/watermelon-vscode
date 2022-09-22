@@ -4,8 +4,11 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [1.6.0]
+## [1.6.1]
 - Get code context button now retrieves the most relevant Jira ticket, if the user is authenticated with Jira
+- Watermelon is now an authentication provider, to allow us to connect to all your services
+
+## [1.6.0]
 - Watermelon is now an authentication provider, to allow us to connect to all your services
 - Made improvements to request less scripts from the internet, improving performance and security
 
