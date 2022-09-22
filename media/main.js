@@ -74,10 +74,6 @@ function handleMessage(message) {
       );
       addVersionToFooter(message.data);
       break;
-    case "author":
-      webviewDebugLogger(`Received author: ${JSON.stringify(message.data)}`);
-      authorName = message.author;
-      break;
     case "removedStar":
       $(".star-us-row").remove();
       break;

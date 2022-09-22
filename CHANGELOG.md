@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 # [1.6.0]
 - Daily summary now shows currently open Jira tickets that are assigned to the user
 - Watermelon is now an authentication provider, to allow us to connect to all your services
+- Made improvements to request less scripts from the internet, improving performance and security
 
 ## [1.5.3]
 
