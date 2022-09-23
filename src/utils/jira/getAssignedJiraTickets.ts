@@ -1,5 +1,6 @@
 import axios from "axios";
 import { backendURL } from "../../constants";
+import analyticsReporter from "../../utils/vscode/reporter";
 
 export default async function getAssignedJiraTickets({
   userEmail,
@@ -11,7 +12,13 @@ export default async function getAssignedJiraTickets({
     {
       userEmail,
     }
-  ).then(res => res.data);
+  ).then(res => res.data).catch(err => {
+    let reporter = analyticsReporter();
+    reporter?.sendTelemetryEvent("error", {
+      error: err,
+      source: "getAssignedJiraTickets",
+    });
+  });
 
   return assignedJiraTickets;
 }
