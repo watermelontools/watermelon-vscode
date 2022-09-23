@@ -8,7 +8,10 @@ import { EXTENSION_ID, TELEMETRY_INSIGHTS_KEY } from "../../constants";
 const analyticsReporter = (): TelemetryReporter | null => {
   const extensionVersion = getPackageInfo().version;
 
-  if (!vscode.env.isTelemetryEnabled) {
+  if (
+    !vscode.env.isTelemetryEnabled ||
+    !vscode.workspace.getConfiguration("watermelon").get("enableTelemetry")
+  ) {
     return null;
   }
   let reporter: TelemetryReporter;
