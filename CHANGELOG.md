@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.6.1]
+
+- New loading animation
+
 ## [1.6.0]
 
 - Watermelon is now an authentication provider, to allow us to connect to all your services
