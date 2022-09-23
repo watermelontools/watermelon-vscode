@@ -265,7 +265,17 @@
           }
         ]
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Watermelon",
+      "properties": {
+        "watermelon.enableTelemetry": {
+          "type": "boolean",
+          "default": true,
+          "description": "Allows the extension to improve by understanding your usage."
+        }
+      }
+    }
   },
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx",
