@@ -64,7 +64,9 @@ function handleMessage(message) {
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       addPRsToDoc(message.data.sortedPRs);
       // jira
-      addMostRelevantJiraTicket(message.data.mostRelevantJiraTicket);
+      if (message.data.mostRelevantJiraTicket) {
+        addMostRelevantJiraTicket(message.data.mostRelevantJiraTicket);
+      }
       clampCodeBlocks();
       break;
     case "error":
