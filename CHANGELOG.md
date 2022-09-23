@@ -4,8 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-# [1.6.0]
+# [1.6.1]
 - Daily summary now shows currently open Jira tickets that are assigned to the user
+
+## [1.6.0]
 - Watermelon is now an authentication provider, to allow us to connect to all your services
 - Made improvements to request less scripts from the internet, improving performance and security
 
@@ -17,7 +19,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Will show the user a prompt to talk to the CTO every third use
 - The hover link will look more like a button
->>>>>>> feature/authenticator-provider
 
 ## [1.5.1]
 
