@@ -1,8 +1,8 @@
 import sendMessage from "./sendVSCodeMessage.js";
 
 const addActionButtons = () => {
-  $("#ghHolder").append(`<p>Higlight a piece of code to start.</p>`);
-  $("#ghHolder").append(
+  $("#ghHolder").prepend(`<p>Higlight a piece of code to start.</p>`);
+  $("#ghHolder").prepend(
     `
     <div class="anim-fade-in">
     <div class="action-buttons">
