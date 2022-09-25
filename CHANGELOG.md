@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.6.1]
 
 - Allows the user to deactivate telemetry through settings
+- Fixes stacking of elements in the extension
 
 ## [1.6.0]
 
