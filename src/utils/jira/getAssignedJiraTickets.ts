@@ -14,10 +14,8 @@ export default async function getAssignedJiraTickets({
     }
   ).then(res => res.data).catch(err => {
     let reporter = analyticsReporter();
-    reporter?.sendTelemetryEvent("error", {
-      error: err,
-      source: "getAssignedJiraTickets",
-    });
+    let { message } = err;
+    reporter?.sendTelemetryException(err, { 'error': message });
   });
 
   return assignedJiraTickets;
