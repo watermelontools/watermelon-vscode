@@ -5,6 +5,7 @@ import setReceivedError from "./utils/setReceivedError.js";
 import removeLoading from "./utils/removeLoading.js";
 import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
+import addJiraTicketsToDailySummary from "./utils/addJiraTicketsToDailySummary.js";
 import sendMessage from "./utils/sendVSCodeMessage.js";
 import addBlametoDoc from "./utils/addBlametoDoc.js";
 import addGHUserInfo from "./utils/addGHUserInfo.js";
@@ -22,7 +23,7 @@ const vscode = acquireVsCodeApi();
 window.vscodeApi = vscode;
 const oldState = vscode.getState();
 
-if (oldState?.command) {
+if (oldState?.command && oldState.command !== "loading") {
   handleMessage(oldState);
 }
 Sentry.init({
@@ -45,7 +46,8 @@ function handleMessage(message) {
       webviewDebugLogger(
         `Received dailySummary: ${JSON.stringify(message.data)}`
       );
-      addDailySummary(message.data);
+      addJiraTicketsToDailySummary(message.data.jiraTickets);
+      addDailySummary(message.data.dailySummary);
       break;
     case "prs":
       webviewDebugLogger(message.data);
@@ -86,11 +88,15 @@ function handleMessage(message) {
       webviewDebugLogger(`Received session: ${JSON.stringify(message.data)}`);
       addSessionToFooter(message.data);
       break;
+    case "loading":
+      vscode.setState({ command: "loading" });
+      $("#ghHolder").empty();
+      $("#ghHolder").append(`<p class="anim-pulse">Loading...</p>`);
+      break;
     case "talkToCTO":
       $(".action-buttons").append(
         `<p>Wanna give us feedback? <a href="https://cal.pv.dev/esteban-dalel-watermelon-tools/half-hour-chat">Talk to the CTO</a></p>`
       );
-
       break;
     default:
       webviewDebugLogger(
