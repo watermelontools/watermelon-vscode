@@ -17,6 +17,7 @@ import statusBarItem, {
 import hover from "./utils/components/hover";
 import getDailySummary from "./utils/github/getDailySummary";
 import {
+  backendURL,
   EXTENSION_ID,
   GITHUB_AUTH_PROVIDER_ID,
   SCOPES,
@@ -32,8 +33,8 @@ import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
+import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
-import axios from "axios";
 
 // repo information
 let owner: string | undefined = "";
@@ -145,8 +146,8 @@ export async function activate(context: vscode.ExtensionContext) {
       command: "loading",
     });
     const session = await vscode.authentication.getSession(
-      GITHUB_AUTH_PROVIDER_ID,
-      SCOPES
+      WatermelonAuthenticationProvider.id,
+      []
     );
     if (session) {
       const credentials = new Credentials();
@@ -167,6 +168,11 @@ export async function activate(context: vscode.ExtensionContext) {
         },
       });
 
+    // call our API to get assigned Jira tickets here
+    const jiraTickets = await getAssignedJiraTickets({
+      userEmail: session.account.label,
+    });
+
       let dailySummary = await getDailySummary({
         octokit,
         owner: owner || "",
@@ -176,7 +182,7 @@ export async function activate(context: vscode.ExtensionContext) {
       debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
       provider.sendMessage({
         command: "dailySummary",
-        data: dailySummary,
+        data: { dailySummary, jiraTickets },
       });
       if (startLine === undefined && endLine === undefined) {
         if (!arrayOfSHAs.length) {
