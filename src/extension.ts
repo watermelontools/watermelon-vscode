@@ -205,12 +205,13 @@ export async function activate(context: vscode.ExtensionContext) {
         );
         let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
 
-        const parsedCommitMessage = new Object(uniqueBlames[0]) as any;
+        const parsedCommitObject = new Object(uniqueBlames[0]) as {date: string, message: string, author: string, email: string, commit: string, body: string, sha: string};
+        const parsedMessage = parsedCommitObject.message;
 
         // Jira
         const mostRelevantJiraTicket = await getMostRelevantJiraTicket({
           userEmail: session.account.label,
-          prTitle: sortedPRs[0].title || parsedCommitMessage,
+          prTitle: sortedPRs[0].title || parsedMessage,
         }) || {};
         
         if (mostRelevantJiraTicket) {
