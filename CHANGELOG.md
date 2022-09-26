@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.6.1]
 
+- New loading animation
 - Allows the user to deactivate telemetry through settings
 
 ## [1.6.0]
