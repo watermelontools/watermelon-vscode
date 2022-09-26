@@ -34,6 +34,6 @@ We prefer to use [Codicons](https://microsoft.github.io/vscode-codicons/dist/cod
 
 ## Donations
 
-[We have Github Sponsors](https://github.com/sponsors/watermelontools)
-For now, send us a message or star :star: the repo to help!
+[We have Github Sponsors](https://github.com/sponsors/watermelontools)  
+Also star :star: the repo to help! 
 

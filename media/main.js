@@ -81,11 +81,14 @@ function handleMessage(message) {
       webviewDebugLogger(`Received session: ${JSON.stringify(message.data)}`);
       addSessionToFooter(message.data);
       break;
+    case "loading":
+      $("#ghHolder").empty();
+      $("#ghHolder").append(`<p class="anim-pulse">Loading...</p>`);
+      break;
     case "talkToCTO":
       $(".action-buttons").append(
         `<p>Wanna give us feedback? <a href="https://cal.pv.dev/esteban-dalel-watermelon-tools/half-hour-chat">Talk to the CTO</a></p>`
       );
-
       break;
     default:
       webviewDebugLogger(

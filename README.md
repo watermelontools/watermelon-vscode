@@ -56,6 +56,8 @@ You may also highlight and right click on the code, you will find the 'Get Pull 
 
 Get an overview of which issues and PR reviews are assigned to you. Both on the current repository and across all GitHub. 
 
+Also, login to Jira to view your Tickets in Progress.
+
 To use it, open the Watermelon sidebar.
 
 ![daily-summary](https://github.com/watermelontools/wm-extension/blob/dev/daily-summary-showcase.png?raw=true)
@@ -80,7 +82,6 @@ Watermelon comes with a few commands that you can run from VS Code's Command Pal
 | Command                | Description                                              |
 | :--------------------- | :------------------------------------------------------- |
 | `watermelon.start`     | Get the historical context of the selected block of code |
-| `watermelon.blame`     | Get the commit history of the selected block of code     |
 | `watermelon.show`      | Reveal the extension                                     |
 | `watermelon.recommend` | Add the extension to the list of recommended             |
 | `watermelon.login`     | Login using GitHub                                       |

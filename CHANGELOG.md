@@ -6,13 +6,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 # [1.6.1]
 - Daily summary now shows currently open Jira tickets that are assigned to the user
+- New loading animation
+- Allows the user to deactivate telemetry through settings
 
 ## [1.6.0]
 - Watermelon is now an authentication provider, to allow us to connect to all your services
 - Made improvements to request less scripts from the internet, improving performance and security
 
 ## [1.5.3]
-
 - Will allow the user to use some features without logging into GitHub
 
 ## [1.5.2]
