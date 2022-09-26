@@ -20,7 +20,7 @@ const vscode = acquireVsCodeApi();
 window.vscodeApi = vscode;
 const oldState = vscode.getState();
 
-if (oldState?.command) {
+if (oldState?.command && oldState.command !== "loading") {
   handleMessage(oldState);
 }
 Sentry.init({
@@ -80,6 +80,7 @@ function handleMessage(message) {
       addSessionToFooter(message.data);
       break;
     case "loading":
+      vscode.setState({ command: "loading" });
       $("#ghHolder").empty();
       $("#ghHolder").append(`<p class="anim-pulse">Loading...</p>`);
       break;

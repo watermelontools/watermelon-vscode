@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - New loading animation
 - Allows the user to deactivate telemetry through settings
+- Fixes stacking of elements in the extension
 
 ## [1.6.0]
 
