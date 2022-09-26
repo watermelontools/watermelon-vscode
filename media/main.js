@@ -82,12 +82,12 @@ function handleMessage(message) {
     case "loading":
       vscode.setState({ command: "loading" });
       $("#ghHolder").empty();
+      $("#ghHolder").append(`<p class="anim-pulse">Loading...</p>`);
       break;
     case "talkToCTO":
       $(".action-buttons").append(
         `<p>Wanna give us feedback? <a href="https://cal.pv.dev/esteban-dalel-watermelon-tools/half-hour-chat">Talk to the CTO</a></p>`
       );
-
       break;
     default:
       webviewDebugLogger(
