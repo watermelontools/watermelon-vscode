@@ -33,6 +33,7 @@ import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
+import getMostRelevantJiraTicket from "./utils/jira/getMostRelevantJiraTicket";
 import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
 
@@ -211,10 +212,27 @@ export async function activate(context: vscode.ExtensionContext) {
         );
         let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
 
-        provider.sendMessage({
-          command: "prs",
-          data: { sortedPRs, uniqueBlames },
-        });
+        const parsedCommitObject = new Object(uniqueBlames[0]) as {date: string, message: string, author: string, email: string, commit: string, body: string, sha: string};
+        const parsedMessage = parsedCommitObject.message;
+
+        // Jira
+        const mostRelevantJiraTicket = await getMostRelevantJiraTicket({
+          userEmail: session.account.label,
+          prTitle: sortedPRs[0].title || parsedMessage,
+        }) || {};
+        
+        if (mostRelevantJiraTicket) {
+          provider.sendMessage({
+            command: "prs",
+            data: { sortedPRs, uniqueBlames, mostRelevantJiraTicket },
+          });
+        } else {
+          provider.sendMessage({
+            command: "prs",
+            data: { sortedPRs, uniqueBlames },
+          });
+        }
+
       } else {
         vscode.commands.executeCommand("watermelon.multiSelect");
         arrayOfSHAs = await getSHAArray(

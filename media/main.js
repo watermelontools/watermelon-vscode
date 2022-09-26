@@ -14,6 +14,8 @@ import addSessionToFooter from "./utils/addSessionToFooter.js";
 import addDailySummary from "./utils/addDailySummary.js";
 import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 import addActionButtons from "./utils/addActionButtons.js";
+import addMostRelevantJiraTicket from "./utils/addMostRelevantJiraTicket.js";
+
 
 let errorTimeout;
 
@@ -58,10 +60,15 @@ function handleMessage(message) {
       if (message.owner && message.repo) {
         commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
       }
+      // blame table
       addBlametoDoc(message.data.uniqueBlames, commitLink);
       // prs
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       addPRsToDoc(message.data.sortedPRs);
+      // jira
+      if (message.data?.mostRelevantJiraTicket) {
+        addMostRelevantJiraTicket(message.data.mostRelevantJiraTicket);
+      }
       clampCodeBlocks();
       break;
     case "error":

@@ -4,7 +4,8 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-# [1.6.1]
+## [1.6.1]
+- Get code context button now retrieves the most relevant Jira ticket, if the user is authenticated with Jira
 - Daily summary now shows currently open Jira tickets that are assigned to the user
 - New loading animation
 - Allows the user to deactivate telemetry through settings
