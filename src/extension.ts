@@ -169,10 +169,10 @@ export async function activate(context: vscode.ExtensionContext) {
         },
       });
 
-    // call our API to get assigned Jira tickets here
-    const jiraTickets = await getAssignedJiraTickets({
-      userEmail: session.account.label,
-    });
+      // call our API to get assigned Jira tickets here
+      const jiraTickets = await getAssignedJiraTickets({
+        user: session.account.label,
+      });
 
       let dailySummary = await getDailySummary({
         octokit,
@@ -212,15 +212,24 @@ export async function activate(context: vscode.ExtensionContext) {
         );
         let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
 
-        const parsedCommitObject = new Object(uniqueBlames[0]) as {date: string, message: string, author: string, email: string, commit: string, body: string, sha: string};
+        const parsedCommitObject = new Object(uniqueBlames[0]) as {
+          date: string;
+          message: string;
+          author: string;
+          email: string;
+          commit: string;
+          body: string;
+          sha: string;
+        };
         const parsedMessage = parsedCommitObject.message;
 
         // Jira
-        const mostRelevantJiraTicket = await getMostRelevantJiraTicket({
-          userEmail: session.account.label,
-          prTitle: sortedPRs[0].title || parsedMessage,
-        }) || {};
-        
+        const mostRelevantJiraTicket =
+          (await getMostRelevantJiraTicket({
+            userEmail: session.account.label,
+            prTitle: sortedPRs[0].title || parsedMessage,
+          })) || {};
+
         if (mostRelevantJiraTicket) {
           provider.sendMessage({
             command: "prs",
@@ -232,7 +241,6 @@ export async function activate(context: vscode.ExtensionContext) {
             data: { sortedPRs, uniqueBlames },
           });
         }
-
       } else {
         vscode.commands.executeCommand("watermelon.multiSelect");
         arrayOfSHAs = await getSHAArray(
