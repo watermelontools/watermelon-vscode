@@ -33,6 +33,9 @@ const issueBox = (issue) => {
 };
 
 const addDailySummary = (data) => {
+  if (!data) {
+    return;
+  }
   $("#dailySummary").empty();
   if (data.error) {
     $("#dailySummary").append(`
