@@ -9,6 +9,10 @@ function addGitHubIssueHolders(error = null) {
     });
     return;
   }
+
+  $("#dailySummary").append(`
+  <h3>GitHub</h3>
+  `);
   $("#dailySummary").append(`
     <div id="assignedIssues">
     </div>
