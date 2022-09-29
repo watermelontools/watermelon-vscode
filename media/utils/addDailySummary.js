@@ -2,6 +2,7 @@ import addAssignedIssues from "./DailySummary/GitHub/addAssignedIssues.js";
 import addCreatorIssues from "./DailySummary/GitHub/addCreatorIssues.js";
 import addGlobalIssues from "./DailySummary/GitHub/addGlobalIssues.js";
 import addMentionedIssues from "./DailySummary/GitHub/addMentionedIssues.js";
+import addGitHubIssueHolders from "./DailySummary/GitHub/addGitHubIssueHolders.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import sendLinkToOpen from "./sendLinkToOpen.js";
 import sendMessage from "./sendVSCodeMessage.js";
@@ -41,26 +42,8 @@ const addDailySummary = (data) => {
     return;
   }
   $("#dailySummary").empty();
-  if (data.error) {
-    $("#dailySummary").append(`
-    <p>You are not logged in to GitHub</p>
-    <button class="login-watermelon btn" type="button">Login to GitHub</button>
-    `);
-    $(".login-watermelon").on("click", (event) => {
-      sendMessage({ command: "login" });
-    });
-    return;
-  }
-  $("#dailySummary").append(`
-    <div id="assignedIssues">
-    </div>
-    <div id="creatorIssues">
-    </div>
-    <div id="mentionedIssues">
-    </div>
-    <div id="globalIssues">
-    </div>
-    `);
+
+  addGitHubIssueHolders(data.error);
   addGlobalIssues(data.globalIssues);
   addAssignedIssues(data.assignedIssues);
   addCreatorIssues(data.creatorIssues);
