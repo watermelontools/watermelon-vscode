@@ -169,10 +169,10 @@ export async function activate(context: vscode.ExtensionContext) {
         },
       });
 
-      // call our API to get assigned Jira tickets here
       const jiraTickets = await getAssignedJiraTickets({
         user: session.account.label,
       });
+      debugLogger(`jiraTickets: ${JSON.stringify(jiraTickets)}`);
 
       let gitHubIssues = await getGitHubDailySummary({
         octokit,
