@@ -32,11 +32,11 @@ const issueBox = (issue) => {
     </div>
     `;
 };
-function addGitHubDailySummary(data) {
-  addGitHubIssueHolders(data.error);
-  addGlobalIssues(data.globalIssues);
-  addAssignedIssues(data.assignedIssues);
-  addCreatorIssues(data.creatorIssues);
-  addMentionedIssues(data.mentionedIssues);
+function addGitHubDailySummary({ gitHubIssues }) {
+  addGitHubIssueHolders(gitHubIssues.error);
+  addGlobalIssues(gitHubIssues.globalIssues);
+  addAssignedIssues(gitHubIssues.assignedIssues);
+  addCreatorIssues(gitHubIssues.creatorIssues);
+  addMentionedIssues(gitHubIssues.mentionedIssues);
 }
 export default addGitHubDailySummary;
