@@ -16,7 +16,6 @@ import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 import addActionButtons from "./utils/addActionButtons.js";
 import addMostRelevantJiraTicket from "./utils/addMostRelevantJiraTicket.js";
 
-
 let errorTimeout;
 
 const vscode = acquireVsCodeApi();
@@ -47,7 +46,7 @@ function handleMessage(message) {
         `Received dailySummary: ${JSON.stringify(message.data)}`
       );
       addJiraTicketsToDailySummary(message.data.jiraTickets);
-      addDailySummary(message.data.dailySummary);
+      addDailySummary(message.data.gitHubIssues);
       break;
     case "prs":
       webviewDebugLogger(message.data);
