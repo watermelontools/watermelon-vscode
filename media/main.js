@@ -67,6 +67,7 @@ function handleMessage(message) {
       addPRsToDoc(message.data.sortedPRs);
       // jira
       if (message.data?.mostRelevantJiraTicket) {
+        $("#mostRelevantJiraTicketHolder").empty();
         addMostRelevantJiraTicket(message.data.mostRelevantJiraTicket);
       }
       clampCodeBlocks();

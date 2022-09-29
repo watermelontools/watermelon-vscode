@@ -1,14 +1,14 @@
 import addGitHubDailySummary from "./DailySummary/GitHub/addGitHubDailySummary.js";
-import addJiraTicketsToDailySummary from "./addJiraTicketsToDailySummary.js";
+import addJiraTicketsToDailySummary from "./DailySummary/Jira/addJiraTicketsToDailySummary.js";
 import sendLinkToOpen from "./sendLinkToOpen.js";
 
 const addDailySummary = ({ gitHubIssues, jiraTickets }) => {
   $("#dailySummary").empty();
-  if (gitHubIssues) {
-    addGitHubDailySummary({ gitHubIssues });
-  }
   if (jiraTickets) {
     addJiraTicketsToDailySummary(jiraTickets);
+  }
+  if (gitHubIssues) {
+    addGitHubDailySummary({ gitHubIssues });
   }
 
   $("#dailySummary")

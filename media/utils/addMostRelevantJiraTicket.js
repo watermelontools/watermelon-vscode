@@ -1,6 +1,6 @@
 const addMostRelevantJiraTicket = (jiraTicket) => {
   $("#mostRelevantJiraTicketHolder").append(`
-  <h3>Assigned Jira Tickets</h3>
+  <h3>Most Relevant Jira Ticket</h3>
     <div class="Box-header">
       <h5 class="Box-title Truncate">
         ${jiraTicket?.key}
