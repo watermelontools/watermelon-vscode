@@ -1,5 +1,5 @@
 function addMentionedIssues(mentionedIssues) {
-  if (data.mentionedIssues.length > 0) {
+  if (mentionedIssues.length > 0) {
     $("#mentionedIssues").append(`
     <div class="Box ">
       <div class="Box-header">
@@ -7,7 +7,7 @@ function addMentionedIssues(mentionedIssues) {
       </div>
     </div>
     `);
-    data.mentionedIssues.map((issue) => {
+    mentionedIssues.map((issue) => {
       $("#mentionedIssues .Box").append(`
       ${issueBox(issue)}
       `);
