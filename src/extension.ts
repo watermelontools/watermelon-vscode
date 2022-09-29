@@ -15,7 +15,7 @@ import statusBarItem, {
   updateStatusBarItem,
 } from "./utils/components/statusBarItem";
 import hover from "./utils/components/hover";
-import getDailySummary from "./utils/github/getDailySummary";
+import getGitHubDailySummary from "./utils/github/getDailySummary";
 import {
   backendURL,
   EXTENSION_ID,
@@ -174,7 +174,7 @@ export async function activate(context: vscode.ExtensionContext) {
         user: session.account.label,
       });
 
-      let dailySummary = await getDailySummary({
+      let dailySummary = await getGitHubDailySummary({
         octokit,
         owner: owner || "",
         repo: repo || "",
@@ -386,7 +386,7 @@ export async function activate(context: vscode.ExtensionContext) {
         isStarred,
       },
     });
-    let dailySummary = await getDailySummary({
+    let dailySummary = await getGitHubDailySummary({
       octokit,
       owner: owner || "",
       repo: repo || "",
