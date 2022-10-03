@@ -5,7 +5,6 @@ import setReceivedError from "./utils/setReceivedError.js";
 import removeLoading from "./utils/removeLoading.js";
 import clampCodeBlocks from "./utils/clampCodeBlocks.js";
 import addPRsToDoc from "./utils/addPRsToDoc.js";
-import addJiraTicketsToDailySummary from "./utils/addJiraTicketsToDailySummary.js";
 import sendMessage from "./utils/sendVSCodeMessage.js";
 import addBlametoDoc from "./utils/addBlametoDoc.js";
 import addGHUserInfo from "./utils/addGHUserInfo.js";
@@ -15,7 +14,6 @@ import addDailySummary from "./utils/addDailySummary.js";
 import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 import addActionButtons from "./utils/addActionButtons.js";
 import addMostRelevantJiraTicket from "./utils/addMostRelevantJiraTicket.js";
-
 
 let errorTimeout;
 
@@ -46,8 +44,10 @@ function handleMessage(message) {
       webviewDebugLogger(
         `Received dailySummary: ${JSON.stringify(message.data)}`
       );
-      addJiraTicketsToDailySummary(message.data.jiraTickets);
-      addDailySummary(message.data.dailySummary);
+      addDailySummary({
+        gitHubIssues: message.data.gitHubIssues,
+        jiraTickets: message.data.jiraTickets,
+      });
       break;
     case "prs":
       webviewDebugLogger(message.data);
@@ -67,6 +67,7 @@ function handleMessage(message) {
       addPRsToDoc(message.data.sortedPRs);
       // jira
       if (message.data?.mostRelevantJiraTicket) {
+        $("#mostRelevantJiraTicketHolder").empty();
         addMostRelevantJiraTicket(message.data.mostRelevantJiraTicket);
       }
       clampCodeBlocks();

@@ -15,7 +15,7 @@ import statusBarItem, {
   updateStatusBarItem,
 } from "./utils/components/statusBarItem";
 import hover from "./utils/components/hover";
-import getDailySummary from "./utils/github/getDailySummary";
+import getGitHubDailySummary from "./utils/github/getDailySummary";
 import {
   backendURL,
   EXTENSION_ID,
@@ -169,21 +169,21 @@ export async function activate(context: vscode.ExtensionContext) {
         },
       });
 
-      // call our API to get assigned Jira tickets here
       const jiraTickets = await getAssignedJiraTickets({
         user: session.account.label,
       });
+      debugLogger(`jiraTickets: ${JSON.stringify(jiraTickets)}`);
 
-      let dailySummary = await getDailySummary({
+      let gitHubIssues = await getGitHubDailySummary({
         octokit,
         owner: owner || "",
         repo: repo || "",
         username: username || "",
       });
-      debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
+      debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
       provider.sendMessage({
         command: "dailySummary",
-        data: { dailySummary, jiraTickets },
+        data: { gitHubIssues, jiraTickets },
       });
       if (startLine === undefined && endLine === undefined) {
         if (!arrayOfSHAs.length) {
@@ -386,16 +386,16 @@ export async function activate(context: vscode.ExtensionContext) {
         isStarred,
       },
     });
-    let dailySummary = await getDailySummary({
+    let gitHubIssues = await getGitHubDailySummary({
       octokit,
       owner: owner || "",
       repo: repo || "",
       username: username || "",
     });
-    debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
+    debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
     provider.sendMessage({
       command: "dailySummary",
-      data: dailySummary,
+      data: gitHubIssues,
     });
   });
 

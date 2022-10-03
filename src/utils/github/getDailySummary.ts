@@ -3,7 +3,7 @@ import getAssignedIssues from "./getAssignedIssues";
 import getCreatorIssues from "./getCreatorIssues";
 import getMentionedIssues from "./getMentionedIssues";
 
-export default async function getDailySummary({
+export default async function getGitHubDailySummary({
   octokit,
   owner,
   repo,
