@@ -41,7 +41,7 @@ export default function getInitialHTML(
 
       <head>
          <title>Watermelon</title>
-         <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://*.watermelon.tools;
+         <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://*.watermelontools.com;
          style-src ${styleSources.join(" ")};
          img-src ${imageSources.join(" ")};
          script-src ${scriptSources.join(" ")};
@@ -112,13 +112,17 @@ export default function getInitialHTML(
      </div>
       </details>
      </div>
-        <p>Watermelon helps you get the context of your code.</p>
-        <p>Help us by <a href="https://github.com/watermelontools/wm-extension">⭐starring Watermelon on GitHub</a></p>
+        <p>Watermelon is your code archeology toolbox</p>
+        <p><a href="https://github.com/watermelontools/wm-extension">⭐ Star Watermelon on GitHub</a></p>
+        <br/>
+        <div id="mostRelevantJiraTicketHolder"></div>
         <br/>
         <div id="ghHolder">
            <button class='run-watermelon btn btn-primary' type='button'>Get Code Context</button>
         </div>
         <h2>Daily Summary</h2>
+        <div id="jiraHolder"></div>
+        <br/>
         <div id="dailySummary"></div>
         You will find all your issues and ToDos here. 
 

@@ -265,7 +265,17 @@
           }
         ]
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Watermelon",
+      "properties": {
+        "watermelon.enableTelemetry": {
+          "type": "boolean",
+          "default": true,
+          "description": "Allows the extension to improve by understanding your usage."
+        }
+      }
+    }
   },
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx",
@@ -306,8 +316,7 @@
     "@vscode/test-electron": "^2.1.2",
     "axios": "^0.26.1",
     "git-url-parse": "^11.6.0",
-    "octokit": "^1.7.1",
-    "uuid": "^8.3.2"
+    "octokit": "^1.7.1"
   },
   "__metadata": {
     "id": "128b4bc5-518d-431c-8054-a44cb1281b98",

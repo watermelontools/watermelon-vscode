@@ -15,8 +15,9 @@ import statusBarItem, {
   updateStatusBarItem,
 } from "./utils/components/statusBarItem";
 import hover from "./utils/components/hover";
-import getDailySummary from "./utils/github/getDailySummary";
+import getGitHubDailySummary from "./utils/github/getDailySummary";
 import {
+  backendURL,
   EXTENSION_ID,
   GITHUB_AUTH_PROVIDER_ID,
   SCOPES,
@@ -32,8 +33,9 @@ import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
+import getMostRelevantJiraTicket from "./utils/jira/getMostRelevantJiraTicket";
+import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
-import axios from "axios";
 
 // repo information
 let owner: string | undefined = "";
@@ -145,8 +147,8 @@ export async function activate(context: vscode.ExtensionContext) {
       command: "loading",
     });
     const session = await vscode.authentication.getSession(
-      GITHUB_AUTH_PROVIDER_ID,
-      SCOPES
+      WatermelonAuthenticationProvider.id,
+      []
     );
     if (session) {
       const credentials = new Credentials();
@@ -167,16 +169,21 @@ export async function activate(context: vscode.ExtensionContext) {
         },
       });
 
-      let dailySummary = await getDailySummary({
+      const jiraTickets = await getAssignedJiraTickets({
+        user: session.account.label,
+      });
+      debugLogger(`jiraTickets: ${JSON.stringify(jiraTickets)}`);
+
+      let gitHubIssues = await getGitHubDailySummary({
         octokit,
         owner: owner || "",
         repo: repo || "",
         username: username || "",
       });
-      debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
+      debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
       provider.sendMessage({
         command: "dailySummary",
-        data: dailySummary,
+        data: { gitHubIssues, jiraTickets },
       });
       if (startLine === undefined && endLine === undefined) {
         if (!arrayOfSHAs.length) {
@@ -205,10 +212,35 @@ export async function activate(context: vscode.ExtensionContext) {
         );
         let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
 
-        provider.sendMessage({
-          command: "prs",
-          data: { sortedPRs, uniqueBlames },
-        });
+        const parsedCommitObject = new Object(uniqueBlames[0]) as {
+          date: string;
+          message: string;
+          author: string;
+          email: string;
+          commit: string;
+          body: string;
+          sha: string;
+        };
+        const parsedMessage = parsedCommitObject.message;
+
+        // Jira
+        const mostRelevantJiraTicket =
+          (await getMostRelevantJiraTicket({
+            userEmail: session.account.label,
+            prTitle: sortedPRs[0].title || parsedMessage,
+          })) || {};
+
+        if (mostRelevantJiraTicket) {
+          provider.sendMessage({
+            command: "prs",
+            data: { sortedPRs, uniqueBlames, mostRelevantJiraTicket },
+          });
+        } else {
+          provider.sendMessage({
+            command: "prs",
+            data: { sortedPRs, uniqueBlames },
+          });
+        }
       } else {
         vscode.commands.executeCommand("watermelon.multiSelect");
         arrayOfSHAs = await getSHAArray(
@@ -354,16 +386,16 @@ export async function activate(context: vscode.ExtensionContext) {
         isStarred,
       },
     });
-    let dailySummary = await getDailySummary({
+    let gitHubIssues = await getGitHubDailySummary({
       octokit,
       owner: owner || "",
       repo: repo || "",
       username: username || "",
     });
-    debugLogger(`dailySummary: ${JSON.stringify(dailySummary)}`);
+    debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
     provider.sendMessage({
       command: "dailySummary",
-      data: dailySummary,
+      data: gitHubIssues,
     });
   });
 

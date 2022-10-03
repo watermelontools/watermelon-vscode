@@ -13,6 +13,7 @@ import addSessionToFooter from "./utils/addSessionToFooter.js";
 import addDailySummary from "./utils/addDailySummary.js";
 import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 import addActionButtons from "./utils/addActionButtons.js";
+import addMostRelevantJiraTicket from "./utils/addMostRelevantJiraTicket.js";
 
 let errorTimeout;
 
@@ -20,7 +21,7 @@ const vscode = acquireVsCodeApi();
 window.vscodeApi = vscode;
 const oldState = vscode.getState();
 
-if (oldState?.command) {
+if (oldState?.command && oldState.command !== "loading") {
   handleMessage(oldState);
 }
 Sentry.init({
@@ -43,7 +44,10 @@ function handleMessage(message) {
       webviewDebugLogger(
         `Received dailySummary: ${JSON.stringify(message.data)}`
       );
-      addDailySummary(message.data);
+      addDailySummary({
+        gitHubIssues: message.data.gitHubIssues,
+        jiraTickets: message.data.jiraTickets,
+      });
       break;
     case "prs":
       webviewDebugLogger(message.data);
@@ -56,10 +60,16 @@ function handleMessage(message) {
       if (message.owner && message.repo) {
         commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
       }
+      // blame table
       addBlametoDoc(message.data.uniqueBlames, commitLink);
       // prs
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       addPRsToDoc(message.data.sortedPRs);
+      // jira
+      if (message.data?.mostRelevantJiraTicket) {
+        $("#mostRelevantJiraTicketHolder").empty();
+        addMostRelevantJiraTicket(message.data.mostRelevantJiraTicket);
+      }
       clampCodeBlocks();
       break;
     case "error":
@@ -79,11 +89,15 @@ function handleMessage(message) {
       webviewDebugLogger(`Received session: ${JSON.stringify(message.data)}`);
       addSessionToFooter(message.data);
       break;
+    case "loading":
+      vscode.setState({ command: "loading" });
+      $("#ghHolder").empty();
+      $("#ghHolder").append(`<p class="anim-pulse">Loading...</p>`);
+      break;
     case "talkToCTO":
       $(".action-buttons").append(
         `<p>Wanna give us feedback? <a href="https://cal.pv.dev/esteban-dalel-watermelon-tools/half-hour-chat">Talk to the CTO</a></p>`
       );
-
       break;
     default:
       webviewDebugLogger(
