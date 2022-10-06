@@ -226,21 +226,14 @@ export async function activate(context: vscode.ExtensionContext) {
         // Jira
         const mostRelevantJiraTicket =
           (await getMostRelevantJiraTicket({
-            userEmail: session.account.label,
+            user: session.account.label,
             prTitle: sortedPRs[0].title || parsedMessage,
           })) || {};
 
-        if (mostRelevantJiraTicket) {
-          provider.sendMessage({
-            command: "prs",
-            data: { sortedPRs, uniqueBlames, mostRelevantJiraTicket },
-          });
-        } else {
-          provider.sendMessage({
-            command: "prs",
-            data: { sortedPRs, uniqueBlames },
-          });
-        }
+        provider.sendMessage({
+          command: "prs",
+          data: { sortedPRs, uniqueBlames, mostRelevantJiraTicket },
+        });
       } else {
         vscode.commands.executeCommand("watermelon.multiSelect");
         arrayOfSHAs = await getSHAArray(
