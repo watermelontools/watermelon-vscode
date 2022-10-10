@@ -1,7 +1,6 @@
 import addActionButtons from "./addActionButtons.js";
 
-function setReceivedError(errorText, errorTimeout) {
-  clearTimeout(errorTimeout);
+function setReceivedError(errorText) {
   $("#ghHolder").replaceWith(`
     <div id="ghHolder">
       <p>We ran into this error: ${errorText}</p>

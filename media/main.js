@@ -74,7 +74,8 @@ function handleMessage(message) {
       break;
     case "error":
       webviewDebugLogger(`Received error: ${JSON.stringify(message.data)}`);
-      errorTimeout = setReceivedError(message.error.errorText, errorTimeout);
+      clearTimeout(errorTimeout);
+      setReceivedError(message.error.errorText);
       break;
     case "versionInfo":
       webviewDebugLogger(
