@@ -1,3 +1,5 @@
+import issueBox from "./issueBox.js";
+
 function addMentionedIssues(mentionedIssues) {
   if (mentionedIssues.length > 0) {
     $("#mentionedIssues").append(`
