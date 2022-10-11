@@ -3,9 +3,13 @@ const paintTickets = (tickets) => {
     if (ticket.key) {
       $("#mostRelevantJiraTicketHolder").append(`
     <div class="Box-header">
-      <h5 class="Box-title Truncate">
-        ${ticket?.key}
-      </h5>
+      <a href="${ticket.fields.priority.iconUrl.split("/images")[0]}/browse/${
+        ticket?.key
+      }">
+        <h5 class="Box-title Truncate">
+         ${ticket?.key}
+       </h5>
+      </a>
       <span style="color: green">${ticket?.fields?.status?.name}</span>
       <p>${ticket?.fields?.summary}</p>
     </div>
