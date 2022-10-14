@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [1.6.2]
 
 - Fixes to the Most Relevant Jira Ticket process
+- Improves Jira visuals
 
 ## [1.6.1]
 
