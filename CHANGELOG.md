@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Fixes to the Most Relevant Jira Ticket process
 - Improves Jira visuals
+- Allows clicking on the title to view the Jira ticket
 
 ## [1.6.1]
 
