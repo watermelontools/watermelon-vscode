@@ -14,5 +14,5 @@ export default async function getMostRelevantJiraTicket({
       prTitle,
     })
     .then((res) => res.data);
-  return jiraTickets[0];
+  return jiraTickets;
 }
