@@ -8,13 +8,13 @@ const paintTickets = (tickets) => {
         ticket?.key
       }">
         <h5 class="Box-title Truncate">
-         ${ticket?.key}
+         ${ticket?.key}: ${ticket?.fields?.summary}
        </h5>
       </a>
       <span style="color: green">${ticket?.fields?.status?.name}</span>
     </div>
     <div class="Box-body">
-      <p>${ticket?.fields?.summary}</p>
+      ${ticket?.renderedFields?.description}
     </div>
     </div>
   `);
