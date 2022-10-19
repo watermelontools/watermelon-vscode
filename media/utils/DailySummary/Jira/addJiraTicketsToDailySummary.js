@@ -3,12 +3,6 @@ const addJiraTicketsToDailySummary = (jiraTickets) => {
   if (Array.isArray(jiraTickets)) {
     jiraTickets?.forEach((ticket) => {
       $("#dailySummary").append(`
-<<<<<<< Updated upstream
-    <div class="Box-header">
-        <h5 class="Box-title Truncate">${ticket?.key}</h5>
-        <span style="color: red">${ticket?.fields?.status?.name}</span>
-        <p>${ticket?.fields?.summary}</p>
-=======
       <div class="Box">
       <div class="Box-header d-flex flex-justify-between">
       <a href="${ticket.fields.priority.iconUrl.split("/images")[0]}/browse/${
@@ -27,7 +21,6 @@ const addJiraTicketsToDailySummary = (jiraTickets) => {
         ""
       )
     }
->>>>>>> Stashed changes
     </div>
     <br/>
     `);
