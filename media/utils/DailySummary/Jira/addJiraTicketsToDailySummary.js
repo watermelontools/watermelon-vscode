@@ -14,9 +14,13 @@ const addJiraTicketsToDailySummary = (jiraTickets) => {
       </a>
       <span style="color: green">${ticket?.fields?.status?.name}</span>
     </div>
-    <div class="Box-body">
-      ${ticket?.renderedFields?.description}
-    </div>
+    ${
+      ticket?.renderedFields?.description ? (
+        <div class="Box-body">${ticket?.renderedFields?.description}</div>
+      ) : (
+        ""
+      )
+    }
     </div>
     <br/>
     `);
