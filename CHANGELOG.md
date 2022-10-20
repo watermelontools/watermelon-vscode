@@ -4,7 +4,16 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.6.2]
+
+- Fixes to the Most Relevant Jira Ticket process
+- Improves Jira visuals
+- Displays all relevant Jira Tickets
+- Allows clicking on the title to view the Jira ticket
+- Shows the Ticket description in the Most Relevant Ticket
+
 ## [1.6.1]
+
 - Get code context button now retrieves the most relevant Jira ticket, if the user is authenticated with Jira
 - Daily summary now shows currently open Jira tickets that are assigned to the user
 - New loading animation
@@ -12,10 +21,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fixes stacking of elements in the extension
 
 ## [1.6.0]
+
 - Watermelon is now an authentication provider, to allow us to connect to all your services
 - Made improvements to request less scripts from the internet, improving performance and security
 
 ## [1.5.3]
+
 - Will allow the user to use some features without logging into GitHub
 
 ## [1.5.2]

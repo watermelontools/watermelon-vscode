@@ -2,19 +2,17 @@ import axios from "axios";
 import { backendURL } from "../../constants";
 
 export default async function getMostRelevantJiraTicket({
-  userEmail,
+  user,
   prTitle,
 }: {
-  userEmail: string;
+  user: string;
   prTitle: string;
 }) {
-  const jiraTickets = await axios.post(
-    `${backendURL}/api/jira/getMostRelevantJiraTicket`,
-    {
-      userEmail,
+  const jiraTickets = await axios
+    .post(`${backendURL}/api/jira/getMostRelevantJiraTicket`, {
+      user,
       prTitle,
-    }
-  ).then(res => res.data);
-
-  return jiraTickets[0];
+    })
+    .then((res) => res.data);
+  return jiraTickets;
 }

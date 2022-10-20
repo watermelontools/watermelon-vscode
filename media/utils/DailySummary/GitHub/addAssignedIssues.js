@@ -1,3 +1,5 @@
+import issueBox from "./issueBox.js";
+
 function addAssignedIssues(assignedIssues) {
   if (assignedIssues.length > 0) {
     $("#assignedIssues").append(`

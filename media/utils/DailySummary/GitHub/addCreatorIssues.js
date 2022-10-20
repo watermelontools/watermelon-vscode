@@ -1,3 +1,5 @@
+import issueBox from "./issueBox.js";
+
 function addCreatorIssues(creatorIssues) {
   if (creatorIssues.length > 0) {
     $("#creatorIssues").append(`
