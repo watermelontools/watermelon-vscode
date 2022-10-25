@@ -46,7 +46,10 @@ const addMostRelevantJiraTicket = (jiraTickets) => {
     if (jiraTickets.length > 1) {
       addViewAlTicketssButton(jiraTickets);
     }
-  }
+  } else {
+    $("#mostRelevantJiraTicketHolder").append(
+      `<p>Jira is a premium feature, <a href="https://www.watermelontools.com/pages/pricing">click here to buy</a></p>`
+    
 };
 
 export default addMostRelevantJiraTicket;
