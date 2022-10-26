@@ -9,7 +9,7 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false#review-details)
 [![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)](discord.gg/xNDFXx9447)
 
-Watermelon is an **open-source** for **Visual Studio Code** to help developers understand code better. Watermelon makes you an expert on any file by selecting code and bringing all the information available.
+Watermelon is your **open-source** Code Archeology Toolbox integration for **Visual Studio Code** to help developers understand code better. Watermelon makes you an expert on any file by selecting code and bringing all the information available.
 
 ## Features
 
