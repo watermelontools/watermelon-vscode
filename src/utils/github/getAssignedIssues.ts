@@ -16,6 +16,9 @@ export default async function getAssignedIssues({
   const allIssues = await axios
     .post(`${backendURL}/api/github/getAssignedIssues`, {
       user: email,
+      owner,
+      repo,
+      username,
     })
     .then((res) => res.data)
     .catch((err) => {

@@ -16,6 +16,9 @@ export default async function getCreatorIssues({
   const creatorIssues = await axios
     .post(`${backendURL}/api/github/getCreatorIssues`, {
       user: email,
+      owner,
+      repo,
+      username,
     })
     .then((res) => res.data)
     .catch((err) => {

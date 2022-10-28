@@ -15,24 +15,15 @@ export default async function getGitHubDailySummary({
   email: string;
 }) {
   let globalIssues = await getAllIssues({ email });
-  let assignedIssues = await getAssignedIssues({
+  const userObject = {
     owner,
     repo,
     username: username || "",
     email,
-  });
-  let creatorIssues = await getCreatorIssues({
-    owner,
-    repo,
-    username: username || "",
-    email,
-  });
-  let mentionedIssues = await getMentionedIssues({
-    owner,
-    repo,
-    username: username || "",
-    email,
-  });
+  };
+  let assignedIssues = await getAssignedIssues(userObject);
+  let creatorIssues = await getCreatorIssues(userObject);
+  let mentionedIssues = await getMentionedIssues(userObject);
   return {
     globalIssues,
     assignedIssues,
