@@ -156,7 +156,10 @@ export async function activate(context: vscode.ExtensionContext) {
       await credentials.initialize(context);
       debugLogger("intialized credentials");
       octokit = await credentials.getOctokit();
-      let githubUserInfo = await getGitHubUserInfo({ octokit });
+
+      let githubUserInfo = await getGitHubUserInfo({
+        email: session.account.label,
+      });
       debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
       let username = githubUserInfo.login;
       context.globalState.update("startupState", { username });
@@ -362,7 +365,9 @@ export async function activate(context: vscode.ExtensionContext) {
     await credentials.initialize(context);
     debugLogger("intialized credentials");
     octokit = await credentials.getOctokit();
-    let githubUserInfo = await getGitHubUserInfo({ octokit });
+    let githubUserInfo = await getGitHubUserInfo({
+      email: session.account.label,
+    });
     debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
     let username = githubUserInfo.login;
     context.globalState.update("startupState", { username });
