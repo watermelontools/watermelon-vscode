@@ -369,7 +369,6 @@ export async function activate(context: vscode.ExtensionContext) {
     debugLogger(`got credentials`);
     await credentials.initialize(context);
     debugLogger("intialized credentials");
-    octokit = await credentials.getOctokit();
     let githubUserInfo = await getGitHubUserInfo({
       email: session.account.label,
     });
