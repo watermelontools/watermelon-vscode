@@ -363,9 +363,7 @@ export async function activate(context: vscode.ExtensionContext) {
       email: session.account.label,
     });
     debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-    let username = githubUserInfo.login;
     context.globalState.update("openSidebarCount", 0);
-    reporter?.sendTelemetryEvent("githubUserInfo", { username });
     let isStarred = await checkIfUserStarred({ octokit });
 
     provider.sendMessage({
@@ -380,7 +378,7 @@ export async function activate(context: vscode.ExtensionContext) {
       octokit,
       owner: owner || "",
       repo: repo || "",
-      username: username || "",
+      username: githubUserInfo.login || "",
     });
     debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
     provider.sendMessage({
