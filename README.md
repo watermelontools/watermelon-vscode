@@ -11,7 +11,7 @@
 
 Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code** to help developers go beyond Git Blame. Watermelon makes you an expert on any file instantly by running `git blame` for you and telling you why a block of code was written that way by someone else.
 
-## Features
+## Free Features
 
 Watermelon has 3 main features that you can use:
 
@@ -56,11 +56,18 @@ You may also highlight and right click on the code, you will find the 'Get Pull 
 
 Get an overview of which issues and PR reviews are assigned to you. Both on the current repository and across all GitHub. 
 
-Also, login to Jira to view your Tickets in Progress.
-
 To use it, open the Watermelon sidebar.
 
 ![daily-summary](https://github.com/watermelontools/wm-extension/blob/dev/daily-summary-showcase.png?raw=true)
+
+## Paid Features
+
+When you pay for Watermelon you can also:
+
+- View Most Relevant Jira Ticket
+- View Open Tickets on the Daily Summary
+
+More integrations coming soon!
 
 ## Requirements
 
