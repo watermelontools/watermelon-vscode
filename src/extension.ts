@@ -271,6 +271,17 @@ export async function activate(context: vscode.ExtensionContext) {
           data: { sortedPRs, uniqueBlames },
         });
       }
+      let isStarred = await checkIfUserStarred({
+        email: session.account.label,
+      });
+      provider.sendMessage({
+        command: "user",
+        data: {
+          login: githubUserInfo.login,
+          avatar: githubUserInfo.avatar_url,
+          isStarred,
+        },
+      });
     } else {
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
       provider.sendMessage({
@@ -364,8 +375,7 @@ export async function activate(context: vscode.ExtensionContext) {
     });
     debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
     context.globalState.update("openSidebarCount", 0);
-    let isStarred = await checkIfUserStarred({ octokit });
-
+    let isStarred = await checkIfUserStarred({ email: session.account.label });
     provider.sendMessage({
       command: "user",
       data: {

@@ -2,7 +2,7 @@ const addGHUserInfo = ({ login, avatar, isStarred }) => {
   $(".replace-user-img").replaceWith(`
         <img src="${avatar}" class="login-image"/>
     `);
-  $(".login-info").append(`
+  $(".login-info").replaceWith(`
         <p class="login-info-text">
             Logged in as ${login}
         </p>
