@@ -51,9 +51,6 @@ const extensionVersion = getPackageInfo().version;
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
 
-  const startupState: object | undefined =
-    context.globalState.get("startupState");
-  debugLogger(`startupState: ${JSON.stringify(startupState)}`);
   const workspaceState: object | undefined =
     context.workspaceState.get("workspaceState");
   debugLogger(`workspaceState: ${JSON.stringify(workspaceState)}`);
@@ -161,9 +158,6 @@ export async function activate(context: vscode.ExtensionContext) {
         email: session.account.label,
       });
       debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-      let username = githubUserInfo.login;
-      context.globalState.update("startupState", { username });
-      reporter?.sendTelemetryEvent("githubUserInfo", { username });
       provider.sendMessage({
         command: "user",
         data: {
@@ -181,7 +175,7 @@ export async function activate(context: vscode.ExtensionContext) {
         octokit,
         owner: owner || "",
         repo: repo || "",
-        username: username || "",
+        username: githubUserInfo.login || "",
       });
       debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
       provider.sendMessage({
@@ -370,7 +364,6 @@ export async function activate(context: vscode.ExtensionContext) {
     });
     debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
     let username = githubUserInfo.login;
-    context.globalState.update("startupState", { username });
     context.globalState.update("openSidebarCount", 0);
     reporter?.sendTelemetryEvent("githubUserInfo", { username });
     let isStarred = await checkIfUserStarred({ octokit });
