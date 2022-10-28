@@ -14,11 +14,9 @@ const paintTickets = (tickets) => {
       <span style="color: green">${ticket?.fields?.status?.name}</span>
     </div>
     ${
-      ticket?.renderedFields?.description ? (
-        <div class="Box-body">${ticket?.renderedFields?.description}</div>
-      ) : (
-        ""
-      )
+      ticket?.renderedFields?.description
+        ? `<div class="Box-body">${ticket?.renderedFields?.description}</div>`
+        : ""
     }
     </div>
   `);
@@ -49,7 +47,8 @@ const addMostRelevantJiraTicket = (jiraTickets) => {
   } else {
     $("#mostRelevantJiraTicketHolder").append(
       `<p>Jira is a premium feature, <a href="https://www.watermelontools.com/pages/pricing">click here to buy</a></p>`
-    
+    );
+  }
 };
 
 export default addMostRelevantJiraTicket;
