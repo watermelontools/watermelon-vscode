@@ -46,7 +46,7 @@ const addMostRelevantJiraTicket = (jiraTickets) => {
     }
   } else {
     $("#mostRelevantJiraTicketHolder").append(
-      `<p>Jira is a premium feature, <a href="https://www.watermelontools.com/pages/pricing">click here to buy</a></p>`
+      `<p><a href="https://www.watermelontools.com/pages/pricing">Click here</a> to integrate Jira to your code archeology toolbox!</p>`
     );
   }
 };
