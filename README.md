@@ -7,9 +7,9 @@
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false)
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false)
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false#review-details)
-[![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)](discord.gg/xNDFXx9447)
+[![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)](discord.gg/H4AE6b9442)
 
-Watermelon is an **open-source** integration between **GitHub** and **Visual Studio Code** to help developers go beyond Git Blame. Watermelon makes you an expert on any file instantly by running `git blame` for you and telling you why a block of code was written that way by someone else.
+Watermelon is your **open-source** Code Archeology Toolbox integration for **Visual Studio Code** to help developers understand code better. Watermelon makes you an expert on any file by selecting code and bringing all the information available.
 
 ## Free Features
 
