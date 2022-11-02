@@ -6,7 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.6.3]
 
-- The user will be prompted to buy Jira in case they haven't already done so.
+- The user will be prompted to buy Jira in case they haven't already done so
+- We now use Watermelon Backend to pipe GitHub requests
 
 ## [1.6.2]
 
