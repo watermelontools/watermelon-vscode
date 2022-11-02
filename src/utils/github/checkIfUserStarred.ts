@@ -1,27 +1,18 @@
-import debugLogger from "../vscode/debugLogger";
+import axios from "axios";
+import { backendURL } from "../../constants";
+import analyticsReporter from "../vscode/reporter";
 
-export default async function checkIfUserStarred({
-  octokit,
-}: {
-  octokit: any;
-}) {
-  // @ts-ignore
-  let isStarred = await octokit.rest.activity
-    .checkRepoIsStarredByAuthenticatedUser({
-      owner: "watermelontools",
-      repo: "wm-extension",
+export default async function checkIfUserStarred({ email }: { email: string }) {
+  const isStarred = await axios
+    .post(`${backendURL}/api/github/getIfWatermelonStarred`, {
+      user: email,
     })
-    .then((res: any) => {
-      debugLogger(res.status);
-      if (res.status === 204) {
-        return true;
-      }
-    })
-    .catch((err: any) => {
-      debugLogger(err.status);
-      if (err.status === 404) {
-        return false;
-      }
+    .then((res) => res.data)
+    .catch((err) => {
+      let reporter = analyticsReporter();
+      let { message } = err;
+      reporter?.sendTelemetryException(err, { error: message });
     });
-  return await isStarred;
+
+  return isStarred.starredWM;
 }

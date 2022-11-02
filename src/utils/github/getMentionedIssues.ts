@@ -1,19 +1,28 @@
+import axios from "axios";
+import { backendURL } from "../../constants";
+import analyticsReporter from "../vscode/reporter";
+
 export default async function getMentionedIssues({
-  octokit,
+  email,
   owner,
   repo,
-  mentioned,
+  username,
 }: {
-  octokit: any;
+  email: string;
   owner: string;
   repo: string;
-  mentioned: string;
+  username: string;
 }) {
-  let octoresp = await octokit.rest.issues.listForRepo({
-    owner,
-    repo,
-    state: "open",
-    mentioned,
-  });
-  return octoresp.data;
+  const creatorIssues = await axios
+    .post(`${backendURL}/api/github/getMentionedIssues`, {
+      user: email,
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      let reporter = analyticsReporter();
+      let { message } = err;
+      reporter?.sendTelemetryException(err, { error: message });
+    });
+
+  return creatorIssues;
 }
