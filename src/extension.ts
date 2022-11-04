@@ -51,9 +51,6 @@ const extensionVersion = getPackageInfo().version;
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
 
-  const startupState: object | undefined =
-    context.globalState.get("startupState");
-  debugLogger(`startupState: ${JSON.stringify(startupState)}`);
   const workspaceState: object | undefined =
     context.workspaceState.get("workspaceState");
   debugLogger(`workspaceState: ${JSON.stringify(workspaceState)}`);
@@ -156,11 +153,11 @@ export async function activate(context: vscode.ExtensionContext) {
       await credentials.initialize(context);
       debugLogger("intialized credentials");
       octokit = await credentials.getOctokit();
-      let githubUserInfo = await getGitHubUserInfo({ octokit });
+
+      let githubUserInfo = await getGitHubUserInfo({
+        email: session.account.label,
+      });
       debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-      let username = githubUserInfo.login;
-      context.globalState.update("startupState", { username });
-      reporter?.sendTelemetryEvent("githubUserInfo", { username });
       provider.sendMessage({
         command: "user",
         data: {
@@ -175,10 +172,10 @@ export async function activate(context: vscode.ExtensionContext) {
       debugLogger(`jiraTickets: ${JSON.stringify(jiraTickets)}`);
 
       let gitHubIssues = await getGitHubDailySummary({
-        octokit,
         owner: owner || "",
         repo: repo || "",
-        username: username || "",
+        username: githubUserInfo.login || "",
+        email: session.account.label,
       });
       debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
       provider.sendMessage({
@@ -274,6 +271,17 @@ export async function activate(context: vscode.ExtensionContext) {
           data: { sortedPRs, uniqueBlames },
         });
       }
+      let isStarred = await checkIfUserStarred({
+        email: session.account.label,
+      });
+      provider.sendMessage({
+        command: "user",
+        data: {
+          login: githubUserInfo.login,
+          avatar: githubUserInfo.avatar_url,
+          isStarred,
+        },
+      });
     } else {
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
       provider.sendMessage({
@@ -362,14 +370,12 @@ export async function activate(context: vscode.ExtensionContext) {
     await credentials.initialize(context);
     debugLogger("intialized credentials");
     octokit = await credentials.getOctokit();
-    let githubUserInfo = await getGitHubUserInfo({ octokit });
+    let githubUserInfo = await getGitHubUserInfo({
+      email: session.account.label,
+    });
     debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-    let username = githubUserInfo.login;
-    context.globalState.update("startupState", { username });
     context.globalState.update("openSidebarCount", 0);
-    reporter?.sendTelemetryEvent("githubUserInfo", { username });
-    let isStarred = await checkIfUserStarred({ octokit });
-
+    let isStarred = await checkIfUserStarred({ email: session.account.label });
     provider.sendMessage({
       command: "user",
       data: {
@@ -379,10 +385,10 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     });
     let gitHubIssues = await getGitHubDailySummary({
-      octokit,
       owner: owner || "",
       repo: repo || "",
-      username: username || "",
+      username: githubUserInfo.login || "",
+      email: session.account.label,
     });
     debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
     provider.sendMessage({

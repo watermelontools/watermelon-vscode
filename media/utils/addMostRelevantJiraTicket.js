@@ -14,11 +14,9 @@ const paintTickets = (tickets) => {
       <span style="color: green">${ticket?.fields?.status?.name}</span>
     </div>
     ${
-      ticket?.renderedFields?.description ? (
-        <div class="Box-body">${ticket?.renderedFields?.description}</div>
-      ) : (
-        ""
-      )
+      ticket?.renderedFields?.description
+        ? `<div class="Box-body">${ticket?.renderedFields?.description}</div>`
+        : ""
     }
     </div>
   `);
@@ -46,6 +44,10 @@ const addMostRelevantJiraTicket = (jiraTickets) => {
     if (jiraTickets.length > 1) {
       addViewAlTicketssButton(jiraTickets);
     }
+  } else {
+    $("#mostRelevantJiraTicketHolder").append(
+      `<p><a href="https://www.watermelontools.com/pages/pricing">Click here</a> to integrate Jira to your code archeology toolbox!</p>`
+    );
   }
 };
 

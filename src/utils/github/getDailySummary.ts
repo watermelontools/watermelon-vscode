@@ -4,34 +4,34 @@ import getCreatorIssues from "./getCreatorIssues";
 import getMentionedIssues from "./getMentionedIssues";
 
 export default async function getGitHubDailySummary({
-  octokit,
   owner,
   repo,
   username,
+  email,
 }: {
-  octokit: any;
   owner: string;
   repo: string;
   username: string;
+  email: string;
 }) {
-  let globalIssues = await getAllIssues({ octokit });
+  let globalIssues = await getAllIssues({ email });
   let assignedIssues = await getAssignedIssues({
-    octokit,
     owner,
     repo,
     username: username || "",
+    email,
   });
   let creatorIssues = await getCreatorIssues({
-    octokit,
     owner,
     repo,
-    creator: username || "",
+    username: username || "",
+    email,
   });
   let mentionedIssues = await getMentionedIssues({
-    octokit,
     owner,
     repo,
-    mentioned: username || "",
+    username: username || "",
+    email,
   });
   return {
     globalIssues,

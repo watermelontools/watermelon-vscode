@@ -8,7 +8,7 @@ export const GITHUB_AUTH_PROVIDER_ID = "github";
 //github scopes
 export const SCOPES = ["user:email", "repo", "read:org"];
 // telemetry insights key
-export const TELEMETRY_INSIGHTS_KEY = "4ed9e755-be2b-460b-9309-426fb5f58c6f";
+export const TELEMETRY_INSIGHTS_KEY = "bb2eac7f-33dd-426c-92c5-4dd922b2befb";
 // extension id
 export const EXTENSION_ID = "WatermelonTools.watermelon-tools";
 // Commands
