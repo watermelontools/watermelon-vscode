@@ -17,8 +17,6 @@ jobs:
       - name: Install libs and dependencies
         run: |
           npm install
-          npm run pretest
-          npm run test
       - uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}  # Needed to get PR information, if any
