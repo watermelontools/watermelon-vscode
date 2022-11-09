@@ -357,7 +357,7 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  vscode.authentication.getSession("github", []).then(async (session: any) => {
+  /*   vscode.authentication.getSession("github", []).then(async (session: any) => {
     setLoggedIn(true);
     provider.sendMessage({
       command: "session",
@@ -395,7 +395,7 @@ export async function activate(context: vscode.ExtensionContext) {
       command: "dailySummary",
       data: gitHubIssues,
     });
-  });
+  }); */
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     updateStatusBarItem(wmStatusBarItem);

@@ -14,6 +14,7 @@ import addDailySummary from "./utils/addDailySummary.js";
 import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 import addActionButtons from "./utils/addActionButtons.js";
 import addMostRelevantJiraTicket from "./utils/addMostRelevantJiraTicket.js";
+import sendLinkToOpen from "./utils/sendLinkToOpen.js";
 
 let errorTimeout;
 
@@ -122,6 +123,17 @@ $(document).ready(function () {
     sendMessage({ command: "run" });
   });
   starWMRepo.addEventListener("click", (event) => {
+    console.log("star clicked");
     sendMessage({ command: "star" });
   });
+  $("*")
+    .find("a")
+    .each(function (element) {
+      console.log(element);
+      /*     $(this).on("click", function (e) {
+        e.preventDefault();
+        let link = $(this).attr("href");
+        sendLinkToOpen({ link, source: "dailySummary" });
+      }); */
+    });
 });
