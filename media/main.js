@@ -109,9 +109,20 @@ function handleMessage(message) {
       console.log(message);
       break;
   }
+  $("body")
+    .find("a")
+    .each(function (element) {
+      console.log(element);
+      /*     $(this).on("click", function (e) {
+        e.preventDefault();
+        let link = $(this).attr("href");
+        sendLinkToOpen({ link, source: "dailySummary" });
+      }); */
+    });
 }
 
 $(document).ready(function () {
+  console.log("ready");
   window.addEventListener("message", (event) => {
     const message = event.data; // The JSON data our extension sent
     vscode.setState(message);
@@ -120,13 +131,14 @@ $(document).ready(function () {
   const button = document.getElementsByClassName("run-watermelon");
   const starWMRepo = document.getElementById("starWMRepo");
   button[0].addEventListener("click", (event) => {
+    console.log("clicked");
     sendMessage({ command: "run" });
   });
   starWMRepo.addEventListener("click", (event) => {
     console.log("star clicked");
     sendMessage({ command: "star" });
   });
-  $("*")
+  $("body")
     .find("a")
     .each(function (element) {
       console.log(element);
