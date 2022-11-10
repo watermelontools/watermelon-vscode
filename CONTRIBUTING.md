@@ -1,6 +1,6 @@
 # Contributing to Watermelon's extension development
 
-For now, we discuss on [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-18vhxghk6-7YSg30oWqQSZqdOzlkR~Rw).
+For now, we discuss on [Discord](https://t.co/fMIlnb9egq).
 
 ## Running the extension
 
