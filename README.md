@@ -1,5 +1,7 @@
 # Watermelon GitHub Plugin for Visual Studio Code
 
+We are on[![Product Hunt](https://a11ybadges.com/badge?logo=producthunt)](https://www.producthunt.com/posts/watermelon)
+
 [![Report an issue](https://img.shields.io/badge/-Report%20an%20issue-critical)](https://github.com/watermelontools/wm-extension/issues)
 [![GitHub Repo stars](https://img.shields.io/github/stars/watermelontools/wm-extension?style=flat-square)](https://github.com/watermelontools/wm-extension/stargazers)
 [![Contributors](https://img.shields.io/github/contributors/watermelontools/wm-extension?style=flat-square)](https://github.com/watermelontools/wm-extension/graphs/contributors)
