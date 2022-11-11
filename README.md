@@ -67,7 +67,7 @@ To use it, open the Watermelon sidebar.
 When you pay for Watermelon you can also:
 
 - View Most Relevant Jira Ticket
-- View Open Tickets on the Daily Summary
+- View Open Jira Tickets on the Daily Summary
 
 More integrations coming soon!
 
