@@ -30,7 +30,7 @@ Remember, we'll discuss it publicly, it's a great opportunity to learn.
 - [Offial VSCode API Samples](https://github.com/microsoft/vscode-extension-samples)
 - [Haxe](https://vshaxe.github.io/vscode-extern/)
 - [VCSCode can do that?](https://vscodecandothat.com/)
-
+Also, take a look at [the official quickstart on this repo](/vsc-extension-quickstart.md)
 #### Octokit (SDK for GitHub)
 
 - [Octokit](https://octokit.github.io/)
