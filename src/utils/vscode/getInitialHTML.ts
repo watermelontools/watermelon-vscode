@@ -129,7 +129,7 @@ export default function getInitialHTML(
      </body>
      <footer>
       <script nonce="${nonce}" src="${scriptUri}" type="module"></script>
-      <a href="https://watermelon.tools">Watermelon.tools</a>.
+      <a href="https://watermelontools.com">Watermelon Tools, Inc</a>.
      </footer>
      </html>
   `;
