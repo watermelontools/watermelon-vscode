@@ -141,7 +141,7 @@ $(document).ready(function () {
       $(this).on("click", function (e) {
         e.preventDefault();
         let link = $(this).attr("href");
-        sendLinkToOpen({ link, source: "dailySummary" });
+        sendLinkToOpen({ link });
       }); 
     });
 });
