@@ -1,5 +1,6 @@
 # Contributing to Watermelon's extension development
-For now, we discuss on [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-18vhxghk6-7YSg30oWqQSZqdOzlkR~Rw). 
+
+For now, we discuss on [Discord](https://t.co/fMIlnb9egq).
 
 ## Running the extension
 To run:
@@ -17,7 +18,9 @@ When commiting, our all the tests will run to check nothing broke.
 If there's something you'd like to see please [open an issue](https://github.com/watermelontools/wm-extension/issues/new).
 
 ## PRs
-We love community contributions. Please fork the repo and send a PR our way. 
+
+We love community contributions. Please fork the repo and send a PR our way.
+
 Remember, we'll discuss it publicly, it's a great opportunity to learn.
 
 ### Sources
@@ -27,14 +30,29 @@ Remember, we'll discuss it publicly, it's a great opportunity to learn.
 - [Offial VSCode API Samples](https://github.com/microsoft/vscode-extension-samples)
 - [Haxe](https://vshaxe.github.io/vscode-extern/)
 - [VCSCode can do that?](https://vscodecandothat.com/)
-
+Also, take a look at [the official quickstart on this repo](/vsc-extension-quickstart.md)
 #### Octokit (SDK for GitHub)
+
 - [Octokit](https://octokit.github.io/)
 
 ## Brand
+
 We prefer to use [Codicons](https://microsoft.github.io/vscode-codicons/dist/codicon.html) and [Primer Design](https://primer.style/) for our extension, but are elastic in UI decisions.
 
 ## Donations
 [We have Github Sponsors](https://github.com/sponsors/watermelontools)  
-Also star :star: the repo to help! 
+Also star :star: the repo to help!
 
+## Release
+
+### VSCode
+
+To release a new version of the extension, we use [vsce](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#vsce). This requires being part of the team and having access to the [VSCode Marketplace](https://marketplace.visualstudio.com/manage/publishers/watermelon-tools).
+
+First, create a PR from `dev` to `master` with the title _v{version_number}_ (e.g. v1.6.3). Then, test it and get at least one approval.
+
+Second, on your local machine, pull the latest `master` and run `vsce publish {version_name}`. This will publish the new version to the marketplace.
+
+### VSCodium
+
+We use the .vsix from the VSCode Marketplace to publish to VSCodium. After the previous steps, run `npx ovsx publish -p {your_token}` to release the new version to VSCodium. This generally takes longer than the VSCode Marketplace.
