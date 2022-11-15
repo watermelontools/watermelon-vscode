@@ -131,11 +131,9 @@ $(document).ready(function () {
   const button = document.getElementsByClassName("run-watermelon");
   const starWMRepo = document.getElementById("starWMRepo");
   button[0].addEventListener("click", (event) => {
-    console.log("clicked");
     sendMessage({ command: "run" });
   });
   starWMRepo.addEventListener("click", (event) => {
-    console.log("star clicked");
     sendMessage({ command: "star", email: ghUserInfo.email });
   });
   $("body")
