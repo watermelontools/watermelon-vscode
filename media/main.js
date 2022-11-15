@@ -142,11 +142,10 @@ $(document).ready(function () {
   $("body")
     .find("a")
     .each(function (element) {
-      console.log(element);
-      /*     $(this).on("click", function (e) {
+      $(this).on("click", function (e) {
         e.preventDefault();
         let link = $(this).attr("href");
         sendLinkToOpen({ link, source: "dailySummary" });
-      }); */
+      }); 
     });
 });
