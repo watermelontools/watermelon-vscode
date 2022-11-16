@@ -53,10 +53,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "star": {
-          const credentials = new Credentials();
-          await credentials.initialize(this._context);
-          octokit = await credentials.getOctokit();
-          await starWmRepo({ octokit });
+          await starWmRepo({ email: data.email });
           this.sendMessage({
             command: "removedStar",
           });

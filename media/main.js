@@ -32,12 +32,13 @@ Sentry.init({
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
 });
-
+let ghUserInfo = {};
 function handleMessage(message) {
   webviewDebugLogger(message.command);
   switch (message.command) {
     case "user":
       webviewDebugLogger(`Received user: ${JSON.stringify(message.user)}`);
+      ghUserInfo = message.user;
       addGHUserInfo(message.data);
       break;
     case "dailySummary":
@@ -122,6 +123,6 @@ $(document).ready(function () {
     sendMessage({ command: "run" });
   });
   starWMRepo.addEventListener("click", (event) => {
-    sendMessage({ command: "star" });
+    sendMessage({ command: "star", email: ghUserInfo.email });
   });
 });
