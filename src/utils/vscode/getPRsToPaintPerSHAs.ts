@@ -63,12 +63,19 @@ export default async function getPRsToPaintPerSHAs({
     draft: boolean;
   }[] = [];
 
-/*   let prPromises = foundPRs.map(async (issue: { url: any }) => {
+   let prPromises = foundPRs.map(async (issue: { number: number }) => {
     let comments = await getIssueComments({
-      octokit,
-      issueUrl: issue.url,
+      email,
+      issueNumber:issue.number,
+      repo: repo ?? "",
+      owner:owner?? "",
     });
-    let issueData = await getIssue({ octokit, issueUrl: issue.url });
+    let issueData = await getIssue({
+      email,
+      issueNumber:issue.number,
+      repo: repo ?? "",
+      owner:owner?? "",
+    });
     if (issueData.user.type.toLowerCase() !== "bot")
       issuesWithTitlesAndGroupedComments.push({
         created_at: issueData.created_at,
@@ -87,6 +94,6 @@ export default async function getPRsToPaintPerSHAs({
         }),
       });
   });
-  await Promise.all(prPromises); */
+  await Promise.all(prPromises); 
   return issuesWithTitlesAndGroupedComments;
 }
