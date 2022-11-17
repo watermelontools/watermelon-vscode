@@ -352,46 +352,6 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  vscode.authentication.getSession("github", []).then(async (session: any) => {
-    setLoggedIn(true);
-    provider.sendMessage({
-      command: "session",
-      loggedIn: true,
-      data: session.account.label,
-    });
-    debugLogger(`session: ${JSON.stringify(session)}`);
-    const credentials = new Credentials();
-    debugLogger(`got credentials`);
-    await credentials.initialize(context);
-    debugLogger("intialized credentials");
-    octokit = await credentials.getOctokit();
-    let githubUserInfo = await getGitHubUserInfo({
-      email: session.account.label,
-    });
-    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-    context.globalState.update("openSidebarCount", 0);
-    let isStarred = await checkIfUserStarred({ email: session.account.label });
-    provider.sendMessage({
-      command: "user",
-      data: {
-        login: githubUserInfo.login,
-        avatar: githubUserInfo.avatar_url,
-        isStarred,
-      },
-    });
-    let gitHubIssues = await getGitHubDailySummary({
-      owner: owner || "",
-      repo: repo || "",
-      username: githubUserInfo.login || "",
-      email: session.account.label,
-    });
-    debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
-    provider.sendMessage({
-      command: "dailySummary",
-      data: gitHubIssues,
-    });
-  });
-
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     updateStatusBarItem(wmStatusBarItem);
     arrayOfSHAs = await getSHAArray(
