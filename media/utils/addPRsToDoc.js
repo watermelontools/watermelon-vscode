@@ -53,7 +53,7 @@ const paintPRs = (prs) => {
                 ? replaceUserTags(
                     marked.parse(pr.body, { gfm: true, breaks: true })
                   )
-                : ""
+                : "<em> No description provided. </em>"
             }
           </div>
           ${mdComments}
