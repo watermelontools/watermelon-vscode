@@ -26,5 +26,5 @@ export default async function getPRsPerSHAS({
       let { message } = err;
       reporter?.sendTelemetryException(err, { error: message });
     });
-    return issues;
+    return issues.items;
 }
