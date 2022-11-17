@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.7.0]
+
+- Removes the dependency on Octokit to handle GitHub Requests
+
 ## [1.6.3]
 
 - The user will be prompted to buy Jira in case they haven't already done so
