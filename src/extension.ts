@@ -187,7 +187,6 @@ export async function activate(context: vscode.ExtensionContext) {
           owner,
           repo,
         });
-        console.log("issuesWithTitlesAndGroupedComments1",issuesWithTitlesAndGroupedComments)
         if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
           return provider.sendMessage({
             command: "error",
@@ -245,7 +244,6 @@ export async function activate(context: vscode.ExtensionContext) {
           owner,
           repo,
         });
-        console.log("issuesWithTitlesAndGroupedComments2",issuesWithTitlesAndGroupedComments)
 
         if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
           return provider.sendMessage({
@@ -256,7 +254,6 @@ export async function activate(context: vscode.ExtensionContext) {
         let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
           (a: any, b: any) => b.comments.length - a.comments.length
         );
-        console.log("sortedPRs",sortedPRs)
         let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
 
         provider.sendMessage({
