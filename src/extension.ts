@@ -42,8 +42,6 @@ let repo: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 
-let octokit: any;
-
 // extension version will be reported as a property with each event
 const extensionVersion = getPackageInfo().version;
 
