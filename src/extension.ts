@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import { Credentials } from "./credentials";
 import getBlame from "./utils/getBlame";
 import getSHAArray from "./utils/getSHAArray";
 import getGitAPI from "./utils/vscode/getGitAPI";
