@@ -1,16 +1,16 @@
-import getPRsPerSHAS from "../getPRsPerSHAS";
+import getPRsPerSHAS from "../github/getPRsPerSHAS";
 import getIssue from "../github/getIssue";
 import getIssueComments from "../github/getIssueComments";
 import { noLinesSelected, noSearchResults } from "./showErrors";
 
 export default async function getPRsToPaintPerSHAs({
   arrayOfSHAs,
-  octokit,
+  email,
   owner,
   repo,
 }: {
   arrayOfSHAs: string[];
-  octokit: any;
+  email: string;
   owner?: string;
   repo?: string;
 }): Promise<
@@ -36,11 +36,10 @@ export default async function getPRsToPaintPerSHAs({
     noLinesSelected();
     return { errorText: "No lines selected" };
   }
-
   let foundPRs = await getPRsPerSHAS({
-    octokit,
+    email,
     repo: repo ?? "",
-    owner,
+    owner:owner?? "",
     shaArray: joinedArrayOfSHAs,
   });
   if (foundPRs?.length === 0) {
@@ -64,7 +63,7 @@ export default async function getPRsToPaintPerSHAs({
     draft: boolean;
   }[] = [];
 
-  let prPromises = foundPRs.map(async (issue: { url: any }) => {
+/*   let prPromises = foundPRs.map(async (issue: { url: any }) => {
     let comments = await getIssueComments({
       octokit,
       issueUrl: issue.url,
@@ -88,6 +87,6 @@ export default async function getPRsToPaintPerSHAs({
         }),
       });
   });
-  await Promise.all(prPromises);
+  await Promise.all(prPromises); */
   return issuesWithTitlesAndGroupedComments;
 }
