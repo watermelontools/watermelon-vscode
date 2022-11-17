@@ -16,10 +16,7 @@ import statusBarItem, {
 import hover from "./utils/components/hover";
 import getGitHubDailySummary from "./utils/github/getDailySummary";
 import {
-  backendURL,
   EXTENSION_ID,
-  GITHUB_AUTH_PROVIDER_ID,
-  SCOPES,
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
   WATERMELON_LOGIN_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
