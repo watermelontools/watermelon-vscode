@@ -148,11 +148,6 @@ export async function activate(context: vscode.ExtensionContext) {
       []
     );
     if (session) {
-      const credentials = new Credentials();
-      debugLogger(`got credentials`);
-      await credentials.initialize(context);
-      debugLogger("intialized credentials");
-      octokit = await credentials.getOctokit();
 
       let githubUserInfo = await getGitHubUserInfo({
         email: session.account.label,
@@ -169,7 +164,7 @@ export async function activate(context: vscode.ExtensionContext) {
       const jiraTickets = await getAssignedJiraTickets({
         user: session.account.label,
       });
-      debugLogger(`jiraTickets: ${JSON.stringify(jiraTickets)}`);
+      debugLogger(`jiraTickets: ${(jiraTickets)}`, true);
 
       let gitHubIssues = await getGitHubDailySummary({
         owner: owner || "",
@@ -194,7 +189,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
         let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
           arrayOfSHAs,
-          octokit,
+          email: session.account.label,
           owner,
           repo,
         });
@@ -251,7 +246,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
         let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
           arrayOfSHAs,
-          octokit,
+          email: session.account.label,
           owner,
           repo,
         });
