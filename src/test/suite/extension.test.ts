@@ -11,6 +11,8 @@ import {
 } from "../../constants";
 // import * as myExtension from '../src/extension';
 
+// import the webdriver and the high level browser wrapper
+import { Workbench } from "vscode-extension-tester";
 suite("Watermelon extension tests", () => {
   test("Extension should be active after startup", (done) => {
     setTimeout(() => {
@@ -19,6 +21,7 @@ suite("Watermelon extension tests", () => {
       );
       assert.ok(extension);
       assert.strictEqual(extension.isActive, true);
+
       done();
     }, 1000 * 3);
   }).timeout(1000 * 10);
@@ -65,5 +68,10 @@ suite("Watermelon extension tests", () => {
         );
       })
       .then(() => done());
+  });
+  test("My Test Case", async () => {
+    /*     const workbench = new Workbench().getEditorView();
+    console.log("webview", workbench); */
+    assert.equal("no", "no");
   });
 });
