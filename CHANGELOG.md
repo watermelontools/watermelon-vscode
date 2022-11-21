@@ -9,6 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Removes the dependency on Octokit to handle GitHub Requests
 - Fixes an error that prevented displaying GitHub PR comments
 - Will now track all link clicked on the webview
+- If the GitHub PR body is empty, will display the same message as the web UI.
 
 ## [1.6.3]
 
