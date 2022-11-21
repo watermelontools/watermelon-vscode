@@ -2,23 +2,23 @@ import axios from "axios";
 import { backendURL } from "../../constants";
 import analyticsReporter from "../vscode/reporter";
 
-export default async function getIssueComments({
+export default async function getPRsPerSHAS({
   email,
   owner,
   repo,
-  issueNumber,
+  shaArray,
 }: {
   email: string;
   owner: string;
   repo: string;
-  issueNumber: number;
+  shaArray: string;
 }) {
-  const issue = await axios
-    .post(`${backendURL}/api/github/getIssue`, {
+  const issues = await axios
+    .post(`${backendURL}/api/github/getIssuesByCommits`, {
       user: email,
       repo,
       owner,
-      issue_number:issueNumber
+      commitList: shaArray
     })
     .then((res) => res.data)
     .catch((err) => {
@@ -26,5 +26,5 @@ export default async function getIssueComments({
       let { message } = err;
       reporter?.sendTelemetryException(err, { error: message });
     });
-    return issue;
+    return issues.items;
 }
