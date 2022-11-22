@@ -21,6 +21,7 @@ let errorTimeout;
 const vscode = acquireVsCodeApi();
 window.vscodeApi = vscode;
 const oldState = vscode.getState();
+let ghUserInfo = {};
 
 if (oldState?.command && oldState.command !== "loading") {
   handleMessage(oldState);
@@ -33,7 +34,6 @@ Sentry.init({
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
 });
-let ghUserInfo = {};
 function handleMessage(message) {
   webviewDebugLogger(message.command);
   switch (message.command) {
