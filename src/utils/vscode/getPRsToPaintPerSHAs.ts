@@ -76,7 +76,7 @@ export default async function getPRsToPaintPerSHAs({
       repo: repo ?? "",
       owner:owner?? "",
     });
-    if (issueData.user.type.toLowerCase() !== "bot")
+    if (issueData.user.type.toLowerCase() !== "bot"){
       issuesWithTitlesAndGroupedComments.push({
         created_at: issueData.created_at,
         user: issueData.user.login,
@@ -92,7 +92,7 @@ export default async function getPRsToPaintPerSHAs({
         comments: comments.map((comment: any) => {
           return comment;
         }),
-      });
+      });}
   });
   await Promise.all(prPromises); 
   return issuesWithTitlesAndGroupedComments;
