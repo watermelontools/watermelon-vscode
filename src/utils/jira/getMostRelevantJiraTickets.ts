@@ -1,7 +1,7 @@
 import axios from "axios";
 import { backendURL } from "../../constants";
 
-export default async function getMostRelevantJiraTicket({
+export default async function getMostRelevantJiraTickets({
   user,
   prTitle,
 }: {

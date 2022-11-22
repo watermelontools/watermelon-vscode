@@ -29,7 +29,7 @@ import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
-import getMostRelevantJiraTicket from "./utils/jira/getMostRelevantJiraTicket";
+import getMostRelevantJiraTickets  from "./utils/jira/getMostRelevantJiraTickets";
 import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
 
@@ -211,7 +211,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
         // Jira
         const mostRelevantJiraTickets =
-          (await getMostRelevantJiraTicket({
+          (await getMostRelevantJiraTickets ({
             user: session.account.label,
             prTitle: sortedPRs[0].title || parsedMessage,
           })) || {};
