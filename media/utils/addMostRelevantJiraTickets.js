@@ -34,7 +34,7 @@ const addViewAlTicketssButton = (allJiraTickets) => {
     $("#viewAllPRs").remove();
   });
 };
-const addMostRelevantJiraTicket = (jiraTickets) => {
+const addMostRelevantJiraTickets = (jiraTickets) => {
   if (Array.isArray(jiraTickets) && jiraTickets.length) {
     let firstTicket = jiraTickets.shift();
     $("#mostRelevantJiraTicketHolder").append(`
@@ -51,4 +51,4 @@ const addMostRelevantJiraTicket = (jiraTickets) => {
   }
 };
 
-export default addMostRelevantJiraTicket;
+export default addMostRelevantJiraTickets;

@@ -13,7 +13,7 @@ import addSessionToFooter from "./utils/addSessionToFooter.js";
 import addDailySummary from "./utils/addDailySummary.js";
 import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 import addActionButtons from "./utils/addActionButtons.js";
-import addMostRelevantJiraTicket from "./utils/addMostRelevantJiraTicket.js";
+import addMostRelevantJiraTickets from "./utils/addMostRelevantJiraTickets.js";
 import sendLinkToOpen from "./utils/sendLinkToOpen.js";
 
 let errorTimeout;
@@ -70,7 +70,7 @@ function handleMessage(message) {
       // jira
       if (message.data?.mostRelevantJiraTickets) {
         $("#mostRelevantJiraTicketHolder").empty();
-        addMostRelevantJiraTicket(message.data.mostRelevantJiraTickets);
+        addMostRelevantJiraTickets(message.data.mostRelevantJiraTickets);
       }
       clampCodeBlocks();
       break;
