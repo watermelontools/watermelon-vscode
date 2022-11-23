@@ -26,6 +26,7 @@ export default function getInitialHTML(
     "https://cdn.webflow.com/",
     "https://codecov.io/",
     "https://i.imgur.com",
+    "https://*.atl-paas.net"
   ];
   let scriptSources = [`'nonce-${nonce}'`];
   let connectSources = [
