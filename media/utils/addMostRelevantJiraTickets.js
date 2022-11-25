@@ -20,7 +20,8 @@ const paintTickets = (tickets) => {
         : ""
     }
     </div>
-  `);
+    <br/>
+    `);
       if (Array.isArray(ticket?.comments)) {
         {
           ticket?.comments?.forEach((comment) => {
