@@ -1,3 +1,4 @@
+import dateToHumanReadable from "./dateToHumanReadable.js";
 const paintTickets = (tickets) => {
   tickets?.forEach((ticket) => {
     if (ticket.key) {
@@ -20,6 +21,30 @@ const paintTickets = (tickets) => {
     }
     </div>
   `);
+      if (Array.isArray(ticket?.comments)) {
+        {
+          ticket?.comments?.forEach((comment) => {
+            $(`.${ticket.key}`).append(`
+<div class="Box">
+  <div class="Box-header d-flex">
+  <p class="pr-poster">
+    <img class='pr-author-img' src="${
+      comment?.updateAuthor?.avatarUrls["48x48"]
+    }" />
+    ${comment?.updateAuthor?.displayName}
+  </p>
+  <p class="pr-date">
+      on ${dateToHumanReadable(comment?.updated)}
+  </p>
+  </div>
+  <div class="Box-body">
+  ${comment.renderedBody}
+  </div>
+</div>
+`);
+          });
+        }
+      }
     }
   });
 };
