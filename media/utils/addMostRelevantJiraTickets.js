@@ -17,7 +17,7 @@ const paintTickets = (tickets) => {
     ${
       ticket?.renderedFields?.description
         ? `<div class="Box-body">${ticket?.renderedFields?.description}</div>`
-        : ""
+        : "<em> No description provided. </em>"
     }
     </div>
     <br/>
