@@ -1,4 +1,6 @@
 import dateToHumanReadable from "../../dateToHumanReadable.js";
+import sendMessage from "../../sendVSCodeMessage.js";
+
 const addJiraTicketsToDailySummary = (jiraTickets) => {
   $("#dailySummary").append(`<h3>Assigned Jira Tickets</h3>`);
   if (Array.isArray(jiraTickets)) {
@@ -48,6 +50,11 @@ const addJiraTicketsToDailySummary = (jiraTickets) => {
           });
         }
       }
+      $(`.${ticket.key}`).append(`
+      <div class="d-flex flex-items-end flex-justify-end">
+       <button class="btn" type="button">Comment</button>
+      </div>
+      `);
     });
   }
 };

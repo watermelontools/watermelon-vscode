@@ -1,4 +1,6 @@
 import dateToHumanReadable from "./dateToHumanReadable.js";
+import sendMessage from "./sendVSCodeMessage.js";
+
 const paintTickets = (tickets) => {
   tickets?.forEach((ticket) => {
     if (ticket.key) {
@@ -46,6 +48,11 @@ const paintTickets = (tickets) => {
           });
         }
       }
+      $(`.${ticket.key}`).append(`
+      <div class="d-flex flex-items-end flex-justify-end  ">
+       <button class="btn" type="button">Comment</button>
+      </div>
+      `);
     }
   });
 };
