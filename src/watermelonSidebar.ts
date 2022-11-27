@@ -68,8 +68,9 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
           break;
         }
-        case "jiraComment":{
-console.log(data)
+        case "jiraComment": {
+          console.log(data);
+         
         }
         default: {
           this.sendMessage({

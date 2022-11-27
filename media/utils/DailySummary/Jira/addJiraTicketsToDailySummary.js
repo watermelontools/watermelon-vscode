@@ -50,11 +50,21 @@ const addJiraTicketsToDailySummary = (jiraTickets) => {
           });
         }
       }
-      $(`.${ticket.key}`).append(`
+      $(`.${ticket.key}`)
+        .append(
+          `
       <div class="d-flex flex-items-end flex-justify-end">
        <button class="btn" type="button">Comment</button>
       </div>
-      `);
+      `
+        )
+        .on("click", function (e) {
+          sendMessage({
+            command: "jiraComment",
+            issueIdOrKey: ticket.key,
+            text: "hihi",
+          });
+        });
     });
   }
 };
