@@ -76,6 +76,7 @@ const addViewAllPRsButton = (allPRs) => {
 };
 
 const addPRsToDoc = (allPRs) => {
+  $("#ghHolder").empty()
   $("#ghHolder").append(`
   <h3>Pull Requests</h3>
   `);
