@@ -9,9 +9,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - If the GitHub PR body is empty, will display the same message as the web UI.
 - Fixes an error that prevented displaying GitHub PR comments
 - Removes the dependency on Octokit to handle GitHub Requests
-- Fixes an error that prevented displaying GitHub PR comments
 - Will now track all link clicked on the webview
 - Allows commenting on Jira Tickets
+- Will now load Context before Daily Summary
 
 ## [1.6.3]
 
