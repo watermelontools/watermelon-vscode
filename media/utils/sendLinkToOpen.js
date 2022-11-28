@@ -4,6 +4,5 @@ export default function sendLinkToOpen({ link, source }) {
   sendMessage({
     command: "link",
     link,
-    source,
   });
 }
