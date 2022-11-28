@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.7.0]
 
+- Fixes an error that prevented displaying GitHub PR comments
 - Removes the dependency on Octokit to handle GitHub Requests
 - Will now track all link clicked on the webview
 
