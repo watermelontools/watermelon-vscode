@@ -14,6 +14,7 @@ import addDailySummary from "./utils/addDailySummary.js";
 import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 import addActionButtons from "./utils/addActionButtons.js";
 import addMostRelevantJiraTicket from "./utils/addMostRelevantJiraTicket.js";
+import sendLinkToOpen from "./utils/sendLinkToOpen.js";
 
 let errorTimeout;
 
@@ -32,12 +33,13 @@ Sentry.init({
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
 });
-
+let ghUserInfo = {};
 function handleMessage(message) {
   webviewDebugLogger(message.command);
   switch (message.command) {
     case "user":
       webviewDebugLogger(`Received user: ${JSON.stringify(message.user)}`);
+      ghUserInfo = message.user;
       addGHUserInfo(message.data);
       break;
     case "dailySummary":
@@ -108,6 +110,15 @@ function handleMessage(message) {
       console.log(message);
       break;
   }
+  $("body")
+    .find("a")
+    .each(function (element) {
+       $(this).on("click", function (e) {
+        e.preventDefault();
+        let link = $(this).attr("href");
+        sendLinkToOpen({ link, source: "dailySummary" });
+      }); 
+    });
 }
 
 $(document).ready(function () {
@@ -122,6 +133,15 @@ $(document).ready(function () {
     sendMessage({ command: "run" });
   });
   starWMRepo.addEventListener("click", (event) => {
-    sendMessage({ command: "star" });
+    sendMessage({ command: "star", email: ghUserInfo.email });
   });
+  $("body")
+    .find("a")
+    .each(function (element) {
+      $(this).on("click", function (e) {
+        e.preventDefault();
+        let link = $(this).attr("href");
+        sendLinkToOpen({ link });
+      }); 
+    });
 });

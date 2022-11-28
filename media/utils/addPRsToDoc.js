@@ -6,7 +6,7 @@ import parseComments from "./parseComments.js";
 const paintPRs = (prs) => {
   prs.forEach((pr, index) => {
     let mdComments = "";
-    if (pr.comments > 0) {
+    if (pr.comments.length > 0) {
       pr.comments?.forEach((comment) => (mdComments += parseComments(comment)));
     }
     $("#ghHolder").append(`
