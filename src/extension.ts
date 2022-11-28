@@ -142,7 +142,9 @@ export async function activate(context: vscode.ExtensionContext) {
       []
     );
     if (session) {
-
+      context.workspaceState.update("session", {
+        ...session
+      })
       let githubUserInfo = await getGitHubUserInfo({
         email: session.account.label,
       });
