@@ -1,7 +1,6 @@
 import getNonce from "./utils/vscode/getNonce";
 import getInitialHTML from "./utils/vscode/getInitialHTML";
 import * as vscode from "vscode";
-import { Credentials } from "./credentials";
 import TelemetryReporter from "@vscode/extension-telemetry";
 import starWmRepo from "./utils/github/starWmRepo";
 import {
@@ -9,7 +8,6 @@ import {
   WATERMELON_PULLS_COMMAND,
 } from "./constants";
 
-let octokit: any;
 /**
  * Manages watermelon webview panel
  */
@@ -53,17 +51,14 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "star": {
-          const credentials = new Credentials();
-          await credentials.initialize(this._context);
-          octokit = await credentials.getOctokit();
-          await starWmRepo({ octokit });
+          await starWmRepo({ email: data.email });
           this.sendMessage({
             command: "removedStar",
           });
           break;
         }
         case "link": {
-          this.reporter?.sendTelemetryEvent(data.source, { link: data.link });
+          this.reporter?.sendTelemetryEvent("linkClicked", { link: data.link });
           vscode.env.openExternal(vscode.Uri.parse(data.link));
           break;
         }

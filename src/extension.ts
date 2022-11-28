@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import { Credentials } from "./credentials";
 import getBlame from "./utils/getBlame";
 import getSHAArray from "./utils/getSHAArray";
 import getGitAPI from "./utils/vscode/getGitAPI";
@@ -148,11 +147,6 @@ export async function activate(context: vscode.ExtensionContext) {
       []
     );
     if (session) {
-      const credentials = new Credentials();
-      debugLogger(`got credentials`);
-      await credentials.initialize(context);
-      debugLogger("intialized credentials");
-      octokit = await credentials.getOctokit();
 
       let githubUserInfo = await getGitHubUserInfo({
         email: session.account.label,
@@ -357,7 +351,7 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  vscode.authentication.getSession("github", []).then(async (session: any) => {
+  /*   vscode.authentication.getSession("github", []).then(async (session: any) => {
     setLoggedIn(true);
     provider.sendMessage({
       command: "session",
@@ -395,7 +389,7 @@ export async function activate(context: vscode.ExtensionContext) {
       command: "dailySummary",
       data: gitHubIssues,
     });
-  });
+  }); */
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     updateStatusBarItem(wmStatusBarItem);
