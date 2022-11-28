@@ -160,7 +160,7 @@ export async function activate(context: vscode.ExtensionContext) {
       const jiraTickets = await getAssignedJiraTickets({
         user: session.account.label,
       });
-      debugLogger(`jiraTickets: ${(jiraTickets)}`, true);
+      debugLogger(`jiraTickets: ${(jiraTickets)}`);
 
       let gitHubIssues = await getGitHubDailySummary({
         owner: owner || "",
@@ -210,7 +210,6 @@ export async function activate(context: vscode.ExtensionContext) {
           sha: string;
         };
         const parsedMessage = parsedCommitObject.message;
-
         // Jira
         const mostRelevantJiraTickets =
           (await getMostRelevantJiraTickets ({
@@ -257,10 +256,24 @@ export async function activate(context: vscode.ExtensionContext) {
           (a: any, b: any) => b.comments.length - a.comments.length
         );
         let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-
+        const parsedCommitObject = new Object(uniqueBlames[0]) as {
+          date: string;
+          message: string;
+          author: string;
+          email: string;
+          commit: string;
+          body: string;
+          sha: string;
+        };
+        const parsedMessage = parsedCommitObject.message;
+        const mostRelevantJiraTickets =
+          (await getMostRelevantJiraTickets ({
+            user: session.account.label,
+            prTitle: sortedPRs[0].title || parsedMessage,
+          })) || {};
         provider.sendMessage({
           command: "prs",
-          data: { sortedPRs, uniqueBlames },
+          data: { sortedPRs, uniqueBlames, mostRelevantJiraTickets },
         });
       }
       let isStarred = await checkIfUserStarred({
