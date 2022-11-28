@@ -10,6 +10,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fixes an error that prevented displaying GitHub PR comments
 - Will now track all link clicked on the webview
 - If the GitHub PR body is empty, will display the same message as the web UI.
+- Allows commenting on Jira Tickets
 
 ## [1.6.3]
 
