@@ -20,5 +20,5 @@ export default async function getTicketComments({
         let { message } = err;
         reporter?.sendTelemetryException(err, { error: message });
       });
-      return ticketComments.comments;
+      return ticketComments?.comments;
 }
