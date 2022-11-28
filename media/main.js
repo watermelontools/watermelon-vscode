@@ -14,6 +14,7 @@ import addDailySummary from "./utils/addDailySummary.js";
 import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 import addActionButtons from "./utils/addActionButtons.js";
 import addMostRelevantJiraTicket from "./utils/addMostRelevantJiraTicket.js";
+import sendLinkToOpen from "./utils/sendLinkToOpen.js";
 
 let errorTimeout;
 
@@ -109,6 +110,15 @@ function handleMessage(message) {
       console.log(message);
       break;
   }
+  $("body")
+    .find("a")
+    .each(function (element) {
+       $(this).on("click", function (e) {
+        e.preventDefault();
+        let link = $(this).attr("href");
+        sendLinkToOpen({ link, source: "dailySummary" });
+      }); 
+    });
 }
 
 $(document).ready(function () {
@@ -125,4 +135,13 @@ $(document).ready(function () {
   starWMRepo.addEventListener("click", (event) => {
     sendMessage({ command: "star", email: ghUserInfo.email });
   });
+  $("body")
+    .find("a")
+    .each(function (element) {
+      $(this).on("click", function (e) {
+        e.preventDefault();
+        let link = $(this).attr("href");
+        sendLinkToOpen({ link });
+      }); 
+    });
 });
