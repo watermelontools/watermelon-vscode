@@ -1,12 +1,11 @@
 import addCommentingSystem from "./DailySummary/Jira/addCommentingSystem.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
-import sendMessage from "./sendVSCodeMessage.js";
 
 const paintTickets = (tickets) => {
   tickets?.forEach((ticket) => {
     if (ticket.key) {
       $("#mostRelevantJiraTicketHolder").append(`
-      <div class="Box">
+      <div class="Box ${ticket.key}">
     <div class="Box-header d-flex flex-justify-between">
       <a href="${ticket.fields.priority.iconUrl.split("/images")[0]}/browse/${
         ticket?.key
@@ -49,7 +48,8 @@ const paintTickets = (tickets) => {
           });
         }
       }
-      addCommentingSystem(ticket);
+      
+      addCommentingSystem(ticket.key);
     }
   });
 };

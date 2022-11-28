@@ -50,7 +50,7 @@ const addJiraTicketsToDailySummary = (jiraTickets) => {
           });
         }
       }
-      addCommentingSystem(ticket);
+      addCommentingSystem(ticket.key);
     });
   }
 };
