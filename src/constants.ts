@@ -3,10 +3,6 @@ export const watermelonBannerImageURL =
   "https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png";
 // our website url
 export const backendURL = "https://app.watermelontools.com";
-//vscode login
-export const GITHUB_AUTH_PROVIDER_ID = "github";
-//github scopes
-export const SCOPES = ["user:email", "repo", "read:org"];
 // telemetry insights key
 export const TELEMETRY_INSIGHTS_KEY = "bb2eac7f-33dd-426c-92c5-4dd922b2befb";
 // extension id
