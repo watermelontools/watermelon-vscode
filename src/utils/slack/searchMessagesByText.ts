@@ -15,6 +15,7 @@ export default async function getTicketComments({
         text,
       })
       .then((res) => res.data)
+      .catch((err) => {
         let reporter = analyticsReporter();
         let { message } = err;
         reporter?.sendTelemetryException(err, { error: message });
