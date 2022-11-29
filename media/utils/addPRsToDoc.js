@@ -2,6 +2,7 @@ import sendMessage from "./sendVSCodeMessage.js";
 import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
+import addCommentingSystem from "./DailySummary/GitHub/addCommentingSystem.js";
 
 const paintPRs = (prs) => {
   prs.forEach((pr, index) => {
@@ -11,7 +12,7 @@ const paintPRs = (prs) => {
     }
     $("#ghHolder").append(`
     <div class="anim-fade-in">
-      <details ${!index ? "open" : ""}>
+      <details ${!index ? "open" : ""} class="gh-issue-${pr.number}">
         <summary class="pr-title">
           <div>
             <div class="details-state">
@@ -61,6 +62,7 @@ const paintPRs = (prs) => {
       </details>
     </div>
       `);
+    addCommentingSystem(pr.number);
   });
 };
 const addViewAllPRsButton = (allPRs) => {
@@ -76,7 +78,7 @@ const addViewAllPRsButton = (allPRs) => {
 };
 
 const addPRsToDoc = (allPRs) => {
-  $("#ghHolder").empty()
+  $("#ghHolder").empty();
   $("#ghHolder").append(`
   <h3>Pull Requests</h3>
   `);
