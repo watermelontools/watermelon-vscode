@@ -118,6 +118,8 @@ export default function getInitialHTML(
         <br/>
         <div id="mostRelevantJiraTicketHolder"></div>
         <br/>
+        <div id="slackHolder"></div>
+        <br/>
         <div id="ghHolder">
            <button class='run-watermelon btn btn-primary' type='button'>Get Code Context</button>
         </div>
