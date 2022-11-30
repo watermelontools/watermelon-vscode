@@ -13,6 +13,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Allows commenting on Jira Tickets
 - Allows commenting on GitHub Pull Requests
 - Will now load Context before Daily Summary
+- Improves the UI with plural titles
 
 ## [1.6.3]
 
