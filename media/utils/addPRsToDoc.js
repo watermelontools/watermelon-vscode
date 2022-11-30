@@ -3,6 +3,7 @@ import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
 import addCommentingSystem from "./DailySummary/GitHub/addCommentingSystem.js";
+import getPlural from "./getPlural.js";
 
 const paintPRs = (prs) => {
   prs.forEach((pr, index) => {
@@ -80,7 +81,7 @@ const addViewAllPRsButton = (allPRs) => {
 const addPRsToDoc = (allPRs) => {
   $("#ghHolder").empty();
   $("#ghHolder").append(`
-  <h3>Pull Requests</h3>
+  <h3>Pull Request${getPlural(allPRs.length)}</h3>
   `);
   if (allPRs.error) {
     $("#ghHolder").append(`
