@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import { Credentials } from "./credentials";
 import getBlame from "./utils/getBlame";
 import getSHAArray from "./utils/getSHAArray";
 import getGitAPI from "./utils/vscode/getGitAPI";
@@ -17,10 +16,7 @@ import statusBarItem, {
 import hover from "./utils/components/hover";
 import getGitHubDailySummary from "./utils/github/getDailySummary";
 import {
-  backendURL,
   EXTENSION_ID,
-  GITHUB_AUTH_PROVIDER_ID,
-  SCOPES,
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
   WATERMELON_LOGIN_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
@@ -42,8 +38,6 @@ let owner: string | undefined = "";
 let repo: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
-
-let octokit: any;
 
 // extension version will be reported as a property with each event
 const extensionVersion = getPackageInfo().version;
@@ -148,11 +142,6 @@ export async function activate(context: vscode.ExtensionContext) {
       []
     );
     if (session) {
-      const credentials = new Credentials();
-      debugLogger(`got credentials`);
-      await credentials.initialize(context);
-      debugLogger("intialized credentials");
-      octokit = await credentials.getOctokit();
 
       let githubUserInfo = await getGitHubUserInfo({
         email: session.account.label,
@@ -169,7 +158,7 @@ export async function activate(context: vscode.ExtensionContext) {
       const jiraTickets = await getAssignedJiraTickets({
         user: session.account.label,
       });
-      debugLogger(`jiraTickets: ${JSON.stringify(jiraTickets)}`);
+      debugLogger(`jiraTickets: ${(jiraTickets)}`, true);
 
       let gitHubIssues = await getGitHubDailySummary({
         owner: owner || "",
@@ -194,7 +183,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
         let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
           arrayOfSHAs,
-          octokit,
+          email: session.account.label,
           owner,
           repo,
         });
@@ -251,10 +240,11 @@ export async function activate(context: vscode.ExtensionContext) {
 
         let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
           arrayOfSHAs,
-          octokit,
+          email: session.account.label,
           owner,
           repo,
         });
+
         if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
           return provider.sendMessage({
             command: "error",
@@ -356,46 +346,6 @@ export async function activate(context: vscode.ExtensionContext) {
       linkCommandHandler
     )
   );
-
-  vscode.authentication.getSession("github", []).then(async (session: any) => {
-    setLoggedIn(true);
-    provider.sendMessage({
-      command: "session",
-      loggedIn: true,
-      data: session.account.label,
-    });
-    debugLogger(`session: ${JSON.stringify(session)}`);
-    const credentials = new Credentials();
-    debugLogger(`got credentials`);
-    await credentials.initialize(context);
-    debugLogger("intialized credentials");
-    octokit = await credentials.getOctokit();
-    let githubUserInfo = await getGitHubUserInfo({
-      email: session.account.label,
-    });
-    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-    context.globalState.update("openSidebarCount", 0);
-    let isStarred = await checkIfUserStarred({ email: session.account.label });
-    provider.sendMessage({
-      command: "user",
-      data: {
-        login: githubUserInfo.login,
-        avatar: githubUserInfo.avatar_url,
-        isStarred,
-      },
-    });
-    let gitHubIssues = await getGitHubDailySummary({
-      owner: owner || "",
-      repo: repo || "",
-      username: githubUserInfo.login || "",
-      email: session.account.label,
-    });
-    debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
-    provider.sendMessage({
-      command: "dailySummary",
-      data: gitHubIssues,
-    });
-  });
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     updateStatusBarItem(wmStatusBarItem);

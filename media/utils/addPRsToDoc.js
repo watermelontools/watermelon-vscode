@@ -6,7 +6,7 @@ import parseComments from "./parseComments.js";
 const paintPRs = (prs) => {
   prs.forEach((pr, index) => {
     let mdComments = "";
-    if (pr.comments > 0) {
+    if (pr.comments.length > 0) {
       pr.comments?.forEach((comment) => (mdComments += parseComments(comment)));
     }
     $("#ghHolder").append(`
@@ -53,7 +53,7 @@ const paintPRs = (prs) => {
                 ? replaceUserTags(
                     marked.parse(pr.body, { gfm: true, breaks: true })
                   )
-                : ""
+                : "<em> No description provided. </em>"
             }
           </div>
           ${mdComments}
@@ -76,6 +76,7 @@ const addViewAllPRsButton = (allPRs) => {
 };
 
 const addPRsToDoc = (allPRs) => {
+  $("#ghHolder").empty()
   $("#ghHolder").append(`
   <h3>Pull Requests</h3>
   `);

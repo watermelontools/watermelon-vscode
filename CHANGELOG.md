@@ -4,6 +4,13 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.7.0]
+
+- If the GitHub PR body is empty, will display the same message as the web UI.
+- Fixes an error that prevented displaying GitHub PR comments
+- Removes the dependency on Octokit to handle GitHub Requests
+- Will now track all link clicked on the webview
+
 ## [1.6.3]
 
 - The user will be prompted to buy Jira in case they haven't already done so
