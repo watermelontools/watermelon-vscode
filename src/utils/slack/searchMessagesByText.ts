@@ -2,7 +2,7 @@ import axios from "axios";
 import { backendURL } from "../../constants";
 import analyticsReporter from "../vscode/reporter";
 
-export default async function getTicketComments({
+export default async function searchMessagesByText({
   email,
   text,
 }: {
@@ -20,5 +20,5 @@ export default async function getTicketComments({
         let { message } = err;
         reporter?.sendTelemetryException(err, { error: message });
       });
-      return sentComment;
+      return sentComment?.messages?.matches;
 }
