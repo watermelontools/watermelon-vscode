@@ -29,9 +29,10 @@ import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
-import getMostRelevantJiraTickets  from "./utils/jira/getMostRelevantJiraTickets";
+import getMostRelevantJiraTickets from "./utils/jira/getMostRelevantJiraTickets";
 import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
+import searchMessagesByText from "./utils/slack/searchMessagesByText";
 
 // repo information
 let owner: string | undefined = "";
@@ -143,8 +144,8 @@ export async function activate(context: vscode.ExtensionContext) {
     );
     if (session) {
       context.workspaceState.update("session", {
-        ...session
-      })
+        ...session,
+      });
       let githubUserInfo = await getGitHubUserInfo({
         email: session.account.label,
       });
@@ -196,10 +197,16 @@ export async function activate(context: vscode.ExtensionContext) {
         const parsedMessage = parsedCommitObject.message;
         // Jira
         const mostRelevantJiraTickets =
-          (await getMostRelevantJiraTickets ({
+          (await getMostRelevantJiraTickets({
             user: session.account.label,
             prTitle: sortedPRs[0].title || parsedMessage,
           })) || {};
+        // Slack
+        const relevantSlackThreads = await searchMessagesByText({
+          email: session.account.label,
+          text: sortedPRs[0].title || parsedMessage,
+        });
+        console.log(relevantSlackThreads);
         provider.sendMessage({
           command: "prs",
           data: { sortedPRs, uniqueBlames, mostRelevantJiraTickets },
@@ -251,10 +258,16 @@ export async function activate(context: vscode.ExtensionContext) {
         };
         const parsedMessage = parsedCommitObject.message;
         const mostRelevantJiraTickets =
-          (await getMostRelevantJiraTickets ({
+          (await getMostRelevantJiraTickets({
             user: session.account.label,
             prTitle: sortedPRs[0].title || parsedMessage,
           })) || {};
+        // Slack
+        const relevantSlackThreads = await searchMessagesByText({
+          email: session.account.label,
+          text: sortedPRs[0].title || parsedMessage,
+        });
+        console.log(relevantSlackThreads);
         provider.sendMessage({
           command: "prs",
           data: { sortedPRs, uniqueBlames, mostRelevantJiraTickets },
@@ -274,7 +287,7 @@ export async function activate(context: vscode.ExtensionContext) {
       const jiraTickets = await getAssignedJiraTickets({
         user: session.account.label,
       });
-      debugLogger(`jiraTickets: ${(jiraTickets)}`);
+      debugLogger(`jiraTickets: ${jiraTickets}`);
 
       let gitHubIssues = await getGitHubDailySummary({
         owner: owner || "",
