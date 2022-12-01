@@ -209,7 +209,12 @@ export async function activate(context: vscode.ExtensionContext) {
         console.log(relevantSlackThreads);
         provider.sendMessage({
           command: "prs",
-          data: { sortedPRs, uniqueBlames, mostRelevantJiraTickets },
+          data: {
+            sortedPRs,
+            uniqueBlames,
+            mostRelevantJiraTickets,
+            relevantSlackThreads,
+          },
         });
       } else {
         vscode.commands.executeCommand("watermelon.multiSelect");
@@ -270,7 +275,12 @@ export async function activate(context: vscode.ExtensionContext) {
         console.log(relevantSlackThreads);
         provider.sendMessage({
           command: "prs",
-          data: { sortedPRs, uniqueBlames, mostRelevantJiraTickets },
+          data: {
+            sortedPRs,
+            uniqueBlames,
+            mostRelevantJiraTickets,
+            relevantSlackThreads,
+          },
         });
       }
       let isStarred = await checkIfUserStarred({
