@@ -157,22 +157,6 @@ export async function activate(context: vscode.ExtensionContext) {
         },
       });
 
-      const jiraTickets = await getAssignedJiraTickets({
-        user: session.account.label,
-      });
-      debugLogger(`jiraTickets: ${(jiraTickets)}`);
-
-      let gitHubIssues = await getGitHubDailySummary({
-        owner: owner || "",
-        repo: repo || "",
-        username: githubUserInfo.login || "",
-        email: session.account.label,
-      });
-      debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
-      provider.sendMessage({
-        command: "dailySummary",
-        data: { gitHubIssues, jiraTickets },
-      });
       if (startLine === undefined && endLine === undefined) {
         if (!arrayOfSHAs.length) {
           arrayOfSHAs = await getSHAArray(
@@ -286,6 +270,22 @@ export async function activate(context: vscode.ExtensionContext) {
           avatar: githubUserInfo.avatar_url,
           isStarred,
         },
+      });
+      const jiraTickets = await getAssignedJiraTickets({
+        user: session.account.label,
+      });
+      debugLogger(`jiraTickets: ${(jiraTickets)}`);
+
+      let gitHubIssues = await getGitHubDailySummary({
+        owner: owner || "",
+        repo: repo || "",
+        username: githubUserInfo.login || "",
+        email: session.account.label,
+      });
+      debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
+      provider.sendMessage({
+        command: "dailySummary",
+        data: { gitHubIssues, jiraTickets },
       });
     } else {
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);

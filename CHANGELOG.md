@@ -11,6 +11,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Removes the dependency on Octokit to handle GitHub Requests
 - Will now track all link clicked on the webview
 - Allows commenting on Jira Tickets
+- Will now load Context before Daily Summary
 
 ## [1.6.3]
 
