@@ -8,6 +8,7 @@ import {
   WATERMELON_PULLS_COMMAND,
 } from "./constants";
 import postCommentOnTicket from "./utils/jira/postCommentOnTicket";
+import postCommentOnIssue from "./utils/github/postCommentOnIssue";
 
 /**
  * Manages watermelon webview panel
@@ -43,6 +44,11 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
     webviewView.webview.onDidReceiveMessage(async (data) => {
       //@ts-ignore
       let userEmail = this._context.workspaceState.get("session").email;
+      //@ts-ignore
+      let repo = this._context.workspaceState.get("workspaceState").repo;
+      //@ts-ignore
+      let owner = this._context.workspaceState.get("workspaceState").owner;
+
       switch (data.command) {
         case "run": {
           this.sendMessage({
@@ -76,6 +82,16 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
             email: userEmail,
             issueIdOrKey: data.issueIdOrKey,
             text: data.text,
+          });
+          vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
+        }
+        case "githubComment": {
+          postCommentOnIssue({
+            email: userEmail,
+            repo,
+            owner,
+            comment_body: data.text,
+            issue_number: data.issueKey,
           });
           vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
         }
