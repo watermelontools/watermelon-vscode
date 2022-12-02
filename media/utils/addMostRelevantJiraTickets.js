@@ -1,8 +1,11 @@
+import addCommentingSystem from "./DailySummary/Jira/addCommentingSystem.js";
+import dateToHumanReadable from "./dateToHumanReadable.js";
+
 const paintTickets = (tickets) => {
   tickets?.forEach((ticket) => {
     if (ticket.key) {
       $("#mostRelevantJiraTicketHolder").append(`
-      <div class="Box">
+      <div class="Box ${ticket.key}">
     <div class="Box-header d-flex flex-justify-between">
       <a href="${ticket.fields.priority.iconUrl.split("/images")[0]}/browse/${
         ticket?.key
@@ -16,10 +19,37 @@ const paintTickets = (tickets) => {
     ${
       ticket?.renderedFields?.description
         ? `<div class="Box-body">${ticket?.renderedFields?.description}</div>`
-        : ""
+        : "<em> No description provided. </em>"
     }
     </div>
-  `);
+    <br/>
+    `);
+      if (Array.isArray(ticket?.comments)) {
+        {
+          ticket?.comments?.forEach((comment) => {
+            $(`.${ticket.key}`).append(`
+<div class="Box">
+  <div class="Box-header d-flex">
+  <p class="pr-poster">
+    <img class='pr-author-img' src="${
+      comment?.updateAuthor?.avatarUrls["48x48"]
+    }" />
+    ${comment?.updateAuthor?.displayName}
+  </p>
+  <p class="pr-date">
+      on ${dateToHumanReadable(comment?.updated)}
+  </p>
+  </div>
+  <div class="Box-body">
+  ${comment.renderedBody}
+  </div>
+</div>
+`);
+          });
+        }
+      }
+      
+      addCommentingSystem(ticket.key);
     }
   });
 };
@@ -34,7 +64,7 @@ const addViewAlTicketssButton = (allJiraTickets) => {
     $("#viewAllPRs").remove();
   });
 };
-const addMostRelevantJiraTicket = (jiraTickets) => {
+const addMostRelevantJiraTickets = (jiraTickets) => {
   if (Array.isArray(jiraTickets) && jiraTickets.length) {
     let firstTicket = jiraTickets.shift();
     $("#mostRelevantJiraTicketHolder").append(`
@@ -51,4 +81,4 @@ const addMostRelevantJiraTicket = (jiraTickets) => {
   }
 };
 
-export default addMostRelevantJiraTicket;
+export default addMostRelevantJiraTickets;

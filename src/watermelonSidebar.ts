@@ -7,6 +7,7 @@ import {
   WATERMELON_LOGIN_COMMAND,
   WATERMELON_PULLS_COMMAND,
 } from "./constants";
+import postCommentOnTicket from "./utils/jira/postCommentOnTicket";
 
 /**
  * Manages watermelon webview panel
@@ -40,6 +41,8 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
     webviewView.webview.onDidReceiveMessage(async (data) => {
+      //@ts-ignore
+      let userEmail = this._context.workspaceState.get("session").email;
       switch (data.command) {
         case "run": {
           this.sendMessage({
@@ -67,6 +70,14 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           this.reporter?.sendTelemetryEvent("login");
           vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
           break;
+        }
+        case "jiraComment": {
+          postCommentOnTicket({
+            email: userEmail,
+            issueIdOrKey: data.issueIdOrKey,
+            text: data.text,
+          });
+          vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
         }
         default: {
           this.sendMessage({

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { backendURL } from "../../constants";
 import analyticsReporter from "../../utils/vscode/reporter";
+import getTicketComments from "./getTicketComments";
 
 export default async function getAssignedJiraTickets({
   user,
@@ -17,6 +18,19 @@ export default async function getAssignedJiraTickets({
       let { message } = err;
       reporter?.sendTelemetryException(err, { error: message });
     });
-
-  return assignedJiraTickets;
+  let ticketsWithComments: any[]=[];
+  let ticketPromises = assignedJiraTickets.map(
+    async (ticket: { key: string; comments: any[] }) => {
+      let comments = await getTicketComments({
+        email: user,
+        issueIdOrKey: ticket.key,
+      });
+      ticketsWithComments.push({
+        ...ticket,
+        comments,
+      });
+    }
+  );
+  await Promise.all(ticketPromises);
+  return ticketsWithComments;
 }

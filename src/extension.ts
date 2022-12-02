@@ -29,7 +29,7 @@ import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
-import getMostRelevantJiraTicket from "./utils/jira/getMostRelevantJiraTicket";
+import getMostRelevantJiraTickets  from "./utils/jira/getMostRelevantJiraTickets";
 import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
 
@@ -142,7 +142,9 @@ export async function activate(context: vscode.ExtensionContext) {
       []
     );
     if (session) {
-
+      context.workspaceState.update("session", {
+        ...session
+      })
       let githubUserInfo = await getGitHubUserInfo({
         email: session.account.label,
       });
@@ -158,7 +160,7 @@ export async function activate(context: vscode.ExtensionContext) {
       const jiraTickets = await getAssignedJiraTickets({
         user: session.account.label,
       });
-      debugLogger(`jiraTickets: ${(jiraTickets)}`, true);
+      debugLogger(`jiraTickets: ${(jiraTickets)}`);
 
       let gitHubIssues = await getGitHubDailySummary({
         owner: owner || "",
@@ -208,10 +210,9 @@ export async function activate(context: vscode.ExtensionContext) {
           sha: string;
         };
         const parsedMessage = parsedCommitObject.message;
-
         // Jira
         const mostRelevantJiraTickets =
-          (await getMostRelevantJiraTicket({
+          (await getMostRelevantJiraTickets ({
             user: session.account.label,
             prTitle: sortedPRs[0].title || parsedMessage,
           })) || {};
@@ -255,10 +256,24 @@ export async function activate(context: vscode.ExtensionContext) {
           (a: any, b: any) => b.comments.length - a.comments.length
         );
         let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-
+        const parsedCommitObject = new Object(uniqueBlames[0]) as {
+          date: string;
+          message: string;
+          author: string;
+          email: string;
+          commit: string;
+          body: string;
+          sha: string;
+        };
+        const parsedMessage = parsedCommitObject.message;
+        const mostRelevantJiraTickets =
+          (await getMostRelevantJiraTickets ({
+            user: session.account.label,
+            prTitle: sortedPRs[0].title || parsedMessage,
+          })) || {};
         provider.sendMessage({
           command: "prs",
-          data: { sortedPRs, uniqueBlames },
+          data: { sortedPRs, uniqueBlames, mostRelevantJiraTickets },
         });
       }
       let isStarred = await checkIfUserStarred({

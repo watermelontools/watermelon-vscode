@@ -206,3 +206,7 @@ pre {
 footer {
   font-size: smaller;
 }
+
+textarea {
+  width: 100%;
+}
