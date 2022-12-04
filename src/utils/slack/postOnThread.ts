@@ -2,7 +2,7 @@ import axios from "axios";
 import { backendURL } from "../../constants";
 import analyticsReporter from "../vscode/reporter";
 
-export default async function getTicketComments({
+export default async function postOnThread({
   email,
   channelId,
   text,
