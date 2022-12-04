@@ -23,7 +23,7 @@ const paintThreads = (threads) => {
             </div>
           </div>
       </summary>
-        <div class="Box">
+        <div class="Box ${thread.number}">
         <div class="Box-header d-flex">
             <p class="pr-poster">
             ${thread.username}
@@ -41,7 +41,7 @@ const paintThreads = (threads) => {
       </details>
     </div>
       `);
-    /* addCommentingSystem(thread.number); */
+     addCommentingSystem(thread.number, thread.ts, thread.channel.id); 
   });
 };
 const addviewAllThreadsButton = (allPRs) => {
