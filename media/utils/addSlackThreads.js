@@ -2,9 +2,9 @@ import sendMessage from "./sendVSCodeMessage.js";
 import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
-import addCommentingSystem from "./DailySummary/GitHub/addCommentingSystem.js";
+import addCommentingSystem from "./slack/addCommentingSystem.js";
 
-const paintPRs = (threads) => {
+const paintThreads = (threads) => {
   threads.forEach((thread, index) => {
     $("#slackHolder").append(`
     <div class="anim-fade-in">
@@ -29,7 +29,7 @@ const paintPRs = (threads) => {
             ${thread.username}
             </p>
             <p class="pr-date">
-                on ${dateToHumanReadable(new Date(thread.ts))}
+                on ${dateToHumanReadable(new Date(0).setUTCSeconds(thread.ts))}
             </p>
         </div>
           <div class="Box-body">
@@ -51,7 +51,7 @@ const addviewAllThreadsButton = (allPRs) => {
     </div>
   `);
   $("#viewAllThreads").on("click", (event) => {
-    paintPRs(allPRs);
+    paintThreads(allPRs);
     $("#viewAllThreads").remove();
   });
 };
@@ -73,7 +73,7 @@ const addSlackThreads = (allThreads) => {
     return;
   }
   let firstThread = allThreads.shift();
-  paintPRs([firstThread]);
+  paintThreads([firstThread]);
   if (allThreads.length > 0) {
     addviewAllThreadsButton(allThreads);
   }
