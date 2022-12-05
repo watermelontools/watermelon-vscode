@@ -21,7 +21,7 @@ const paintPRs = (prs) => {
                 <i class='codicon codicon-chevron-down'></i>
               </div>
               <a 
-              href="${pr.url}" target="_blank" title="View this PR on github">${
+              href="${pr.url}" target="_blank" title="View this PR on GitHub">${
       pr.title
     }</a>
             </div>
@@ -37,7 +37,7 @@ const paintPRs = (prs) => {
       </summary>
         <div class="Box">
         <div class="Box-header d-flex">
-            <p class="pr-poster" title="View this user on github">
+            <p class="pr-poster" title="View this user on GitHub">
               <a class="pr-author-combo" href="${
                 pr.userLink
               }"><img class='pr-author-img' src="${pr.userImage}" />${
