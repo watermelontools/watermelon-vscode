@@ -6,7 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.7.0]
 
-- If the GitHub PR body is empty, will display the same message as the web UI.
+- Allows using Slack: get most relevant thread and replies, and add to it
+- If the GitHub PR body is empty, will display the same message as the web UI
 - Fixes an error that prevented displaying GitHub PR comments
 - Removes the dependency on Octokit to handle GitHub Requests
 - Will now track all link clicked on the webview
@@ -74,8 +75,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.4.4]
 
-- Will now show three different walkthroughs to understand how to use the extension.
-- [BETA] New way to experience the extension on web.
+- Will now show three different walkthroughs to understand how to use the extension
+- [BETA] New way to experience the extension on web
 
 ## [1.4.3]
 
@@ -160,7 +161,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.2.3]
 
-- Promoted "View PRs" from Beta to stable.
+- Promoted "View PRs" from Beta to stable
 - "Git blame" now referred to as "Commit History" for clarity
 - Now you can click on the commit id to view on github on the blame table
 - Added right click to get blame
