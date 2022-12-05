@@ -1,7 +1,5 @@
 import sendMessage from "./sendVSCodeMessage.js";
-import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
-import parseComments from "./parseComments.js";
 import addCommentingSystem from "./slack/addCommentingSystem.js";
 
 const paintThreads = (threads) => {
@@ -17,7 +15,9 @@ const paintThreads = (threads) => {
                 <i class='codicon codicon-chevron-down'></i>
               </div>
               <a 
-              href="${thread.permalink}" target="_blank" title="View this PR on github">#${
+              href="${
+                thread.permalink
+              }" target="_blank" title="View this thread on Slack">#${
       thread.channel.name
     }</a>
             </div>
@@ -33,15 +33,33 @@ const paintThreads = (threads) => {
             </p>
         </div>
           <div class="Box-body">
-            ${
-                marked.parse(thread?.text)
-            }
+            ${marked.parse(thread?.text)}
           </div>
         </div>
       </details>
     </div>
       `);
-     addCommentingSystem(thread.number, thread.ts, thread.channel.id); 
+    thread?.replies.forEach((reply, index) => {
+      if (index === 0) return;
+      $(`.${thread.number}`).append(
+        `
+      <div class="Box">
+        <div class="Box-header d-flex">
+          <p class="pr-poster">
+           ${reply.user}
+          </p>
+          <p class="pr-date">
+            on ${dateToHumanReadable(new Date(0).setUTCSeconds(thread.ts))}
+         </p>
+        </div>
+        <div class="Box-body">
+            ${marked.parse(reply?.text)}
+        </div>
+      </div>
+      `
+      );
+    });
+    addCommentingSystem(thread.number, thread.ts, thread.channel.id);
   });
 };
 const addviewAllThreadsButton = (allPRs) => {

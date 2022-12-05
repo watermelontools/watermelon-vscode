@@ -203,10 +203,10 @@ export async function activate(context: vscode.ExtensionContext) {
           })) || {};
         // Slack
         const relevantSlackThreads = await searchMessagesByText({
+          user: session.account.label,
           email: session.account.label,
           text: sortedPRs[0].title || parsedMessage,
         });
-        console.log(relevantSlackThreads);
         provider.sendMessage({
           command: "prs",
           data: {
@@ -269,10 +269,10 @@ export async function activate(context: vscode.ExtensionContext) {
           })) || {};
         // Slack
         const relevantSlackThreads = await searchMessagesByText({
+          user: session.account.label,
           email: session.account.label,
           text: sortedPRs[0].title || parsedMessage,
         });
-        console.log(relevantSlackThreads);
         provider.sendMessage({
           command: "prs",
           data: {
