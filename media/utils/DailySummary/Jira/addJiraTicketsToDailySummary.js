@@ -5,7 +5,6 @@ const addJiraTicketsToDailySummary = (jiraTickets) => {
   $("#dailySummary").append(`<h3>Assigned Jira Tickets</h3>`);
   if (Array.isArray(jiraTickets)) {
     jiraTickets?.forEach((ticket) => {
-      console.log(ticket);
       $("#dailySummary").append(`
       <div class="Box ${ticket.key}">
       <div class="Box-header d-flex flex-justify-between">
