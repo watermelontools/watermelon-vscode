@@ -9,6 +9,7 @@ import {
 } from "./constants";
 import postCommentOnTicket from "./utils/jira/postCommentOnTicket";
 import postCommentOnIssue from "./utils/github/postCommentOnIssue";
+import postOnThread from "./utils/slack/postOnThread";
 
 /**
  * Manages watermelon webview panel
@@ -92,6 +93,15 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
             owner,
             comment_body: data.text,
             issue_number: data.issueKey,
+          });
+          vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
+        }
+        case "slackComment": {
+          postOnThread({
+            email: userEmail,
+            channelId: data.channelId,
+            text: data.text,
+            threadTS: data.threadTS,
           });
           vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
         }

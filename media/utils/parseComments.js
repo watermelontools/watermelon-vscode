@@ -18,7 +18,7 @@ function parseComments(comment) {
   mdComments += `
         <div class="Box">
         <div class="Box-header">
-          <h5 class="comment-author" title="View this user on github" class='pr-author-combo'>
+          <h5 class="comment-author" title="View this user on GitHub" class='pr-author-combo'>
           <a href="${comment.user.html_url}" >  
           <img src="${comment.user.avatar_url}" class='pr-author-img'/>
             ${comment.user.login}

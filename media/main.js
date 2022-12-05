@@ -15,6 +15,7 @@ import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 import addActionButtons from "./utils/addActionButtons.js";
 import addMostRelevantJiraTickets from "./utils/addMostRelevantJiraTickets.js";
 import sendLinkToOpen from "./utils/sendLinkToOpen.js";
+import addSlackThreads from "./utils/addSlackThreads.js";
 
 let errorTimeout;
 
@@ -73,6 +74,7 @@ function handleMessage(message) {
         addMostRelevantJiraTickets(message.data.mostRelevantJiraTickets);
       }
       clampCodeBlocks();
+      addSlackThreads(message.data.relevantSlackThreads);
       break;
     case "error":
       webviewDebugLogger(`Received error: ${JSON.stringify(message.data)}`);
