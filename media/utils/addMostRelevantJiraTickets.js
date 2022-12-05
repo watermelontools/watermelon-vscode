@@ -1,5 +1,6 @@
 import addCommentingSystem from "./DailySummary/Jira/addCommentingSystem.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
+import getPlural from "./getPlural.js";
 
 const paintTickets = (tickets) => {
   tickets?.forEach((ticket) => {
@@ -68,7 +69,7 @@ const addMostRelevantJiraTickets = (jiraTickets) => {
   if (Array.isArray(jiraTickets) && jiraTickets.length) {
     let firstTicket = jiraTickets.shift();
     $("#mostRelevantJiraTicketHolder").append(`
-    <h3>Most Relevant Jira Ticket</h3>
+    <h3>Most Relevant Jira Ticket${getPlural(jiraTickets.length)}</h3>
     `);
     paintTickets([firstTicket]);
     if (jiraTickets.length > 1) {

@@ -7,27 +7,27 @@ export default async function postOnThread({
   channelId,
   text,
   threadTS,
-  broadcast
+  broadcast,
 }: {
-    email: string,
-    channelId: string
-    text: string,
-    threadTS: string,
-    broadcast?: string,
+  email: string;
+  channelId: string;
+  text: string;
+  threadTS: string;
+  broadcast?: string;
 }) {
   const sentComment = await axios
     .post(`${backendURL}/api/slack/addMessageToThread`, {
-        user: email,
-        channelId,
-        text,
-        threadTS,
-        broadcast
-      })
-      .then((res) => res.data)
-      .catch((err) => {
-        let reporter = analyticsReporter();
-        let { message } = err;
-        reporter?.sendTelemetryException(err, { error: message });
-      });
-      return sentComment;
+      user: email,
+      channelId,
+      text,
+      threadTS,
+      broadcast,
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      let reporter = analyticsReporter();
+      let { message } = err;
+      reporter?.sendTelemetryException(err, { error: message });
+    });
+  return sentComment;
 }
