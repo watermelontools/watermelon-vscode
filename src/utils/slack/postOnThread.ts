@@ -2,23 +2,26 @@ import axios from "axios";
 import { backendURL } from "../../constants";
 import analyticsReporter from "../vscode/reporter";
 
-export default async function getIssueComments({
+export default async function postOnThread({
   email,
-  owner,
-  repo,
-  issueNumber,
+  channelId,
+  text,
+  threadTS,
+  broadcast,
 }: {
   email: string;
-  owner: string;
-  repo: string;
-  issueNumber: number;
+  channelId: string;
+  text: string;
+  threadTS: string;
+  broadcast?: string;
 }) {
-  const issue = await axios
-    .post(`${backendURL}/api/github/getIssue`, {
+  const sentComment = await axios
+    .post(`${backendURL}/api/slack/addMessageToThread`, {
       user: email,
-      repo,
-      owner,
-      issue_number:issueNumber
+      channelId,
+      text,
+      threadTS,
+      broadcast,
     })
     .then((res) => res.data)
     .catch((err) => {
@@ -26,5 +29,5 @@ export default async function getIssueComments({
       let { message } = err;
       reporter?.sendTelemetryException(err, { error: message });
     });
-    return issue;
+  return sentComment;
 }

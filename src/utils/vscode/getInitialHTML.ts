@@ -26,6 +26,7 @@ export default function getInitialHTML(
     "https://cdn.webflow.com/",
     "https://codecov.io/",
     "https://i.imgur.com",
+    "https://*.atl-paas.net"
   ];
   let scriptSources = [`'nonce-${nonce}'`];
   let connectSources = [
@@ -117,6 +118,8 @@ export default function getInitialHTML(
         <br/>
         <div id="mostRelevantJiraTicketHolder"></div>
         <br/>
+        <div id="slackHolder"></div>
+        <br/>
         <div id="ghHolder">
            <button class='run-watermelon btn btn-primary' type='button'>Get Code Context</button>
         </div>
@@ -129,7 +132,7 @@ export default function getInitialHTML(
      </body>
      <footer>
       <script nonce="${nonce}" src="${scriptUri}" type="module"></script>
-      <a href="https://watermelon.tools">Watermelon.tools</a>.
+      <a href="https://watermelontools.com">Watermelon Tools, Inc</a>.
      </footer>
      </html>
   `;

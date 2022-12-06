@@ -2,16 +2,18 @@ import sendMessage from "./sendVSCodeMessage.js";
 import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
+import addCommentingSystem from "./DailySummary/GitHub/addCommentingSystem.js";
+import getPlural from "./getPlural.js";
 
 const paintPRs = (prs) => {
   prs.forEach((pr, index) => {
     let mdComments = "";
-    if (pr.comments > 0) {
+    if (pr.comments.length > 0) {
       pr.comments?.forEach((comment) => (mdComments += parseComments(comment)));
     }
     $("#ghHolder").append(`
     <div class="anim-fade-in">
-      <details ${!index ? "open" : ""}>
+      <details ${!index ? "open" : ""} class="gh-issue-${pr.number}">
         <summary class="pr-title">
           <div>
             <div class="details-state">
@@ -20,7 +22,7 @@ const paintPRs = (prs) => {
                 <i class='codicon codicon-chevron-down'></i>
               </div>
               <a 
-              href="${pr.url}" target="_blank" title="View this PR on github">${
+              href="${pr.url}" target="_blank" title="View this PR on GitHub">${
       pr.title
     }</a>
             </div>
@@ -36,7 +38,7 @@ const paintPRs = (prs) => {
       </summary>
         <div class="Box">
         <div class="Box-header d-flex">
-            <p class="pr-poster" title="View this user on github">
+            <p class="pr-poster" title="View this user on GitHub">
               <a class="pr-author-combo" href="${
                 pr.userLink
               }"><img class='pr-author-img' src="${pr.userImage}" />${
@@ -53,7 +55,7 @@ const paintPRs = (prs) => {
                 ? replaceUserTags(
                     marked.parse(pr.body, { gfm: true, breaks: true })
                   )
-                : ""
+                : "<em> No description provided. </em>"
             }
           </div>
           ${mdComments}
@@ -61,6 +63,7 @@ const paintPRs = (prs) => {
       </details>
     </div>
       `);
+    addCommentingSystem(pr.number);
   });
 };
 const addViewAllPRsButton = (allPRs) => {
@@ -76,8 +79,9 @@ const addViewAllPRsButton = (allPRs) => {
 };
 
 const addPRsToDoc = (allPRs) => {
+  $("#ghHolder").empty();
   $("#ghHolder").append(`
-  <h3>Pull Requests</h3>
+  <h3>Pull Request${getPlural(allPRs.length)}</h3>
   `);
   if (allPRs.error) {
     $("#ghHolder").append(`

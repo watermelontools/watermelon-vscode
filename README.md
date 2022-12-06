@@ -65,7 +65,7 @@ To use it, open the Watermelon sidebar.
 When you pay for Watermelon you can also:
 
 - View Most Relevant Jira Ticket
-- View Open Tickets on the Daily Summary
+- View Open Jira Tickets on the Daily Summary
 
 More integrations coming soon!
 
@@ -73,6 +73,8 @@ More integrations coming soon!
 
 - macOS 10.11+, Windows 10+ or Linux
 - Visual Studio Code v1.63.0+
+- Visual Studio Code Insiders v1.63.0+
+- VS Codium v1.63.0+ (BETA INTEGRATION)
 - You must have Git locally installed (try `git --version` or [install it now](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
 
 ## Installation

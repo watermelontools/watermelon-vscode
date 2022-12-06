@@ -2,10 +2,23 @@ import axios from "axios";
 import { backendURL } from "../../constants";
 import analyticsReporter from "../vscode/reporter";
 
-export default async function starWmRepo({ email }: { email: string }) {
-  const isStarred = await axios
-    .post(`${backendURL}/api/github/starWMRepo`, {
+export default async function getPRsPerSHAS({
+  email,
+  owner,
+  repo,
+  shaArray,
+}: {
+  email: string;
+  owner: string;
+  repo: string;
+  shaArray: string;
+}) {
+  const issues = await axios
+    .post(`${backendURL}/api/github/getIssuesByCommits`, {
       user: email,
+      repo,
+      owner,
+      commitList: shaArray
     })
     .then((res) => res.data)
     .catch((err) => {
@@ -13,6 +26,5 @@ export default async function starWmRepo({ email }: { email: string }) {
       let { message } = err;
       reporter?.sendTelemetryException(err, { error: message });
     });
-
-  return isStarred.starredWM;
+    return issues.items;
 }

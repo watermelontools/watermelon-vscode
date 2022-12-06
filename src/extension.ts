@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import { Credentials } from "./credentials";
 import getBlame from "./utils/getBlame";
 import getSHAArray from "./utils/getSHAArray";
 import getGitAPI from "./utils/vscode/getGitAPI";
@@ -17,10 +16,7 @@ import statusBarItem, {
 import hover from "./utils/components/hover";
 import getGitHubDailySummary from "./utils/github/getDailySummary";
 import {
-  backendURL,
   EXTENSION_ID,
-  GITHUB_AUTH_PROVIDER_ID,
-  SCOPES,
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
   WATERMELON_LOGIN_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
@@ -33,17 +29,16 @@ import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
-import getMostRelevantJiraTicket from "./utils/jira/getMostRelevantJiraTicket";
+import getMostRelevantJiraTickets from "./utils/jira/getMostRelevantJiraTickets";
 import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
+import searchMessagesByText from "./utils/slack/searchMessagesByText";
 
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
-
-let octokit: any;
 
 // extension version will be reported as a property with each event
 const extensionVersion = getPackageInfo().version;
@@ -148,12 +143,9 @@ export async function activate(context: vscode.ExtensionContext) {
       []
     );
     if (session) {
-      const credentials = new Credentials();
-      debugLogger(`got credentials`);
-      await credentials.initialize(context);
-      debugLogger("intialized credentials");
-      octokit = await credentials.getOctokit();
-
+      context.workspaceState.update("session", {
+        ...session,
+      });
       let githubUserInfo = await getGitHubUserInfo({
         email: session.account.label,
       });
@@ -166,22 +158,6 @@ export async function activate(context: vscode.ExtensionContext) {
         },
       });
 
-      const jiraTickets = await getAssignedJiraTickets({
-        user: session.account.label,
-      });
-      debugLogger(`jiraTickets: ${JSON.stringify(jiraTickets)}`);
-
-      let gitHubIssues = await getGitHubDailySummary({
-        owner: owner || "",
-        repo: repo || "",
-        username: githubUserInfo.login || "",
-        email: session.account.label,
-      });
-      debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
-      provider.sendMessage({
-        command: "dailySummary",
-        data: { gitHubIssues, jiraTickets },
-      });
       if (startLine === undefined && endLine === undefined) {
         if (!arrayOfSHAs.length) {
           arrayOfSHAs = await getSHAArray(
@@ -194,7 +170,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
         let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
           arrayOfSHAs,
-          octokit,
+          email: session.account.label,
           owner,
           repo,
         });
@@ -219,16 +195,26 @@ export async function activate(context: vscode.ExtensionContext) {
           sha: string;
         };
         const parsedMessage = parsedCommitObject.message;
-
         // Jira
         const mostRelevantJiraTickets =
-          (await getMostRelevantJiraTicket({
+          (await getMostRelevantJiraTickets({
             user: session.account.label,
             prTitle: sortedPRs[0].title || parsedMessage,
           })) || {};
+        // Slack
+        const relevantSlackThreads = await searchMessagesByText({
+          user: session.account.label,
+          email: session.account.label,
+          text: sortedPRs[0].title || parsedMessage,
+        });
         provider.sendMessage({
           command: "prs",
-          data: { sortedPRs, uniqueBlames, mostRelevantJiraTickets },
+          data: {
+            sortedPRs,
+            uniqueBlames,
+            mostRelevantJiraTickets,
+            relevantSlackThreads,
+          },
         });
       } else {
         vscode.commands.executeCommand("watermelon.multiSelect");
@@ -251,10 +237,11 @@ export async function activate(context: vscode.ExtensionContext) {
 
         let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
           arrayOfSHAs,
-          octokit,
+          email: session.account.label,
           owner,
           repo,
         });
+
         if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
           return provider.sendMessage({
             command: "error",
@@ -265,10 +252,35 @@ export async function activate(context: vscode.ExtensionContext) {
           (a: any, b: any) => b.comments.length - a.comments.length
         );
         let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-
+        const parsedCommitObject = new Object(uniqueBlames[0]) as {
+          date: string;
+          message: string;
+          author: string;
+          email: string;
+          commit: string;
+          body: string;
+          sha: string;
+        };
+        const parsedMessage = parsedCommitObject.message;
+        const mostRelevantJiraTickets =
+          (await getMostRelevantJiraTickets({
+            user: session.account.label,
+            prTitle: sortedPRs[0].title || parsedMessage,
+          })) || {};
+        // Slack
+        const relevantSlackThreads = await searchMessagesByText({
+          user: session.account.label,
+          email: session.account.label,
+          text: sortedPRs[0].title || parsedMessage,
+        });
         provider.sendMessage({
           command: "prs",
-          data: { sortedPRs, uniqueBlames },
+          data: {
+            sortedPRs,
+            uniqueBlames,
+            mostRelevantJiraTickets,
+            relevantSlackThreads,
+          },
         });
       }
       let isStarred = await checkIfUserStarred({
@@ -281,6 +293,22 @@ export async function activate(context: vscode.ExtensionContext) {
           avatar: githubUserInfo.avatar_url,
           isStarred,
         },
+      });
+      const jiraTickets = await getAssignedJiraTickets({
+        user: session.account.label,
+      });
+      debugLogger(`jiraTickets: ${jiraTickets}`);
+
+      let gitHubIssues = await getGitHubDailySummary({
+        owner: owner || "",
+        repo: repo || "",
+        username: githubUserInfo.login || "",
+        email: session.account.label,
+      });
+      debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
+      provider.sendMessage({
+        command: "dailySummary",
+        data: { gitHubIssues, jiraTickets },
       });
     } else {
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
@@ -356,46 +384,6 @@ export async function activate(context: vscode.ExtensionContext) {
       linkCommandHandler
     )
   );
-
-  vscode.authentication.getSession("github", []).then(async (session: any) => {
-    setLoggedIn(true);
-    provider.sendMessage({
-      command: "session",
-      loggedIn: true,
-      data: session.account.label,
-    });
-    debugLogger(`session: ${JSON.stringify(session)}`);
-    const credentials = new Credentials();
-    debugLogger(`got credentials`);
-    await credentials.initialize(context);
-    debugLogger("intialized credentials");
-    octokit = await credentials.getOctokit();
-    let githubUserInfo = await getGitHubUserInfo({
-      email: session.account.label,
-    });
-    debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-    context.globalState.update("openSidebarCount", 0);
-    let isStarred = await checkIfUserStarred({ email: session.account.label });
-    provider.sendMessage({
-      command: "user",
-      data: {
-        login: githubUserInfo.login,
-        avatar: githubUserInfo.avatar_url,
-        isStarred,
-      },
-    });
-    let gitHubIssues = await getGitHubDailySummary({
-      owner: owner || "",
-      repo: repo || "",
-      username: githubUserInfo.login || "",
-      email: session.account.label,
-    });
-    debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
-    provider.sendMessage({
-      command: "dailySummary",
-      data: gitHubIssues,
-    });
-  });
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     updateStatusBarItem(wmStatusBarItem);

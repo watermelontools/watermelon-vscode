@@ -1,15 +1,16 @@
 import getNonce from "./utils/vscode/getNonce";
 import getInitialHTML from "./utils/vscode/getInitialHTML";
 import * as vscode from "vscode";
-import { Credentials } from "./credentials";
 import TelemetryReporter from "@vscode/extension-telemetry";
 import starWmRepo from "./utils/github/starWmRepo";
 import {
   WATERMELON_LOGIN_COMMAND,
   WATERMELON_PULLS_COMMAND,
 } from "./constants";
+import postCommentOnTicket from "./utils/jira/postCommentOnTicket";
+import postCommentOnIssue from "./utils/github/postCommentOnIssue";
+import postOnThread from "./utils/slack/postOnThread";
 
-let octokit: any;
 /**
  * Manages watermelon webview panel
  */
@@ -42,6 +43,13 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
     webviewView.webview.onDidReceiveMessage(async (data) => {
+      //@ts-ignore
+      let userEmail = this._context.workspaceState.get("session").email;
+      //@ts-ignore
+      let repo = this._context.workspaceState.get("workspaceState").repo;
+      //@ts-ignore
+      let owner = this._context.workspaceState.get("workspaceState").owner;
+
       switch (data.command) {
         case "run": {
           this.sendMessage({
@@ -53,17 +61,14 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           break;
         }
         case "star": {
-          const credentials = new Credentials();
-          await credentials.initialize(this._context);
-          octokit = await credentials.getOctokit();
-          await starWmRepo({ octokit });
+          await starWmRepo({ email: data.email });
           this.sendMessage({
             command: "removedStar",
           });
           break;
         }
         case "link": {
-          this.reporter?.sendTelemetryEvent(data.source, { link: data.link });
+          this.reporter?.sendTelemetryEvent("linkClicked", { link: data.link });
           vscode.env.openExternal(vscode.Uri.parse(data.link));
           break;
         }
@@ -72,6 +77,33 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
           this.reporter?.sendTelemetryEvent("login");
           vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
           break;
+        }
+        case "jiraComment": {
+          postCommentOnTicket({
+            email: userEmail,
+            issueIdOrKey: data.issueIdOrKey,
+            text: data.text,
+          });
+          vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
+        }
+        case "githubComment": {
+          postCommentOnIssue({
+            email: userEmail,
+            repo,
+            owner,
+            comment_body: data.text,
+            issue_number: data.issueKey,
+          });
+          vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
+        }
+        case "slackComment": {
+          postOnThread({
+            email: userEmail,
+            channelId: data.channelId,
+            text: data.text,
+            threadTS: data.threadTS,
+          });
+          vscode.commands.executeCommand(WATERMELON_PULLS_COMMAND);
         }
         default: {
           this.sendMessage({

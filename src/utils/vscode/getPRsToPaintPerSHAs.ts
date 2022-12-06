@@ -1,16 +1,16 @@
-import getPRsPerSHAS from "../getPRsPerSHAS";
+import getPRsPerSHAS from "../github/getPRsPerSHAS";
 import getIssue from "../github/getIssue";
 import getIssueComments from "../github/getIssueComments";
 import { noLinesSelected, noSearchResults } from "./showErrors";
 
 export default async function getPRsToPaintPerSHAs({
   arrayOfSHAs,
-  octokit,
+  email,
   owner,
   repo,
 }: {
   arrayOfSHAs: string[];
-  octokit: any;
+  email: string;
   owner?: string;
   repo?: string;
 }): Promise<
@@ -27,6 +27,7 @@ export default async function getPRsToPaintPerSHAs({
       repo_url: string;
       state: string;
       draft: boolean;
+      number: number;
     }[]
   | { errorText: string }
 > {
@@ -36,11 +37,10 @@ export default async function getPRsToPaintPerSHAs({
     noLinesSelected();
     return { errorText: "No lines selected" };
   }
-
   let foundPRs = await getPRsPerSHAS({
-    octokit,
+    email,
     repo: repo ?? "",
-    owner,
+    owner:owner?? "",
     shaArray: joinedArrayOfSHAs,
   });
   if (foundPRs?.length === 0) {
@@ -62,15 +62,23 @@ export default async function getPRsToPaintPerSHAs({
     repo_url: string;
     state: string;
     draft: boolean;
+    number: number;
   }[] = [];
 
-  let prPromises = foundPRs.map(async (issue: { url: any }) => {
+   let prPromises = foundPRs.map(async (issue: { number: number }) => {
     let comments = await getIssueComments({
-      octokit,
-      issueUrl: issue.url,
+      email,
+      issueNumber:issue.number,
+      repo: repo ?? "",
+      owner:owner?? "",
     });
-    let issueData = await getIssue({ octokit, issueUrl: issue.url });
-    if (issueData.user.type.toLowerCase() !== "bot")
+    let issueData = await getIssue({
+      email,
+      issueNumber:issue.number,
+      repo: repo ?? "",
+      owner:owner?? "",
+    });
+    if (issueData.user.type.toLowerCase() !== "bot"){
       issuesWithTitlesAndGroupedComments.push({
         created_at: issueData.created_at,
         user: issueData.user.login,
@@ -83,11 +91,12 @@ export default async function getPRsToPaintPerSHAs({
         repo_url: issueData.repository_url,
         state: issueData.state,
         draft: issueData.draft,
+        number: issue.number,
         comments: comments.map((comment: any) => {
           return comment;
         }),
-      });
+      });}
   });
-  await Promise.all(prPromises);
+  await Promise.all(prPromises); 
   return issuesWithTitlesAndGroupedComments;
 }

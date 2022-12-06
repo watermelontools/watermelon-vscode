@@ -158,7 +158,6 @@ export class WatermelonAuthenticationProvider
     }
     console.log("Successfully logged in to Watermelon");
     let session = new WatermelonAuthSession(token, email);
-    console.log(session);
     return session;
   }
 
