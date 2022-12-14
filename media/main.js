@@ -96,8 +96,8 @@ function handleMessage(message) {
       break;
     case "loading":
       vscode.setState({ command: "loading" });
-      $("#ghHolder").empty();
-      $("#ghHolder").append(`<p class="anim-pulse">Loading...</p>`);
+      $("#holders").empty();
+      $("#holders").append(`<p class="anim-pulse">Loading...</p>`);
       break;
     case "talkToCTO":
       $(".action-buttons").append(
