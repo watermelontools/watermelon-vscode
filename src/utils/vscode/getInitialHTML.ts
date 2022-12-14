@@ -116,6 +116,8 @@ export default function getInitialHTML(
         <p>Watermelon is your code archeology toolbox</p>
         <p><a href="https://github.com/watermelontools/wm-extension">⭐ Star Watermelon on GitHub</a></p>
         <br/>
+        <div id="commitHolder"></div>
+        <br/>
         <div id="mostRelevantJiraTicketHolder"></div>
         <br/>
         <div id="slackHolder"></div>

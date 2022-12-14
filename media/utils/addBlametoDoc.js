@@ -41,10 +41,10 @@ const addViewMoreCommitsButton = (blameArray, commitLink) => {
 };
 
 const addBlametoDoc = (blameArray, commitLink) => {
-  $("#ghHolder").append(`
+  $("#commitHolder").append(`
     <h3>Commits</h3>
     `);
-  $("#ghHolder").append(`
+  $("#commitHolder").append(`
     <table class="Box anim-fade-in">
       <thead class="Box-header">
         <tr>
