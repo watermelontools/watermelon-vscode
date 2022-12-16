@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Fixes error on Loading UI
 - Now the button "Get Code Context" will always show up at the top
+- Fixes the Commit Table not showing up
 
 ## [1.7.0]
 
