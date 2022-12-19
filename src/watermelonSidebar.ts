@@ -1,3 +1,4 @@
+import path = require("path");
 import getNonce from "./utils/vscode/getNonce";
 import getInitialHTML from "./utils/vscode/getInitialHTML";
 import * as vscode from "vscode";
@@ -17,6 +18,7 @@ import postOnThread from "./utils/slack/postOnThread";
 export default class WatermelonSidebar implements vscode.WebviewViewProvider {
   public static readonly viewType = "watermelon.sidebar";
   public _extensionUri: vscode.Uri;
+  public _extensionPath: string;
   private _view?: vscode.WebviewView;
   private _context: vscode.ExtensionContext;
   constructor(
@@ -24,6 +26,7 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
     public reporter: TelemetryReporter | null = null
   ) {
     this._extensionUri = context.extensionUri;
+    this._extensionPath = context.extensionPath;
     this._context = context;
     this.reporter = reporter;
   }
@@ -120,14 +123,10 @@ export default class WatermelonSidebar implements vscode.WebviewViewProvider {
     }
   }
   private _getHtmlForWebview(webview: vscode.Webview) {
-    // Local path to main script run in the webview
-    const scriptPathOnDisk = vscode.Uri.joinPath(
-      this._extensionUri,
-      "media",
-      "main.js"
+    const scriptPathOnDisk = vscode.Uri.file(
+      path.join(this._extensionPath, "media", "main.js")
     );
-    // And the uri we use to load this script in the webview
-    const scriptUri = scriptPathOnDisk.with({ scheme: "vscode-resource" });
+    const scriptUri = webview.asWebviewUri(scriptPathOnDisk);
     const jqueryUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "media", "jquery.min.js")
     );
