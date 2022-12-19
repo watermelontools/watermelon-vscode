@@ -4,6 +4,12 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.7.1]
+
+- Fixes error on Loading UI
+- Now the button "Get Code Context" will always show up at the top
+- Fixes the Commit Table not showing up
+
 ## [1.7.0]
 
 - Allows using Slack: get most relevant thread and replies, and add to it

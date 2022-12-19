@@ -115,20 +115,19 @@ export default function getInitialHTML(
      </div>
         <p>Watermelon is your code archeology toolbox</p>
         <p><a href="https://github.com/watermelontools/wm-extension">⭐ Star Watermelon on GitHub</a></p>
-        <br/>
-        <div id="mostRelevantJiraTicketHolder"></div>
-        <br/>
-        <div id="slackHolder"></div>
-        <br/>
-        <div id="ghHolder">
-           <button class='run-watermelon btn btn-primary' type='button'>Get Code Context</button>
+        <div id="holders">
+          <div id="buttonHolder"></div>
+          <div id="commitHolder"></div>
+          <div id="mostRelevantJiraTicketHolder"></div>
+          <div id="slackHolder"></div>
+          <div id="ghHolder">
+            <button class='run-watermelon btn btn-primary' type='button'>Get Code Context</button>
+          </div>
+          <h2>Daily Summary</h2>
+          <div id="jiraHolder"></div>
+          <div id="dailySummary"></div>
+          You will find all your issues and ToDos here. 
         </div>
-        <h2>Daily Summary</h2>
-        <div id="jiraHolder"></div>
-        <br/>
-        <div id="dailySummary"></div>
-        You will find all your issues and ToDos here. 
-
      </body>
      <footer>
       <script nonce="${nonce}" src="${scriptUri}" type="module"></script>
