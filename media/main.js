@@ -10,7 +10,6 @@ import addBlametoDoc from "./utils/addBlametoDoc.js";
 import addGHUserInfo from "./utils/addGHUserInfo.js";
 import addVersionToFooter from "./utils/addVersionToFooter.js";
 import addSessionToFooter from "./utils/addSessionToFooter.js";
-import addDailySummary from "./utils/addDailySummary.js";
 import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 import addActionButtons from "./utils/addActionButtons.js";
 import addMostRelevantJiraTickets from "./utils/addMostRelevantJiraTickets.js";
@@ -42,15 +41,6 @@ function handleMessage(message) {
       webviewDebugLogger(`Received user: ${JSON.stringify(message.user)}`);
       ghUserInfo = message.user;
       addGHUserInfo(message.data);
-      break;
-    case "dailySummary":
-      webviewDebugLogger(
-        `Received dailySummary: ${JSON.stringify(message.data)}`
-      );
-      addDailySummary({
-        gitHubIssues: message.data.gitHubIssues,
-        jiraTickets: message.data.jiraTickets,
-      });
       break;
     case "prs":
       webviewDebugLogger(message.data);
@@ -112,15 +102,6 @@ function handleMessage(message) {
       console.log(message);
       break;
   }
-  $("body")
-    .find("a")
-    .each(function (element) {
-       $(this).on("click", function (e) {
-        e.preventDefault();
-        let link = $(this).attr("href");
-        sendLinkToOpen({ link, source: "dailySummary" });
-      }); 
-    });
 }
 
 $(document).ready(function () {
@@ -144,6 +125,6 @@ $(document).ready(function () {
         e.preventDefault();
         let link = $(this).attr("href");
         sendLinkToOpen({ link });
-      }); 
+      });
     });
 });

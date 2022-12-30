@@ -2,7 +2,7 @@ import sendMessage from "./sendVSCodeMessage.js";
 import replaceUserTags from "./replaceUserTags.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import parseComments from "./parseComments.js";
-import addCommentingSystem from "./DailySummary/GitHub/addCommentingSystem.js";
+import addCommentingSystem from "./GitHub/addCommentingSystem.js";
 import getPlural from "./getPlural.js";
 
 const paintPRs = (prs) => {

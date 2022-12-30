@@ -1,6 +1,6 @@
 function removeLoading(errorTimeout) {
   clearTimeout(errorTimeout);
-  console.log(errorTimeout)
+  console.log(errorTimeout);
   $("#holders p").remove();
   $("#holders button").remove();
   $("#holders").append(`
@@ -9,9 +9,7 @@ function removeLoading(errorTimeout) {
   <div id="mostRelevantJiraTicketHolder"></div>
   <div id="slackHolder"></div>
   <div id="ghHolder"></div>
-  <h2>Daily Summary</h2>
   <div id="jiraHolder"></div>
-  <div id="dailySummary"></div>`);
-  
+  `);
 }
 export default removeLoading;

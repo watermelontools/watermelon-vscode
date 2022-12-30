@@ -1,15 +1,15 @@
-import sendMessage from "../../sendVSCodeMessage.js";
+import sendMessage from "../sendVSCodeMessage.js";
 
 const addCommentingSystem = (ticketKey) => {
-    $(`.${ticketKey}`).append(
-        `
+  $(`.${ticketKey}`).append(
+    `
       <div class="d-flex flex-items-end flex-justify-end" id="jira-comment-button-${ticketKey}">
        <button class="btn" type="button" >Comment</button>
       </div>
       `
-      );
-      $(`#jira-comment-button-${ticketKey}`).on("click", function (e) {
-        $(`#jira-comment-button-${ticketKey}`).replaceWith(`
+  );
+  $(`#jira-comment-button-${ticketKey}`).on("click", function (e) {
+    $(`#jira-comment-button-${ticketKey}`).replaceWith(`
          <div>
          <span>Comment on ${ticketKey}</span>
           <div>
@@ -20,14 +20,14 @@ const addCommentingSystem = (ticketKey) => {
           </div>
          </div>
          `);
-          $(`#jira-send-button-${ticketKey}`).on("click", function (e) {
-            sendMessage({
-              command: "jiraComment",
-              issueIdOrKey: ticketKey,
-              text: $(`#jira-comment-${ticketKey}`).val(),
-            });
-          });
+    $(`#jira-send-button-${ticketKey}`).on("click", function (e) {
+      sendMessage({
+        command: "jiraComment",
+        issueIdOrKey: ticketKey,
+        text: $(`#jira-comment-${ticketKey}`).val(),
       });
+    });
+  });
 };
 
 export default addCommentingSystem;
