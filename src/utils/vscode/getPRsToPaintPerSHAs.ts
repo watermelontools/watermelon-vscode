@@ -15,11 +15,14 @@ export default async function getPRsToPaintPerSHAs({
   repo?: string;
 }): Promise<
   | {
+      // rome-ignore lint/suspicious/noExplicitAny: <explanation>
       user: any;
       userImage: string;
       userLink: string;
       title: string;
+      // rome-ignore lint/suspicious/noExplicitAny: <explanation>
       comments: any[];
+      // rome-ignore lint/suspicious/noExplicitAny: <explanation>
       created_at: any;
       body: string;
       avatar: string;
@@ -40,7 +43,7 @@ export default async function getPRsToPaintPerSHAs({
   let foundPRs = await getPRsPerSHAS({
     email,
     repo: repo ?? "",
-    owner:owner?? "",
+    owner: owner ?? "",
     shaArray: joinedArrayOfSHAs,
   });
   if (foundPRs?.length === 0) {
@@ -50,12 +53,12 @@ export default async function getPRsToPaintPerSHAs({
 
   // Fetch information
   let issuesWithTitlesAndGroupedComments: {
-    user: any;
+    user: string;
     userLink: string;
     userImage: string;
     title: string;
-    comments: any[];
-    created_at: any;
+    comments: string[];
+    created_at: string;
     body: string;
     avatar: string;
     url: string;
@@ -65,38 +68,45 @@ export default async function getPRsToPaintPerSHAs({
     number: number;
   }[] = [];
 
-   let prPromises = foundPRs.map(async (issue: { number: number }) => {
-    let comments = await getIssueComments({
-      email,
-      issueNumber:issue.number,
-      repo: repo ?? "",
-      owner:owner?? "",
+  if (foundPRs) {
+    let prPromises = foundPRs.map(async (issue: { number: number }) => {
+      let comments = await getIssueComments({
+        email,
+        issueNumber: issue.number,
+        repo: repo ?? "",
+        owner: owner ?? "",
+      });
+      let issueData = await getIssue({
+        email,
+        issueNumber: issue.number,
+        repo: repo ?? "",
+        owner: owner ?? "",
+      });
+      if (issueData.user.type.toLowerCase() !== "bot") {
+        console.log("comments: ", comments);
+        issuesWithTitlesAndGroupedComments.push({
+          created_at: issueData.created_at,
+          user: issueData.user.login,
+          userImage: issueData.user.avatar_url,
+          userLink: issueData.user.html_url,
+          title: issueData.title,
+          url: issueData.html_url,
+          body: issueData.body,
+          avatar: issueData.user.avatar_url,
+          repo_url: issueData.repository_url,
+          state: issueData.state,
+          draft: issueData.draft,
+          number: issue.number,
+          comments: comments.map((comment: string) => {
+            return comment;
+          }),
+        });
+      }
     });
-    let issueData = await getIssue({
-      email,
-      issueNumber:issue.number,
-      repo: repo ?? "",
-      owner:owner?? "",
-    });
-    if (issueData.user.type.toLowerCase() !== "bot"){
-      issuesWithTitlesAndGroupedComments.push({
-        created_at: issueData.created_at,
-        user: issueData.user.login,
-        userImage: issueData.user.avatar_url,
-        userLink: issueData.user.html_url,
-        title: issueData.title,
-        url: issueData.html_url,
-        body: issueData.body,
-        avatar: issueData.user.avatar_url,
-        repo_url: issueData.repository_url,
-        state: issueData.state,
-        draft: issueData.draft,
-        number: issue.number,
-        comments: comments.map((comment: any) => {
-          return comment;
-        }),
-      });}
-  });
-  await Promise.all(prPromises); 
+    await Promise.all(prPromises);
+  } else {
+    return { errorText: "No search results" };
+  }
+
   return issuesWithTitlesAndGroupedComments;
 }
