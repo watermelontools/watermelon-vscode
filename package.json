@@ -14,7 +14,7 @@
     "url": "https://github.com/sponsors/watermelontools"
   },
   "engines": {
-    "vscode": "^1.63.0"
+    "vscode": "^1.74.0"
   },
   "categories": [
     "Debuggers",
