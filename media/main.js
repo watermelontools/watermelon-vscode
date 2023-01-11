@@ -49,7 +49,7 @@ function handleMessage(message) {
       );
       addDailySummary({
         gitHubIssues: message.data.gitHubIssues,
-        jiraTickets: message.data.jiraTickets,
+        // jiraTickets: message.data.jiraTickets,
       });
       break;
     case "prs":
@@ -64,17 +64,18 @@ function handleMessage(message) {
         commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
       }
       // blame table
-      addBlametoDoc(message.data.uniqueBlames, commitLink);
+      // addBlametoDoc(message.data.uniqueBlames, commitLink);
       // prs
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       addPRsToDoc(message.data.sortedPRs);
       // jira
       if (message.data?.mostRelevantJiraTickets) {
+        console.log("main.js line 73: ", mostRelevantJiraTickets);
         $("#mostRelevantJiraTicketHolder").empty();
         addMostRelevantJiraTickets(message.data.mostRelevantJiraTickets);
       }
       clampCodeBlocks();
-      addSlackThreads(message.data.relevantSlackThreads);
+      // addSlackThreads(message.data.relevantSlackThreads);
       break;
     case "error":
       webviewDebugLogger(`Received error: ${JSON.stringify(message.data)}`);
