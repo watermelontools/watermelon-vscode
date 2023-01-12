@@ -69,11 +69,12 @@ function handleMessage(message) {
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       addPRsToDoc(message.data.sortedPRs);
       // jira
+      /*
       if (message.data?.mostRelevantJiraTickets) {
-        console.log("main.js line 73: ", mostRelevantJiraTickets);
         $("#mostRelevantJiraTicketHolder").empty();
         addMostRelevantJiraTickets(message.data.mostRelevantJiraTickets);
       }
+      */
       clampCodeBlocks();
       // addSlackThreads(message.data.relevantSlackThreads);
       break;

@@ -83,7 +83,6 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.registerUriHandler({
       handleUri(uri) {
         // show a hello message
-        vscode.window.showInformationMessage(`URI${uri}`);
         const urlSearchParams = new URLSearchParams(uri.query);
         const params = Object.fromEntries(urlSearchParams.entries());
         context.secrets.store("watermelonToken", params.token);
@@ -196,26 +195,20 @@ export async function activate(context: vscode.ExtensionContext) {
         };
         const parsedMessage = parsedCommitObject.message;
         // Jira
-        // console.log("extension.ts line: 205 ", {
-        //   user: session.account.label,
-        //   prTitle: sortedPRs[0].title || parsedMessage,
-        //   });
-        // const mostRelevantJiraTickets =
-        //   (await getMostRelevantJiraTickets({
-        //     user: session.account.label,
-        //     prTitle: sortedPRs[0].title || parsedMessage,
-        //   })) || {};
+        /*
+        const mostRelevantJiraTickets =
+          (await getMostRelevantJiraTickets({
+            user: session.account.label,
+            prTitle: sortedPRs[0].title || parsedMessage,
+          })) || {};
+        */
         // Slack
-        // console.log("extension.ts line: 205 ", {
-        //   user: session.account.label,
-        //   email: session.account.label,
-        //   text: sortedPRs[0].title || parsedMessage,
-        //   })
-        // const relevantSlackThreads = await searchMessagesByText({
-        //   user: session.account.label,
-        //   email: session.account.label,
-        //   text: sortedPRs[0].title || parsedMessage,
-        // });
+        /*
+        const relevantSlackThreads = await searchMessagesByText({
+          user: session.account.label,
+          email: session.account.label,
+          text: sortedPRs[0].title || parsedMessage,
+        });
         provider.sendMessage({
           command: "prs",
           data: {
@@ -225,6 +218,7 @@ export async function activate(context: vscode.ExtensionContext) {
             // relevantSlackThreads,
           },
         });
+        */
       } else {
         vscode.commands.executeCommand("watermelon.multiSelect");
         arrayOfSHAs = await getSHAArray(
