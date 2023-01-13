@@ -96,9 +96,10 @@ export default async function getPRsToPaintPerSHAs({
           state: issueData.state,
           draft: issueData.draft,
           number: issue.number,
-          comments: comments.map((comment: string) => {
-            return comment;
-          }),
+          comments: [],
+          // comments: comments.map((comment: string) => {
+          //   return comment;
+          // }),
         });
       }
     });
