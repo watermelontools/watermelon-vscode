@@ -10,7 +10,7 @@ import addBlametoDoc from "./utils/addBlametoDoc.js";
 import addGHUserInfo from "./utils/addGHUserInfo.js";
 import addVersionToFooter from "./utils/addVersionToFooter.js";
 import addSessionToFooter from "./utils/addSessionToFooter.js";
-import addDailySummary from "./utils/addDailySummary.js";
+// import addDailySummary from "./utils/addDailySummary.js";
 import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 import addActionButtons from "./utils/addActionButtons.js";
 import addMostRelevantJiraTickets from "./utils/addMostRelevantJiraTickets.js";
@@ -43,6 +43,7 @@ function handleMessage(message) {
       ghUserInfo = message.user;
       addGHUserInfo(message.data);
       break;
+    /*
     case "dailySummary":
       webviewDebugLogger(
         `Received dailySummary: ${JSON.stringify(message.data)}`
@@ -52,6 +53,7 @@ function handleMessage(message) {
         // jiraTickets: message.data.jiraTickets,
       });
       break;
+    */
     case "prs":
       webviewDebugLogger(message.data);
       removeLoading(errorTimeout);
@@ -114,6 +116,7 @@ function handleMessage(message) {
       console.log(message);
       break;
   }
+  /*
   $("body")
     .find("a")
     .each(function (element) {
@@ -123,6 +126,7 @@ function handleMessage(message) {
         sendLinkToOpen({ link, source: "dailySummary" });
       }); 
     });
+    */
 }
 
 $(document).ready(function () {

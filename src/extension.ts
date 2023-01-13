@@ -209,6 +209,8 @@ export async function activate(context: vscode.ExtensionContext) {
           email: session.account.label,
           text: sortedPRs[0].title || parsedMessage,
         });
+        */
+       
         provider.sendMessage({
           command: "prs",
           data: {
@@ -218,7 +220,7 @@ export async function activate(context: vscode.ExtensionContext) {
             // relevantSlackThreads,
           },
         });
-        */
+        
       } else {
         vscode.commands.executeCommand("watermelon.multiSelect");
         arrayOfSHAs = await getSHAArray(
