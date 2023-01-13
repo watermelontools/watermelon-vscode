@@ -50,7 +50,7 @@ export default async function getPRsPerSHAS({
       });
       console.log("issues.items gitlab: ", issues.items);
       issuesItems = issues.items;
-  } else if (repoSource === "bitbucket.com") {
+  } else if (repoSource === "bitbucket.org") {
     console.log("bitbucket.com: ", repo, shaArray);
     const issues = await axios
       .post (`${backendURL}/api/bitbucket/getPullRequests`, {
