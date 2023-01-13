@@ -1,6 +1,5 @@
 function removeLoading(errorTimeout) {
   clearTimeout(errorTimeout);
-  console.log(errorTimeout)
   $("#holders p").remove();
   $("#holders button").remove();
   $("#holders").append(`
