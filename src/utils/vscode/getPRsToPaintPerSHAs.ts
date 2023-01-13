@@ -8,11 +8,13 @@ export default async function getPRsToPaintPerSHAs({
   email,
   owner,
   repo,
+  repoSource
 }: {
   arrayOfSHAs: string[];
   email: string;
   owner?: string;
   repo?: string;
+  repoSource: string;
 }): Promise<
   | {
       // rome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -45,6 +47,7 @@ export default async function getPRsToPaintPerSHAs({
     repo: repo ?? "",
     owner: owner ?? "",
     shaArray: joinedArrayOfSHAs,
+    repoSource
   });
   if (foundPRs?.length === 0) {
     noSearchResults();

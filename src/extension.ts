@@ -167,11 +167,16 @@ export async function activate(context: vscode.ExtensionContext) {
           );
         }
 
+        let repoInfo = await getRepoInfo({ reporter });
+        const repoSource = repoInfo?.source;
+        console.log("repoInfo: ", repoInfo)
+
         let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
           arrayOfSHAs,
           email: session.account.label,
           owner,
           repo,
+          repoSource
         });
         if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
           return provider.sendMessage({
@@ -239,12 +244,17 @@ export async function activate(context: vscode.ExtensionContext) {
             gitAPI
           );
         }
+        
+        let repoInfo = await getRepoInfo({ reporter });
+        const repoSource = repoInfo?.source;
+        console.log("repoInfo: ", repoInfo)
 
         let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
           arrayOfSHAs,
           email: session.account.label,
           owner,
           repo,
+          repoSource,
         });
 
         if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
