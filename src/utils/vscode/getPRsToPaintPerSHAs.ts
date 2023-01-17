@@ -83,7 +83,6 @@ export default async function getPRsToPaintPerSHAs({
         owner: owner ?? "",
       });
       if (issueData.user.type.toLowerCase() !== "bot") {
-        console.log("comments: ", comments);
         issuesWithTitlesAndGroupedComments.push({
           created_at: issueData.created_at,
           user: issueData.user.login,
@@ -97,9 +96,12 @@ export default async function getPRsToPaintPerSHAs({
           state: issueData.state,
           draft: issueData.draft,
           number: issue.number,
+          comments: [],
+          /*
           comments: comments.map((comment: string) => {
             return comment;
           }),
+          */
         });
       }
     });
