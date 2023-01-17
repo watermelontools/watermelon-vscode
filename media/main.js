@@ -150,6 +150,6 @@ $(document).ready(function () {
         e.preventDefault();
         let link = $(this).attr("href");
         sendLinkToOpen({ link });
-      }); 
+      });
     });
 });

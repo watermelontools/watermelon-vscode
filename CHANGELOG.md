@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.8.0]
 - Solved critical bug when clicking "Get code context"
-- Removed daily summary
+- Removed daily summary to focus on context
 
 ## [1.7.2]
 

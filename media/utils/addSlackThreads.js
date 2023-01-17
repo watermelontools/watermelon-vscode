@@ -1,6 +1,6 @@
 import sendMessage from "./sendVSCodeMessage.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
-import addCommentingSystem from "./slack/addCommentingSystem.js";
+import addCommentingSystem from "./Slack/addCommentingSystem.js";
 
 const paintThreads = (threads) => {
   threads.forEach((thread, index) => {

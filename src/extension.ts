@@ -14,7 +14,6 @@ import statusBarItem, {
   updateStatusBarItem,
 } from "./utils/components/statusBarItem";
 import hover from "./utils/components/hover";
-import getGitHubDailySummary from "./utils/github/getDailySummary";
 import {
   EXTENSION_ID,
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
@@ -30,7 +29,6 @@ import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
 import getMostRelevantJiraTickets from "./utils/jira/getMostRelevantJiraTickets";
-import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
 import searchMessagesByText from "./utils/slack/searchMessagesByText";
 
@@ -321,10 +319,6 @@ export async function activate(context: vscode.ExtensionContext) {
       provider.sendMessage({
         command: "prs",
         data: { sortedPRs: { error: "not logged in" }, uniqueBlames },
-      });
-      provider.sendMessage({
-        command: "dailySummary",
-        data: { error: "not logged in" },
       });
     }
   };
