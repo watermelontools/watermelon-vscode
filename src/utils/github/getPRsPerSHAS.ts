@@ -48,10 +48,27 @@ export default async function getPRsPerSHAS({
         let { message } = err;
         reporter?.sendTelemetryException(err, { error: message });
       });
-      console.log("issues.items gitlab: ", issues.items);
-      issuesItems = issues.items;
+
+      // Here we are mapping the issues.items to match the github format
+      issuesItems = {
+        created_at: issues.items.created_at,
+        userImage: issues.items.author.avatar_url,
+        userLink: issues.items.author.web_url,
+        title: issues.items.title,
+        url: issues.items.web_url,
+        body: issues.items.description,
+        user: {
+          html_url: issues.items.author.web_url,
+          avatar_url: issues.items.author.avatar_url,
+        },
+        repository_url: issues.items.web_url,
+        state: issues.items.state,
+        draft: issues.items.draft,
+        number: issues.items.iid,
+      };
+
   } else if (repoSource === "bitbucket.org") {
-    console.log("bitbucket.com: ", repo, shaArray);
+    console.log("bitbucket.org: ", repo, shaArray);
     const issues = await axios
       .post (`${backendURL}/api/bitbucket/getPullRequests`, {
         userEmail: email, 
