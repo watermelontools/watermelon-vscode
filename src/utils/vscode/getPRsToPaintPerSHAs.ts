@@ -100,9 +100,11 @@ export default async function getPRsToPaintPerSHAs({
           draft: issueData.draft,
           number: issue.number,
           comments: [],
-          // comments: comments.map((comment: string) => {
-          //   return comment;
-          // }),
+          /*
+          comments: comments.map((comment: string) => {
+            return comment;
+          }),
+          */
         });
       }
     });

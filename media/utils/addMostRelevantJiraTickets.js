@@ -1,4 +1,4 @@
-import addCommentingSystem from "./DailySummary/Jira/addCommentingSystem.js";
+import addCommentingSystem from "./Jira/addCommentingSystem.js";
 import dateToHumanReadable from "./dateToHumanReadable.js";
 import getPlural from "./getPlural.js";
 
@@ -49,7 +49,7 @@ const paintTickets = (tickets) => {
           });
         }
       }
-      
+
       addCommentingSystem(ticket.key);
     }
   });

@@ -9,7 +9,6 @@ function removeLoading(errorTimeout) {
   <div id="slackHolder"></div>
   <div id="ghHolder"></div>
   <div id="jiraHolder"></div>
-  <div id="dailySummary"></div>`);
-  
+  `);
 }
 export default removeLoading;
