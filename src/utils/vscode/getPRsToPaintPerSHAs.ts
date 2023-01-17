@@ -85,7 +85,8 @@ export default async function getPRsToPaintPerSHAs({
         repo: repo ?? "",
         owner: owner ?? "",
       });
-      if (issueData.user.type.toLowerCase() !== "bot") {
+      // TODO: Filter GitLab and Bitbucket bots
+      if (((repoSource === "github.com" ) && (issueData.user.type.toLowerCase() !== "bot"))) {
         issuesWithTitlesAndGroupedComments.push({
           created_at: issueData.created_at,
           user: issueData.user.login,
@@ -98,7 +99,7 @@ export default async function getPRsToPaintPerSHAs({
           repo_url: issueData.repository_url,
           state: issueData.state,
           draft: issueData.draft,
-          number: issue.number,
+          number: issue.number || issueData.number,
           comments: [],
           /*
           comments: comments.map((comment: string) => {
@@ -106,6 +107,22 @@ export default async function getPRsToPaintPerSHAs({
           }),
           */
         });
+      } else if (repoSource === "gitlab.com") {
+        issuesWithTitlesAndGroupedComments.push({
+          created_at: foundPRs[0].created_at,
+          user: foundPRs[0].user.login,
+          userImage: foundPRs[0].user.avatar_url,
+          userLink: foundPRs[0].user.html_url,
+          title: foundPRs[0].title,
+          url: foundPRs[0].html_url,
+          body: foundPRs[0].body,
+          avatar: foundPRs[0].user.avatar_url,
+          repo_url: foundPRs[0].repository_url,
+          state: foundPRs[0].state,
+          draft: foundPRs[0].draft,
+          number: issue.number || foundPRs[0].number,
+          comments: [],
+        })
       }
     });
     await Promise.all(prPromises);

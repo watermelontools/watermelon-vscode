@@ -167,7 +167,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
         let repoInfo = await getRepoInfo({ reporter });
         const repoSource = repoInfo?.source;
-        console.log("repoInfo: ", repoInfo)
 
         let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
           arrayOfSHAs,
@@ -245,7 +244,6 @@ export async function activate(context: vscode.ExtensionContext) {
         
         let repoInfo = await getRepoInfo({ reporter });
         const repoSource = repoInfo?.source;
-        console.log("repoInfo: ", repoInfo)
 
         let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
           arrayOfSHAs,
