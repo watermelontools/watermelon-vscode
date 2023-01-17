@@ -51,13 +51,13 @@ export async function activate(context: vscode.ExtensionContext) {
   let reporter = analyticsReporter();
   reporter?.sendTelemetryEvent("extensionActivated");
   let gitAPI = await getGitAPI();
-  debugLogger(`got gitAPI`);
+  debugLogger("got gitAPI");
 
   const provider = new WatermelonSidebar(context, reporter);
-  debugLogger(`created provider`);
+  debugLogger("created provider");
 
   let wmStatusBarItem = statusBarItem();
-  debugLogger(`created wmStatusBarItem`);
+  debugLogger("created wmStatusBarItem");
 
   context.subscriptions.push(
     // webview
@@ -81,7 +81,6 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.registerUriHandler({
       handleUri(uri) {
         // show a hello message
-        vscode.window.showInformationMessage("URI" + uri);
         const urlSearchParams = new URLSearchParams(uri.query);
         const params = Object.fromEntries(urlSearchParams.entries());
         context.secrets.store("watermelonToken", params.token);
@@ -194,26 +193,32 @@ export async function activate(context: vscode.ExtensionContext) {
         };
         const parsedMessage = parsedCommitObject.message;
         // Jira
+        /*
         const mostRelevantJiraTickets =
           (await getMostRelevantJiraTickets({
             user: session.account.label,
             prTitle: sortedPRs[0].title || parsedMessage,
           })) || {};
+        */
         // Slack
+        /*
         const relevantSlackThreads = await searchMessagesByText({
           user: session.account.label,
           email: session.account.label,
           text: sortedPRs[0].title || parsedMessage,
         });
+        */
+       
         provider.sendMessage({
           command: "prs",
           data: {
             sortedPRs,
             uniqueBlames,
-            mostRelevantJiraTickets,
-            relevantSlackThreads,
+            // mostRelevantJiraTickets,
+            // relevantSlackThreads,
           },
         });
+        
       } else {
         vscode.commands.executeCommand("watermelon.multiSelect");
         arrayOfSHAs = await getSHAArray(
@@ -292,6 +297,27 @@ export async function activate(context: vscode.ExtensionContext) {
           isStarred,
         },
       });
+      // const jiraTickets = await getAssignedJiraTickets({
+      //   user: session.account.label,
+      // });
+      // debugLogger(`jiraTickets: ${jiraTickets}`);
+
+      /*
+      let gitHubIssues = await getGitHubDailySummary({
+        owner: owner || "",
+        repo: repo || "",
+        username: githubUserInfo.login || "",
+        email: session.account.label,
+      });
+      
+
+      debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
+      provider.sendMessage({
+        command: "dailySummary",
+        // data: { gitHubIssues, jiraTickets },
+        data: { gitHubIssues },
+      });
+      */
     } else {
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
       provider.sendMessage({

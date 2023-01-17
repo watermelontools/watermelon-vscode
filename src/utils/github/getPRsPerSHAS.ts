@@ -23,6 +23,7 @@ export default async function getPRsPerSHAS({
     .then((res) => res.data)
     .catch((err) => {
       let reporter = analyticsReporter();
+      console.log("err getprsperSHAS", err);
       let { message } = err;
       reporter?.sendTelemetryException(err, { error: message });
     });

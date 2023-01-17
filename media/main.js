@@ -10,6 +10,7 @@ import addBlametoDoc from "./utils/addBlametoDoc.js";
 import addGHUserInfo from "./utils/addGHUserInfo.js";
 import addVersionToFooter from "./utils/addVersionToFooter.js";
 import addSessionToFooter from "./utils/addSessionToFooter.js";
+// import addDailySummary from "./utils/addDailySummary.js";
 import webviewDebugLogger from "./utils/webviewDebugLogger.js";
 import addActionButtons from "./utils/addActionButtons.js";
 import addMostRelevantJiraTickets from "./utils/addMostRelevantJiraTickets.js";
@@ -42,6 +43,17 @@ function handleMessage(message) {
       ghUserInfo = message.user;
       addGHUserInfo(message.data);
       break;
+    /*
+    case "dailySummary":
+      webviewDebugLogger(
+        `Received dailySummary: ${JSON.stringify(message.data)}`
+      );
+      addDailySummary({
+        gitHubIssues: message.data.gitHubIssues,
+        // jiraTickets: message.data.jiraTickets,
+      });
+      break;
+    */
     case "prs":
       webviewDebugLogger(message.data);
       removeLoading(errorTimeout);
@@ -54,17 +66,19 @@ function handleMessage(message) {
         commitLink = `https://github.com/${message.owner}/${message.repo}/commit/`;
       }
       // blame table
-      addBlametoDoc(message.data.uniqueBlames, commitLink);
+      // addBlametoDoc(message.data.uniqueBlames, commitLink);
       // prs
       webviewDebugLogger(`Received prs: ${JSON.stringify(message.data)}`);
       addPRsToDoc(message.data.sortedPRs);
       // jira
+      /*
       if (message.data?.mostRelevantJiraTickets) {
         $("#mostRelevantJiraTicketHolder").empty();
         addMostRelevantJiraTickets(message.data.mostRelevantJiraTickets);
       }
+      */
       clampCodeBlocks();
-      addSlackThreads(message.data.relevantSlackThreads);
+      // addSlackThreads(message.data.relevantSlackThreads);
       break;
     case "error":
       webviewDebugLogger(`Received error: ${JSON.stringify(message.data)}`);
@@ -102,6 +116,17 @@ function handleMessage(message) {
       console.log(message);
       break;
   }
+  /*
+  $("body")
+    .find("a")
+    .each(function (element) {
+       $(this).on("click", function (e) {
+        e.preventDefault();
+        let link = $(this).attr("href");
+        sendLinkToOpen({ link, source: "dailySummary" });
+      }); 
+    });
+    */
 }
 
 $(document).ready(function () {
