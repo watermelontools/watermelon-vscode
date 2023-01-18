@@ -191,6 +191,34 @@ export class WatermelonTreeDataProvider
           gitHubItems
         )
       );
+      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+      let commitItems = uniqueBlames.map((commit: any) => {
+        return new ContextItem(
+          commit.message,
+          vscode.TreeItemCollapsibleState.Collapsed,
+          dateToHumanReadable(new Date(commit.commitDate)),
+          undefined,
+          [
+            new ContextItem(
+              commit.authorName,
+              vscode.TreeItemCollapsibleState.None,
+              commit.hash.slice(0, 7),
+              undefined
+            ),
+          ]
+        );
+      });
+      items.push(
+        new ContextItem(
+          "Git",
+          vscode.TreeItemCollapsibleState.Collapsed,
+          `${uniqueBlames.length.toString()} commit${getPlural(
+            uniqueBlames.length
+          )}`,
+          undefined,
+          commitItems
+        )
+      );
 
       // @ts-ignore
     } else {
