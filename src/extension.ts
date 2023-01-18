@@ -3,7 +3,6 @@ import getBlame from "./utils/getBlame";
 import getSHAArray from "./utils/getSHAArray";
 import getGitAPI from "./utils/vscode/getGitAPI";
 import getPackageInfo from "./utils/getPackageInfo";
-import WatermelonSidebar from "./watermelonSidebar";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getGitHubUserInfo from "./utils/getGitHubUserInfo";
