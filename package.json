@@ -79,9 +79,19 @@
     "views": {
       "watermelon": [
         {
+          "id": "watermelonTreeProvider",
+          "name": "watermelonTreeProvider"
+        }
+      ],
+      "explorer": [
+        {
           "type": "webview",
           "id": "watermelon.sidebar",
           "name": "watermelon"
+        },
+        {
+          "id": "watermelonExplorerTreeProvider",
+          "name": "Context by Watermelon"
         }
       ]
     },
