@@ -501,7 +501,7 @@ export async function activate(context: vscode.ExtensionContext) {
       "openSidebarCount",
       (context.globalState.get("openSidebarCount") as number) + 1
     );
-    vscode.commands.executeCommand("watermelon.sidebar.focus");
+    vscode.commands.executeCommand("watermelonTreeProvider.focus");
     reporter?.sendTelemetryEvent("showCommand");
   };
   let linkCommandHandler = async ({
@@ -511,7 +511,7 @@ export async function activate(context: vscode.ExtensionContext) {
     url: string;
     source?: string;
   }) => {
-    vscode.commands.executeCommand("watermelon.sidebar.focus");
+    vscode.commands.executeCommand("watermelonTreeProvider.focus");
     vscode.commands.executeCommand("vscode.open", vscode.Uri.parse(url));
     reporter?.sendTelemetryEvent("linkCommand", {
       url,
