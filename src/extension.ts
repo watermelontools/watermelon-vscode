@@ -33,12 +33,18 @@ import getMostRelevantJiraTickets from "./utils/jira/getMostRelevantJiraTickets"
 import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
 import searchMessagesByText from "./utils/slack/searchMessagesByText";
+import path = require("path");
+import getPlural from "./utils/others/text/getPlural";
+import dateToHumanReadable from "./utils/others/text/dateToHumanReadable";
 
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
+
+let startLine: any = undefined;
+let endLine: any = undefined;
 
 // extension version will be reported as a property with each event
 const extensionVersion = getPackageInfo().version;
@@ -52,8 +58,6 @@ export async function activate(context: vscode.ExtensionContext) {
   // create telemetry reporter on extension activation
   let reporter = analyticsReporter();
   reporter?.sendTelemetryEvent("extensionActivated");
-  let gitAPI = await getGitAPI();
-  debugLogger(`got gitAPI`);
 
   const provider = new WatermelonSidebar(context, reporter);
   debugLogger(`created provider`);
@@ -138,6 +142,7 @@ export async function activate(context: vscode.ExtensionContext) {
     provider.sendMessage({
       command: "loading",
     });
+    console.log("prsCommandHandler");
     const session = await vscode.authentication.getSession(
       WatermelonAuthenticationProvider.id,
       []
@@ -146,180 +151,8 @@ export async function activate(context: vscode.ExtensionContext) {
       context.workspaceState.update("session", {
         ...session,
       });
-      let githubUserInfo = await getGitHubUserInfo({
-        email: session.account.label,
-      });
-      debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-      provider.sendMessage({
-        command: "user",
-        data: {
-          login: githubUserInfo.login,
-          avatar: githubUserInfo.avatar_url,
-        },
-      });
-
-      if (startLine === undefined && endLine === undefined) {
-        if (!arrayOfSHAs.length) {
-          arrayOfSHAs = await getSHAArray(
-            1,
-            vscode.window.activeTextEditor?.document.lineCount ?? 2,
-            vscode.window.activeTextEditor?.document.uri.fsPath,
-            gitAPI
-          );
-        }
-
-        let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-          arrayOfSHAs,
-          email: session.account.label,
-          owner,
-          repo,
-        });
-        if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-          return provider.sendMessage({
-            command: "error",
-            error: issuesWithTitlesAndGroupedComments,
-          });
-        }
-        let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-          (a: any, b: any) => b.comments.length - a.comments.length
-        );
-        let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-
-        const parsedCommitObject = new Object(uniqueBlames[0]) as {
-          date: string;
-          message: string;
-          author: string;
-          email: string;
-          commit: string;
-          body: string;
-          sha: string;
-        };
-        const parsedMessage = parsedCommitObject.message;
-        // Jira
-        const mostRelevantJiraTickets =
-          (await getMostRelevantJiraTickets({
-            user: session.account.label,
-            prTitle: sortedPRs[0].title || parsedMessage,
-          })) || {};
-        // Slack
-        const relevantSlackThreads = await searchMessagesByText({
-          user: session.account.label,
-          email: session.account.label,
-          text: sortedPRs[0].title || parsedMessage,
-        });
-        provider.sendMessage({
-          command: "prs",
-          data: {
-            sortedPRs,
-            uniqueBlames,
-            mostRelevantJiraTickets,
-            relevantSlackThreads,
-          },
-        });
-      } else {
-        vscode.commands.executeCommand("watermelon.multiSelect");
-        arrayOfSHAs = await getSHAArray(
-          (startLine && startLine > 1 ? startLine - 1 : startLine) ?? 1,
-          endLine
-            ? endLine + 1
-            : vscode.window.activeTextEditor?.document.lineCount ?? 2,
-          vscode.window.activeTextEditor?.document.uri.fsPath,
-          gitAPI
-        );
-        if (!arrayOfSHAs.length) {
-          arrayOfSHAs = await getSHAArray(
-            1,
-            vscode.window.activeTextEditor?.document.lineCount ?? 2,
-            vscode.window.activeTextEditor?.document.uri.fsPath,
-            gitAPI
-          );
-        }
-
-        let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-          arrayOfSHAs,
-          email: session.account.label,
-          owner,
-          repo,
-        });
-
-        if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-          return provider.sendMessage({
-            command: "error",
-            error: issuesWithTitlesAndGroupedComments,
-          });
-        }
-        let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-          (a: any, b: any) => b.comments.length - a.comments.length
-        );
-        let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-        const parsedCommitObject = new Object(uniqueBlames[0]) as {
-          date: string;
-          message: string;
-          author: string;
-          email: string;
-          commit: string;
-          body: string;
-          sha: string;
-        };
-        const parsedMessage = parsedCommitObject.message;
-        const mostRelevantJiraTickets =
-          (await getMostRelevantJiraTickets({
-            user: session.account.label,
-            prTitle: sortedPRs[0].title || parsedMessage,
-          })) || {};
-        // Slack
-        const relevantSlackThreads = await searchMessagesByText({
-          user: session.account.label,
-          email: session.account.label,
-          text: sortedPRs[0].title || parsedMessage,
-        });
-        provider.sendMessage({
-          command: "prs",
-          data: {
-            sortedPRs,
-            uniqueBlames,
-            mostRelevantJiraTickets,
-            relevantSlackThreads,
-          },
-        });
-      }
-      let isStarred = await checkIfUserStarred({
-        email: session.account.label,
-      });
-      provider.sendMessage({
-        command: "user",
-        data: {
-          login: githubUserInfo.login,
-          avatar: githubUserInfo.avatar_url,
-          isStarred,
-        },
-      });
-      const jiraTickets = await getAssignedJiraTickets({
-        user: session.account.label,
-      });
-      debugLogger(`jiraTickets: ${jiraTickets}`);
-
-      let gitHubIssues = await getGitHubDailySummary({
-        owner: owner || "",
-        repo: repo || "",
-        username: githubUserInfo.login || "",
-        email: session.account.label,
-      });
-      debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
-      provider.sendMessage({
-        command: "dailySummary",
-        data: { gitHubIssues, jiraTickets },
-      });
     } else {
-      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-      provider.sendMessage({
-        command: "prs",
-        data: { sortedPRs: { error: "not logged in" }, uniqueBlames },
-      });
-      provider.sendMessage({
-        command: "dailySummary",
-        data: { error: "not logged in" },
-      });
+      vscode.window.showInformationMessage(`Please login first`);
     }
   };
   let showCommandHandler = async () => {
@@ -386,6 +219,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
+    let gitAPI = await getGitAPI();
     updateStatusBarItem(wmStatusBarItem);
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
