@@ -408,18 +408,10 @@ export async function activate(context: vscode.ExtensionContext) {
   let reporter = analyticsReporter();
   reporter?.sendTelemetryEvent("extensionActivated");
 
-  const provider = new WatermelonSidebar(context, reporter);
-  debugLogger(`created provider`);
-
   let wmStatusBarItem = statusBarItem();
   debugLogger(`created wmStatusBarItem`);
 
   context.subscriptions.push(
-    // webview
-    vscode.window.registerWebviewViewProvider(
-      WatermelonSidebar.viewType,
-      provider
-    ),
     // action bar item
     wmStatusBarItem,
     // register some listener that make sure the status bar
@@ -488,9 +480,7 @@ export async function activate(context: vscode.ExtensionContext) {
     endLine = undefined
   ) => {
     vscode.commands.executeCommand(WATERMELON_SHOW_COMMAND);
-    provider.sendMessage({
-      command: "loading",
-    });
+
     console.log("prsCommandHandler");
     const session = await vscode.authentication.getSession(
       WatermelonAuthenticationProvider.id,
@@ -513,15 +503,6 @@ export async function activate(context: vscode.ExtensionContext) {
       "openSidebarCount",
       (context.globalState.get("openSidebarCount") as number) + 1
     );
-    if (
-      context.globalState.get<number>("openSidebarCount") &&
-      // @ts-ignore
-      context.globalState.get<Number>("openSidebarCount") % 3 === 0
-    ) {
-      provider.sendMessage({
-        command: "talkToCTO",
-      });
-    }
     vscode.commands.executeCommand("watermelon.sidebar.focus");
     reporter?.sendTelemetryEvent("showCommand");
   };
@@ -582,18 +563,6 @@ export async function activate(context: vscode.ExtensionContext) {
     debugLogger(`arrayOfSHAs: ${JSON.stringify(arrayOfSHAs)}`);
   });
 
-  if (vscode.window.registerWebviewPanelSerializer) {
-    // Make sure we register a serializer in activation event
-    vscode.window.registerWebviewPanelSerializer(WatermelonSidebar.viewType, {
-      async deserializeWebviewPanel(
-        webviewPanel: vscode.WebviewPanel,
-        state: any
-      ) {
-        // Reset the webview options so we use latest uri for `localResourceRoots`.
-        webviewPanel.webview.options = getWebviewOptions(context.extensionUri);
-      },
-    });
-  }
   let repoInfo = await getRepoInfo({ reporter });
   repo = repoInfo?.repo;
   owner = repoInfo?.owner;
@@ -605,11 +574,6 @@ export async function activate(context: vscode.ExtensionContext) {
     owner,
   });
   owner && repo && reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
-
-  provider.sendMessage({
-    command: "versionInfo",
-    data: extensionVersion,
-  });
 }
 
 // Not used yet
