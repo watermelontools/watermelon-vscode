@@ -116,7 +116,92 @@ export class WatermelonTreeDataProvider
         ]
       ),
     ];
+    let gitAPI = await getGitAPI();
+    debugLogger(`got gitAPI`);
+    const session = await vscode.authentication.getSession(
+      WatermelonAuthenticationProvider.id,
+      []
+    );
+    if (startLine === undefined && endLine === undefined) {
+      if (!arrayOfSHAs.length) {
+        arrayOfSHAs = await getSHAArray(
+          1,
+          vscode.window.activeTextEditor?.document.lineCount ?? 2,
+          vscode.window.activeTextEditor?.document.uri.fsPath,
+          gitAPI
+        );
+      }
 
+      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+        arrayOfSHAs,
+        email: session?.account.label || "",
+        owner,
+        repo,
+      });
+      if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
+        return [];
+      }
+      let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
+        (a: any, b: any) => b.comments.length - a.comments.length
+      );
+
+      // @ts-ignore
+    } else {
+      vscode.commands.executeCommand("watermelon.multiSelect");
+      arrayOfSHAs = await getSHAArray(
+        (startLine && startLine > 1 ? startLine - 1 : startLine) ?? 1,
+        endLine
+          ? endLine + 1
+          : vscode.window.activeTextEditor?.document.lineCount ?? 2,
+        vscode.window.activeTextEditor?.document.uri.fsPath,
+        gitAPI
+      );
+      if (!arrayOfSHAs.length) {
+        arrayOfSHAs = await getSHAArray(
+          1,
+          vscode.window.activeTextEditor?.document.lineCount ?? 2,
+          vscode.window.activeTextEditor?.document.uri.fsPath,
+          gitAPI
+        );
+      }
+
+      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+        arrayOfSHAs,
+        email: session?.account.label || "",
+        owner,
+        repo,
+      });
+
+      if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
+        /*      return provider.sendMessage({
+          command: "error",
+          error: issuesWithTitlesAndGroupedComments,
+        }); */
+        return [];
+      }
+      let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
+        (a: any, b: any) => b.comments.length - a.comments.length
+      );
+      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+      const parsedCommitObject = new Object(uniqueBlames[0]) as {
+        date: string;
+        message: string;
+        author: string;
+        email: string;
+        commit: string;
+        body: string;
+        sha: string;
+      };
+      const parsedMessage = parsedCommitObject.message;
+      /*         const mostRelevantJiraTickets =
+        (await getMostRelevantJiraTickets({
+          user: session.account.label,
+          prTitle: sortedPRs[0].title || parsedMessage,
+        })) || {}; */
+      // @ts-ignore
+      console.log("prerefresh");
+      console.log("refresh");
+    }
     console.log("items", items);
     return items;
   }
