@@ -48,10 +48,92 @@ let endLine: any = undefined;
 
 // extension version will be reported as a property with each event
 const extensionVersion = getPackageInfo().version;
+export class ContextItem extends vscode.TreeItem {
+  children: any;
+  constructor(
+    public readonly label: string,
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+    public readonly version: string,
+    public readonly command?: vscode.Command,
+    children?: ContextItem[]
+  ) {
+    super(label, collapsibleState);
+
+    this.tooltip = `${this.label}-${this.version}`;
+    this.description = this.version;
+    this.children = children;
+  }
+
+  iconPath = {
+    light: path.join(__filename, "..", "..", "images", "wmbw_bold_fill.svg"),
+    dark: path.join(__filename, "..", "..", "images", "wmbw_bold_fill.svg"),
+  };
+
+  contextValue = "dependency";
+}
+export class WatermelonTreeDataProvider
+  implements vscode.TreeDataProvider<ContextItem>
+{
+  private _onDidChangeTreeData: vscode.EventEmitter<
+    ContextItem | undefined | void
+  > = new vscode.EventEmitter<ContextItem | undefined | void>();
+  readonly onDidChangeTreeData: vscode.Event<ContextItem | undefined | void> =
+    this._onDidChangeTreeData.event;
+
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
+  }
+
+  getTreeItem(element: ContextItem): vscode.TreeItem {
+    return element;
+  }
+  getChildren(element?: ContextItem): Thenable<ContextItem[]> {
+    if (element) {
+      return Promise.resolve(element.children);
+    } else {
+      return Promise.resolve(this.getTopLevelItems());
+    }
+  }
+
+  private async getTopLevelItems(): Promise<ContextItem[]> {
+    const items: ContextItem[] = [
+      new ContextItem(
+        Date.now().toLocaleString(),
+        vscode.TreeItemCollapsibleState.Expanded,
+        "jira",
+        undefined,
+        [
+          new ContextItem(
+            "jira1",
+            vscode.TreeItemCollapsibleState.Collapsed,
+            "jira1"
+          ),
+          new ContextItem(
+            Date.now().toLocaleString(),
+            vscode.TreeItemCollapsibleState.Expanded,
+            "jira2"
+          ),
+        ]
+      ),
+    ];
+
+    console.log("items", items);
+    return items;
+  }
+}
 
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
-
+  let watermelonTreeDataProvider = new WatermelonTreeDataProvider();
+  context.subscriptions.push(
+    vscode.window.createTreeView("watermelonExplorerTreeProvider", {
+      treeDataProvider: watermelonTreeDataProvider,
+    })
+  );
+  vscode.window.registerTreeDataProvider(
+    "watermelonExplorerTreeProvider",
+    watermelonTreeDataProvider
+  );
   const workspaceState: object | undefined =
     context.workspaceState.get("workspaceState");
   debugLogger(`workspaceState: ${JSON.stringify(workspaceState)}`);
@@ -148,6 +230,9 @@ export async function activate(context: vscode.ExtensionContext) {
       []
     );
     if (session) {
+      console.log("session");
+      watermelonTreeDataProvider.refresh();
+
       context.workspaceState.update("session", {
         ...session,
       });
