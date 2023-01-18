@@ -220,6 +220,70 @@ export class WatermelonTreeDataProvider
         )
       );
 
+      const parsedCommitObject = new Object(uniqueBlames[0]) as {
+        date: string;
+        message: string;
+        author: string;
+        email: string;
+        commit: string;
+        body: string;
+        sha: string;
+      };
+      const parsedMessage = parsedCommitObject.message;
+      console.log("parsedMessage", parsedMessage);
+      // Jira
+      if (!session) {
+        return items;
+      }
+      const mostRelevantJiraTickets =
+        (await getMostRelevantJiraTickets({
+          user: session?.account.label,
+          prTitle: sortedPRs[0].title || parsedMessage,
+        })) || {};
+      const jiraItems = mostRelevantJiraTickets.map((ticket) => {
+        return new ContextItem(
+          ticket.key,
+          vscode.TreeItemCollapsibleState.Collapsed,
+          ticket.fields.summary,
+          {
+            command: WATERMELON_OPEN_LINK_COMMAND,
+            title: "View Jira ticket",
+            arguments: [`${"#"}/browse/${ticket.key}`],
+          },
+          [
+            new ContextItem(
+              ticket.renderedFields.description,
+              vscode.TreeItemCollapsibleState.Collapsed,
+              ticket.renderedFields.created,
+              undefined,
+              ticket.comments?.map((comment: any) => {
+                return new ContextItem(
+                  comment.body,
+                  vscode.TreeItemCollapsibleState.None,
+                  dateToHumanReadable(comment.created),
+                  {
+                    command: WATERMELON_OPEN_LINK_COMMAND,
+                    title: "View comment",
+                    arguments: [comment.url],
+                  }
+                );
+              })
+            ),
+          ]
+        );
+      });
+      items.push(
+        new ContextItem(
+          "Jira",
+          vscode.TreeItemCollapsibleState.Collapsed,
+          `${mostRelevantJiraTickets.length.toString()} ticket${getPlural(
+            mostRelevantJiraTickets.length
+          )}`,
+          undefined,
+          jiraItems
+        )
+      );
+
       // @ts-ignore
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
