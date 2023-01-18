@@ -284,6 +284,49 @@ export class WatermelonTreeDataProvider
         )
       );
 
+      // Slack
+      const relevantSlackThreads = await searchMessagesByText({
+        user: session.account.label,
+        email: session.account.label,
+        text: sortedPRs[0].title || parsedMessage,
+      });
+      const slackItems = relevantSlackThreads.map((thread) => {
+        return new ContextItem(
+          thread.text,
+          vscode.TreeItemCollapsibleState.Collapsed,
+          thread.channel.name,
+          {
+            command: WATERMELON_OPEN_LINK_COMMAND,
+            title: "View Slack thread",
+
+            arguments: [thread.url],
+          },
+          thread.replies?.map((message: any) => {
+            return new ContextItem(
+              message.text,
+              vscode.TreeItemCollapsibleState.None,
+              dateToHumanReadable(message.ts),
+              {
+                command: WATERMELON_OPEN_LINK_COMMAND,
+                title: "View comment",
+                arguments: [message.url],
+              }
+            );
+          })
+        );
+      });
+      items.push(
+        new ContextItem(
+          "Slack",
+          vscode.TreeItemCollapsibleState.Collapsed,
+          `${relevantSlackThreads.length.toString()} thread${getPlural(
+            relevantSlackThreads.length
+          )}`,
+          undefined,
+          slackItems
+        )
+      );
+
       // @ts-ignore
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
