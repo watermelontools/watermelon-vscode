@@ -34,12 +34,13 @@ export default async function getPRsPerSHAS({
       });
     issuesItems = issues.items;
   } else if (repoSource === "gitlab.com") {
+    console.log("gitlab.com params: ", email, owner, repo, shaArray);
     const issues = await axios
       .post(`${backendURL}/api/gitlab/getIssuesByCommits`, {
-        user: 'estebanvargas94@gmail.com',
-        project_id: '42201317', //project id here, not name
-        // commitList: shaArray,
-        commitList: '408d5ff39000b1c5cb3f2a6147b2f3afb3c41726'
+        user: email,
+        owner: owner,
+        project_name: repo,  
+        commitList: shaArray
       })
       .then((res) => res.data)
       .catch((err) => {
