@@ -299,20 +299,31 @@ export class WatermelonTreeDataProvider
           })
         );
       });
-      items.push(
-        new ContextItem(
-          "Slack",
-          vscode.TreeItemCollapsibleState.Collapsed,
-          `${relevantSlackThreads.length.toString()} thread${getPlural(
-            relevantSlackThreads.length
-          )}`,
-          undefined,
-          slackItems,
-          "slack"
-        )
-      );
-
-      // @ts-ignore
+      if (!slackItems.length) {
+        items.push(
+          new ContextItem(
+            "Slack",
+            vscode.TreeItemCollapsibleState.None,
+            `No threads found`,
+            undefined,
+            undefined,
+            "slack"
+          )
+        );
+      } else {
+        items.push(
+          new ContextItem(
+            "Slack",
+            vscode.TreeItemCollapsibleState.Collapsed,
+            `${relevantSlackThreads.length.toString()} thread${getPlural(
+              relevantSlackThreads.length
+            )}`,
+            undefined,
+            slackItems,
+            "slack"
+          )
+        );
+      }
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
       arrayOfSHAs = await getSHAArray(
