@@ -36,6 +36,7 @@ import dateToHumanReadable from "./utils/others/text/dateToHumanReadable";
 import { ContextItem } from "./ContextItem";
 import { getGitHubItems } from "./utils/treeview/getGitHubItems";
 import { getGitItems } from "./utils/treeview/getGitItems";
+import { getJiraItems } from "./utils/treeview/getJiraItems";
 
 // repo information
 let owner: string | undefined = "";
@@ -122,72 +123,16 @@ export class WatermelonTreeDataProvider
       };
       const parsedMessage = parsedCommitObject.message;
       debugLogger(`parsedMessage: ${parsedMessage}`);
-      // Jira
       if (!session) {
         return items;
       }
-      const mostRelevantJiraTickets =
-        (await getMostRelevantJiraTickets({
-          user: session?.account.label,
-          prTitle: sortedPRs[0]?.title || parsedMessage,
-        })) || {};
-      const jiraItems = mostRelevantJiraTickets?.map((ticket) => {
-        return new ContextItem(
-          ticket.key,
-          vscode.TreeItemCollapsibleState.Collapsed,
-          ticket.fields.summary,
-          {
-            command: WATERMELON_OPEN_LINK_COMMAND,
-            title: "View Jira ticket",
-            arguments: [`${"#"}/browse/${ticket.key}`],
-          },
-          [
-            new ContextItem(
-              ticket.renderedFields.description,
-              vscode.TreeItemCollapsibleState.Collapsed,
-              ticket.renderedFields.created,
-              undefined,
-              ticket.comments?.map((comment: any) => {
-                return new ContextItem(
-                  comment.body,
-                  vscode.TreeItemCollapsibleState.None,
-                  dateToHumanReadable(comment.created),
-                  {
-                    command: WATERMELON_OPEN_LINK_COMMAND,
-                    title: "View comment",
-                    arguments: [comment.url],
-                  }
-                );
-              })
-            ),
-          ]
-        );
-      });
-      if (!jiraItems || jiraItems.length === 0) {
-        items.push(
-          new ContextItem(
-            "Jira",
-            vscode.TreeItemCollapsibleState.Collapsed,
-            `No Tickets found`,
-            undefined,
-            undefined,
-            "jira"
-          )
-        );
-      } else {
-        items.push(
-          new ContextItem(
-            "Jira",
-            vscode.TreeItemCollapsibleState.Collapsed,
-            `${mostRelevantJiraTickets.length.toString()} ticket${getPlural(
-              mostRelevantJiraTickets.length
-            )}`,
-            undefined,
-            jiraItems ? jiraItems : [],
-            "jira"
-          )
-        );
-      }
+      // Jira
+      let jiraItems = await getJiraItems(
+        sortedPRs[0]?.title || parsedMessage,
+        session.account.label
+      );
+      items.push(...jiraItems);
+
       // Slack
       const relevantSlackThreads = await searchMessagesByText({
         user: session.account.label,
