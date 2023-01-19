@@ -243,7 +243,18 @@ export class WatermelonTreeDataProvider
           ]
         );
       });
-      if (jiraItems) {
+      if (!jiraItems || jiraItems.length === 0) {
+        items.push(
+          new ContextItem(
+            "Jira",
+            vscode.TreeItemCollapsibleState.Collapsed,
+            `No Tickets found`,
+            undefined,
+            undefined,
+            "jira"
+          )
+        );
+      } else {
         items.push(
           new ContextItem(
             "Jira",
@@ -256,17 +267,6 @@ export class WatermelonTreeDataProvider
             "jira"
           )
         );
-      } else {
-        items.push(
-          new ContextItem(
-            "Jira",
-            vscode.TreeItemCollapsibleState.Collapsed,
-            `No tickets found`,
-            undefined,
-            undefined,
-            "jira"
-          )
-        );
       }
       // Slack
       const relevantSlackThreads = await searchMessagesByText({
@@ -274,7 +274,7 @@ export class WatermelonTreeDataProvider
         email: session.account.label,
         text: sortedPRs[0]?.title || parsedMessage,
       });
-      const slackItems = relevantSlackThreads.map((thread) => {
+      const slackItems = relevantSlackThreads?.map((thread) => {
         return new ContextItem(
           thread.text,
           vscode.TreeItemCollapsibleState.Collapsed,
@@ -304,7 +304,7 @@ export class WatermelonTreeDataProvider
           new ContextItem(
             "Slack",
             vscode.TreeItemCollapsibleState.None,
-            `No threads found`,
+            `No Threads found`,
             undefined,
             undefined,
             "slack"
