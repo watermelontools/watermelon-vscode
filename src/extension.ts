@@ -35,6 +35,7 @@ import getPlural from "./utils/others/text/getPlural";
 import dateToHumanReadable from "./utils/others/text/dateToHumanReadable";
 import { ContextItem } from "./ContextItem";
 import { getGitHubItems } from "./utils/treeview/getGitHubItems";
+import { getGitItems } from "./utils/treeview/getGitItems";
 
 // repo information
 let owner: string | undefined = "";
@@ -89,8 +90,14 @@ export class WatermelonTreeDataProvider
           gitAPI
         );
       }
+
       let gitHubItems = await getGitHubItems(arrayOfSHAs, owner, repo, session);
       items.push(...gitHubItems);
+
+      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+      let gitItems = await getGitItems(uniqueBlames);
+      items.push(...gitItems);
+
       let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
         arrayOfSHAs,
         email: session?.account.label || "",
@@ -103,35 +110,6 @@ export class WatermelonTreeDataProvider
           (a: any, b: any) => b.comments.length - a.comments.length
         );
       }
-      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-      let commitItems = uniqueBlames.map((commit: any) => {
-        return new ContextItem(
-          commit.message,
-          vscode.TreeItemCollapsibleState.Collapsed,
-          dateToHumanReadable(new Date(commit.commitDate)),
-          undefined,
-          [
-            new ContextItem(
-              commit.authorName,
-              vscode.TreeItemCollapsibleState.None,
-              commit.hash.slice(0, 7),
-              undefined
-            ),
-          ]
-        );
-      });
-      items.push(
-        new ContextItem(
-          "Git",
-          vscode.TreeItemCollapsibleState.Collapsed,
-          `${uniqueBlames.length.toString()} commit${getPlural(
-            uniqueBlames.length
-          )}`,
-          undefined,
-          commitItems,
-          "git"
-        )
-      );
 
       const parsedCommitObject = new Object(uniqueBlames[0]) as {
         date: string;
