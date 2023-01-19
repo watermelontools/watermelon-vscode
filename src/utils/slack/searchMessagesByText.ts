@@ -6,11 +6,9 @@ import getThreadReplies from "./getThreadReplies";
 export default async function searchMessagesByText({
   email,
   text,
-  user,
 }: {
   email: string;
   text: string;
-  user: string;
 }) {
   const foundMessages = await axios
     .post(`${backendURL}/api/slack/searchMessagesByText`, {
@@ -30,7 +28,7 @@ export default async function searchMessagesByText({
   let ticketPromises = foundMessages?.messages?.matches.map(
     async (reply: { ts: string; channel: { id: string } }) => {
       let replies = await getThreadReplies({
-        email: user,
+        email,
         ts: reply.ts,
         channelId: reply.channel.id,
       });

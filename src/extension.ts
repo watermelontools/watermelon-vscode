@@ -37,6 +37,7 @@ import { ContextItem } from "./ContextItem";
 import { getGitHubItems } from "./utils/treeview/getGitHubItems";
 import { getGitItems } from "./utils/treeview/getGitItems";
 import { getJiraItems } from "./utils/treeview/getJiraItems";
+import { getSlackItems } from "./utils/treeview/getSlackItems";
 
 // repo information
 let owner: string | undefined = "";
@@ -134,61 +135,11 @@ export class WatermelonTreeDataProvider
       items.push(...jiraItems);
 
       // Slack
-      const relevantSlackThreads = await searchMessagesByText({
-        user: session.account.label,
-        email: session.account.label,
-        text: sortedPRs[0]?.title || parsedMessage,
-      });
-      const slackItems = relevantSlackThreads?.map((thread) => {
-        return new ContextItem(
-          thread.text,
-          vscode.TreeItemCollapsibleState.Collapsed,
-          thread.channel.name,
-          {
-            command: WATERMELON_OPEN_LINK_COMMAND,
-            title: "View Slack thread",
-
-            arguments: [thread.url],
-          },
-          thread.replies?.map((message: any) => {
-            return new ContextItem(
-              message.text,
-              vscode.TreeItemCollapsibleState.None,
-              dateToHumanReadable(message.ts),
-              {
-                command: WATERMELON_OPEN_LINK_COMMAND,
-                title: "View comment",
-                arguments: [message.url],
-              }
-            );
-          })
-        );
-      });
-      if (!slackItems.length) {
-        items.push(
-          new ContextItem(
-            "Slack",
-            vscode.TreeItemCollapsibleState.None,
-            `No Threads found`,
-            undefined,
-            undefined,
-            "slack"
-          )
-        );
-      } else {
-        items.push(
-          new ContextItem(
-            "Slack",
-            vscode.TreeItemCollapsibleState.Collapsed,
-            `${relevantSlackThreads.length.toString()} thread${getPlural(
-              relevantSlackThreads.length
-            )}`,
-            undefined,
-            slackItems,
-            "slack"
-          )
-        );
-      }
+      let slackItems = await getSlackItems(
+        sortedPRs[0]?.title || parsedMessage,
+        session.account.label
+      );
+      items.push(...slackItems);
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
       arrayOfSHAs = await getSHAArray(
