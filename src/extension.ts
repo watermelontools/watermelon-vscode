@@ -201,7 +201,7 @@ export class WatermelonTreeDataProvider
         sha: string;
       };
       const parsedMessage = parsedCommitObject.message;
-      console.log("parsedMessage", parsedMessage);
+      debugLogger(`parsedMessage: ${parsedMessage}`);
       // Jira
       if (!session) {
         return items;
@@ -377,10 +377,7 @@ export class WatermelonTreeDataProvider
           prTitle: sortedPRs[0].title || parsedMessage,
         })) || {}; */
       // @ts-ignore
-      console.log("prerefresh");
-      console.log("refresh");
     }
-    console.log("items", items);
     return [
       new ContextItem(
         "Code Context",
@@ -490,13 +487,11 @@ export async function activate(context: vscode.ExtensionContext) {
   ) => {
     vscode.commands.executeCommand(WATERMELON_SHOW_COMMAND);
 
-    console.log("prsCommandHandler");
     const session = await vscode.authentication.getSession(
       WatermelonAuthenticationProvider.id,
       []
     );
     if (session) {
-      console.log("session");
       watermelonTreeDataProvider.refresh();
 
       context.workspaceState.update("session", {
