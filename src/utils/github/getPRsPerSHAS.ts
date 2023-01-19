@@ -18,7 +18,7 @@ export default async function getPRsPerSHAS({
       user: email,
       repo,
       owner,
-      commitList: shaArray
+      commitList: shaArray,
     })
     .then((res) => res.data)
     .catch((err) => {
@@ -26,5 +26,5 @@ export default async function getPRsPerSHAS({
       let { message } = err;
       reporter?.sendTelemetryException(err, { error: message });
     });
-    return issues.items;
+  return issues?.items;
 }
