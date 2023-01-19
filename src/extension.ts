@@ -95,59 +95,69 @@ export class WatermelonTreeDataProvider
         owner,
         repo,
       });
-      if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-        return [];
-      }
-      let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-        (a: any, b: any) => b.comments.length - a.comments.length
-      );
-      let gitHubItems = sortedPRs.map((pr: any) => {
-        return new ContextItem(
-          pr.title,
-          vscode.TreeItemCollapsibleState.Collapsed,
-          `${pr.comments.length.toString()} comment${getPlural(
-            pr.comments.length
-          )}`,
-          {
-            command: WATERMELON_OPEN_LINK_COMMAND,
-            title: "View PR",
-            arguments: [pr.url],
-          },
-          pr.comments.map((comment: any) => {
-            return new ContextItem(
-              comment.user.login,
-              vscode.TreeItemCollapsibleState.None,
-              comment.created_at,
-              {
-                command: WATERMELON_OPEN_LINK_COMMAND,
-                title: "View comment",
-                arguments: [comment.userLink],
-              },
-              [
-                new ContextItem(
-                  comment.body,
-                  vscode.TreeItemCollapsibleState.None,
-                  dateToHumanReadable(comment.created_at),
-                  {
-                    command: WATERMELON_OPEN_LINK_COMMAND,
-                    title: "View comment",
-                    arguments: [comment.url],
-                  }
-                ),
-              ]
-            );
-          })
+      let sortedPRs: any[] = [];
+      if (Array.isArray(issuesWithTitlesAndGroupedComments)) {
+        sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
+          (a: any, b: any) => b.comments.length - a.comments.length
         );
-      });
-      items.push(
-        new ContextItem(
-          "GitHub",
-          vscode.TreeItemCollapsibleState.Collapsed,
-          `${sortedPRs.length.toString()} PR${getPlural(sortedPRs.length)}`,
-          undefined,
-          gitHubItems
-        )
-      );
+        let gitHubItems = sortedPRs.map((pr: any) => {
+          return new ContextItem(
+            pr.title,
+            vscode.TreeItemCollapsibleState.Collapsed,
+            `${pr.comments.length.toString()} comment${getPlural(
+              pr.comments.length
+            )}`,
+            {
+              command: WATERMELON_OPEN_LINK_COMMAND,
+              title: "View PR",
+              arguments: [pr.url],
+            },
+            pr.comments.map((comment: any) => {
+              return new ContextItem(
+                comment.user.login,
+                vscode.TreeItemCollapsibleState.None,
+                comment.created_at,
+                {
+                  command: WATERMELON_OPEN_LINK_COMMAND,
+                  title: "View comment",
+                  arguments: [comment.userLink],
+                },
+                [
+                  new ContextItem(
+                    comment.body,
+                    vscode.TreeItemCollapsibleState.None,
+                    dateToHumanReadable(comment.created_at),
+                    {
+                      command: WATERMELON_OPEN_LINK_COMMAND,
+                      title: "View comment",
+                      arguments: [comment.url],
+                    }
+                  ),
+                ]
+              );
+            })
+          );
+        });
+        items.push(
+          new ContextItem(
+            "GitHub",
+            vscode.TreeItemCollapsibleState.Collapsed,
+            `${sortedPRs.length.toString()} PR${getPlural(sortedPRs.length)}`,
+            undefined,
+            gitHubItems
+          )
+        );
+      } else {
+        items.push(
+          new ContextItem(
+            "GitHub",
+            vscode.TreeItemCollapsibleState.Collapsed,
+            `No PRs found`,
+            undefined
+          )
+        );
+      }
+
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
       let commitItems = uniqueBlames.map((commit: any) => {
         return new ContextItem(
@@ -195,7 +205,7 @@ export class WatermelonTreeDataProvider
       const mostRelevantJiraTickets =
         (await getMostRelevantJiraTickets({
           user: session?.account.label,
-          prTitle: sortedPRs[0].title || parsedMessage,
+          prTitle: sortedPRs[0]?.title || parsedMessage,
         })) || {};
       const jiraItems = mostRelevantJiraTickets.map((ticket) => {
         return new ContextItem(
@@ -245,7 +255,7 @@ export class WatermelonTreeDataProvider
       const relevantSlackThreads = await searchMessagesByText({
         user: session.account.label,
         email: session.account.label,
-        text: sortedPRs[0].title || parsedMessage,
+        text: sortedPRs[0]?.title || parsedMessage,
       });
       const slackItems = relevantSlackThreads.map((thread) => {
         return new ContextItem(
