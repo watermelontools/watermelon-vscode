@@ -307,7 +307,8 @@ export class WatermelonTreeDataProvider
             relevantSlackThreads.length
           )}`,
           undefined,
-          slackItems
+          slackItems,
+          "slack"
         )
       );
 
