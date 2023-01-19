@@ -349,9 +349,14 @@ export class WatermelonTreeDataProvider
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
   let watermelonTreeDataProvider = new WatermelonTreeDataProvider();
-
+  // register for Explorer view
   vscode.window.registerTreeDataProvider(
     "watermelonExplorerTreeProvider",
+    watermelonTreeDataProvider
+  );
+  // register for Watermelon view
+  vscode.window.registerTreeDataProvider(
+    "watermelonTreeProvider",
     watermelonTreeDataProvider
   );
   const workspaceState: object | undefined =
