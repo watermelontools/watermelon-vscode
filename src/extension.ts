@@ -370,13 +370,6 @@ export class WatermelonTreeDataProvider
         body: string;
         sha: string;
       };
-      const parsedMessage = parsedCommitObject.message;
-      /*         const mostRelevantJiraTickets =
-        (await getMostRelevantJiraTickets({
-          user: session.account.label,
-          prTitle: sortedPRs[0].title || parsedMessage,
-        })) || {}; */
-      // @ts-ignore
     }
     return [
       new ContextItem(
