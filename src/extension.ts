@@ -144,7 +144,8 @@ export class WatermelonTreeDataProvider
             vscode.TreeItemCollapsibleState.Collapsed,
             `${sortedPRs.length.toString()} PR${getPlural(sortedPRs.length)}`,
             undefined,
-            gitHubItems
+            gitHubItems,
+            "github"
           )
         );
       } else {
@@ -153,7 +154,9 @@ export class WatermelonTreeDataProvider
             "GitHub",
             vscode.TreeItemCollapsibleState.Collapsed,
             `No PRs found`,
-            undefined
+            undefined,
+            undefined,
+            "github"
           )
         );
       }
@@ -207,7 +210,7 @@ export class WatermelonTreeDataProvider
           user: session?.account.label,
           prTitle: sortedPRs[0]?.title || parsedMessage,
         })) || {};
-      const jiraItems = mostRelevantJiraTickets.map((ticket) => {
+      const jiraItems = mostRelevantJiraTickets?.map((ticket) => {
         return new ContextItem(
           ticket.key,
           vscode.TreeItemCollapsibleState.Collapsed,
@@ -239,18 +242,31 @@ export class WatermelonTreeDataProvider
           ]
         );
       });
-      items.push(
-        new ContextItem(
-          "Jira",
-          vscode.TreeItemCollapsibleState.Collapsed,
-          `${mostRelevantJiraTickets.length.toString()} ticket${getPlural(
-            mostRelevantJiraTickets.length
-          )}`,
-          undefined,
-          jiraItems
-        )
-      );
-
+      if (jiraItems) {
+        items.push(
+          new ContextItem(
+            "Jira",
+            vscode.TreeItemCollapsibleState.Collapsed,
+            `${mostRelevantJiraTickets.length.toString()} ticket${getPlural(
+              mostRelevantJiraTickets.length
+            )}`,
+            undefined,
+            jiraItems ? jiraItems : [],
+            "jira"
+          )
+        );
+      } else {
+        items.push(
+          new ContextItem(
+            "Jira",
+            vscode.TreeItemCollapsibleState.Collapsed,
+            `No tickets found`,
+            undefined,
+            undefined,
+            "jira"
+          )
+        );
+      }
       // Slack
       const relevantSlackThreads = await searchMessagesByText({
         user: session.account.label,
