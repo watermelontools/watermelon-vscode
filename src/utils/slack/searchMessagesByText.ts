@@ -24,6 +24,9 @@ export default async function searchMessagesByText({
       reporter?.sendTelemetryException(err, { error: message });
     });
   let threadWithReplies: any[] = [];
+  if (!foundMessages?.messages?.matches) {
+    return [];
+  }
   let ticketPromises = foundMessages?.messages?.matches.map(
     async (reply: { ts: string; channel: { id: string } }) => {
       let replies = await getThreadReplies({
@@ -36,7 +39,7 @@ export default async function searchMessagesByText({
         replies,
       });
     }
-    );
-    await Promise.all(ticketPromises);
+  );
+  await Promise.all(ticketPromises);
   return threadWithReplies;
 }
