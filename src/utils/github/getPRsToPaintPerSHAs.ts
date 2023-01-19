@@ -1,7 +1,7 @@
-import getPRsPerSHAS from "../github/getPRsPerSHAS";
-import getIssue from "../github/getIssue";
-import getIssueComments from "../github/getIssueComments";
-import { noLinesSelected, noSearchResults } from "./showErrors";
+import getPRsPerSHAS from "./getPRsPerSHAS";
+import getIssue from "./getIssue";
+import getIssueComments from "./getIssueComments";
+import { noLinesSelected, noSearchResults } from "../vscode/showErrors";
 
 export default async function getPRsToPaintPerSHAs({
   arrayOfSHAs,

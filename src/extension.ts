@@ -6,7 +6,7 @@ import getPackageInfo from "./utils/getPackageInfo";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getGitHubUserInfo from "./utils/getGitHubUserInfo";
-import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
+import getPRsToPaintPerSHAs from "./utils/github/getPRsToPaintPerSHAs";
 import analyticsReporter from "./utils/vscode/reporter";
 import statusBarItem, {
   updateStatusBarItem,
@@ -34,6 +34,7 @@ import searchMessagesByText from "./utils/slack/searchMessagesByText";
 import getPlural from "./utils/others/text/getPlural";
 import dateToHumanReadable from "./utils/others/text/dateToHumanReadable";
 import { ContextItem } from "./ContextItem";
+import { getGitHubItems } from "./utils/treeview/getGitHubItems";
 
 // repo information
 let owner: string | undefined = "";
@@ -88,7 +89,8 @@ export class WatermelonTreeDataProvider
           gitAPI
         );
       }
-
+      let gitHubItems = await getGitHubItems(arrayOfSHAs, owner, repo, session);
+      items.push(...gitHubItems);
       let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
         arrayOfSHAs,
         email: session?.account.label || "",
@@ -100,67 +102,7 @@ export class WatermelonTreeDataProvider
         sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
           (a: any, b: any) => b.comments.length - a.comments.length
         );
-        let gitHubItems = sortedPRs.map((pr: any) => {
-          return new ContextItem(
-            pr.title,
-            vscode.TreeItemCollapsibleState.Collapsed,
-            `${pr.comments.length.toString()} comment${getPlural(
-              pr.comments.length
-            )}`,
-            {
-              command: WATERMELON_OPEN_LINK_COMMAND,
-              title: "View PR",
-              arguments: [pr.url],
-            },
-            pr.comments.map((comment: any) => {
-              return new ContextItem(
-                comment.user.login,
-                vscode.TreeItemCollapsibleState.None,
-                comment.created_at,
-                {
-                  command: WATERMELON_OPEN_LINK_COMMAND,
-                  title: "View comment",
-                  arguments: [comment.userLink],
-                },
-                [
-                  new ContextItem(
-                    comment.body,
-                    vscode.TreeItemCollapsibleState.None,
-                    dateToHumanReadable(comment.created_at),
-                    {
-                      command: WATERMELON_OPEN_LINK_COMMAND,
-                      title: "View comment",
-                      arguments: [comment.url],
-                    }
-                  ),
-                ]
-              );
-            })
-          );
-        });
-        items.push(
-          new ContextItem(
-            "GitHub",
-            vscode.TreeItemCollapsibleState.Collapsed,
-            `${sortedPRs.length.toString()} PR${getPlural(sortedPRs.length)}`,
-            undefined,
-            gitHubItems,
-            "github"
-          )
-        );
-      } else {
-        items.push(
-          new ContextItem(
-            "GitHub",
-            vscode.TreeItemCollapsibleState.None,
-            `No PRs found`,
-            undefined,
-            undefined,
-            "github"
-          )
-        );
       }
-
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
       let commitItems = uniqueBlames.map((commit: any) => {
         return new ContextItem(
