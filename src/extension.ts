@@ -152,7 +152,7 @@ export class WatermelonTreeDataProvider
         items.push(
           new ContextItem(
             "GitHub",
-            vscode.TreeItemCollapsibleState.Collapsed,
+            vscode.TreeItemCollapsibleState.None,
             `No PRs found`,
             undefined,
             undefined,
