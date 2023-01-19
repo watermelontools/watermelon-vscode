@@ -381,7 +381,15 @@ export class WatermelonTreeDataProvider
       console.log("refresh");
     }
     console.log("items", items);
-    return items;
+    return [
+      new ContextItem(
+        "Code Context",
+        vscode.TreeItemCollapsibleState.Expanded,
+        "by Watermelon",
+        undefined,
+        items
+      ),
+    ];
   }
 }
 
