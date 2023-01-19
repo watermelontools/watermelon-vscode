@@ -72,26 +72,7 @@ export class WatermelonTreeDataProvider
   }
 
   private async getTopLevelItems(): Promise<ContextItem[]> {
-    const items: ContextItem[] = [
-      new ContextItem(
-        Date.now().toLocaleString(),
-        vscode.TreeItemCollapsibleState.Expanded,
-        "jira",
-        undefined,
-        [
-          new ContextItem(
-            "jira1",
-            vscode.TreeItemCollapsibleState.Collapsed,
-            "jira1"
-          ),
-          new ContextItem(
-            Date.now().toLocaleString(),
-            vscode.TreeItemCollapsibleState.Expanded,
-            "jira2"
-          ),
-        ]
-      ),
-    ];
+    const items: ContextItem[] = [];
     let gitAPI = await getGitAPI();
     debugLogger(`got gitAPI`);
     const session = await vscode.authentication.getSession(
