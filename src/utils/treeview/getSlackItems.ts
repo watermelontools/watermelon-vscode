@@ -16,9 +16,9 @@ export const getSlackItems = async (
   });
   const slackItems = relevantSlackThreads?.map((thread) => {
     return new ContextItem(
-      thread.text,
+      thread.username,
       vscode.TreeItemCollapsibleState.Collapsed,
-      thread.channel.name,
+      `#${thread.channel.name} - ${dateToHumanReadable(thread.ts)}`,
       {
         command: WATERMELON_OPEN_LINK_COMMAND,
         title: "View Slack thread",
