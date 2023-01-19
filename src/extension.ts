@@ -31,9 +31,9 @@ import getMostRelevantJiraTickets from "./utils/jira/getMostRelevantJiraTickets"
 import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
 import searchMessagesByText from "./utils/slack/searchMessagesByText";
-import path = require("path");
 import getPlural from "./utils/others/text/getPlural";
 import dateToHumanReadable from "./utils/others/text/dateToHumanReadable";
+import { ContextItem } from "./ContextItem";
 
 // repo information
 let owner: string | undefined = "";
@@ -46,29 +46,7 @@ let endLine: any = undefined;
 
 // extension version will be reported as a property with each event
 const extensionVersion = getPackageInfo().version;
-export class ContextItem extends vscode.TreeItem {
-  children: any;
-  constructor(
-    public readonly label: string,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-    public readonly version: string,
-    public readonly command?: vscode.Command,
-    children?: ContextItem[]
-  ) {
-    super(label, collapsibleState);
 
-    this.tooltip = `${this.label}-${this.version}`;
-    this.description = this.version;
-    this.children = children;
-  }
-
-  iconPath = {
-    light: path.join(__filename, "..", "..", "images", "wmbw_bold_fill.svg"),
-    dark: path.join(__filename, "..", "..", "images", "wmbw_bold_fill.svg"),
-  };
-
-  contextValue = "dependency";
-}
 export class WatermelonTreeDataProvider
   implements vscode.TreeDataProvider<ContextItem>
 {
@@ -390,11 +368,7 @@ export class WatermelonTreeDataProvider
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
   let watermelonTreeDataProvider = new WatermelonTreeDataProvider();
-  context.subscriptions.push(
-    vscode.window.createTreeView("watermelonExplorerTreeProvider", {
-      treeDataProvider: watermelonTreeDataProvider,
-    })
-  );
+
   vscode.window.registerTreeDataProvider(
     "watermelonExplorerTreeProvider",
     watermelonTreeDataProvider
@@ -410,6 +384,10 @@ export async function activate(context: vscode.ExtensionContext) {
   debugLogger(`created wmStatusBarItem`);
 
   context.subscriptions.push(
+    // treeview
+    vscode.window.createTreeView("watermelonExplorerTreeProvider", {
+      treeDataProvider: watermelonTreeDataProvider,
+    }),
     // action bar item
     wmStatusBarItem,
     // register some listener that make sure the status bar
