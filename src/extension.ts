@@ -186,7 +186,8 @@ export class WatermelonTreeDataProvider
             uniqueBlames.length
           )}`,
           undefined,
-          commitItems
+          commitItems,
+          "git"
         )
       );
 
