@@ -73,6 +73,7 @@ export default async function getPRsPerSHAS({
       ];
       break;
     case "bitbucket.org":
+      // Bitbucket's API only accepts a single commit ID, so we have to do this
       const singleCommitHash = shaArray.split(",")[0];
 
       issues = await axios
