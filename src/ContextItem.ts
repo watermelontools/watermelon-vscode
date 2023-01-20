@@ -18,26 +18,29 @@ export class ContextItem extends vscode.TreeItem {
     this.logo = logo;
   }
 
-  iconPath = this.logo?.includes("http")
-    ? vscode.Uri.parse(this.logo)
-    : {
-        light: path.join(
-          __filename,
-          "..",
-          "..",
-          "images",
-          "logos",
-          `${this.logo ? this.logo : "wmbw_bold_fill"}.svg`
-        ),
-        dark: path.join(
-          __filename,
-          "..",
-          "..",
-          "images",
-          "logos",
-          `${this.logo ? this.logo : "wmbw_bold_fill"}.svg`
-        ),
-      };
+  iconPath =
+    this.logo === undefined
+      ? undefined
+      : this.logo?.includes("http")
+      ? vscode.Uri.parse(this.logo)
+      : {
+          light: path.join(
+            __filename,
+            "..",
+            "..",
+            "images",
+            "logos",
+            `${this.logo ? this.logo : "wmbw_bold_fill"}.svg`
+          ),
+          dark: path.join(
+            __filename,
+            "..",
+            "..",
+            "images",
+            "logos",
+            `${this.logo ? this.logo : "wmbw_bold_fill"}.svg`
+          ),
+        };
 
   contextValue = "dependency";
 }
