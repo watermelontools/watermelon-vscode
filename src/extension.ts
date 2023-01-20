@@ -92,14 +92,7 @@ export class WatermelonTreeDataProvider
           gitAPI
         );
       }
-      // GitHub
-      let gitHubItems = await getGitHubItems(arrayOfSHAs, owner, repo, session);
-      items.push(...gitHubItems);
-
-      // Git
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-      let gitItems = await getGitItems(uniqueBlames);
-      items.push(...gitItems);
 
       let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
         arrayOfSHAs,
@@ -128,6 +121,15 @@ export class WatermelonTreeDataProvider
       if (!session) {
         return items;
       }
+      // GitHub
+      let gitHubItems = await getGitHubItems(
+        issuesWithTitlesAndGroupedComments
+      );
+      items.push(...gitHubItems);
+
+      // Git
+      let gitItems = await getGitItems(uniqueBlames);
+      items.push(...gitItems);
 
       // Jira
       let jiraItems = await getJiraItems(
@@ -203,6 +205,24 @@ export class WatermelonTreeDataProvider
 
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
+  // allows saving state across sessions
+  const workspaceState: object | undefined =
+    context.workspaceState.get("workspaceState");
+  debugLogger(`workspaceState: ${JSON.stringify(workspaceState)}`);
+  // create telemetry reporter on extension activation
+  let reporter = analyticsReporter();
+  reporter?.sendTelemetryEvent("extensionActivated");
+  let repoInfo = await getRepoInfo({ reporter });
+  repo = repoInfo?.repo;
+  owner = repoInfo?.owner;
+  debugLogger(`repo: ${repo}`);
+  debugLogger(`owner: ${owner}`);
+  context.workspaceState.update("workspaceState", {
+    ...workspaceState,
+    repo,
+    owner,
+  });
+  owner && repo && reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
   let watermelonTreeDataProvider = new WatermelonTreeDataProvider();
   // register for Explorer view
   vscode.window.registerTreeDataProvider(
@@ -214,12 +234,6 @@ export async function activate(context: vscode.ExtensionContext) {
     "watermelonTreeProvider",
     watermelonTreeDataProvider
   );
-  const workspaceState: object | undefined =
-    context.workspaceState.get("workspaceState");
-  debugLogger(`workspaceState: ${JSON.stringify(workspaceState)}`);
-  // create telemetry reporter on extension activation
-  let reporter = analyticsReporter();
-  reporter?.sendTelemetryEvent("extensionActivated");
 
   let wmStatusBarItem = statusBarItem();
   debugLogger(`created wmStatusBarItem`);
@@ -377,18 +391,6 @@ export async function activate(context: vscode.ExtensionContext) {
     );
     debugLogger(`arrayOfSHAs: ${JSON.stringify(arrayOfSHAs)}`);
   });
-
-  let repoInfo = await getRepoInfo({ reporter });
-  repo = repoInfo?.repo;
-  owner = repoInfo?.owner;
-  debugLogger(`repo: ${repo}`);
-  debugLogger(`owner: ${owner}`);
-  context.workspaceState.update("workspaceState", {
-    ...workspaceState,
-    repo,
-    owner,
-  });
-  owner && repo && reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
 }
 
 // Not used yet

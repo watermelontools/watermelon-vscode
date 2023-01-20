@@ -6,19 +6,10 @@ import { WATERMELON_OPEN_LINK_COMMAND } from "../../constants";
 import dateToHumanReadable from "../others/text/dateToHumanReadable";
 
 export const getGitHubItems = async (
-  arrayOfSHAs: string[],
-  owner: string | undefined,
-  repo: string | undefined,
-  session: any
+  issuesWithTitlesAndGroupedComments: any[] | { errorText: string }
 ) => {
   let items: ContextItem[] = [];
 
-  let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-    arrayOfSHAs,
-    email: session?.account.label || "",
-    owner,
-    repo,
-  });
   let sortedPRs: any[] = [];
   if (Array.isArray(issuesWithTitlesAndGroupedComments)) {
     sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
