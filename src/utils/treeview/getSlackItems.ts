@@ -16,29 +16,40 @@ export const getSlackItems = async (
   });
   const slackItems = relevantSlackThreads?.map((thread) => {
     return new ContextItem(
-      thread.username,
+      `#${thread.channel.name}`,
       vscode.TreeItemCollapsibleState.Collapsed,
-      `#${thread.channel.name} - ${dateToHumanReadable(
-        new Date(parseFloat(thread.ts))
-      )}`,
+      `${dateToHumanReadable(new Date(parseFloat(thread.ts)))}`,
       {
         command: WATERMELON_OPEN_LINK_COMMAND,
         title: "View Slack thread",
 
-        arguments: [thread.url],
+        arguments: [thread.permalink],
       },
-      thread.replies?.map((message: any) => {
-        return new ContextItem(
-          message.text,
-          vscode.TreeItemCollapsibleState.None,
-          dateToHumanReadable(message.ts),
-          {
-            command: WATERMELON_OPEN_LINK_COMMAND,
-            title: "View comment",
-            arguments: [message.url],
-          }
-        );
-      })
+      thread.replies?.flatMap((reply: any) => {
+        return [
+          new ContextItem(
+            reply.userInfo?.user?.profile?.real_name,
+            vscode.TreeItemCollapsibleState.None,
+            reply.userInfo?.user?.name,
+            {
+              command: WATERMELON_OPEN_LINK_COMMAND,
+              title: "View comment",
+              arguments: [reply.permalink],
+            },
+            undefined,
+            reply?.userInfo?.user?.profile?.image_512
+          ),
+          new ContextItem(
+            reply.text,
+            vscode.TreeItemCollapsibleState.None,
+            dateToHumanReadable(new Date(parseFloat(reply.ts))),
+            undefined,
+            undefined,
+            undefined
+          ),
+        ];
+      }),
+      thread?.userInfo?.user?.profile?.image_512
     );
   });
   if (!slackItems.length) {
