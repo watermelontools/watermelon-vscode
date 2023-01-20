@@ -36,7 +36,6 @@ export default async function getPRsPerSHAS({
       issuesItems = issues.items;
       break;
     case "gitlab.com":
-      console.log("gitlab.com params: ", email, owner, repo, shaArray);
       issues = await axios
         .post(`${backendURL}/api/gitlab/getIssuesByCommits`, {
           user: email,
@@ -90,7 +89,6 @@ export default async function getPRsPerSHAS({
           reporter?.sendTelemetryException(err, { error: message });
         });
 
-      console.log("bitbucket issues: ", issues);
       // Here we are mapping the issues.items to match the github format
       issuesItems = [
         {
