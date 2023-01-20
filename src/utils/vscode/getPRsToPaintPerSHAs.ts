@@ -107,23 +107,7 @@ export default async function getPRsToPaintPerSHAs({
           }),
           */
         });
-      } else if (repoSource === "gitlab.com") {
-        issuesWithTitlesAndGroupedComments.push({
-          created_at: foundPRs[0].created_at,
-          user: foundPRs[0].user.login,
-          userImage: foundPRs[0].user.avatar_url,
-          userLink: foundPRs[0].user.html_url,
-          title: foundPRs[0].title,
-          url: foundPRs[0].html_url,
-          body: foundPRs[0].body,
-          avatar: foundPRs[0].user.avatar_url,
-          repo_url: foundPRs[0].repository_url,
-          state: foundPRs[0].state,
-          draft: foundPRs[0].draft,
-          number: issue.number || foundPRs[0].number,
-          comments: [],
-        })
-      } else if (repoSource === "bitbucket.org") {
+      } else if (repoSource === "gitlab.com" || repoSource === "bitbucket.org") {
         issuesWithTitlesAndGroupedComments.push({
           created_at: foundPRs[0].created_at,
           user: foundPRs[0].user.login,
