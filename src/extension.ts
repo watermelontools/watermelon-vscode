@@ -92,10 +92,11 @@ export class WatermelonTreeDataProvider
           gitAPI
         );
       }
-
+      // GitHub
       let gitHubItems = await getGitHubItems(arrayOfSHAs, owner, repo, session);
       items.push(...gitHubItems);
 
+      // Git
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
       let gitItems = await getGitItems(uniqueBlames);
       items.push(...gitItems);
@@ -127,6 +128,7 @@ export class WatermelonTreeDataProvider
       if (!session) {
         return items;
       }
+
       // Jira
       let jiraItems = await getJiraItems(
         sortedPRs[0]?.title || parsedMessage,
