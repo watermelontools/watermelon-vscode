@@ -5,14 +5,12 @@ import getGitAPI from "./utils/vscode/getGitAPI";
 import getPackageInfo from "./utils/getPackageInfo";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
-import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 import getPRsToPaintPerSHAs from "./utils/github/getPRsToPaintPerSHAs";
 import analyticsReporter from "./utils/vscode/reporter";
 import statusBarItem, {
   updateStatusBarItem,
 } from "./utils/components/statusBarItem";
 import hover from "./utils/components/hover";
-import getGitHubDailySummary from "./utils/github/getDailySummary";
 import {
   EXTENSION_ID,
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
@@ -26,13 +24,7 @@ import {
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
-import checkIfUserStarred from "./utils/github/checkIfUserStarred";
-import getMostRelevantJiraTickets from "./utils/jira/getMostRelevantJiraTickets";
-import getAssignedJiraTickets from "./utils/jira/getAssignedJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
-import searchMessagesByText from "./utils/slack/searchMessagesByText";
-import getPlural from "./utils/others/text/getPlural";
-import dateToHumanReadable from "./utils/others/text/dateToHumanReadable";
 import { ContextItem } from "./ContextItem";
 import { getGitHubItems } from "./utils/treeview/getGitHubItems";
 import { getGitItems } from "./utils/treeview/getGitItems";
