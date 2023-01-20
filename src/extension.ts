@@ -198,21 +198,22 @@ export class WatermelonTreeDataProvider
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
   // allows saving state across sessions
-  const workspaceState: object | undefined =
+  const workspaceState: { repo: string; owner: string } | undefined =
     context.workspaceState.get("workspaceState");
   debugLogger(`workspaceState: ${JSON.stringify(workspaceState)}`);
   // create telemetry reporter on extension activation
   let reporter = analyticsReporter();
   reporter?.sendTelemetryEvent("extensionActivated");
   let repoInfo = await getRepoInfo({ reporter });
-  repo = repoInfo?.repo;
-  owner = repoInfo?.owner;
+  repo = repoInfo?.repo ? repoInfo?.repo : workspaceState?.repo;
+  owner = repoInfo?.owner ? repoInfo?.owner : workspaceState?.owner;
   debugLogger(`repo: ${repo}`);
   debugLogger(`owner: ${owner}`);
+
   context.workspaceState.update("workspaceState", {
     ...workspaceState,
-    repo,
-    owner,
+    repo: repo ? repo : workspaceState?.repo,
+    owner: owner ? owner : workspaceState?.owner,
   });
   owner && repo && reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
   let watermelonTreeDataProvider = new WatermelonTreeDataProvider();
