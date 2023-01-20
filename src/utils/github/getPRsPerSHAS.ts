@@ -74,11 +74,13 @@ export default async function getPRsPerSHAS({
       ];
       break;
     case "bitbucket.org":
+      const singleCommitHash = shaArray.split(",")[0];
+
       issues = await axios
         .post(`${backendURL}/api/bitbucket/getPullRequests`, {
           userEmail: email,
           repo_slug: repo, //id here, not name
-          commitHash: shaArray, //array vs singular, TODO
+          commitHash: singleCommitHash, //array vs singular, TODO
           workspace: owner,
         })
         .then((res) => res.data)
@@ -88,23 +90,29 @@ export default async function getPRsPerSHAS({
           reporter?.sendTelemetryException(err, { error: message });
         });
 
-      // Here we are mapping the issues to match the github format
-      issuesItems = {
-        created_at: issues.items.created_at,
-        userImage: issues.items.author.avatar_url,
-        userLink: issues.items.author.web_url,
-        title: issues.items.title,
-        url: issues.items.web_url,
-        body: issues.items.description,
-        user: {
-          html_url: issues.items.author.web_url,
-          avatar_url: issues.items.author.avatar_url,
+      console.log("bitbucket issues: ", issues);
+      // Here we are mapping the issues.items to match the github format
+      issuesItems = [
+        {
+          created_at: issues.values[0]?.created_on,
+          userImage: null,
+          userLink: null,
+          title: issues.values[0].title,
+          url: issues.values[0].links.html.href,
+          body: issues.values[0]?.description?.raw,
+          user: {
+            html_url: null,
+            avatar_url: null,
+            login: null,
+          },
+          repository_url: null,
+          state: issues.values[0]?.state,
+          draft: false,
+          number: issues.values[0].id,
+          comments: [],
         },
-        repository_url: issues.items.web_url,
-        state: issues.items.state,
-        draft: issues.items.draft,
-        number: issues.items.iid,
-      };
+      ];
+      break;
   }
 
   return issuesItems;
