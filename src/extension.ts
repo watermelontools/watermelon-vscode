@@ -118,29 +118,23 @@ export class WatermelonTreeDataProvider
       if (!session) {
         return items;
       }
-      // GitHub
-      let gitHubItems = await getGitHubItems(
-        issuesWithTitlesAndGroupedComments
-      );
-      items.push(...gitHubItems);
-
-      // Git
-      let gitItems = await getGitItems(uniqueBlames);
-      items.push(...gitItems);
-
-      // Jira
-      let jiraItems = await getJiraItems(
-        sortedPRs[0]?.title || parsedMessage,
-        session.account.label
-      );
-      items.push(...jiraItems);
-
-      // Slack
-      let slackItems = await getSlackItems(
-        sortedPRs[0]?.title || parsedMessage,
-        session.account.label
-      );
-      items.push(...slackItems);
+      let itemPromises = [
+        getGitHubItems(issuesWithTitlesAndGroupedComments),
+        getGitItems(uniqueBlames),
+        getJiraItems(
+          sortedPRs[0]?.title || parsedMessage,
+          session.account.label
+        ),
+        getSlackItems(
+          sortedPRs[0]?.title || parsedMessage,
+          session.account.label
+        ),
+      ];
+      let results = await Promise.all(itemPromises);
+      results.forEach((result) => {
+        items.push(...result);
+      });
+      return items;
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
       arrayOfSHAs = await getSHAArray(
