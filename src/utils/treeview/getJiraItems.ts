@@ -51,7 +51,7 @@ export const getJiraItems = async (
     items.push(
       new ContextItem(
         "Jira",
-        vscode.TreeItemCollapsibleState.Collapsed,
+        vscode.TreeItemCollapsibleState.None,
         `No Tickets found`,
         undefined,
         undefined,
