@@ -27,6 +27,8 @@ export default function getInitialHTML(
     "https://codecov.io/",
     "https://i.imgur.com",
     "https://*.atl-paas.net",
+    "https://*.gitlab.com",
+    "https://*.bitbucket.org"
   ];
   let scriptSources = [`'nonce-${nonce}'`];
   let connectSources = [
