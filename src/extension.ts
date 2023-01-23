@@ -24,6 +24,8 @@ import {
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
+import checkIfUserStarred from "./utils/github/checkIfUserStarred";
+import getMostRelevantJiraTickets from "./utils/jira/getMostRelevantJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
 import { ContextItem } from "./ContextItem";
 import { getGitHubItems } from "./utils/treeview/getGitHubItems";
@@ -71,6 +73,8 @@ export class WatermelonTreeDataProvider
     const items: ContextItem[] = [];
     let gitAPI = await getGitAPI();
     debugLogger(`got gitAPI`);
+    let repoInfo = await getRepoInfo({});
+    const repoSource = repoInfo?.source;
     const session = await vscode.authentication.getSession(
       WatermelonAuthenticationProvider.id,
       []
@@ -91,6 +95,7 @@ export class WatermelonTreeDataProvider
         email: session?.account.label || "",
         owner,
         repo,
+        repoSource,
       });
       let sortedPRs: any[] = [];
       if (Array.isArray(issuesWithTitlesAndGroupedComments)) {
@@ -160,6 +165,7 @@ export class WatermelonTreeDataProvider
         email: session?.account.label || "",
         owner,
         repo,
+        repoSource,
       });
 
       if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
@@ -229,7 +235,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   let wmStatusBarItem = statusBarItem();
-  debugLogger(`created wmStatusBarItem`);
+  debugLogger("created wmStatusBarItem");
 
   context.subscriptions.push(
     // treeview
@@ -252,7 +258,6 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.registerUriHandler({
       handleUri(uri) {
         // show a hello message
-        vscode.window.showInformationMessage("URI" + uri);
         const urlSearchParams = new URLSearchParams(uri.query);
         const params = Object.fromEntries(urlSearchParams.entries());
         context.secrets.store("watermelonToken", params.token);
