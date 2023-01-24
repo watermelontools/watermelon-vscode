@@ -9,6 +9,7 @@ import getRepoInfo from "./utils/vscode/getRepoInfo";
 import getGitHubUserInfo from "./utils/getGitHubUserInfo";
 import getWebviewOptions from "./utils/vscode/getWebViewOptions";
 import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
+import summarizeCodeConext from "./utils/vscode/summarizeCodeContext";
 import analyticsReporter from "./utils/vscode/reporter";
 import statusBarItem, {
   updateStatusBarItem,
@@ -212,12 +213,38 @@ export async function activate(context: vscode.ExtensionContext) {
           text: sortedPRs[0].title || parsedMessage,
         });
         */
-       
+
+        // get the start and end line of the selected block of code
+        let selectedStartLine = vscode.window.activeTextEditor?.selection.start;
+        let selectedEndLine = vscode.window.activeTextEditor?.selection.end;
+
+        // get the text of the selected block of code
+        let selectedBlockOfCode = "";
+        if (selectedStartLine && selectedEndLine) {
+          let selectedText = vscode.window.activeTextEditor?.document.getText(
+            new vscode.Range(selectedStartLine, selectedEndLine)
+          );
+
+          let selectedCode = selectedText || "";
+          selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm,"");
+        }
+
+        console.log("selectedBlockOfCode after if", selectedBlockOfCode);
+        // let selectedCode = selectedText;
+        // let selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm,"");
+          
+        let codeContextSummary = await summarizeCodeConext({
+          pr_title: sortedPRs[0].title || parsedMessage,
+          pr_body: sortedPRs[0].body || parsedCommitObject.body,
+          block_of_code: selectedBlockOfCode || "",
+        });
+
         provider.sendMessage({
           command: "prs",
           data: {
             sortedPRs,
             uniqueBlames,
+            codeContextSummary,
             // mostRelevantJiraTickets,
             // relevantSlackThreads,
           },
