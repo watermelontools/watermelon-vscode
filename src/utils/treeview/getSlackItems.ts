@@ -23,7 +23,12 @@ export const getSlackItems = async (
         command: WATERMELON_OPEN_LINK_COMMAND,
         title: "View Slack thread",
 
-        arguments: [thread.permalink],
+        arguments: [
+          {
+            url: thread.permalink,
+            source: "treeView",
+          },
+        ],
       },
       thread.replies?.flatMap((reply: any) => {
         return [
@@ -34,7 +39,14 @@ export const getSlackItems = async (
             {
               command: WATERMELON_OPEN_LINK_COMMAND,
               title: "View comment",
-              arguments: [reply.permalink],
+              arguments: [
+                {
+                  url: `${thread.permalink.split("/archives")[0]}/team/${
+                    reply.userInfo?.user?.id
+                  }`,
+                  source: "treeView",
+                },
+              ],
             },
             undefined,
             reply?.userInfo?.user?.profile?.image_512
@@ -52,7 +64,7 @@ export const getSlackItems = async (
       thread?.userInfo?.user?.profile?.image_512
     );
   });
-  if (!slackItems.length) {
+  if (!slackItems?.length) {
     items.push(
       new ContextItem(
         "Slack",
@@ -68,8 +80,8 @@ export const getSlackItems = async (
       new ContextItem(
         "Slack",
         vscode.TreeItemCollapsibleState.Collapsed,
-        `${relevantSlackThreads.length.toString()} thread${getPlural(
-          relevantSlackThreads.length
+        `${relevantSlackThreads?.length.toString()} thread${getPlural(
+          relevantSlackThreads?.length
         )}`,
         undefined,
         slackItems,
