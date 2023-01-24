@@ -6,11 +6,9 @@ import getThreadReplies from "./getThreadReplies";
 export default async function searchMessagesByText({
   email,
   text,
-  user,
 }: {
   email: string;
   text: string;
-  user: string;
 }) {
   const foundMessages = await axios
     .post(`${backendURL}/api/slack/searchMessagesByText`, {
@@ -24,10 +22,13 @@ export default async function searchMessagesByText({
       reporter?.sendTelemetryException(err, { error: message });
     });
   let threadWithReplies: any[] = [];
+  if (!foundMessages?.messages?.matches) {
+    return [];
+  }
   let ticketPromises = foundMessages?.messages?.matches.map(
     async (reply: { ts: string; channel: { id: string } }) => {
       let replies = await getThreadReplies({
-        email: user,
+        email,
         ts: reply.ts,
         channelId: reply.channel.id,
       });
@@ -36,7 +37,7 @@ export default async function searchMessagesByText({
         replies,
       });
     }
-    );
-    await Promise.all(ticketPromises);
+  );
+  await Promise.all(ticketPromises);
   return threadWithReplies;
 }

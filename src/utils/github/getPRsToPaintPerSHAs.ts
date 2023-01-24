@@ -1,14 +1,14 @@
-import getPRsPerSHAS from "../github/getPRsPerSHAS";
-import getIssue from "../github/getIssue";
-import getIssueComments from "../github/getIssueComments";
-import { noLinesSelected, noSearchResults } from "./showErrors";
+import getPRsPerSHAS from "./getPRsPerSHAS";
+import getIssue from "./getIssue";
+import getIssueComments from "./getIssueComments";
+import { noLinesSelected, noSearchResults } from "../vscode/showErrors";
 
 export default async function getPRsToPaintPerSHAs({
   arrayOfSHAs,
   email,
   owner,
   repo,
-  repoSource
+  repoSource,
 }: {
   arrayOfSHAs: string[];
   email: string;
@@ -47,7 +47,7 @@ export default async function getPRsToPaintPerSHAs({
     repo: repo ?? "",
     owner: owner ?? "",
     shaArray: joinedArrayOfSHAs,
-    repoSource
+    repoSource,
   });
   if (foundPRs?.length === 0) {
     noSearchResults();
@@ -86,7 +86,10 @@ export default async function getPRsToPaintPerSHAs({
         owner: owner ?? "",
       });
       // TODO: Filter GitLab and Bitbucket bots
-      if (((repoSource === "github.com" ) && (issueData.user.type.toLowerCase() !== "bot"))) {
+      if (
+        repoSource === "github.com" &&
+        issueData.user.type.toLowerCase() !== "bot"
+      ) {
         issuesWithTitlesAndGroupedComments.push({
           created_at: issueData.created_at,
           user: issueData.user.login,
@@ -107,7 +110,10 @@ export default async function getPRsToPaintPerSHAs({
           }),
           */
         });
-      } else if (repoSource === "gitlab.com" || repoSource === "bitbucket.org") {
+      } else if (
+        repoSource === "gitlab.com" ||
+        repoSource === "bitbucket.org"
+      ) {
         issuesWithTitlesAndGroupedComments.push({
           created_at: foundPRs[0].created_at,
           user: foundPRs[0].user.login,
@@ -122,7 +128,7 @@ export default async function getPRsToPaintPerSHAs({
           draft: foundPRs[0].draft,
           number: issue.number || foundPRs[0].number,
           comments: [],
-        })
+        });
       }
     });
     await Promise.all(prPromises);

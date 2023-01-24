@@ -9,12 +9,11 @@ export default async function getFullBlame(
     currentlyOpenTabfilePath || "."
   );
 
-  let blameLines = blame?.split("\n").slice(startLine, endLine + 1);
-let commits = blameLines.map((line: String) => line.split(" ")[0]);
+  let blameLines = blame?.split("\n")?.slice(startLine, endLine + 1);
+  let commits = blameLines.map((line: String) => line.split(" ")[0]);
   let fullCommits = commits.map((commit: String) => {
     return gitAPI?.repositories[0].getCommit(commit);
-  }
-  );
+  });
 
   return fullCommits;
 }
