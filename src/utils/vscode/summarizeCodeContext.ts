@@ -13,7 +13,7 @@ export default async function summarizeCodeContext({
   }) {
     const codeContextSummary = await axios
     .post(`${backendURL}/api/openai/summarizeCodeContext`, {
-    pr_title,
+      pr_title,
       pr_body,
       block_of_code,
     })
