@@ -35,12 +35,12 @@ export const getJiraItems = async (
           ticket.renderedFields?.description?.length
             ? ticket.renderedFields.description
             : "No description",
-          ticket.comments.length > 0
+          ticket?.comments?.length > 0
             ? vscode.TreeItemCollapsibleState.Collapsed
             : vscode.TreeItemCollapsibleState.None,
           ticket.renderedFields.created,
           undefined,
-          ticket.comments.length > 0
+          ticket?.comments?.length > 0
             ? ticket.comments?.map((comment: any) => {
                 return new ContextItem(
                   comment.body,
@@ -74,8 +74,8 @@ export const getJiraItems = async (
       new ContextItem(
         "Jira",
         vscode.TreeItemCollapsibleState.Collapsed,
-        `${mostRelevantJiraTickets.length.toString()} ticket${getPlural(
-          mostRelevantJiraTickets.length
+        `${mostRelevantJiraTickets?.length.toString()} ticket${getPlural(
+          mostRelevantJiraTickets?.length
         )}`,
         undefined,
         jiraItems ? jiraItems : [],
