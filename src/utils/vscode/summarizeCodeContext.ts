@@ -2,7 +2,7 @@ import axios from "axios";
 import { backendURL } from "../../constants";
 import analyticsReporter from "../vscode/reporter";
 
-export default async function summarizeCodeConext({
+export default async function summarizeCodeContext({
     pr_title,
     pr_body,
     block_of_code,
