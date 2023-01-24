@@ -35,21 +35,25 @@ export const getJiraItems = async (
           ticket.renderedFields?.description?.length
             ? ticket.renderedFields.description
             : "No description",
-          vscode.TreeItemCollapsibleState.Collapsed,
+          ticket.comments.length > 0
+            ? vscode.TreeItemCollapsibleState.Collapsed
+            : vscode.TreeItemCollapsibleState.None,
           ticket.renderedFields.created,
           undefined,
-          ticket.comments?.map((comment: any) => {
-            return new ContextItem(
-              comment.body,
-              vscode.TreeItemCollapsibleState.None,
-              dateToHumanReadable(comment.created),
-              {
-                command: WATERMELON_OPEN_LINK_COMMAND,
-                title: "View comment",
-                arguments: [comment.url],
-              }
-            );
-          })
+          ticket.comments.length > 0
+            ? ticket.comments?.map((comment: any) => {
+                return new ContextItem(
+                  comment.body,
+                  vscode.TreeItemCollapsibleState.None,
+                  dateToHumanReadable(comment.created),
+                  {
+                    command: WATERMELON_OPEN_LINK_COMMAND,
+                    title: "View comment",
+                    arguments: [comment.url],
+                  }
+                );
+              })
+            : undefined
         ),
       ]
     );
