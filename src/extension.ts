@@ -3,12 +3,9 @@ import getBlame from "./utils/getBlame";
 import getSHAArray from "./utils/getSHAArray";
 import getGitAPI from "./utils/vscode/getGitAPI";
 import getPackageInfo from "./utils/getPackageInfo";
-import WatermelonSidebar from "./watermelonSidebar";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
-import getGitHubUserInfo from "./utils/getGitHubUserInfo";
-import getWebviewOptions from "./utils/vscode/getWebViewOptions";
-import getPRsToPaintPerSHAs from "./utils/vscode/getPRsToPaintPerSHAs";
+import getPRsToPaintPerSHAs from "./utils/github/getPRsToPaintPerSHAs";
 import analyticsReporter from "./utils/vscode/reporter";
 import statusBarItem, {
   updateStatusBarItem,
@@ -30,7 +27,11 @@ import debugLogger from "./utils/vscode/debugLogger";
 import checkIfUserStarred from "./utils/github/checkIfUserStarred";
 import getMostRelevantJiraTickets from "./utils/jira/getMostRelevantJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
-import searchMessagesByText from "./utils/slack/searchMessagesByText";
+import { ContextItem } from "./ContextItem";
+import { getGitHubItems } from "./utils/treeview/getGitHubItems";
+import { getGitItems } from "./utils/treeview/getGitItems";
+import { getJiraItems } from "./utils/treeview/getJiraItems";
+import { getSlackItems } from "./utils/treeview/getSlackItems";
 
 // repo information
 let owner: string | undefined = "";
@@ -38,33 +39,203 @@ let repo: string | undefined = "";
 // selected shas
 let arrayOfSHAs: string[] = [];
 
+let startLine: any = undefined;
+let endLine: any = undefined;
+
 // extension version will be reported as a property with each event
 const extensionVersion = getPackageInfo().version;
 
+export class WatermelonTreeDataProvider
+  implements vscode.TreeDataProvider<ContextItem>
+{
+  private _onDidChangeTreeData: vscode.EventEmitter<
+    ContextItem | undefined | void
+  > = new vscode.EventEmitter<ContextItem | undefined | void>();
+  readonly onDidChangeTreeData: vscode.Event<ContextItem | undefined | void> =
+    this._onDidChangeTreeData.event;
+
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
+  }
+
+  getTreeItem(element: ContextItem): vscode.TreeItem {
+    return element;
+  }
+  getChildren(element?: ContextItem): Thenable<ContextItem[]> {
+    if (element) {
+      return Promise.resolve(element.children);
+    } else {
+      return Promise.resolve(this.getTopLevelItems());
+    }
+  }
+
+  private async getTopLevelItems(): Promise<ContextItem[]> {
+    const items: ContextItem[] = [];
+    let gitAPI = await getGitAPI();
+    debugLogger(`got gitAPI`);
+    let repoInfo = await getRepoInfo({});
+    const repoSource = repoInfo?.source;
+    const session = await vscode.authentication.getSession(
+      WatermelonAuthenticationProvider.id,
+      []
+    );
+    if (startLine === undefined && endLine === undefined) {
+      if (!arrayOfSHAs.length) {
+        arrayOfSHAs = await getSHAArray(
+          1,
+          vscode.window.activeTextEditor?.document.lineCount ?? 2,
+          vscode.window.activeTextEditor?.document.uri.fsPath,
+          gitAPI
+        );
+      }
+      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+
+      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+        arrayOfSHAs,
+        email: session?.account.label || "",
+        owner,
+        repo,
+        repoSource,
+      });
+      let sortedPRs: any[] = [];
+      if (Array.isArray(issuesWithTitlesAndGroupedComments)) {
+        sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
+          (a: any, b: any) => b.comments.length - a.comments.length
+        );
+      }
+
+      const parsedCommitObject = new Object(uniqueBlames[0]) as {
+        date: string;
+        message: string;
+        author: string;
+        email: string;
+        commit: string;
+        body: string;
+        sha: string;
+      };
+      const parsedMessage = parsedCommitObject.message;
+      debugLogger(`parsedMessage: ${parsedMessage}`);
+      if (!session) {
+        return items;
+      }
+      let itemPromises = [
+        getGitHubItems(issuesWithTitlesAndGroupedComments),
+        getGitItems(uniqueBlames),
+        getJiraItems(
+          sortedPRs[0]?.title || parsedMessage,
+          session.account.label
+        ),
+        getSlackItems(
+          sortedPRs[0]?.title || parsedMessage,
+          session.account.label
+        ),
+      ];
+      let results = await Promise.all(itemPromises);
+      results.forEach((result) => {
+        items.push(...result);
+      });
+      return items;
+    } else {
+      vscode.commands.executeCommand("watermelon.multiSelect");
+      arrayOfSHAs = await getSHAArray(
+        (startLine && startLine > 1 ? startLine - 1 : startLine) ?? 1,
+        endLine
+          ? endLine + 1
+          : vscode.window.activeTextEditor?.document.lineCount ?? 2,
+        vscode.window.activeTextEditor?.document.uri.fsPath,
+        gitAPI
+      );
+      if (!arrayOfSHAs.length) {
+        arrayOfSHAs = await getSHAArray(
+          1,
+          vscode.window.activeTextEditor?.document.lineCount ?? 2,
+          vscode.window.activeTextEditor?.document.uri.fsPath,
+          gitAPI
+        );
+      }
+
+      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
+        arrayOfSHAs,
+        email: session?.account.label || "",
+        owner,
+        repo,
+        repoSource,
+      });
+
+      if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
+        /*      return provider.sendMessage({
+          command: "error",
+          error: issuesWithTitlesAndGroupedComments,
+        }); */
+        return [];
+      }
+      let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
+        (a: any, b: any) => b.comments.length - a.comments.length
+      );
+      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+      const parsedCommitObject = new Object(uniqueBlames[0]) as {
+        date: string;
+        message: string;
+        author: string;
+        email: string;
+        commit: string;
+        body: string;
+        sha: string;
+      };
+    }
+    return [
+      new ContextItem(
+        "Code Context",
+        vscode.TreeItemCollapsibleState.Expanded,
+        "by Watermelon",
+        undefined,
+        items
+      ),
+    ];
+  }
+}
+
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
-
-  const workspaceState: object | undefined =
+  // allows saving state across sessions
+  const workspaceState: { repo: string; owner: string } | undefined =
     context.workspaceState.get("workspaceState");
   debugLogger(`workspaceState: ${JSON.stringify(workspaceState)}`);
   // create telemetry reporter on extension activation
   let reporter = analyticsReporter();
   reporter?.sendTelemetryEvent("extensionActivated");
-  let gitAPI = await getGitAPI();
-  debugLogger("got gitAPI");
+  let repoInfo = await getRepoInfo({ reporter });
+  repo = repoInfo?.repo ? repoInfo?.repo : workspaceState?.repo;
+  owner = repoInfo?.owner ? repoInfo?.owner : workspaceState?.owner;
+  debugLogger(`repo: ${repo}`);
+  debugLogger(`owner: ${owner}`);
 
-  const provider = new WatermelonSidebar(context, reporter);
-  debugLogger("created provider");
+  context.workspaceState.update("workspaceState", {
+    ...workspaceState,
+    repo: repo ? repo : workspaceState?.repo,
+    owner: owner ? owner : workspaceState?.owner,
+  });
+  owner && repo && reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
+  let watermelonTreeDataProvider = new WatermelonTreeDataProvider();
+  // register for Explorer view
+  vscode.window.registerTreeDataProvider(
+    "watermelonExplorerTreeProvider",
+    watermelonTreeDataProvider
+  );
+  // register for Watermelon view
+  vscode.window.registerTreeDataProvider(
+    "watermelonTreeProvider",
+    watermelonTreeDataProvider
+  );
 
   let wmStatusBarItem = statusBarItem();
   debugLogger("created wmStatusBarItem");
 
   context.subscriptions.push(
-    // webview
-    vscode.window.registerWebviewViewProvider(
-      WatermelonSidebar.viewType,
-      provider
-    ),
+    // treeview
+    vscode.window.createTreeView("watermelonExplorerTreeProvider", {
+      treeDataProvider: watermelonTreeDataProvider,
+    }),
     // action bar item
     wmStatusBarItem,
     // register some listener that make sure the status bar
@@ -132,206 +303,19 @@ export async function activate(context: vscode.ExtensionContext) {
     endLine = undefined
   ) => {
     vscode.commands.executeCommand(WATERMELON_SHOW_COMMAND);
-    provider.sendMessage({
-      command: "loading",
-    });
+
     const session = await vscode.authentication.getSession(
       WatermelonAuthenticationProvider.id,
       []
     );
     if (session) {
+      watermelonTreeDataProvider.refresh();
+
       context.workspaceState.update("session", {
         ...session,
       });
-      let githubUserInfo = await getGitHubUserInfo({
-        email: session.account.label,
-      });
-      debugLogger(`githubUserInfo: ${JSON.stringify(githubUserInfo)}`);
-      provider.sendMessage({
-        command: "user",
-        data: {
-          login: githubUserInfo.login,
-          avatar: githubUserInfo.avatar_url,
-        },
-      });
-
-      if (startLine === undefined && endLine === undefined) {
-        if (!arrayOfSHAs.length) {
-          arrayOfSHAs = await getSHAArray(
-            1,
-            vscode.window.activeTextEditor?.document.lineCount ?? 2,
-            vscode.window.activeTextEditor?.document.uri.fsPath,
-            gitAPI
-          );
-        }
-
-        let repoInfo = await getRepoInfo({ reporter });
-        const repoSource = repoInfo?.source;
-
-        let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-          arrayOfSHAs,
-          email: session.account.label,
-          owner,
-          repo,
-          repoSource
-        });
-        if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-          return provider.sendMessage({
-            command: "error",
-            error: issuesWithTitlesAndGroupedComments,
-          });
-        }
-        let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-          (a: any, b: any) => b.comments.length - a.comments.length
-        );
-        let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-
-        const parsedCommitObject = new Object(uniqueBlames[0]) as {
-          date: string;
-          message: string;
-          author: string;
-          email: string;
-          commit: string;
-          body: string;
-          sha: string;
-        };
-        const parsedMessage = parsedCommitObject.message;
-        // Jira
-        /*
-        const mostRelevantJiraTickets =
-          (await getMostRelevantJiraTickets({
-            user: session.account.label,
-            prTitle: sortedPRs[0].title || parsedMessage,
-          })) || {};
-        */
-        // Slack
-        /*
-        const relevantSlackThreads = await searchMessagesByText({
-          user: session.account.label,
-          email: session.account.label,
-          text: sortedPRs[0].title || parsedMessage,
-        });
-        */
-       
-        provider.sendMessage({
-          command: "prs",
-          data: {
-            sortedPRs,
-            uniqueBlames,
-            // mostRelevantJiraTickets,
-            // relevantSlackThreads,
-          },
-        });
-        
-      } else {
-        vscode.commands.executeCommand("watermelon.multiSelect");
-        arrayOfSHAs = await getSHAArray(
-          (startLine && startLine > 1 ? startLine - 1 : startLine) ?? 1,
-          endLine
-            ? endLine + 1
-            : vscode.window.activeTextEditor?.document.lineCount ?? 2,
-          vscode.window.activeTextEditor?.document.uri.fsPath,
-          gitAPI
-        );
-        if (!arrayOfSHAs.length) {
-          arrayOfSHAs = await getSHAArray(
-            1,
-            vscode.window.activeTextEditor?.document.lineCount ?? 2,
-            vscode.window.activeTextEditor?.document.uri.fsPath,
-            gitAPI
-          );
-        }
-        
-        let repoInfo = await getRepoInfo({ reporter });
-        const repoSource = repoInfo?.source;
-
-        let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-          arrayOfSHAs,
-          email: session.account.label,
-          owner,
-          repo,
-          repoSource,
-        });
-
-        if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-          return provider.sendMessage({
-            command: "error",
-            error: issuesWithTitlesAndGroupedComments,
-          });
-        }
-        let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-          (a: any, b: any) => b.comments.length - a.comments.length
-        );
-        let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-        const parsedCommitObject = new Object(uniqueBlames[0]) as {
-          date: string;
-          message: string;
-          author: string;
-          email: string;
-          commit: string;
-          body: string;
-          sha: string;
-        };
-        const parsedMessage = parsedCommitObject.message;
-        const mostRelevantJiraTickets =
-          (await getMostRelevantJiraTickets({
-            user: session.account.label,
-            prTitle: sortedPRs[0].title || parsedMessage,
-          })) || {};
-        // Slack
-        const relevantSlackThreads = await searchMessagesByText({
-          user: session.account.label,
-          email: session.account.label,
-          text: sortedPRs[0].title || parsedMessage,
-        });
-        provider.sendMessage({
-          command: "prs",
-          data: {
-            sortedPRs,
-            uniqueBlames,
-            mostRelevantJiraTickets,
-            relevantSlackThreads,
-          },
-        });
-      }
-      let isStarred = await checkIfUserStarred({
-        email: session.account.label,
-      });
-      provider.sendMessage({
-        command: "user",
-        data: {
-          login: githubUserInfo.login,
-          avatar: githubUserInfo.avatar_url,
-          isStarred,
-        },
-      });
-      // const jiraTickets = await getAssignedJiraTickets({
-      //   user: session.account.label,
-      // });
-      // debugLogger(`jiraTickets: ${jiraTickets}`);
-
-      /*
-      let gitHubIssues = await getGitHubDailySummary({
-        owner: owner || "",
-        repo: repo || "",
-        username: githubUserInfo.login || "",
-        email: session.account.label,
-      });
-      
-
-      debugLogger(`gitHubIssues: ${JSON.stringify(gitHubIssues)}`);
-      provider.sendMessage({
-        command: "dailySummary",
-        // data: { gitHubIssues, jiraTickets },
-        data: { gitHubIssues },
-      });
-      */
     } else {
-      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-      provider.sendMessage({
-        command: "prs",
-        data: { sortedPRs: { error: "not logged in" }, uniqueBlames },
-      });
+      vscode.window.showInformationMessage(`Please login first`);
     }
   };
   let showCommandHandler = async () => {
@@ -340,16 +324,7 @@ export async function activate(context: vscode.ExtensionContext) {
       "openSidebarCount",
       (context.globalState.get("openSidebarCount") as number) + 1
     );
-    if (
-      context.globalState.get<number>("openSidebarCount") &&
-      // @ts-ignore
-      context.globalState.get<Number>("openSidebarCount") % 3 === 0
-    ) {
-      provider.sendMessage({
-        command: "talkToCTO",
-      });
-    }
-    vscode.commands.executeCommand("watermelon.sidebar.focus");
+    vscode.commands.executeCommand("watermelonTreeProvider.focus");
     reporter?.sendTelemetryEvent("showCommand");
   };
   let linkCommandHandler = async ({
@@ -359,7 +334,7 @@ export async function activate(context: vscode.ExtensionContext) {
     url: string;
     source?: string;
   }) => {
-    vscode.commands.executeCommand("watermelon.sidebar.focus");
+    vscode.commands.executeCommand("watermelonTreeProvider.focus");
     vscode.commands.executeCommand("vscode.open", vscode.Uri.parse(url));
     reporter?.sendTelemetryEvent("linkCommand", {
       url,
@@ -398,6 +373,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
+    let gitAPI = await getGitAPI();
     updateStatusBarItem(wmStatusBarItem);
     arrayOfSHAs = await getSHAArray(
       selection.selections[0].start.line,
@@ -406,35 +382,6 @@ export async function activate(context: vscode.ExtensionContext) {
       gitAPI
     );
     debugLogger(`arrayOfSHAs: ${JSON.stringify(arrayOfSHAs)}`);
-  });
-
-  if (vscode.window.registerWebviewPanelSerializer) {
-    // Make sure we register a serializer in activation event
-    vscode.window.registerWebviewPanelSerializer(WatermelonSidebar.viewType, {
-      async deserializeWebviewPanel(
-        webviewPanel: vscode.WebviewPanel,
-        state: any
-      ) {
-        // Reset the webview options so we use latest uri for `localResourceRoots`.
-        webviewPanel.webview.options = getWebviewOptions(context.extensionUri);
-      },
-    });
-  }
-  let repoInfo = await getRepoInfo({ reporter });
-  repo = repoInfo?.repo;
-  owner = repoInfo?.owner;
-  debugLogger(`repo: ${repo}`);
-  debugLogger(`owner: ${owner}`);
-  context.workspaceState.update("workspaceState", {
-    ...workspaceState,
-    repo,
-    owner,
-  });
-  owner && repo && reporter?.sendTelemetryEvent("repoInfo", { owner, repo });
-
-  provider.sendMessage({
-    command: "versionInfo",
-    data: extensionVersion,
   });
 }
 

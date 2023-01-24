@@ -1,4 +1,4 @@
-const dateToHumanReadable = (dateToTransform) => {
+const dateToHumanReadable = (dateToTransform: Date) => {
   return new Date(dateToTransform).toLocaleDateString("en-us", {
     weekday: "long",
     year: "numeric",
