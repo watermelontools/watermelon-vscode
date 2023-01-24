@@ -5,7 +5,7 @@ import getPlural from "../others/text/getPlural";
 
 export const getGitItems = async (uniqueBlames: string[]) => {
   let items: ContextItem[] = [];
-  let commitItems = uniqueBlames.map((commit: any) => {
+  let commitItems = uniqueBlames?.map((commit: any) => {
     return new ContextItem(
       commit.message,
       vscode.TreeItemCollapsibleState.Collapsed,
@@ -15,7 +15,7 @@ export const getGitItems = async (uniqueBlames: string[]) => {
         new ContextItem(
           commit.authorName,
           vscode.TreeItemCollapsibleState.None,
-          commit.hash.slice(0, 7),
+          commit?.hash?.slice(0, 7),
           undefined
         ),
       ]
