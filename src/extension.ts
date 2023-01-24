@@ -220,6 +220,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
         // get the text of the selected block of code
         let selectedBlockOfCode = "";
+        let codeContextSummary = "";
+
         if (selectedStartLine && selectedEndLine) {
           let selectedText = vscode.window.activeTextEditor?.document.getText(
             new vscode.Range(selectedStartLine, selectedEndLine)
@@ -228,12 +230,8 @@ export async function activate(context: vscode.ExtensionContext) {
           let selectedCode = selectedText || "";
           selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm,"");
         }
-
-        console.log("selectedBlockOfCode after if", selectedBlockOfCode);
-        // let selectedCode = selectedText;
-        // let selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm,"");
           
-        let codeContextSummary = await summarizeCodeConext({
+        codeContextSummary = await summarizeCodeConext({
           pr_title: sortedPRs[0].title || parsedMessage,
           pr_body: sortedPRs[0].body || parsedCommitObject.body,
           block_of_code: selectedBlockOfCode || "",
