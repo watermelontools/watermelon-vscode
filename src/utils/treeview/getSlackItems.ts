@@ -55,7 +55,17 @@ export const getSlackItems = async (
             reply.text,
             vscode.TreeItemCollapsibleState.None,
             dateToHumanReadable(new Date(parseFloat(reply.ts))),
-            undefined,
+            {
+              command: WATERMELON_OPEN_LINK_COMMAND,
+              title: "View Slack thread",
+
+              arguments: [
+                {
+                  url: thread.permalink,
+                  source: "treeView",
+                },
+              ],
+            },
             undefined,
             undefined
           ),
