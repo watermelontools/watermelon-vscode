@@ -23,11 +23,18 @@ export const getJiraItems = async (
       {
         command: WATERMELON_OPEN_LINK_COMMAND,
         title: "View Jira ticket",
-        arguments: [`${"#"}/browse/${ticket.key}`],
+        arguments: [
+          {
+            url: `${ticket.serverInfo.baseUrl}/browse/${ticket.key}`,
+            source: "treeView",
+          },
+        ],
       },
       [
         new ContextItem(
-          ticket.renderedFields.description,
+          ticket.renderedFields?.description?.length
+            ? ticket.renderedFields.description
+            : "No description",
           vscode.TreeItemCollapsibleState.Collapsed,
           ticket.renderedFields.created,
           undefined,
