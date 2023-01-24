@@ -18,39 +18,43 @@ export const getGitHubItems = async (
     let gitHubItems = sortedPRs.map((pr: any) => {
       return new ContextItem(
         pr.title,
-        vscode.TreeItemCollapsibleState.Collapsed,
+        pr.comments.length > 0
+          ? vscode.TreeItemCollapsibleState.Collapsed
+          : vscode.TreeItemCollapsibleState.None,
         `${pr.comments.length.toString()} comment${getPlural(
           pr.comments.length
         )}`,
         {
           command: WATERMELON_OPEN_LINK_COMMAND,
           title: "View PR",
-          arguments: [pr.url],
+          arguments: [{ url: pr.url, source: "treeView" }],
         },
-        pr.comments.map((comment: any) => {
-          return new ContextItem(
-            comment.user.login,
-            vscode.TreeItemCollapsibleState.None,
-            comment.created_at,
-            {
-              command: WATERMELON_OPEN_LINK_COMMAND,
-              title: "View comment",
-              arguments: [comment.userLink],
-            },
-            [
-              new ContextItem(
-                comment.body,
+        pr.comments.length > 0
+          ? pr.comments.map((comment: any) => {
+              return new ContextItem(
+                comment.user.login,
                 vscode.TreeItemCollapsibleState.None,
-                dateToHumanReadable(comment.created_at),
+                comment.created_at,
                 {
                   command: WATERMELON_OPEN_LINK_COMMAND,
                   title: "View comment",
-                  arguments: [comment.url],
-                }
-              ),
-            ]
-          );
-        })
+                  arguments: [comment.userLink],
+                },
+                [
+                  new ContextItem(
+                    comment.body,
+                    vscode.TreeItemCollapsibleState.None,
+                    dateToHumanReadable(comment.created_at),
+                    {
+                      command: WATERMELON_OPEN_LINK_COMMAND,
+                      title: "View comment",
+                      arguments: [comment.url],
+                    }
+                  ),
+                ]
+              );
+            })
+          : undefined
       );
     });
     items.push(
