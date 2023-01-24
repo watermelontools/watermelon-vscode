@@ -1,7 +1,7 @@
 export default async function getSHAArray(
   startLine: number,
   endLine: number,
-  currentlyOpenTabfilePath: string| undefined,
+  currentlyOpenTabfilePath: string | undefined,
   gitAPI: any | undefined
 ): Promise<string[]> {
   let arrayOfSHAs: string[] = [];
