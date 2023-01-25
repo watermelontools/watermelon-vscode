@@ -90,6 +90,18 @@
         }
       ]
     },
+    "viewsWelcome": [
+      {
+        "view": "watermelonExplorerTreeProvider",
+        "contents": "You are not logged in to Watermelon 🍉.\n[Login](command:watermelon.Login)\n You will be able to see the context of your code in the explorer view.\n [Learn more](https://watermelon.tools).\n We support Github, Gitlab, Bitbucket, Git, Slack and Jira.",
+        "when": "!watermelon.isLogged"
+      },
+      {
+        "view": "watermelonTreeProvider",
+        "contents": "You are not logged in to Watermelon 🍉.\n[Login](command:watermelon.Login)\n You will be able to see the context of your code in the explorer view.\n [Learn more](https://watermelon.tools).\n We support Github, Gitlab, Bitbucket, Git, Slack and Jira.",
+        "when": "!watermelon.isLogged"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {

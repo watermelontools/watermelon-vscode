@@ -79,6 +79,10 @@ export class WatermelonTreeDataProvider
       WatermelonAuthenticationProvider.id,
       []
     );
+    if (!session || session === undefined) {
+      setLoggedIn(false);
+      return items;
+    }
     if (startLine === undefined && endLine === undefined) {
       if (!arrayOfSHAs.length) {
         arrayOfSHAs = await getSHAArray(
