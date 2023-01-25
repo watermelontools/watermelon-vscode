@@ -17,8 +17,10 @@ export const getCodeContextSummary = async (prTitle: string, prBody: string, blo
     new ContextItem(
       "Summary",
       vscode.TreeItemCollapsibleState.Expanded,
-      `${codeContextSummary}`,
+      'AI generated code context summary',
       undefined,
+      [codeContextSummary],
+      "openai",
     )
   );
   return items;

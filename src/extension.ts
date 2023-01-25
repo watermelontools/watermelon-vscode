@@ -117,28 +117,36 @@ export class WatermelonTreeDataProvider
       };
       const parsedMessage = parsedCommitObject.message;
 
+              // get the start and end line of the selected block of code
+              let selectedStartLine = vscode.window.activeTextEditor?.selection.start;
+              let selectedEndLine = vscode.window.activeTextEditor?.selection.end;
+      
+              // get the text of the selected block of code
+              let selectedBlockOfCode = "";
+              let codeContextSummary = "";
+      
+              if (selectedStartLine && selectedEndLine) {
+                let selectedText = vscode.window.activeTextEditor?.document.getText(
+                  new vscode.Range(selectedStartLine, selectedEndLine)
+                );
+      
+                let selectedCode = selectedText || "";
+                selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm,"");
+              }
+
+      codeContextSummary = await summarizeCodeContext({
+        pr_title: sortedPRs[0]?.title || parsedCommitObject.message,
+        pr_body: sortedPRs[0]?.body || parsedCommitObject.body,
+        block_of_code: "",
+        user_email: session?.account.label || "",
+      });
+
+      console.log("codeContextSummary line 143: ", codeContextSummary);
+
       debugLogger(`parsedMessage: ${parsedMessage}`);
       if (!session) {
         return items;
       }
-
-                    // get the start and end line of the selected block of code
-                    let selectedStartLine = vscode.window.activeTextEditor?.selection.start;
-                    let selectedEndLine = vscode.window.activeTextEditor?.selection.end;
-            
-                    // get the text of the selected block of code
-                    let selectedBlockOfCode = "";
-                    let codeContextSummary = "";
-            
-                    if (selectedStartLine && selectedEndLine) {
-                      let selectedText = vscode.window.activeTextEditor?.document.getText(
-                        new vscode.Range(selectedStartLine, selectedEndLine)
-                      );
-            
-                      let selectedCode = selectedText || "";
-                      selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm,"");
-                    }
-                    
       let itemPromises = [
         getGitHubItems(issuesWithTitlesAndGroupedComments),
         getGitItems(uniqueBlames),
@@ -153,7 +161,7 @@ export class WatermelonTreeDataProvider
         getCodeContextSummary(
           sortedPRs[0]?.title || parsedMessage,
           sortedPRs[0]?.body || parsedCommitObject.body,
-          selectedBlockOfCode,
+          codeContextSummary,
           session.account.label
         )
       ];
