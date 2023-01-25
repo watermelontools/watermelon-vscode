@@ -33,6 +33,9 @@ export default async function getPRsPerSHAS({
           let { message } = err;
           reporter?.sendTelemetryException(err, { error: message });
         });
+      if (issues?.error) {
+        return issues;
+      }
       issuesItems = issues?.items;
       break;
     case "gitlab.com":

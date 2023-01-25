@@ -2,14 +2,38 @@ import { ContextItem } from "../../ContextItem";
 import getPRsToPaintPerSHAs from "../github/getPRsToPaintPerSHAs";
 import * as vscode from "vscode";
 import getPlural from "../others/text/getPlural";
-import { WATERMELON_OPEN_LINK_COMMAND } from "../../constants";
+import { backendURL, WATERMELON_OPEN_LINK_COMMAND } from "../../constants";
 import dateToHumanReadable from "../others/text/dateToHumanReadable";
 
 export const getGitHubItems = async (
   issuesWithTitlesAndGroupedComments: any[] | { errorText: string }
 ) => {
   let items: ContextItem[] = [];
+  let errorText = "";
+  if (
+    issuesWithTitlesAndGroupedComments &&
+    "errorText" in issuesWithTitlesAndGroupedComments
+  ) {
+    errorText = issuesWithTitlesAndGroupedComments.errorText;
+  }
 
+  if (errorText) {
+    items.push(
+      new ContextItem(
+        "Please login to GitHub",
+        vscode.TreeItemCollapsibleState.None,
+        "to see PRs",
+        {
+          command: WATERMELON_OPEN_LINK_COMMAND,
+          title: "Login to GitHub",
+          arguments: [{ url: backendURL, source: "treeView" }],
+        },
+        undefined,
+        "github"
+      )
+    );
+    return items;
+  }
   let sortedPRs: any[] = [];
   if (Array.isArray(issuesWithTitlesAndGroupedComments)) {
     sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
@@ -67,6 +91,7 @@ export const getGitHubItems = async (
         "github"
       )
     );
+  } else if (issuesWithTitlesAndGroupedComments.errorText === "") {
   } else {
     items.push(
       new ContextItem(
