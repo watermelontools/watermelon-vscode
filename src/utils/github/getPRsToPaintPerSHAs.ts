@@ -49,6 +49,11 @@ export default async function getPRsToPaintPerSHAs({
     shaArray: joinedArrayOfSHAs,
     repoSource,
   });
+
+  if (foundPRs.error === "no access_token") {
+    return { errorText: "Not logged in" };
+  }
+
   if (foundPRs?.length === 0) {
     noSearchResults();
     return { errorText: "No search results" };

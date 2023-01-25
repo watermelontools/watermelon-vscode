@@ -8,13 +8,16 @@ export default async function getMostRelevantJiraTickets({
 }: {
   user: string;
   prTitle: string;
-}) {
+}): Promise<any> {
   const jiraTickets = await axios
     .post(`${backendURL}/api/jira/getMostRelevantJiraTicket`, {
       user,
       prTitle,
     })
     .then((res) => res.data);
+  if (jiraTickets.error === "no access_token") {
+    return { errorText: "Not logged in" };
+  }
   let ticketsWithComments: any[] = [];
   if (!jiraTickets || jiraTickets.length === 0 || jiraTickets.error) {
     return [];
