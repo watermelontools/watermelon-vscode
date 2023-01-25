@@ -5,7 +5,7 @@ import getPlural from "../others/text/getPlural";
 import { backendURL, WATERMELON_OPEN_LINK_COMMAND } from "../../constants";
 import dateToHumanReadable from "../others/text/dateToHumanReadable";
 
-export const getGitHubItems = async (
+export const getHubLabBucketItems = async (
   issuesWithTitlesAndGroupedComments: any[] | { errorText: string }
 ) => {
   let items: ContextItem[] = [];
