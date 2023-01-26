@@ -6,9 +6,11 @@ import { backendURL, WATERMELON_OPEN_LINK_COMMAND } from "../../constants";
 import dateToHumanReadable from "../others/text/dateToHumanReadable";
 
 export const getHubLabBucketItems = async (
-  issuesWithTitlesAndGroupedComments: any[] | { errorText: string }
+  issuesWithTitlesAndGroupedComments: any[] | { errorText: string },
+  reposource: string
 ) => {
   let items: ContextItem[] = [];
+  console.log(reposource, "reposource");
   let errorText = "";
   if (
     issuesWithTitlesAndGroupedComments &&
@@ -16,20 +18,30 @@ export const getHubLabBucketItems = async (
   ) {
     errorText = issuesWithTitlesAndGroupedComments.errorText;
   }
-
+  console.log(issuesWithTitlesAndGroupedComments);
   if (errorText) {
     items.push(
       new ContextItem(
-        "Please login to GitHub",
+        `Please login to ${
+          reposource === "gitlab.com"
+            ? "GitLab"
+            : reposource === "bitbucket.com"
+            ? "Bitbucket"
+            : "GitHub"
+        }`,
         vscode.TreeItemCollapsibleState.None,
-        "to see PRs",
+        `to see ${reposource === "gitlab.com" ? "M" : "P"}Rs`,
         {
           command: WATERMELON_OPEN_LINK_COMMAND,
           title: "Login to GitHub",
           arguments: [{ url: backendURL, source: "treeView" }],
         },
         undefined,
-        "github"
+        reposource === "gitlab.com"
+          ? "gitLab"
+          : reposource === "bitbucket.com"
+          ? "bitbucket"
+          : "gitHub"
       )
     );
     return items;
@@ -83,24 +95,42 @@ export const getHubLabBucketItems = async (
     });
     items.push(
       new ContextItem(
-        "GitHub",
+        reposource === "gitlab.com"
+          ? "GitLab"
+          : reposource === "bitbucket.com"
+          ? "Bitbucket"
+          : "GitHub",
         vscode.TreeItemCollapsibleState.Collapsed,
-        `${sortedPRs.length.toString()} PR${getPlural(sortedPRs.length)}`,
+        `${sortedPRs.length.toString()} ${
+          reposource === "gitlab.com" ? "M" : "P"
+        }R${getPlural(sortedPRs.length)}`,
         undefined,
         gitHubItems,
-        "github"
+        reposource === "gitlab.com"
+          ? "gitLab"
+          : reposource === "bitbucket.com"
+          ? "bitbucket"
+          : "gitHub"
       )
     );
   } else if (issuesWithTitlesAndGroupedComments.errorText === "") {
   } else {
     items.push(
       new ContextItem(
-        "GitHub",
+        reposource === "gitlab.com"
+          ? "GitLab"
+          : reposource === "bitbucket.com"
+          ? "Bitbucket"
+          : "GitHub",
         vscode.TreeItemCollapsibleState.None,
-        `No PRs found`,
+        `No ${reposource === "gitlab.com" ? "M" : "P"}Rs found`,
         undefined,
         undefined,
-        "github"
+        reposource === "gitlab.com"
+          ? "gitLab"
+          : reposource === "bitbucket.com"
+          ? "bitbucket"
+          : "gitHub"
       )
     );
   }
