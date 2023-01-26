@@ -123,7 +123,7 @@ export class WatermelonTreeDataProvider
         return items;
       }
       let itemPromises = [
-        getHubLabBucketItems(issuesWithTitlesAndGroupedComments),
+        getHubLabBucketItems(issuesWithTitlesAndGroupedComments, repoSource),
         getGitItems(uniqueBlames),
         getJiraItems(
           sortedPRs[0]?.title || parsedMessage,
