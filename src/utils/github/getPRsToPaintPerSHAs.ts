@@ -50,7 +50,7 @@ export default async function getPRsToPaintPerSHAs({
     repoSource,
   });
 
-  if (foundPRs.error === "no access_token") {
+  if (foundPRs?.error === "no access_token") {
     return { errorText: "Not logged in" };
   }
 
