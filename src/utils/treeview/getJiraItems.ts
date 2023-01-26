@@ -2,7 +2,7 @@ import { ContextItem } from "../../ContextItem";
 import getPlural from "../others/text/getPlural";
 import * as vscode from "vscode";
 import getMostRelevantJiraTickets from "../jira/getMostRelevantJiraTickets";
-import { WATERMELON_OPEN_LINK_COMMAND } from "../../constants";
+import { backendURL, WATERMELON_OPEN_LINK_COMMAND } from "../../constants";
 import dateToHumanReadable from "../others/text/dateToHumanReadable";
 
 export const getJiraItems = async (
@@ -15,7 +15,29 @@ export const getJiraItems = async (
       user: accountLabel,
       prTitle: searchString,
     })) || {};
-  const jiraItems = mostRelevantJiraTickets?.map((ticket) => {
+  let errorText = "";
+  if (mostRelevantJiraTickets.errorText) {
+    if (mostRelevantJiraTickets && "errorText" in mostRelevantJiraTickets) {
+      errorText = mostRelevantJiraTickets.errorText;
+      items.push(
+        new ContextItem(
+          "Please login to Jira",
+          vscode.TreeItemCollapsibleState.None,
+          "to see Tickets",
+          {
+            command: WATERMELON_OPEN_LINK_COMMAND,
+            title: "Login to Jira",
+            arguments: [{ url: backendURL, source: "treeView" }],
+          },
+          undefined,
+          "jira"
+        )
+      );
+      return items;
+    }
+  }
+
+  const jiraItems = mostRelevantJiraTickets?.map((ticket: any) => {
     return new ContextItem(
       ticket.key,
       vscode.TreeItemCollapsibleState.Collapsed,
