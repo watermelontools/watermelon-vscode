@@ -9,7 +9,7 @@ export default async function searchMessagesByText({
 }: {
   email: string;
   text: string;
-}) {
+}): Promise<any> {
   const foundMessages = await axios
     .post(`${backendURL}/api/slack/searchMessagesByText`, {
       user: email,
@@ -21,6 +21,9 @@ export default async function searchMessagesByText({
       let { message } = err;
       reporter?.sendTelemetryException(err, { error: message });
     });
+  if (foundMessages.error === "no access_token") {
+    return { errorText: "Not logged in" };
+  }
   let threadWithReplies: any[] = [];
   if (!foundMessages?.messages?.matches) {
     return [];

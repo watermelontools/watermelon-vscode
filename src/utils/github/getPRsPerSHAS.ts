@@ -33,7 +33,10 @@ export default async function getPRsPerSHAS({
           let { message } = err;
           reporter?.sendTelemetryException(err, { error: message });
         });
-      issuesItems = issues.items;
+      if (issues?.error) {
+        return issues;
+      }
+      issuesItems = issues?.items;
       break;
     case "gitlab.com":
       issues = await axios

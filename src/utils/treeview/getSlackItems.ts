@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { WATERMELON_OPEN_LINK_COMMAND } from "../../constants";
+import { backendURL, WATERMELON_OPEN_LINK_COMMAND } from "../../constants";
 import { ContextItem } from "../../ContextItem";
 import dateToHumanReadable from "../others/text/dateToHumanReadable";
 import getPlural from "../others/text/getPlural";
@@ -14,7 +14,28 @@ export const getSlackItems = async (
     email: accountLabel,
     text: searchString,
   });
-  const slackItems = relevantSlackThreads?.map((thread) => {
+  let errorText = "";
+  if (relevantSlackThreads.errorText) {
+    if (relevantSlackThreads && "errorText" in relevantSlackThreads) {
+      errorText = relevantSlackThreads.errorText;
+      items.push(
+        new ContextItem(
+          "Please login to Slack",
+          vscode.TreeItemCollapsibleState.None,
+          "to see Threads",
+          {
+            command: WATERMELON_OPEN_LINK_COMMAND,
+            title: "Login to Slack",
+            arguments: [{ url: backendURL, source: "treeView" }],
+          },
+          undefined,
+          "slack"
+        )
+      );
+      return items;
+    }
+  }
+  const slackItems = relevantSlackThreads?.map((thread: any) => {
     return new ContextItem(
       `#${thread.channel.name}`,
       vscode.TreeItemCollapsibleState.Collapsed,

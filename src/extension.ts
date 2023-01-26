@@ -28,7 +28,7 @@ import checkIfUserStarred from "./utils/github/checkIfUserStarred";
 import getMostRelevantJiraTickets from "./utils/jira/getMostRelevantJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
 import { ContextItem } from "./ContextItem";
-import { getGitHubItems } from "./utils/treeview/getGitHubItems";
+import { getHubLabBucketItems } from "./utils/treeview/getHubLabBucketItems";
 import { getGitItems } from "./utils/treeview/getGitItems";
 import { getJiraItems } from "./utils/treeview/getJiraItems";
 import { getSlackItems } from "./utils/treeview/getSlackItems";
@@ -123,7 +123,7 @@ export class WatermelonTreeDataProvider
         return items;
       }
       let itemPromises = [
-        getGitHubItems(issuesWithTitlesAndGroupedComments),
+        getHubLabBucketItems(issuesWithTitlesAndGroupedComments),
         getGitItems(uniqueBlames),
         getJiraItems(
           sortedPRs[0]?.title || parsedMessage,
