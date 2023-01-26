@@ -141,8 +141,6 @@ export class WatermelonTreeDataProvider
         user_email: session?.account.label || "",
       });
 
-      console.log("codeContextSummary line 143: ", codeContextSummary);
-
       debugLogger(`parsedMessage: ${parsedMessage}`);
       if (!session) {
         return items;
@@ -242,7 +240,6 @@ export class WatermelonTreeDataProvider
         user_email: session?.account.label || "",
       });
 
-      console.log("codeContextSummary line 238: ", codeContextSummary);
     }
     return [
       new ContextItem(
