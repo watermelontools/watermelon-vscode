@@ -33,7 +33,6 @@ import { getGitItems } from "./utils/treeview/getGitItems";
 import { getJiraItems } from "./utils/treeview/getJiraItems";
 import { getSlackItems } from "./utils/treeview/getSlackItems";
 import { getCodeContextSummary } from "./utils/treeview/getCodeContextSummary";
-import summarizeCodeContext from "./utils/vscode/summarizeCodeContext";
 
 // repo information
 let owner: string | undefined = "";
@@ -152,7 +151,7 @@ export class WatermelonTreeDataProvider
         getCodeContextSummary(
           sortedPRs[0]?.title || parsedMessage,
           sortedPRs[0]?.body || parsedCommitObject.body,
-          codeContextSummary,
+          selectedBlockOfCode,
           session.account.label
         ),
       ];

@@ -1,27 +1,48 @@
 import { ContextItem } from "../../ContextItem";
 import * as vscode from "vscode";
-import  summarizeCodeContext  from "../vscode/summarizeCodeContext";  
+import axios from "axios";
+import { backendURL } from "../../constants";
+import analyticsReporter from "../vscode/reporter";
 
-
-export const getCodeContextSummary = async (prTitle: string, prBody: string, blockOfCode: string, userEmail: string) => {
+export const getCodeContextSummary = async (
+  prTitle: string,
+  prBody: string,
+  blockOfCode: string,
+  userEmail: string
+) => {
   let items: ContextItem[] = [];
-  let codeContextSummary = await summarizeCodeContext({
-    pr_title: prTitle,
-    pr_body: prBody,
-    block_of_code: blockOfCode,
-    user_email: userEmail
-  });
+
+  let codeContextSummary = await axios
+    .post(`${backendURL}/api/openai/summarizeCodeContext`, {
+      pr_title: prTitle,
+      pr_body: prBody,
+      block_of_code: blockOfCode,
+      user_email: userEmail,
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      let reporter = analyticsReporter();
+      let { message } = err;
+      reporter?.sendTelemetryException(err, { error: message });
+    });
+
+    console.log("getcodeecontextsummary.ts codeContextSummary: ", codeContextSummary);
 
   items.push(
     new ContextItem(
       "Summary",
       vscode.TreeItemCollapsibleState.Expanded,
-      'AI generated code context summary',
+      "AI generated code context summary",
       undefined,
       [
-        new ContextItem(codeContextSummary, vscode.TreeItemCollapsibleState.None, "", undefined),
+        new ContextItem(
+          codeContextSummary,
+          vscode.TreeItemCollapsibleState.None,
+          "",
+          undefined
+        ),
       ],
-      "openai",
+      "openai"
     )
   );
   return items;
