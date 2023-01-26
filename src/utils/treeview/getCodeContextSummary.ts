@@ -26,8 +26,6 @@ export const getCodeContextSummary = async (
       reporter?.sendTelemetryException(err, { error: message });
     });
 
-    console.log("getcodeecontextsummary.ts codeContextSummary: ", codeContextSummary);
-
   items.push(
     new ContextItem(
       "Summary",

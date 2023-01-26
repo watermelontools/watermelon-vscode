@@ -122,7 +122,6 @@ export class WatermelonTreeDataProvider
 
       // get the text of the selected block of code
       let selectedBlockOfCode = "";
-      let codeContextSummary = "";
 
       if (selectedStartLine && selectedEndLine) {
         let selectedText = vscode.window.activeTextEditor?.document.getText(
