@@ -14,8 +14,7 @@ export default async function summarizeCodeContext({
     user_email: string;
   }) {
     const codeContextSummary = await axios
-    // .post(`${backendURL}/api/openai/summarizeCodeContext`, {
-    .post(`http://localhost:3000/api/openai/summarizeCodeContext`, {
+    .post(`${backendURL}/api/openai/summarizeCodeContext`, {
       pr_title,
       pr_body,
       block_of_code,
