@@ -14,7 +14,7 @@
     "url": "https://github.com/sponsors/watermelontools"
   },
   "engines": {
-    "vscode": "^1.63.0"
+    "vscode": "^1.74.0"
   },
   "categories": [
     "Debuggers",
@@ -76,12 +76,29 @@
     "views": {
       "watermelon": [
         {
-          "type": "webview",
-          "id": "watermelon.sidebar",
-          "name": "watermelon"
+          "id": "watermelonTreeProvider",
+          "name": "Context"
+        }
+      ],
+      "explorer": [
+        {
+          "id": "watermelonExplorerTreeProvider",
+          "name": "Context by Watermelon"
         }
       ]
     },
+    "viewsWelcome": [
+      {
+        "view": "watermelonExplorerTreeProvider",
+        "contents": "You are not logged in to Watermelon 🍉.\n[Login](command:watermelon.login)\n You will be able to see the context of your code in the explorer view.\n [Learn more](https://watermelon.tools).\n We support Github, Gitlab, Bitbucket, Git, Slack and Jira.",
+        "when": "!watermelon.isLogged"
+      },
+      {
+        "view": "watermelonTreeProvider",
+        "contents": "You are not logged in to Watermelon 🍉.\n[Login](command:watermelon.login)\n You will be able to see the context of your code in the explorer view.\n [Learn more](https://watermelon.tools).\n We support Github, Gitlab, Bitbucket, Git, Slack and Jira.",
+        "when": "!watermelon.isLogged"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
