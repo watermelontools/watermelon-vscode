@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Moved UI to use treeview
 - Added Gitlab and Bitbucket as sources for git services
+- Code context summary with GPT
 
 ---
 

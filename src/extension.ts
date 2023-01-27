@@ -32,6 +32,7 @@ import { getHubLabBucketItems } from "./utils/treeview/getHubLabBucketItems";
 import { getGitItems } from "./utils/treeview/getGitItems";
 import { getJiraItems } from "./utils/treeview/getJiraItems";
 import { getSlackItems } from "./utils/treeview/getSlackItems";
+import { getCodeContextSummary } from "./utils/treeview/getCodeContextSummary";
 
 // repo information
 let owner: string | undefined = "";
@@ -118,6 +119,23 @@ export class WatermelonTreeDataProvider
         sha: string;
       };
       const parsedMessage = parsedCommitObject.message;
+
+      // get the start and end line of the selected block of code
+      let selectedStartLine = vscode.window.activeTextEditor?.selection.start;
+      let selectedEndLine = vscode.window.activeTextEditor?.selection.end;
+
+      // get the text of the selected block of code
+      let selectedBlockOfCode = "";
+
+      if (selectedStartLine && selectedEndLine) {
+        let selectedText = vscode.window.activeTextEditor?.document.getText(
+          new vscode.Range(selectedStartLine, selectedEndLine)
+        );
+
+        let selectedCode = selectedText || "";
+        selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm, "");
+      }
+
       debugLogger(`parsedMessage: ${parsedMessage}`);
       if (!session) {
         return items;
@@ -131,6 +149,12 @@ export class WatermelonTreeDataProvider
         ),
         getSlackItems(
           sortedPRs[0]?.title || parsedMessage,
+          session.account.label
+        ),
+        getCodeContextSummary(
+          sortedPRs[0]?.title || parsedMessage,
+          sortedPRs[0]?.body || parsedCommitObject.body,
+          selectedBlockOfCode,
           session.account.label
         ),
       ];
