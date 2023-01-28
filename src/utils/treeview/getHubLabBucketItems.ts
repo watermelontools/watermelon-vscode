@@ -18,7 +18,6 @@ export const getHubLabBucketItems = async (
   ) {
     errorText = issuesWithTitlesAndGroupedComments.errorText;
   }
-  console.log(issuesWithTitlesAndGroupedComments);
   if (errorText) {
     items.push(
       new ContextItem(

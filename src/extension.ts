@@ -36,6 +36,8 @@ import { getSlackItems } from "./utils/treeview/getSlackItems";
 // repo information
 let owner: string | undefined = "";
 let repo: string | undefined = "";
+let repoSource: string | undefined = "";
+
 // selected shas
 let arrayOfSHAs: string[] = [];
 
@@ -74,7 +76,10 @@ export class WatermelonTreeDataProvider
     let gitAPI = await getGitAPI();
     debugLogger(`got gitAPI`);
     let repoInfo = await getRepoInfo({});
-    const repoSource = repoInfo?.source;
+    console.log("repoInfo", repoInfo);
+    repoSource = repoInfo?.source;
+    repo = repoInfo?.repo;
+    owner = repoInfo?.owner;
     const session = await vscode.authentication.getSession(
       WatermelonAuthenticationProvider.id,
       []
