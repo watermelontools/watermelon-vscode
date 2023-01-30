@@ -36,10 +36,7 @@
     "theme": "dark"
   },
   "activationEvents": [
-    "onAuthenticationRequest:watermelon",
-    "onCommand:watermelon.start",
-    "onCommand:watermelon.show",
-    "onWebviewPanel:watermelon",
+    "onView:watermelon",
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
@@ -64,7 +61,7 @@
       },
       {
         "command": "watermelon.login",
-        "title": "Login to watermelon using Github",
+        "title": "Login to Watermelon",
         "category": "watermelon"
       },
       {
