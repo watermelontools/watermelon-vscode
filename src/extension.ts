@@ -77,7 +77,6 @@ export class WatermelonTreeDataProvider
     let gitAPI = await getGitAPI();
     debugLogger(`got gitAPI`);
     let repoInfo = await getRepoInfo({});
-    console.log("repoInfo", repoInfo);
     repoSource = repoInfo?.source;
     repo = repoInfo?.repo;
     owner = repoInfo?.owner;

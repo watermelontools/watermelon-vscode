@@ -10,7 +10,6 @@ export const getHubLabBucketItems = async (
   reposource: string
 ) => {
   let items: ContextItem[] = [];
-  console.log(reposource, "reposource");
   let errorText = "";
   if (
     issuesWithTitlesAndGroupedComments &&
@@ -50,7 +49,6 @@ export const getHubLabBucketItems = async (
     sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
       (a: any, b: any) => b.comments.length - a.comments.length
     );
-    console.log(sortedPRs, "sortedPRs");
     let gitHubItems = sortedPRs.map((pr: any) => {
       return new ContextItem(
         pr.title,
