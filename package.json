@@ -104,6 +104,16 @@
         "view": "watermelonTreeProvider",
         "contents": "Loading your Watermelon 🍉 results, please hang tight.",
         "when": "watermelon.isLogged && watermelon.isLoading"
+      },
+      {
+        "view": "watermelonExplorerTreeProvider",
+        "contents": "Watermelon 🍉 will help you understand code context better. \n [Get Code Context](command:watermelon.start)\n",
+        "when": "watermelon.isLogged && !watermelon.isLoading"
+      },
+      {
+        "view": "watermelonTreeProvider",
+        "contents": "Watermelon 🍉 will help you understand code context better. \n [Get Code Context](command:watermelon.start)\n",
+        "when": "watermelon.isLogged && !watermelon.isLoading"
       }
     ],
     "viewsContainers": {
