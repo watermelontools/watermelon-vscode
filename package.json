@@ -91,7 +91,7 @@
     "viewsWelcome": [
       {
         "view": "watermelonButton",
-        "contents": "Watermelon 🍉 will help you understand code context better. \n [Get Code Context](command:watermelon.start)\n"
+        "contents": "Watermelon 🍉 will help you understand code context better. \n [Get Code Context](command:watermelon.start)\n You can help us by [adding Watermelon to your recommended extensions](command:watermelon.recommend). \n Visit [our web page](https://watermelontools.com). \n We support Github, Gitlab, Bitbucket, Git, Slack and Jira.\n Support our Open Source work by [Starring on Github](https://github.com/watermelontools/wm-extension). \n [Read our Blog](https://www.watermelontools.com/blog) and learn with us."
       },
       {
         "view": "watermelonExplorerTreeProvider",
