@@ -21,7 +21,7 @@ export default async function searchMessagesByText({
       let { message } = err;
       reporter?.sendTelemetryException(err, { error: message });
     });
-  if (foundMessages.error === "no access_token") {
+  if (foundMessages?.error === "no access_token") {
     return { errorText: "Not logged in" };
   }
   let threadWithReplies: any[] = [];
