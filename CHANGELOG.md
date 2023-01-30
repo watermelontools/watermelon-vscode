@@ -4,7 +4,21 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.0.1]
+
+- Removed dependency on vscode.git
+- Removed octokit
+
+## [2.0.0]
+
+- Moved UI to use treeview
+- Added Gitlab and Bitbucket as sources for git services
+- Code context summary with GPT
+
+---
+
 ## [1.8.0]
+
 - Solved critical bug when clicking "Get code context"
 - Removed daily summary to focus on context
 

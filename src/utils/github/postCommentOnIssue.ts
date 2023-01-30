@@ -29,5 +29,5 @@ export default async function postCommentOnIssue({
       let { message } = err;
       reporter?.sendTelemetryException(err, { error: message });
     });
-  return issues.items;
+  return issues?.items;
 }

@@ -1,7 +1,7 @@
 {
   "name": "watermelon-tools",
   "description": "Watermelon, find all the historical context of your code",
-  "version": "1.8.0",
+  "version": "2.0.0",
   "publisher": "WatermelonTools",
   "displayName": "Watermelon",
   "private": true,
@@ -14,7 +14,7 @@
     "url": "https://github.com/sponsors/watermelontools"
   },
   "engines": {
-    "vscode": "^1.63.0"
+    "vscode": "^1.74.0"
   },
   "categories": [
     "Debuggers",
@@ -41,9 +41,6 @@
     "onCommand:watermelon.show",
     "onWebviewPanel:watermelon",
     "onStartupFinished"
-  ],
-  "extensionDependencies": [
-    "vscode.git"
   ],
   "main": "./out/extension.js",
   "browser": "./out/extension.js",
@@ -79,12 +76,29 @@
     "views": {
       "watermelon": [
         {
-          "type": "webview",
-          "id": "watermelon.sidebar",
-          "name": "watermelon"
+          "id": "watermelonTreeProvider",
+          "name": "Context"
+        }
+      ],
+      "explorer": [
+        {
+          "id": "watermelonExplorerTreeProvider",
+          "name": "Context by Watermelon"
         }
       ]
     },
+    "viewsWelcome": [
+      {
+        "view": "watermelonExplorerTreeProvider",
+        "contents": "You are not logged in to Watermelon 🍉.\n[Login](command:watermelon.login)\n You will be able to see the context of your code in the explorer view.\n [Learn more](https://watermelon.tools).\n We support Github, Gitlab, Bitbucket, Git, Slack and Jira.",
+        "when": "!watermelon.isLogged"
+      },
+      {
+        "view": "watermelonTreeProvider",
+        "contents": "You are not logged in to Watermelon 🍉.\n[Login](command:watermelon.login)\n You will be able to see the context of your code in the explorer view.\n [Learn more](https://watermelon.tools).\n We support Github, Gitlab, Bitbucket, Git, Slack and Jira.",
+        "when": "!watermelon.isLogged"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -309,8 +323,6 @@
     "vsce": "^2.6.7"
   },
   "dependencies": {
-    "@octokit/core": "^3.5.1",
-    "@octokit/rest": "^18.12.0",
     "@vscode/codicons": "^0.0.31",
     "@vscode/extension-telemetry": "^0.5.1",
     "@vscode/test-electron": "^2.1.2",
