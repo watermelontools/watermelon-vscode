@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [2.0.1]
 
+- Fixed Gitlab MR mapping
 - Removed dependency on vscode.git
 - Removed octokit
 

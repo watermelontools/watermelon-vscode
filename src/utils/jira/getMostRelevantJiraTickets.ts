@@ -15,7 +15,7 @@ export default async function getMostRelevantJiraTickets({
       prTitle,
     })
     .then((res) => res.data);
-  if (jiraTickets.error === "no access_token") {
+  if (jiraTickets?.error === "no access_token") {
     return { errorText: "Not logged in" };
   }
   let ticketsWithComments: any[] = [];
