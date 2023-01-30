@@ -50,8 +50,6 @@ export default async function getPRsToPaintPerSHAs({
     repoSource,
   });
 
-  console.log("foundPRs", foundPRs)
-
   if (foundPRs.error === "no access_token") {
     return { errorText: "Not logged in" };
   }
@@ -84,7 +82,7 @@ export default async function getPRsToPaintPerSHAs({
   }[] = [];
 
   if (foundPRs) {
-    let prPromises = foundPRs.map(async (issue: { number: number }) => {
+    let prPromises = foundPRs?.map(async (issue: any) => {
       let comments = await getIssueComments({
         email,
         issueNumber: issue.number,
@@ -127,18 +125,18 @@ export default async function getPRsToPaintPerSHAs({
         repoSource === "bitbucket.org"
       ) {
         issuesWithTitlesAndGroupedComments.push({
-          created_at: foundPRs[0].created_at,
-          user: foundPRs[0].user.login,
-          userImage: foundPRs[0].user.avatar_url,
-          userLink: foundPRs[0].user.html_url,
-          title: foundPRs[0].title,
-          url: foundPRs[0].html_url,
-          body: foundPRs[0].body,
-          avatar: foundPRs[0].user.avatar_url,
-          repo_url: foundPRs[0].repository_url,
-          state: foundPRs[0].state,
-          draft: foundPRs[0].draft,
-          number: issue.number || foundPRs[0].number,
+          created_at: issue.created_at,
+          user: issue.user.login,
+          userImage: issue.user.avatar_url,
+          userLink: issue.user.html_url,
+          title: issue.title,
+          url: issue.html_url,
+          body: issue.body,
+          avatar: issue.user.avatar_url,
+          repo_url: issue.repository_url,
+          state: issue.state,
+          draft: issue.draft,
+          number: issue.number || issue.number,
           comments: [],
         });
       }
@@ -147,6 +145,5 @@ export default async function getPRsToPaintPerSHAs({
   } else {
     return { errorText: "No search results" };
   }
-
   return issuesWithTitlesAndGroupedComments;
 }
