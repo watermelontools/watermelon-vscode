@@ -76,7 +76,7 @@ export default async function getPRsToPaintPerSHAs({
   }[] = [];
 
   if (foundPRs) {
-    let prPromises = foundPRs.map(async (issue: any) => {
+    let prPromises = foundPRs?.map(async (issue: any) => {
       let comments = await getIssueComments({
         email,
         issueNumber: issue.number,
