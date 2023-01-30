@@ -7,11 +7,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [2.0.1]
 
 - Fixed Gitlab MR mapping
+- Removed dependency on vscode.git
+- Removed octokit
 
 ## [2.0.0]
 
 - Moved UI to use treeview
 - Added Gitlab and Bitbucket as sources for git services
+- Code context summary with GPT
 
 ---
 

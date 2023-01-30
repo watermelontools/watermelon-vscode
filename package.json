@@ -1,7 +1,7 @@
 {
   "name": "watermelon-tools",
   "description": "Watermelon, find all the historical context of your code",
-  "version": "1.7.2",
+  "version": "2.0.0",
   "publisher": "WatermelonTools",
   "displayName": "Watermelon",
   "private": true,
@@ -41,9 +41,6 @@
     "onCommand:watermelon.show",
     "onWebviewPanel:watermelon",
     "onStartupFinished"
-  ],
-  "extensionDependencies": [
-    "vscode.git"
   ],
   "main": "./out/extension.js",
   "browser": "./out/extension.js",
