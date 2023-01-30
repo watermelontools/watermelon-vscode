@@ -75,6 +75,10 @@
         {
           "id": "watermelonTreeProvider",
           "name": "Context"
+        },
+        {
+          "id": "watermelonButton",
+          "name": "Run"
         }
       ],
       "explorer": [
@@ -85,6 +89,10 @@
       ]
     },
     "viewsWelcome": [
+      {
+        "view": "watermelonButton",
+        "contents": "Watermelon 🍉 will help you understand code context better. \n [Get Code Context](command:watermelon.start)\n"
+      },
       {
         "view": "watermelonExplorerTreeProvider",
         "contents": "You are not logged in to Watermelon 🍉.\n[Login](command:watermelon.login)\n You will be able to see the context of your code in the explorer view.\n [Learn more](https://watermelon.tools).\n We support Github, Gitlab, Bitbucket, Git, Slack and Jira.",
