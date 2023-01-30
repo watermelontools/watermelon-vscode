@@ -56,7 +56,7 @@ export default async function getPRsToPaintPerSHAs({
 
   // This handles GitHub, GitLab, and Bitbucket
   if (foundPRs.error.includes("query limit reached")) {
-    return { errorText: "You've exceeded the number of free monthly queries. We invited you to upgrade your Watermlon plan" }
+    return { errorText: `You've exceeded the number of free monthly queries. We invite you to upgrade your Watermelon plan here: https://app.watermelontools.com/billing` }
   }
 
   if (foundPRs?.length === 0) {
