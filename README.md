@@ -1,71 +1,58 @@
 # Watermelon GitHub Plugin for Visual Studio Code
 
 [![Report an issue](https://img.shields.io/badge/-Report%20an%20issue-critical)](https://github.com/watermelontools/wm-extension/issues)
+
 [![GitHub Repo stars](https://img.shields.io/github/stars/watermelontools/wm-extension?style=flat-square)](https://github.com/watermelontools/wm-extension/stargazers)
 [![Contributors](https://img.shields.io/github/contributors/watermelontools/wm-extension?style=flat-square)](https://github.com/watermelontools/wm-extension/graphs/contributors)
 [![Twitter Follow](https://img.shields.io/twitter/follow/WatermelonTools?style=flat-square)](https://twitter.com/intent/follow?screen_name=WatermelonTools)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false)
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false)
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false#review-details)
-[![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)](discord.gg/H4AE6b9442)
+[![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)](https://discord.com/invite/H4AE6b9442)
 
-Watermelon is your **open-source** Code Archeology Toolbox integration for **Visual Studio Code** to help developers understand code better. Watermelon makes you an expert on any file by selecting code and bringing all the information available.
+Watermelon is your **Open Source** Code Archeology Toolbox for **Visual Studio Code**. We allow developers to find the most relevant piece of context for a given block of code. We help you __grok__ codebases by indexing information from git, ticketing, and messaging systems. 
 
 ## Free Features
 
-Watermelon has 3 main features that you can use:
+Watermelon has 2 features that you can use for free:
 
-- View Git Blame
-- View Pull Requests
-- Daily Summary
+- Hover to get context
+- Get most relevant Pull Request (50 queries per month)
 
-The main UI to use Watermelon is the context box you see when you hover over lines of code with our extension installed. This UI is complemented with the sidebar we have.
+### Hover To Get Context
 
-In the image below you can see how hovering over a line of code provides us the following data:
+The fastest way to use Watermelon is to hover over a line of code to get its context.
 
-![hover](https://github.com/watermelontools/wm-extension/blob/dev/hover-showcase.gif?raw=true)
+In the image below you can see how hovering over a line of code provides us the following:
 
-- The latest commit message for that line
-- The amount of changes for the file that you're currently in, usually called churn
+<!-- ![hover](https://github.com/watermelontools/wm-extension/blob/dev/hover-showcase.gif?raw=true) -->
 
-If you want to do a deeper research about the code context history, simply click one of the links in the context box.
+- The author and date of the latest commit
+- The message of the latest commit
+- The number of times the current file has changed
+- A button that says "View the code context with Watermelon"
 
-### View Commit History
+If you want to do a deeper research about the code context history, simply click such button. 
 
-Highlight a piece of code, and then click the `View Commit History` button. We will run Git Blame for you, and give you a table with the Git commit messages relevant to the piece of code you highlighted.
+### Get Full Code Context
 
-![commit-hisotry](https://user-images.githubusercontent.com/47119689/178702441-d0afccbd-5230-456e-a9fb-56b36e36a146.gif)
+Highlight a piece of code to get its full code context from git (free), ticketing and messaging (paid) systems. There are 3 ways you can use this feature.
 
-You may also highlight and right click on the code, you will find the 'View Commit History with Watermelon' command at the end.
+#### Click button from the hover context box
 
-As a final way to use, only with your keyboard, you may pull the Command Palette (<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> on Windows and Linux and <kbd>CMD</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> on Mac) and type "Get commit history with Watermelon".
+#### Click get code context button on the sidebar
 
-### View Pull Requests
+#### Click get code context button on the right-click menu
 
-Highlight a piece of code, and then click the View Pull Requests button to run Git Blame on the background. We will get the PR bodies and comments that are relevant to the highlighted piece of code for you.
+<!-- ![commit-hisotry](https://user-images.githubusercontent.com/47119689/178702441-d0afccbd-5230-456e-a9fb-56b36e36a146.gif) -->
 
-Depending on the size of your GitHub history, this might take a few seconds.
-
-![pull-request](https://user-images.githubusercontent.com/47119689/178702586-d94d72b6-8457-406d-8f38-df6382cc436c.gif)
-
-Alternatively, you can <a href="https://github.com/watermelontools/wm-extension#commands">run with our `watermelon.start` command</a>
-
-You may also highlight and right click on the code, you will find the 'Get Pull Requests with Watermelon' command at the end.
-
-### Daily Summary
-
-Get an overview of which issues and PR reviews are assigned to you. Both on the current repository and across all GitHub. 
-
-To use it, open the Watermelon sidebar.
-
-![daily-summary](https://github.com/watermelontools/wm-extension/blob/dev/daily-summary-showcase.png?raw=true)
 
 ## Paid Features
 
-When you pay for Watermelon you can also:
+In addition to getting  unlimited code context queries, paying for Watermelon also gives you access to context from the following sources via its integrations:
 
-- View Most Relevant Jira Ticket
-- View Open Jira Tickets on the Daily Summary
+- Jira (get the most relevant ticket)
+- Slack (get the most relevant message thread)
 
 More integrations coming soon!
 
@@ -83,6 +70,8 @@ Download from the [VS Code Marketplace](https://marketplace.visualstudio.com/ite
 
 Alternatively, you can search for "Watermelon" in VS Code's built-in extension marketplace and install from there.  
 ![Download on VSCode](https://user-images.githubusercontent.com/11527621/162223094-ee24a53e-7a32-49eb-ac74-d1ab4f886d11.png)
+
+Download from the [VS Codium Marketplace (Open VSX Registry)](https://open-vsx.org/extension/WatermelonTools/watermelon-tools)
 
 ## Commands
 
@@ -105,26 +94,26 @@ As an alternative, you can use the following shortcuts:
 
 Check out [Contributing.md](CONTRIBUTING.md) and be aware of the [Code of Conduct](CODE_OF_CONDUCT.md)!
 
-We're an early stage project, therefore we still have the luxury to coordinate via short chats with our contributors. If you're interested in contributing, please join our [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q) community.
+We're an early stage project, therefore we still have the luxury to coordinate via short chats with our contributors. If you're interested in contributing, please join our [Discord](https://discord.com/invite/H4AE6b9442) community.
 Alternatively, comment on our issues if you plan to solve one.
 
 ## Analytics
 
-We track user actions in an anonymous manner to improve our application. We store your GitHub username, repo name and organization.
+We use [VS Code's telemetry library](https://github.com/microsoft/vscode-extension-telemetry). The library respects the user's decision about whether or not to send telemetry data.
 
 **We _don't_ store your code**
 
 ## Supporters
 
-[![Stargazers repo roster for @watermelontools/wm-extension](https://reporoster.com/stars/dark/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/stargazers)
+[![Stargazers repo roster for @watermelontools/watermelon-extension](https://reporoster.com/stars/watermelontools/watermelon-extension)](https://github.com/watermelontools/watermelon-extension/stargazers)
 
-[![Forkers repo roster for @watermelontools/wm-extension](https://reporoster.com/forks/dark/watermelontools/wm-extension)](https://github.com/watermelontools/wm-extension/network/members)
+[![Forkers repo roster for @watermelontools/watermelon-extension](https://reporoster.com/forks/watermelontools/watermelon-extension)](https://github.com/watermelontools/watermelon-extension/network/members)
 
 ---
 
 #### About Watermelon
 
-Watermelon is built by a globally distributed team of developers devoted to making software development easier. Join our [Slack](https://join.slack.com/t/watermelonusers/shared_invite/zt-15bjnr3rm-uoz8QMb1HMVB4Qywvq94~Q) community, follow us on [Twitter](https://twitter.com/WatermelonTools) and go to the [Watermelon blog](https://watermelon.tools/blog/blog) to get the best programming tips.
+Watermelon is built by a globally distributed team of developers devoted to making software development easier. Join our [Discord](https://discord.com/invite/H4AE6b9442) community, follow us on [Twitter](https://twitter.com/WatermelonTools) and go to the [Watermelon blog](https://watermelon.tools/blog/blog) to get the best programming tips.
 
 ### License
 
