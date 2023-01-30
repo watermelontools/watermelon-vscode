@@ -50,12 +50,14 @@ export default async function getPRsToPaintPerSHAs({
     repoSource,
   });
 
+  console.log("foundPRs", foundPRs)
+
   if (foundPRs.error === "no access_token") {
     return { errorText: "Not logged in" };
   }
 
   // This handles GitHub, GitLab, and Bitbucket
-  if (foundPRs.error.includes("query limit reached")) {
+  if (foundPRs?.error?.includes("query limit reached")) {
     return { errorText: `You've exceeded the number of free monthly queries. We invite you to upgrade your Watermelon plan here: https://app.watermelontools.com/billing` }
   }
 
