@@ -25,7 +25,7 @@ The fastest way to use Watermelon is to hover over a line of code to get its con
 
 In the image below you can see how hovering over a line of code provides us the following:
 
-<!-- ![hover](https://github.com/watermelontools/wm-extension/blob/dev/hover-showcase.gif?raw=true) -->
+![hover](https://thumbs.gfycat.com/EcstaticSpryAracari-size_restricted.gif)
 
 - The author and date of the latest commit
 - The message of the latest commit
