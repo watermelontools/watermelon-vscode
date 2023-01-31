@@ -300,6 +300,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Fixed loading UI
 
+---
+
 ## [0.0.16]
 
 - Improved comments UI

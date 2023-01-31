@@ -33,6 +33,7 @@ import { getGitItems } from "./utils/treeview/getGitItems";
 import { getJiraItems } from "./utils/treeview/getJiraItems";
 import { getSlackItems } from "./utils/treeview/getSlackItems";
 import { getCodeContextSummary } from "./utils/treeview/getCodeContextSummary";
+import setLoading from "./utils/vscode/setLoading";
 
 // repo information
 let owner: string | undefined = "";
@@ -88,6 +89,8 @@ export class WatermelonTreeDataProvider
       setLoggedIn(false);
       return items;
     }
+    setLoggedIn(true);
+    setLoading(true);
     if (startLine === undefined && endLine === undefined) {
       if (!arrayOfSHAs.length) {
         arrayOfSHAs = await getSHAArray(
@@ -142,6 +145,7 @@ export class WatermelonTreeDataProvider
 
       debugLogger(`parsedMessage: ${parsedMessage}`);
       if (!session) {
+        setLoggedIn(false);
         return items;
       }
       let itemPromises = [
@@ -215,6 +219,7 @@ export class WatermelonTreeDataProvider
         sha: string;
       };
     }
+    setLoading(false);
     return [
       new ContextItem(
         "Code Context",
@@ -341,6 +346,7 @@ export async function activate(context: vscode.ExtensionContext) {
       []
     );
     if (session) {
+      setLoggedIn(true);
       watermelonTreeDataProvider.refresh();
 
       context.workspaceState.update("session", {

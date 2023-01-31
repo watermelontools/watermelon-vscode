@@ -1,7 +1,7 @@
 {
   "name": "watermelon-tools",
   "description": "Watermelon, find all the historical context of your code",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "publisher": "WatermelonTools",
   "displayName": "Watermelon",
   "private": true,
@@ -36,10 +36,7 @@
     "theme": "dark"
   },
   "activationEvents": [
-    "onAuthenticationRequest:watermelon",
-    "onCommand:watermelon.start",
-    "onCommand:watermelon.show",
-    "onWebviewPanel:watermelon",
+    "onView:watermelon",
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
@@ -64,7 +61,7 @@
       },
       {
         "command": "watermelon.login",
-        "title": "Login to watermelon using Github",
+        "title": "Login to Watermelon",
         "category": "watermelon"
       },
       {
@@ -78,6 +75,10 @@
         {
           "id": "watermelonTreeProvider",
           "name": "Context"
+        },
+        {
+          "id": "watermelonButton",
+          "name": "Run"
         }
       ],
       "explorer": [
@@ -89,6 +90,10 @@
     },
     "viewsWelcome": [
       {
+        "view": "watermelonButton",
+        "contents": "Watermelon 🍉 will help you understand code context better. \n [Get Code Context](command:watermelon.start)\n You can help us by [adding Watermelon to your recommended extensions](command:watermelon.recommend). \n Visit [our web page](https://watermelontools.com). \n We support Github, Gitlab, Bitbucket, Git, Slack and Jira.\n Support our Open Source work by [Starring on Github](https://github.com/watermelontools/wm-extension). \n [Join us on Discord](https://discord.gg/H4AE6b9442) to suggest product improvements \n [Read our Blog](https://www.watermelontools.com/blog) and learn with us."
+      },
+      {
         "view": "watermelonExplorerTreeProvider",
         "contents": "You are not logged in to Watermelon 🍉.\n[Login](command:watermelon.login)\n You will be able to see the context of your code in the explorer view.\n [Learn more](https://watermelon.tools).\n We support Github, Gitlab, Bitbucket, Git, Slack and Jira.",
         "when": "!watermelon.isLogged"
@@ -97,6 +102,26 @@
         "view": "watermelonTreeProvider",
         "contents": "You are not logged in to Watermelon 🍉.\n[Login](command:watermelon.login)\n You will be able to see the context of your code in the explorer view.\n [Learn more](https://watermelon.tools).\n We support Github, Gitlab, Bitbucket, Git, Slack and Jira.",
         "when": "!watermelon.isLogged"
+      },
+      {
+        "view": "watermelonExplorerTreeProvider",
+        "contents": "Loading your Watermelon 🍉 results, please hang tight.",
+        "when": "watermelon.isLogged && watermelon.isLoading"
+      },
+      {
+        "view": "watermelonTreeProvider",
+        "contents": "Loading your Watermelon 🍉 results, please hang tight.",
+        "when": "watermelon.isLogged && watermelon.isLoading"
+      },
+      {
+        "view": "watermelonExplorerTreeProvider",
+        "contents": "Watermelon 🍉 will help you understand code context better. \n [Get Code Context](command:watermelon.start)\n",
+        "when": "watermelon.isLogged && !watermelon.isLoading"
+      },
+      {
+        "view": "watermelonTreeProvider",
+        "contents": "Watermelon 🍉 will help you understand code context better. \n [Get Code Context](command:watermelon.start)\n",
+        "when": "watermelon.isLogged && !watermelon.isLoading"
       }
     ],
     "viewsContainers": {
