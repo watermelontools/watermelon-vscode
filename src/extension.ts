@@ -145,6 +145,7 @@ export class WatermelonTreeDataProvider
 
       debugLogger(`parsedMessage: ${parsedMessage}`);
       if (!session) {
+        setLoggedIn(false);
         return items;
       }
       let itemPromises = [
@@ -345,6 +346,7 @@ export async function activate(context: vscode.ExtensionContext) {
       []
     );
     if (session) {
+      setLoggedIn(true);
       watermelonTreeDataProvider.refresh();
 
       context.workspaceState.update("session", {
