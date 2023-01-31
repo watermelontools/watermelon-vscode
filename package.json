@@ -1,7 +1,7 @@
 {
   "name": "watermelon-tools",
   "description": "Watermelon, find all the historical context of your code",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "publisher": "WatermelonTools",
   "displayName": "Watermelon",
   "private": true,
@@ -36,10 +36,7 @@
     "theme": "dark"
   },
   "activationEvents": [
-    "onAuthenticationRequest:watermelon",
-    "onCommand:watermelon.start",
-    "onCommand:watermelon.show",
-    "onWebviewPanel:watermelon",
+    "onView:watermelon",
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
@@ -64,7 +61,7 @@
       },
       {
         "command": "watermelon.login",
-        "title": "Login to watermelon using Github",
+        "title": "Login to Watermelon",
         "category": "watermelon"
       },
       {
