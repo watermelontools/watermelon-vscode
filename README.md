@@ -1,9 +1,9 @@
 # Watermelon GitHub Plugin for Visual Studio Code
 
-[![Report an issue](https://img.shields.io/badge/-Report%20an%20issue-critical)](https://github.com/watermelontools/wm-extension/issues)
+[![Report an issue](https://img.shields.io/badge/-Report%20an%20issue-critical)](https://github.com/watermelontools/watermelon-extension/issues)
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/watermelontools/wm-extension?style=flat-square)](https://github.com/watermelontools/wm-extension/stargazers)
-[![Contributors](https://img.shields.io/github/contributors/watermelontools/wm-extension?style=flat-square)](https://github.com/watermelontools/wm-extension/graphs/contributors)
+[![GitHub Repo stars](https://img.shields.io/github/stars/watermelontools/watermelon-extension?style=flat-square)](https://github.com/watermelontools/watermelon-extension/stargazers)
+[![Contributors](https://img.shields.io/github/contributors/watermelontools/watermelon-extension?style=flat-square)](https://github.com/watermelontools/watermelon-extension/graphs/contributors)
 [![Twitter Follow](https://img.shields.io/twitter/follow/WatermelonTools?style=flat-square)](https://twitter.com/intent/follow?screen_name=WatermelonTools)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false)
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false)
