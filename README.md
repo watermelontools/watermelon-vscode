@@ -38,13 +38,16 @@ If you want to do a deeper research about the code context history, simply click
 
 Highlight a piece of code to get its full code context from git (free), ticketing and messaging (paid) systems. There are 3 ways you can use this feature.
 
-#### Click button from the hover context box
+NOTE: This takes up to 20 seconds right now. Please be patient while we work on making this faster. 
 
 #### Click get code context button on the sidebar
+![sidebarButton](https://thumbs.gfycat.com/AccurateKeenLabradorretriever-size_restricted.gif)
+
+#### Click button from the hover context box
+![hoverGetContext](https://thumbs.gfycat.com/CharmingSharpChuckwalla-size_restricted.gif)
 
 #### Click get code context button on the right-click menu
-
-<!-- ![commit-hisotry](https://user-images.githubusercontent.com/47119689/178702441-d0afccbd-5230-456e-a9fb-56b36e36a146.gif) -->
+![rightClickMenu](https://thumbs.gfycat.com/MeaslyNarrowGoat-size_restricted.gif)
 
 
 ## Paid Features
