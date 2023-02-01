@@ -77,12 +77,6 @@ export default async function getPRsToPaintPerSHAs({
 
   if (foundPRs) {
     let prPromises = foundPRs?.map(async (issue: any) => {
-      let comments = await getIssueComments({
-        email,
-        issueNumber: issue.number,
-        repo: repo ?? "",
-        owner: owner ?? "",
-      });
       let issueData = await getIssue({
         email,
         issueNumber: issue.number,
@@ -107,7 +101,7 @@ export default async function getPRsToPaintPerSHAs({
           state: issueData.state,
           draft: issueData.draft,
           number: issue.number || issueData.number,
-          comments: [],
+          comments: issue.comments,
           /*
           comments: comments.map((comment: string) => {
             return comment;
