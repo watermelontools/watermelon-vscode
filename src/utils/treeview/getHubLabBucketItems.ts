@@ -18,6 +18,8 @@ export const getHubLabBucketItems = async (
     errorText = issuesWithTitlesAndGroupedComments.errorText;
   }
   if (errorText) {
+    // show vs code alert
+    vscode.window.showErrorMessage(errorText);
     items.push(
       new ContextItem(
         `Please login to ${
