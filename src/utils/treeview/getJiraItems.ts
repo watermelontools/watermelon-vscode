@@ -69,7 +69,16 @@ export const getJiraItems = async (
                     comment.updateAuthor.displayName,
                     vscode.TreeItemCollapsibleState.None,
                     dateToHumanReadable(comment.created),
-                    undefined,
+                    {
+                      command: WATERMELON_OPEN_LINK_COMMAND,
+                      title: "View user",
+                      arguments: [
+                        {
+                          url: `${ticket.serverInfo.baseUrl}/jira/people/${comment.updateAuthor.accountId}`,
+                          source: "treeView",
+                        },
+                      ],
+                    },
                     undefined,
                     comment.updateAuthor.avatarUrls["48x48"]
                   ),
