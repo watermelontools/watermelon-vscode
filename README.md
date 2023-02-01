@@ -38,7 +38,7 @@ If you want to do a deeper research about the code context history, simply click
 
 Highlight a piece of code to get its full code context from git (free), ticketing and messaging (paid) systems. There are 3 ways you can use this feature.
 
-NOTE: This takes up to 20 seconds right now. Please be patient while we work on making this faster. 
+NOTE: This takes up to 10 seconds right now. Please be patient while we work on making this faster. 
 
 #### Click get code context button on the sidebar
 ![sidebarButton](https://thumbs.gfycat.com/AccurateKeenLabradorretriever-size_restricted.gif)
