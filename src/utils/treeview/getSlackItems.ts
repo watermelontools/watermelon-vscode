@@ -15,9 +15,9 @@ export const getSlackItems = async (
     text: searchString,
   });
   let errorText = "";
-  if (relevantSlackThreads.errorText) {
+  if (relevantSlackThreads?.errorText) {
     if (relevantSlackThreads && "errorText" in relevantSlackThreads) {
-      errorText = relevantSlackThreads.errorText;
+      errorText = relevantSlackThreads?.errorText;
       items.push(
         new ContextItem(
           "Please login to Slack",

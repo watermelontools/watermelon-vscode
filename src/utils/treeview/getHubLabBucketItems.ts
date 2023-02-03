@@ -15,7 +15,7 @@ export const getHubLabBucketItems = async (
     issuesWithTitlesAndGroupedComments &&
     "errorText" in issuesWithTitlesAndGroupedComments
   ) {
-    errorText = issuesWithTitlesAndGroupedComments.errorText;
+    errorText = issuesWithTitlesAndGroupedComments?.errorText;
   }
   if (errorText) {
     // show vs code alert
@@ -125,7 +125,7 @@ export const getHubLabBucketItems = async (
           : "gitHub"
       )
     );
-  } else if (issuesWithTitlesAndGroupedComments.errorText === "") {
+  } else if (issuesWithTitlesAndGroupedComments?.errorText === "") {
   } else {
     items.push(
       new ContextItem(
