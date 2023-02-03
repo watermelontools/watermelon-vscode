@@ -25,7 +25,7 @@ export const getGitItems = async (uniqueBlames: string[]) => {
     new ContextItem(
       "Git",
       vscode.TreeItemCollapsibleState.Collapsed,
-      `${uniqueBlames.length.toString()} commit${getPlural(
+      `${uniqueBlames?.length?.toString()} commit${getPlural(
         uniqueBlames.length
       )}`,
       undefined,

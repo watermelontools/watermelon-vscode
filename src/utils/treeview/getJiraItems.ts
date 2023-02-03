@@ -120,7 +120,7 @@ export const getJiraItems = async (
       new ContextItem(
         "Jira",
         vscode.TreeItemCollapsibleState.Collapsed,
-        `${mostRelevantJiraTickets?.length.toString()} ticket${getPlural(
+        `${mostRelevantJiraTickets?.length?.toString()} ticket${getPlural(
           mostRelevantJiraTickets?.length
         )}`,
         undefined,

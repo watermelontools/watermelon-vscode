@@ -111,7 +111,7 @@ export const getSlackItems = async (
       new ContextItem(
         "Slack",
         vscode.TreeItemCollapsibleState.Collapsed,
-        `${relevantSlackThreads?.length.toString()} thread${getPlural(
+        `${relevantSlackThreads?.length?.toString()} thread${getPlural(
           relevantSlackThreads?.length
         )}`,
         undefined,

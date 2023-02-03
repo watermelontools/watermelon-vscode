@@ -57,7 +57,7 @@ export const getHubLabBucketItems = async (
         pr.comments.length > 0
           ? vscode.TreeItemCollapsibleState.Collapsed
           : vscode.TreeItemCollapsibleState.None,
-        `${pr.comments.length.toString()} comment${getPlural(
+        `${pr.comments?.length?.toString()} comment${getPlural(
           pr.comments.length
         )}`,
         {
@@ -113,7 +113,7 @@ export const getHubLabBucketItems = async (
           ? "Bitbucket"
           : "GitHub",
         vscode.TreeItemCollapsibleState.Collapsed,
-        `${sortedPRs.length.toString()} ${
+        `${sortedPRs?.length?.toString()} ${
           reposource === "gitlab.com" ? "M" : "P"
         }R${getPlural(sortedPRs.length)}`,
         undefined,
