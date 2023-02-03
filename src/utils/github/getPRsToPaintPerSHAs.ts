@@ -1,6 +1,5 @@
 import getPRsPerSHAS from "./getPRsPerSHAS";
 import getIssue from "./getIssue";
-import getIssueComments from "./getIssueComments";
 import { noLinesSelected, noSearchResults } from "../vscode/showErrors";
 
 export default async function getPRsToPaintPerSHAs({
@@ -110,11 +109,6 @@ export default async function getPRsToPaintPerSHAs({
           draft: issueData.draft,
           number: issue.number || issueData.number,
           comments: issue.comments,
-          /*
-          comments: comments.map((comment: string) => {
-            return comment;
-          }),
-          */
         });
       } else if (
         repoSource === "gitlab.com" ||
