@@ -16,9 +16,9 @@ export const getJiraItems = async (
       prTitle: searchString,
     })) || {};
   let errorText = "";
-  if (mostRelevantJiraTickets.errorText) {
+  if (mostRelevantJiraTickets?.errorText) {
     if (mostRelevantJiraTickets && "errorText" in mostRelevantJiraTickets) {
-      errorText = mostRelevantJiraTickets.errorText;
+      errorText = mostRelevantJiraTickets?.errorText;
       items.push(
         new ContextItem(
           "Please login to Jira",
@@ -120,7 +120,7 @@ export const getJiraItems = async (
       new ContextItem(
         "Jira",
         vscode.TreeItemCollapsibleState.Collapsed,
-        `${mostRelevantJiraTickets?.length.toString()} ticket${getPlural(
+        `${mostRelevantJiraTickets?.length?.toString()} ticket${getPlural(
           mostRelevantJiraTickets?.length
         )}`,
         undefined,

@@ -1,6 +1,5 @@
 import getPRsPerSHAS from "./getPRsPerSHAS";
 import getIssue from "./getIssue";
-import getIssueComments from "./getIssueComments";
 import { noLinesSelected, noSearchResults } from "../vscode/showErrors";
 
 export default async function getPRsToPaintPerSHAs({
@@ -50,13 +49,15 @@ export default async function getPRsToPaintPerSHAs({
     repoSource,
   });
 
-  if (foundPRs.error === "no access_token") {
+  if (foundPRs?.error === "no access_token") {
     return { errorText: "Not logged in" };
   }
 
   // This handles GitHub, GitLab, and Bitbucket
   if (foundPRs?.error?.includes("query limit reached")) {
-    return { errorText: `You've exceeded the number of free monthly queries. We invite you to upgrade your Watermelon plan here: https://app.watermelontools.com/billing` }
+    return {
+      errorText: `You've exceeded the number of free monthly queries. We invite you to upgrade your Watermelon plan here: https://app.watermelontools.com/billing`,
+    };
   }
 
   if (foundPRs?.length === 0) {
@@ -83,12 +84,6 @@ export default async function getPRsToPaintPerSHAs({
 
   if (foundPRs) {
     let prPromises = foundPRs?.map(async (issue: any) => {
-      let comments = await getIssueComments({
-        email,
-        issueNumber: issue.number,
-        repo: repo ?? "",
-        owner: owner ?? "",
-      });
       let issueData = await getIssue({
         email,
         issueNumber: issue.number,
@@ -113,12 +108,7 @@ export default async function getPRsToPaintPerSHAs({
           state: issueData.state,
           draft: issueData.draft,
           number: issue.number || issueData.number,
-          comments: [],
-          /*
-          comments: comments.map((comment: string) => {
-            return comment;
-          }),
-          */
+          comments: issue.comments,
         });
       } else if (
         repoSource === "gitlab.com" ||
