@@ -11,6 +11,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Jira now displays Ticket comments
 - [ALPHA] Bitbucket support
 - Added a panel to run Watermelon with some info
+- Added loading state and logged out state
 
 ## [2.0.1]
 
