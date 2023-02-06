@@ -92,7 +92,7 @@ export class WatermelonTreeDataProvider
     setLoggedIn(true);
     setLoading(true);
     if (startLine === undefined && endLine === undefined) {
-      if (!arrayOfSHAs.length) {
+      if (!arrayOfSHAs?.length) {
         arrayOfSHAs = await getSHAArray(
           1,
           vscode.window.activeTextEditor?.document.lineCount ?? 2,
@@ -101,7 +101,6 @@ export class WatermelonTreeDataProvider
         );
       }
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-
       let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
         arrayOfSHAs,
         email: session?.account.label || "",
@@ -112,7 +111,7 @@ export class WatermelonTreeDataProvider
       let sortedPRs: any[] = [];
       if (Array.isArray(issuesWithTitlesAndGroupedComments)) {
         sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-          (a: any, b: any) => b.comments.length - a.comments.length
+          (a: any, b: any) => b?.comments?.length - a?.comments?.length
         );
       }
 
@@ -181,7 +180,7 @@ export class WatermelonTreeDataProvider
         vscode.window.activeTextEditor?.document.uri.fsPath,
         gitAPI
       );
-      if (!arrayOfSHAs.length) {
+      if (!arrayOfSHAs?.length) {
         arrayOfSHAs = await getSHAArray(
           1,
           vscode.window.activeTextEditor?.document.lineCount ?? 2,
