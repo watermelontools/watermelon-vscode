@@ -10,6 +10,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - GitHub now displays PR comments
 - Jira now displays Ticket comments
 - [ALPHA] Bitbucket support
+- Added a panel to run Watermelon with some info
 
 ## [2.0.1]
 
