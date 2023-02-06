@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [2.0.2]
 
 - Gitlab now displays MR comments
+- GitHub now displays PR comments
 
 ## [2.0.1]
 
