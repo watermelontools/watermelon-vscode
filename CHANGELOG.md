@@ -9,6 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Gitlab now displays MR comments
 - GitHub now displays PR comments
 - Jira now displays Ticket comments
+- [ALPHA] Bitbucket support
 
 ## [2.0.1]
 
