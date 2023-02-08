@@ -57,9 +57,9 @@ export const getHubLabBucketItems = async (
         pr?.comments?.length > 0
           ? vscode.TreeItemCollapsibleState.Collapsed
           : vscode.TreeItemCollapsibleState.None,
-        `${pr.comments?.length?.toString()} comment${getPlural(
-          pr?.comments?.length
-        )}`,
+        `${
+          pr.comments?.length ? pr.comments?.length?.toString() : "No"
+        } comment${getPlural(pr?.comments?.length)}`,
         {
           command: WATERMELON_OPEN_LINK_COMMAND,
           title: "View PR",
