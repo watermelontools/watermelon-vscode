@@ -49,27 +49,29 @@ export const getHubLabBucketItems = async (
   let sortedPRs: any[] = [];
   if (Array.isArray(issuesWithTitlesAndGroupedComments)) {
     sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-      (a: any, b: any) => b.comments.length - a.comments.length
+      (a: any, b: any) => b?.comments?.length - a?.comments?.length
     );
     let gitHubItems = sortedPRs.map((pr: any) => {
       return new ContextItem(
         pr.title,
-        pr.comments.length > 0
+        pr?.comments?.length > 0
           ? vscode.TreeItemCollapsibleState.Collapsed
           : vscode.TreeItemCollapsibleState.None,
         `${pr.comments?.length?.toString()} comment${getPlural(
-          pr.comments.length
+          pr?.comments?.length
         )}`,
         {
           command: WATERMELON_OPEN_LINK_COMMAND,
           title: "View PR",
           arguments: [{ url: pr.url || pr.repo_url, source: "treeView" }],
         },
-        pr.comments.length > 0
+        pr?.comments?.length > 0
           ? pr.comments.flatMap((comment: any) => {
               return [
                 new ContextItem(
-                  comment.user.login,
+                  reposource === "gitlab.com"
+                    ? comment.author.name || comment.author.username
+                    : comment?.user?.login ?? "unknown",
                   vscode.TreeItemCollapsibleState.None,
                   dateToHumanReadable(comment.created_at),
                   {
@@ -77,13 +79,18 @@ export const getHubLabBucketItems = async (
                     title: "View comment",
                     arguments: [
                       {
-                        url: comment.user.url,
+                        url:
+                          reposource === "gitlab.com"
+                            ? comment.author.web_url
+                            : comment.user.url,
                         source: "treeView",
                       },
                     ],
                   },
                   undefined,
-                  comment.user.avatar_url
+                  reposource === "gitlab.com"
+                    ? comment.author.avatar_url
+                    : comment.user.avatar_url
                 ),
                 new ContextItem(
                   comment.body,
@@ -94,7 +101,10 @@ export const getHubLabBucketItems = async (
                     title: "View comment",
                     arguments: [
                       {
-                        url: comment.html_url,
+                        url:
+                          reposource === "gitlab.com"
+                            ? `${pr.url}#note_${comment.id}`
+                            : comment.html_url,
                         source: "treeView",
                       },
                     ],

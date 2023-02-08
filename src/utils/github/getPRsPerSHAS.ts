@@ -52,7 +52,7 @@ export default async function getPRsPerSHAS({
           let { message } = err;
           reporter?.sendTelemetryException(err, { error: message });
         });
-      if (!issues.length) {
+      if (!issues?.length) {
         return issues;
       }
       // Here we are mapping the issues.items to match the github format
@@ -73,7 +73,7 @@ export default async function getPRsPerSHAS({
           state: issue?.state,
           draft: issue?.draft,
           number: issue?.iid,
-          comments: [],
+          comments: issue.comments,
         };
       });
       break;

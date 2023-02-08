@@ -127,7 +127,7 @@ export default async function getPRsToPaintPerSHAs({
           state: issue.state,
           draft: issue.draft,
           number: issue.number || issue.number,
-          comments: [],
+          comments: issue?.comments,
         });
       }
     });
