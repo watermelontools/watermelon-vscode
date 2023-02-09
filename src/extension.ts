@@ -169,6 +169,8 @@ export class WatermelonTreeDataProvider
       results.forEach((result) => {
         items.push(...result);
       });
+      let reporter = analyticsReporter();
+      reporter?.sendTelemetryEvent("getCodeContext");
       return items;
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
