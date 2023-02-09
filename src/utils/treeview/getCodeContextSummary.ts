@@ -8,6 +8,9 @@ export const getCodeContextSummary = async (
   prTitle: string,
   prBody: string,
   blockOfCode: string,
+  ticketTitle: string, 
+  ticketBody: string,
+  threadBody: string,
   userEmail: string
 ) => {
   let items: ContextItem[] = [];
@@ -17,6 +20,9 @@ export const getCodeContextSummary = async (
       pr_title: prTitle,
       pr_body: prBody,
       block_of_code: blockOfCode,
+      ticket_title: ticketTitle,
+      ticket_body: ticketBody,
+      thread_body: threadBody,
       user_email: userEmail,
     })
     .then((res) => res.data)

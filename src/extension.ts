@@ -147,6 +147,9 @@ export class WatermelonTreeDataProvider
         setLoggedIn(false);
         return items;
       }
+      console.log("jiraitems title: ", sortedPRs[0]?.jiraItems?.[0]?.title);
+      console.log("jiraitems body: ", sortedPRs[0]?.jiraItems?.[0]?.body);
+      console.log("slackitems title: ", sortedPRs[0]?.slackItems?.[0]?.title);
       let itemPromises = [
         getHubLabBucketItems(issuesWithTitlesAndGroupedComments, repoSource),
         getGitItems(uniqueBlames),
@@ -158,9 +161,13 @@ export class WatermelonTreeDataProvider
           sortedPRs[0]?.title || parsedMessage,
           session.account.label
         ),
+        // jira ticket body
         getCodeContextSummary(
           sortedPRs[0]?.title || parsedMessage,
           sortedPRs[0]?.body || parsedCommitObject.body,
+          //jiraTicketTitle,
+          //jiraTicketBody,
+          //slackThread,
           selectedBlockOfCode,
           session.account.label
         ),
