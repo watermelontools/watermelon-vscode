@@ -77,7 +77,8 @@ export class WatermelonTreeDataProvider
     const items: ContextItem[] = [];
     let gitAPI = await getGitAPI();
     debugLogger(`got gitAPI`);
-    let repoInfo = await getRepoInfo({});
+    let reporter = analyticsReporter();
+    let repoInfo = await getRepoInfo({ reporter });
     repoSource = repoInfo?.source;
     repo = repoInfo?.repo;
     owner = repoInfo?.owner;
@@ -169,6 +170,7 @@ export class WatermelonTreeDataProvider
       results.forEach((result) => {
         items.push(...result);
       });
+      reporter?.sendTelemetryEvent("getCodeContext");
       return items;
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
