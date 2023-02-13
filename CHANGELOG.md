@@ -4,6 +4,15 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.0.2]
+
+- Gitlab now displays MR comments
+- GitHub now displays PR comments
+- Jira now displays Ticket comments
+- [ALPHA] Bitbucket support
+- Added a panel to run Watermelon with some info
+- Added loading state and logged out state
+
 ## [2.0.1]
 
 - Fixed Gitlab MR mapping

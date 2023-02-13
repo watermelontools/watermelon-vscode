@@ -15,9 +15,11 @@ export const getHubLabBucketItems = async (
     issuesWithTitlesAndGroupedComments &&
     "errorText" in issuesWithTitlesAndGroupedComments
   ) {
-    errorText = issuesWithTitlesAndGroupedComments.errorText;
+    errorText = issuesWithTitlesAndGroupedComments?.errorText;
   }
   if (errorText) {
+    // show vs code alert
+    vscode.window.showErrorMessage(errorText);
     items.push(
       new ContextItem(
         `Please login to ${
@@ -47,46 +49,68 @@ export const getHubLabBucketItems = async (
   let sortedPRs: any[] = [];
   if (Array.isArray(issuesWithTitlesAndGroupedComments)) {
     sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-      (a: any, b: any) => b.comments.length - a.comments.length
+      (a: any, b: any) => b?.comments?.length - a?.comments?.length
     );
     let gitHubItems = sortedPRs.map((pr: any) => {
       return new ContextItem(
         pr.title,
-        pr.comments.length > 0
+        pr?.comments?.length > 0
           ? vscode.TreeItemCollapsibleState.Collapsed
           : vscode.TreeItemCollapsibleState.None,
-        `${pr.comments.length.toString()} comment${getPlural(
-          pr.comments.length
-        )}`,
+        `${
+          pr.comments?.length ? pr.comments?.length?.toString() : "No"
+        } comment${getPlural(pr?.comments?.length)}`,
         {
           command: WATERMELON_OPEN_LINK_COMMAND,
           title: "View PR",
           arguments: [{ url: pr.url || pr.repo_url, source: "treeView" }],
         },
-        pr.comments.length > 0
-          ? pr.comments.map((comment: any) => {
-              return new ContextItem(
-                comment.user.login,
-                vscode.TreeItemCollapsibleState.None,
-                comment.created_at,
-                {
-                  command: WATERMELON_OPEN_LINK_COMMAND,
-                  title: "View comment",
-                  arguments: [comment.userLink],
-                },
-                [
-                  new ContextItem(
-                    comment.body,
-                    vscode.TreeItemCollapsibleState.None,
-                    dateToHumanReadable(comment.created_at),
-                    {
-                      command: WATERMELON_OPEN_LINK_COMMAND,
-                      title: "View comment",
-                      arguments: [comment.url],
-                    }
-                  ),
-                ]
-              );
+        pr?.comments?.length > 0
+          ? pr.comments.flatMap((comment: any) => {
+              return [
+                new ContextItem(
+                  reposource === "gitlab.com"
+                    ? comment.author.name || comment.author.username
+                    : comment?.user?.login ?? "unknown",
+                  vscode.TreeItemCollapsibleState.None,
+                  dateToHumanReadable(comment.created_at),
+                  {
+                    command: WATERMELON_OPEN_LINK_COMMAND,
+                    title: "View comment",
+                    arguments: [
+                      {
+                        url:
+                          reposource === "gitlab.com"
+                            ? comment.author.web_url
+                            : comment.user.url,
+                        source: "treeView",
+                      },
+                    ],
+                  },
+                  undefined,
+                  reposource === "gitlab.com"
+                    ? comment.author.avatar_url
+                    : comment.user.avatar_url
+                ),
+                new ContextItem(
+                  comment.body,
+                  vscode.TreeItemCollapsibleState.None,
+                  dateToHumanReadable(comment.created_at),
+                  {
+                    command: WATERMELON_OPEN_LINK_COMMAND,
+                    title: "View comment",
+                    arguments: [
+                      {
+                        url:
+                          reposource === "gitlab.com"
+                            ? `${pr.url}#note_${comment.id}`
+                            : comment.html_url,
+                        source: "treeView",
+                      },
+                    ],
+                  }
+                ),
+              ];
             })
           : undefined
       );
@@ -99,7 +123,7 @@ export const getHubLabBucketItems = async (
           ? "Bitbucket"
           : "GitHub",
         vscode.TreeItemCollapsibleState.Collapsed,
-        `${sortedPRs.length.toString()} ${
+        `${sortedPRs?.length?.toString()} ${
           reposource === "gitlab.com" ? "M" : "P"
         }R${getPlural(sortedPRs.length)}`,
         undefined,
@@ -111,7 +135,7 @@ export const getHubLabBucketItems = async (
           : "gitHub"
       )
     );
-  } else if (issuesWithTitlesAndGroupedComments.errorText === "") {
+  } else if (issuesWithTitlesAndGroupedComments?.errorText === "") {
   } else {
     items.push(
       new ContextItem(

@@ -15,9 +15,9 @@ export const getSlackItems = async (
     text: searchString,
   });
   let errorText = "";
-  if (relevantSlackThreads.errorText) {
+  if (relevantSlackThreads?.errorText) {
     if (relevantSlackThreads && "errorText" in relevantSlackThreads) {
-      errorText = relevantSlackThreads.errorText;
+      errorText = relevantSlackThreads?.errorText;
       items.push(
         new ContextItem(
           "Please login to Slack",
@@ -111,7 +111,7 @@ export const getSlackItems = async (
       new ContextItem(
         "Slack",
         vscode.TreeItemCollapsibleState.Collapsed,
-        `${relevantSlackThreads?.length.toString()} thread${getPlural(
+        `${relevantSlackThreads?.length?.toString()} thread${getPlural(
           relevantSlackThreads?.length
         )}`,
         undefined,

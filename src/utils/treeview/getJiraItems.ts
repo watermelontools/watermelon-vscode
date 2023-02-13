@@ -16,9 +16,9 @@ export const getJiraItems = async (
       prTitle: searchString,
     })) || {};
   let errorText = "";
-  if (mostRelevantJiraTickets.errorText) {
+  if (mostRelevantJiraTickets?.errorText) {
     if (mostRelevantJiraTickets && "errorText" in mostRelevantJiraTickets) {
-      errorText = mostRelevantJiraTickets.errorText;
+      errorText = mostRelevantJiraTickets?.errorText;
       items.push(
         new ContextItem(
           "Please login to Jira",
@@ -63,17 +63,41 @@ export const getJiraItems = async (
           ticket.renderedFields.created,
           undefined,
           ticket?.comments?.length > 0
-            ? ticket.comments?.map((comment: any) => {
-                return new ContextItem(
-                  comment.body,
-                  vscode.TreeItemCollapsibleState.None,
-                  dateToHumanReadable(comment.created),
-                  {
-                    command: WATERMELON_OPEN_LINK_COMMAND,
-                    title: "View comment",
-                    arguments: [comment.url],
-                  }
-                );
+            ? ticket.comments?.flatMap((comment: any) => {
+                return [
+                  new ContextItem(
+                    comment.updateAuthor.displayName,
+                    vscode.TreeItemCollapsibleState.None,
+                    dateToHumanReadable(comment.created),
+                    {
+                      command: WATERMELON_OPEN_LINK_COMMAND,
+                      title: "View user",
+                      arguments: [
+                        {
+                          url: `${ticket.serverInfo.baseUrl}/jira/people/${comment.updateAuthor.accountId}`,
+                          source: "treeView",
+                        },
+                      ],
+                    },
+                    undefined,
+                    comment.updateAuthor.avatarUrls["48x48"]
+                  ),
+                  new ContextItem(
+                    comment.renderedBody,
+                    vscode.TreeItemCollapsibleState.None,
+                    dateToHumanReadable(comment.updated),
+                    {
+                      command: WATERMELON_OPEN_LINK_COMMAND,
+                      title: "View comment",
+                      arguments: [
+                        {
+                          url: `${ticket.serverInfo.baseUrl}/browse/${ticket.key}?focusedCommentId=${comment.id}`,
+                          source: "treeView",
+                        },
+                      ],
+                    }
+                  ),
+                ];
               })
             : undefined
         ),
@@ -96,7 +120,7 @@ export const getJiraItems = async (
       new ContextItem(
         "Jira",
         vscode.TreeItemCollapsibleState.Collapsed,
-        `${mostRelevantJiraTickets?.length.toString()} ticket${getPlural(
+        `${mostRelevantJiraTickets?.length?.toString()} ticket${getPlural(
           mostRelevantJiraTickets?.length
         )}`,
         undefined,

@@ -52,7 +52,7 @@ export default async function getPRsPerSHAS({
           let { message } = err;
           reporter?.sendTelemetryException(err, { error: message });
         });
-      if (!issues.length) {
+      if (!issues?.length) {
         return issues;
       }
       // Here we are mapping the issues.items to match the github format
@@ -73,7 +73,7 @@ export default async function getPRsPerSHAS({
           state: issue?.state,
           draft: issue?.draft,
           number: issue?.iid,
-          comments: [],
+          comments: issue.comments,
         };
       });
       break;
@@ -96,26 +96,26 @@ export default async function getPRsPerSHAS({
         });
 
       // Here we are mapping the issues.items to match the github format
-      issuesItems = [
-        {
-          created_at: issues.values[0]?.created_on,
+      issuesItems = issues?.values.map((issue: any) => {
+        return {
+          created_at: issue?.created_on,
           userImage: null,
           userLink: null,
-          title: issues.values[0].title,
-          url: issues.values[0].links.html.href,
-          body: issues.values[0]?.description?.raw,
+          title: issue?.title,
+          url: issue?.links?.html?.href,
+          body: issue?.description?.raw,
           user: {
             html_url: null,
             avatar_url: null,
             login: null,
           },
           repository_url: null,
-          state: issues.values[0]?.state,
+          state: issue?.state,
           draft: false,
-          number: issues.values[0].id,
+          number: issue?.id,
           comments: [],
-        },
-      ];
+        };
+      });
       break;
   }
   return issuesItems;

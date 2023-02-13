@@ -33,6 +33,7 @@ import { getGitItems } from "./utils/treeview/getGitItems";
 import { getJiraItems } from "./utils/treeview/getJiraItems";
 import { getSlackItems } from "./utils/treeview/getSlackItems";
 import { getCodeContextSummary } from "./utils/treeview/getCodeContextSummary";
+import setLoading from "./utils/vscode/setLoading";
 
 // repo information
 let owner: string | undefined = "";
@@ -76,7 +77,8 @@ export class WatermelonTreeDataProvider
     const items: ContextItem[] = [];
     let gitAPI = await getGitAPI();
     debugLogger(`got gitAPI`);
-    let repoInfo = await getRepoInfo({});
+    let reporter = analyticsReporter();
+    let repoInfo = await getRepoInfo({ reporter });
     repoSource = repoInfo?.source;
     repo = repoInfo?.repo;
     owner = repoInfo?.owner;
@@ -88,8 +90,10 @@ export class WatermelonTreeDataProvider
       setLoggedIn(false);
       return items;
     }
+    setLoggedIn(true);
+    setLoading(true);
     if (startLine === undefined && endLine === undefined) {
-      if (!arrayOfSHAs.length) {
+      if (!arrayOfSHAs?.length) {
         arrayOfSHAs = await getSHAArray(
           1,
           vscode.window.activeTextEditor?.document.lineCount ?? 2,
@@ -98,7 +102,6 @@ export class WatermelonTreeDataProvider
         );
       }
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-
       let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
         arrayOfSHAs,
         email: session?.account.label || "",
@@ -109,7 +112,7 @@ export class WatermelonTreeDataProvider
       let sortedPRs: any[] = [];
       if (Array.isArray(issuesWithTitlesAndGroupedComments)) {
         sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-          (a: any, b: any) => b.comments.length - a.comments.length
+          (a: any, b: any) => b?.comments?.length - a?.comments?.length
         );
       }
 
@@ -142,6 +145,7 @@ export class WatermelonTreeDataProvider
 
       debugLogger(`parsedMessage: ${parsedMessage}`);
       if (!session) {
+        setLoggedIn(false);
         return items;
       }
       let itemPromises = [
@@ -166,6 +170,7 @@ export class WatermelonTreeDataProvider
       results.forEach((result) => {
         items.push(...result);
       });
+      reporter?.sendTelemetryEvent("getCodeContext");
       return items;
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
@@ -177,7 +182,7 @@ export class WatermelonTreeDataProvider
         vscode.window.activeTextEditor?.document.uri.fsPath,
         gitAPI
       );
-      if (!arrayOfSHAs.length) {
+      if (!arrayOfSHAs?.length) {
         arrayOfSHAs = await getSHAArray(
           1,
           vscode.window.activeTextEditor?.document.lineCount ?? 2,
@@ -215,6 +220,7 @@ export class WatermelonTreeDataProvider
         sha: string;
       };
     }
+    setLoading(false);
     return [
       new ContextItem(
         "Code Context",
@@ -341,6 +347,7 @@ export async function activate(context: vscode.ExtensionContext) {
       []
     );
     if (session) {
+      setLoggedIn(true);
       watermelonTreeDataProvider.refresh();
 
       context.workspaceState.update("session", {
