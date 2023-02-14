@@ -75,7 +75,7 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       content.isTrusted = true;
       content.supportThemeIcons = true;
       setTimeout(() => {
-        reporter?.sendTelemetryEvent("hover");
+        reporter?.sendTelemetryEvent("strictHover");
       }, 2000); 
       return new vscode.Hover(content);
     },
