@@ -24,8 +24,6 @@ import {
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
-import checkIfUserStarred from "./utils/github/checkIfUserStarred";
-import getMostRelevantJiraTickets from "./utils/jira/getMostRelevantJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
 import { ContextItem } from "./ContextItem";
 import { getHubLabBucketItems } from "./utils/treeview/getHubLabBucketItems";
