@@ -4,7 +4,12 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.0.4]
+
+- Fixed looping login bug
+
 ## [2.0.3]
+
 - Hover telemetry event gets measured with a 2 second time-out
 
 ## [2.0.2]

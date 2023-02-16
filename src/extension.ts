@@ -288,17 +288,17 @@ export async function activate(context: vscode.ExtensionContext) {
       new WatermelonAuthenticationProvider(context)
     ),
     vscode.window.registerUriHandler({
-      handleUri(uri) {
+      async handleUri(uri) {
         // show a hello message
         const urlSearchParams = new URLSearchParams(uri.query);
         const params = Object.fromEntries(urlSearchParams.entries());
-        context.secrets.store("watermelonToken", params.token);
-        context.secrets.store("watermelonEmail", params.email);
+        await context.secrets.store("watermelonToken", params.token);
+        await context.secrets.store("watermelonEmail", params.email);
         vscode.authentication.getSession(
           WatermelonAuthenticationProvider.id,
           [],
           {
-            createIfNone: true,
+            createIfNone: false,
           }
         );
       },
