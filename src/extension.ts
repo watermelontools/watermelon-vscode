@@ -162,7 +162,6 @@ export class WatermelonTreeDataProvider
         getCodeContextSummary(
           sortedPRs[0]?.title || parsedMessage,
           sortedPRs[0]?.body || parsedCommitObject.body,
-          selectedBlockOfCode,
           session.account.label
         ),
       ];
