@@ -127,22 +127,6 @@ export class WatermelonTreeDataProvider
       };
       const parsedMessage = parsedCommitObject.message;
 
-      // get the start and end line of the selected block of code
-      let selectedStartLine = vscode.window.activeTextEditor?.selection.start;
-      let selectedEndLine = vscode.window.activeTextEditor?.selection.end;
-
-      // get the text of the selected block of code
-      let selectedBlockOfCode = "";
-
-      if (selectedStartLine && selectedEndLine) {
-        let selectedText = vscode.window.activeTextEditor?.document.getText(
-          new vscode.Range(selectedStartLine, selectedEndLine)
-        );
-
-        let selectedCode = selectedText || "";
-        selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm, "");
-      }
-
       debugLogger(`parsedMessage: ${parsedMessage}`);
       if (!session) {
         setLoggedIn(false);
