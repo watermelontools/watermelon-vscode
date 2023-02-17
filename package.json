@@ -72,6 +72,12 @@
         "command": "watermelon.recommend",
         "title": "Add Watermelon to recommended extensions",
         "category": "watermelon"
+      },
+      {
+        "command": "watermelon.jira.comment",
+        "title": "Comment on this ticket",
+        "category": "watermelon",
+        "icon": "$(comment)"
       }
     ],
     "views": {
@@ -153,8 +159,8 @@
       ],
       "view/item/context": [
         {
-          "command": "watermelon.start",
-          "when": "viewItem == dependency",
+          "command": "watermelon.jira.comment",
+          "when": "viewItem == jiraCommentable",
           "group": "inline"
         }
       ]
