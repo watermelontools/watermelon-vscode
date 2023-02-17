@@ -162,6 +162,10 @@
           "command": "watermelon.jira.comment",
           "when": "viewItem == jiraCommentable",
           "group": "inline"
+        },
+        {
+          "command": "watermelon.jira.comment",
+          "when": "viewItem == jiraCommentable"
         }
       ]
     },
