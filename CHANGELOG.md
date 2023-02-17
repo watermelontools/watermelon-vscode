@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [2.0.4]
 
 - Fixed looping login bug
+- Fixed Jira ticket being undefined
 
 ## [2.0.3]
 
