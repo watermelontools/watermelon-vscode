@@ -37,73 +37,76 @@ export const getJiraItems = async (
     }
   }
 
-  const jiraItems = mostRelevantJiraTickets?.map((ticket: any) => {
-    return new ContextItem(
-      ticket.key,
-      vscode.TreeItemCollapsibleState.Collapsed,
-      ticket.fields.summary,
-      {
-        command: WATERMELON_OPEN_LINK_COMMAND,
-        title: "View Jira ticket",
-        arguments: [
-          {
-            url: `${ticket.serverInfo.baseUrl}/browse/${ticket.key}`,
-            source: "treeView",
-          },
-        ],
-      },
-      [
-        new ContextItem(
-          ticket.renderedFields?.description?.length
-            ? ticket.renderedFields.description
-            : "No description",
-          ticket?.comments?.length > 0
-            ? vscode.TreeItemCollapsibleState.Collapsed
-            : vscode.TreeItemCollapsibleState.None,
-          ticket.renderedFields.created,
-          undefined,
-          ticket?.comments?.length > 0
-            ? ticket.comments?.flatMap((comment: any) => {
-                return [
-                  new ContextItem(
-                    comment.updateAuthor.displayName,
-                    vscode.TreeItemCollapsibleState.None,
-                    dateToHumanReadable(comment.created),
-                    {
-                      command: WATERMELON_OPEN_LINK_COMMAND,
-                      title: "View user",
-                      arguments: [
-                        {
-                          url: `${ticket.serverInfo.baseUrl}/jira/people/${comment.updateAuthor.accountId}`,
-                          source: "treeView",
-                        },
-                      ],
-                    },
-                    undefined,
-                    comment.updateAuthor.avatarUrls["48x48"]
-                  ),
-                  new ContextItem(
-                    comment.renderedBody,
-                    vscode.TreeItemCollapsibleState.None,
-                    dateToHumanReadable(comment.updated),
-                    {
-                      command: WATERMELON_OPEN_LINK_COMMAND,
-                      title: "View comment",
-                      arguments: [
-                        {
-                          url: `${ticket.serverInfo.baseUrl}/browse/${ticket.key}?focusedCommentId=${comment.id}`,
-                          source: "treeView",
-                        },
-                      ],
-                    }
-                  ),
-                ];
-              })
-            : undefined
-        ),
-      ]
-    );
-  });
+  let jiraItems;
+  if (Array.isArray(mostRelevantJiraTickets)) {
+    jiraItems = mostRelevantJiraTickets?.map((ticket: any) => {
+      return new ContextItem(
+        ticket.key,
+        vscode.TreeItemCollapsibleState.Collapsed,
+        ticket.fields.summary,
+        {
+          command: WATERMELON_OPEN_LINK_COMMAND,
+          title: "View Jira ticket",
+          arguments: [
+            {
+              url: `${ticket.serverInfo.baseUrl}/browse/${ticket.key}`,
+              source: "treeView",
+            },
+          ],
+        },
+        [
+          new ContextItem(
+            ticket.renderedFields?.description?.length
+              ? ticket.renderedFields.description
+              : "No description",
+            ticket?.comments?.length > 0
+              ? vscode.TreeItemCollapsibleState.Collapsed
+              : vscode.TreeItemCollapsibleState.None,
+            ticket.renderedFields.created,
+            undefined,
+            ticket?.comments?.length > 0
+              ? ticket.comments?.flatMap((comment: any) => {
+                  return [
+                    new ContextItem(
+                      comment.updateAuthor.displayName,
+                      vscode.TreeItemCollapsibleState.None,
+                      dateToHumanReadable(comment.created),
+                      {
+                        command: WATERMELON_OPEN_LINK_COMMAND,
+                        title: "View user",
+                        arguments: [
+                          {
+                            url: `${ticket.serverInfo.baseUrl}/jira/people/${comment.updateAuthor.accountId}`,
+                            source: "treeView",
+                          },
+                        ],
+                      },
+                      undefined,
+                      comment.updateAuthor.avatarUrls["48x48"]
+                    ),
+                    new ContextItem(
+                      comment.renderedBody,
+                      vscode.TreeItemCollapsibleState.None,
+                      dateToHumanReadable(comment.updated),
+                      {
+                        command: WATERMELON_OPEN_LINK_COMMAND,
+                        title: "View comment",
+                        arguments: [
+                          {
+                            url: `${ticket.serverInfo.baseUrl}/browse/${ticket.key}?focusedCommentId=${comment.id}`,
+                            source: "treeView",
+                          },
+                        ],
+                      }
+                    ),
+                  ];
+                })
+              : undefined
+          ),
+        ]
+      );
+    });
+  }
   if (!jiraItems || jiraItems.length === 0) {
     items.push(
       new ContextItem(

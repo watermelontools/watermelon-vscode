@@ -24,8 +24,6 @@ import {
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
-import checkIfUserStarred from "./utils/github/checkIfUserStarred";
-import getMostRelevantJiraTickets from "./utils/jira/getMostRelevantJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
 import { ContextItem } from "./ContextItem";
 import { getHubLabBucketItems } from "./utils/treeview/getHubLabBucketItems";
@@ -127,22 +125,6 @@ export class WatermelonTreeDataProvider
       };
       const parsedMessage = parsedCommitObject.message;
 
-      // get the start and end line of the selected block of code
-      let selectedStartLine = vscode.window.activeTextEditor?.selection.start;
-      let selectedEndLine = vscode.window.activeTextEditor?.selection.end;
-
-      // get the text of the selected block of code
-      let selectedBlockOfCode = "";
-
-      if (selectedStartLine && selectedEndLine) {
-        let selectedText = vscode.window.activeTextEditor?.document.getText(
-          new vscode.Range(selectedStartLine, selectedEndLine)
-        );
-
-        let selectedCode = selectedText || "";
-        selectedBlockOfCode = selectedCode.replace(/(\r\n|\n|\r)/gm, "");
-      }
-
       debugLogger(`parsedMessage: ${parsedMessage}`);
       if (!session) {
         setLoggedIn(false);
@@ -162,7 +144,6 @@ export class WatermelonTreeDataProvider
         getCodeContextSummary(
           sortedPRs[0]?.title || parsedMessage,
           sortedPRs[0]?.body || parsedCommitObject.body,
-          selectedBlockOfCode,
           session.account.label
         ),
       ];
@@ -288,17 +269,17 @@ export async function activate(context: vscode.ExtensionContext) {
       new WatermelonAuthenticationProvider(context)
     ),
     vscode.window.registerUriHandler({
-      handleUri(uri) {
+      async handleUri(uri) {
         // show a hello message
         const urlSearchParams = new URLSearchParams(uri.query);
         const params = Object.fromEntries(urlSearchParams.entries());
-        context.secrets.store("watermelonToken", params.token);
-        context.secrets.store("watermelonEmail", params.email);
+        await context.secrets.store("watermelonToken", params.token);
+        await context.secrets.store("watermelonEmail", params.email);
         vscode.authentication.getSession(
           WatermelonAuthenticationProvider.id,
           [],
           {
-            createIfNone: true,
+            createIfNone: false,
           }
         );
       },

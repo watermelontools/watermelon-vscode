@@ -7,7 +7,6 @@ import analyticsReporter from "../vscode/reporter";
 export const getCodeContextSummary = async (
   prTitle: string,
   prBody: string,
-  blockOfCode: string,
   userEmail: string
 ) => {
   let items: ContextItem[] = [];
@@ -16,7 +15,6 @@ export const getCodeContextSummary = async (
     .post(`${backendURL}/api/openai/summarizeCodeContext`, {
       pr_title: prTitle,
       pr_body: prBody,
-      block_of_code: blockOfCode,
       user_email: userEmail,
     })
     .then((res) => res.data)
