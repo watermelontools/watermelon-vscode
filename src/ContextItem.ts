@@ -8,7 +8,8 @@ export class ContextItem extends vscode.TreeItem {
     public readonly version: string,
     public readonly command?: vscode.Command,
     children?: ContextItem[],
-    public readonly logo?: string
+    public readonly logo?: string,
+    public readonly elementType?: string
   ) {
     super(label, collapsibleState);
 
@@ -16,6 +17,7 @@ export class ContextItem extends vscode.TreeItem {
     this.description = this.version;
     this.children = children;
     this.logo = logo;
+    this.elementType = elementType;
   }
 
   iconPath =
@@ -42,5 +44,5 @@ export class ContextItem extends vscode.TreeItem {
           ),
         };
 
-  contextValue = "dependency";
+  contextValue = this.elementType;
 }
