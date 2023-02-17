@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Fixed looping login bug
 - Fixed Jira ticket being undefined
+- Added Jira ticket commenting
 
 ## [2.0.3]
 
