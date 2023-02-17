@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { WatermelonAuthenticationProvider } from "../../auth";
 import postCommentOnTicket from "../jira/postCommentOnTicket";
+import analyticsReporter from "../vscode/reporter";
 let commentOnJira = async (issueIdOrKey: any, email: string) => {
   const session = await vscode.authentication.getSession(
     WatermelonAuthenticationProvider.id,
@@ -21,6 +22,11 @@ let commentOnJira = async (issueIdOrKey: any, email: string) => {
       vscode.window.showErrorMessage(comment.errorText);
     } else {
       vscode.window.showInformationMessage("Comment added successfully");
+      let reporter = analyticsReporter();
+
+      reporter?.sendTelemetryEvent("commentOnJira", {
+        email: session?.account.label ?? "",
+      });
     }
   }
 };
