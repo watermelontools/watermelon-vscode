@@ -5,7 +5,7 @@ All notable changes to the "watermelon" extension will be documented in this fil
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## [2.0.4]
-
+- We don't send code to our server anymore
 - Fixed looping login bug
 - Fixed Jira ticket being undefined
 - Added Jira ticket commenting
