@@ -146,19 +146,19 @@ export class WatermelonAuthenticationProvider
   async createSession(_scopes: string[]): Promise<AuthenticationSession> {
     this.ensureInitialized();
 
-    env.openExternal(
-      Uri.parse(`https://app.watermelontools.com/${env.uriScheme}`)
-    );
-
     // Don't set `currentToken` here, since we want to fire the proper events in the `checkForUpdates` call
     let token = await this.cacheTokenFromStorage();
     let email = await this.cacheEmailFromStorage();
     if (!token || !email) {
-      throw new Error("No token or email found");
+      env.openExternal(
+        Uri.parse(`https://app.watermelontools.com/${env.uriScheme}`)
+      );
+      return Promise.reject("Please log in to Watermelon");
+    } else {
+      console.log("Successfully logged in to Watermelon");
+      let session = new WatermelonAuthSession(token, email);
+      return session;
     }
-    console.log("Successfully logged in to Watermelon");
-    let session = new WatermelonAuthSession(token, email);
-    return session;
   }
 
   // This function is called when the end user signs out of the account.

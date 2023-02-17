@@ -6,7 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [2.0.4]
 - We don't send code to our server anymore
+- Fixed looping login bug
+- Fixed Jira ticket being undefined
+
 ## [2.0.3]
+
 - Hover telemetry event gets measured with a 2 second time-out
 
 ## [2.0.2]

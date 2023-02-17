@@ -24,8 +24,6 @@ import {
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import debugLogger from "./utils/vscode/debugLogger";
-import checkIfUserStarred from "./utils/github/checkIfUserStarred";
-import getMostRelevantJiraTickets from "./utils/jira/getMostRelevantJiraTickets";
 import { WatermelonAuthenticationProvider } from "./auth";
 import { ContextItem } from "./ContextItem";
 import { getHubLabBucketItems } from "./utils/treeview/getHubLabBucketItems";
@@ -271,17 +269,17 @@ export async function activate(context: vscode.ExtensionContext) {
       new WatermelonAuthenticationProvider(context)
     ),
     vscode.window.registerUriHandler({
-      handleUri(uri) {
+      async handleUri(uri) {
         // show a hello message
         const urlSearchParams = new URLSearchParams(uri.query);
         const params = Object.fromEntries(urlSearchParams.entries());
-        context.secrets.store("watermelonToken", params.token);
-        context.secrets.store("watermelonEmail", params.email);
+        await context.secrets.store("watermelonToken", params.token);
+        await context.secrets.store("watermelonEmail", params.email);
         vscode.authentication.getSession(
           WatermelonAuthenticationProvider.id,
           [],
           {
-            createIfNone: true,
+            createIfNone: false,
           }
         );
       },
