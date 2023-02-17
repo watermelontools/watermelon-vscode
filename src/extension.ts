@@ -32,6 +32,7 @@ import { getJiraItems } from "./utils/treeview/getJiraItems";
 import { getSlackItems } from "./utils/treeview/getSlackItems";
 import { getCodeContextSummary } from "./utils/treeview/getCodeContextSummary";
 import setLoading from "./utils/vscode/setLoading";
+import addToRecommendedCommandHandler from "./utils/commands/addToRecommended";
 
 // repo information
 let owner: string | undefined = "";
@@ -326,12 +327,6 @@ export async function activate(context: vscode.ExtensionContext) {
       setLoggedIn(true);
       vscode.window.showInformationMessage(`Welcome ${session.account.label}`);
     }
-  };
-  let addToRecommendedCommandHandler = async () => {
-    vscode.commands.executeCommand(
-      "workbench.extensions.action.addExtensionToWorkspaceRecommendations",
-      EXTENSION_ID
-    );
   };
 
   let prsCommandHandler = async (
