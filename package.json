@@ -52,7 +52,11 @@
       {
         "command": "watermelon.start",
         "title": "Get Code Context with Watermelon",
-        "category": "watermelon"
+        "category": "watermelon",
+        "icon": {
+          "light": "images/wmbw_bold_fill.svg",
+          "dark": "images/wmbw_bold_fill.svg"
+        }
       },
       {
         "command": "watermelon.show",
@@ -145,6 +149,13 @@
         {
           "command": "watermelon.start",
           "when": "editorHasSelection"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "watermelon.start",
+          "when": "viewItem == dependency",
+          "group": "inline"
         }
       ]
     },
