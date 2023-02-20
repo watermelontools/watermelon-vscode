@@ -52,7 +52,11 @@
       {
         "command": "watermelon.start",
         "title": "Get Code Context with Watermelon",
-        "category": "watermelon"
+        "category": "watermelon",
+        "icon": {
+          "light": "images/wmbw_bold_fill.svg",
+          "dark": "images/wmbw_bold_fill.svg"
+        }
       },
       {
         "command": "watermelon.show",
@@ -68,6 +72,12 @@
         "command": "watermelon.recommend",
         "title": "Add Watermelon to recommended extensions",
         "category": "watermelon"
+      },
+      {
+        "command": "watermelon.jira.comment",
+        "title": "Comment on this ticket",
+        "category": "watermelon",
+        "icon": "$(comment)"
       }
     ],
     "views": {
@@ -145,6 +155,17 @@
         {
           "command": "watermelon.start",
           "when": "editorHasSelection"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "watermelon.jira.comment",
+          "when": "viewItem == jiraCommentable",
+          "group": "inline"
+        },
+        {
+          "command": "watermelon.jira.comment",
+          "when": "viewItem == jiraCommentable"
         }
       ]
     },
