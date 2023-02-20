@@ -84,6 +84,18 @@
         "title": "Comment on this thread",
         "category": "watermelon",
         "icon": "$(comment)"
+      },
+      {
+        "command": "watermelon.github.comment",
+        "title": "Comment on this PR",
+        "category": "watermelon",
+        "icon": "$(comment)"
+      },
+      {
+        "command": "watermelon.github.comment",
+        "title": "Comment on this PR",
+        "category": "watermelon",
+        "icon": "$(comment)"
       }
     ],
     "views": {
@@ -181,6 +193,15 @@
         {
           "command": "watermelon.slack.comment",
           "when": "viewItem == slackCommentable"
+        },
+        {
+          "command": "watermelon.github.comment",
+          "when": "viewItem == githubCommentable",
+          "group": "inline"
+        },
+        {
+          "command": "watermelon.github.comment",
+          "when": "viewItem == githubCommentable"
         }
       ]
     },
