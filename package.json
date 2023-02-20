@@ -78,6 +78,12 @@
         "title": "Comment on this ticket",
         "category": "watermelon",
         "icon": "$(comment)"
+      },
+      {
+        "command": "watermelon.slack.comment",
+        "title": "Comment on this thread",
+        "category": "watermelon",
+        "icon": "$(comment)"
       }
     ],
     "views": {
