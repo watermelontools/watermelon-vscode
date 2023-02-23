@@ -14,6 +14,7 @@ import hover from "./utils/components/hover";
 import {
   EXTENSION_ID,
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
+  WATERMELON_COMMENT_GITHUB_COMMAND,
   WATERMELON_COMMENT_JIRA_COMMAND,
   WATERMELON_COMMENT_SLACK_COMMAND,
   WATERMELON_LOGIN_COMMAND,
@@ -27,6 +28,7 @@ import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import commentJiraHandler from "./utils/commands/commentOnJira";
 import commentSlackHandler from "./utils/commands/commentOnSlack";
+import commentGithubHandler from "./utils/commands/commentOnGithub";
 
 import debugLogger from "./utils/vscode/debugLogger";
 import { WatermelonAuthenticationProvider } from "./auth";
@@ -397,6 +399,10 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       WATERMELON_COMMENT_JIRA_COMMAND,
       commentJiraHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_COMMENT_GITHUB_COMMAND,
+      commentGithubHandler
     )
   );
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {

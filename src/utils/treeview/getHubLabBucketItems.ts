@@ -66,7 +66,7 @@ export const getHubLabBucketItems = async (
           arguments: [{ url: pr.url || pr.repo_url, source: "treeView" }],
         },
         pr?.comments?.length > 0
-          ? pr.comments.flatMap((comment: any) => {
+          ? pr.comments.flatMap((comment: any, index: number) => {
               return [
                 new ContextItem(
                   reposource === "gitlab.com"
@@ -90,7 +90,9 @@ export const getHubLabBucketItems = async (
                   undefined,
                   reposource === "gitlab.com"
                     ? comment.author.avatar_url
-                    : comment.user.avatar_url
+                    : comment.user.avatar_url,
+                  "githubCommentable",
+                  pr
                 ),
                 new ContextItem(
                   comment.body,
@@ -108,11 +110,18 @@ export const getHubLabBucketItems = async (
                         source: "treeView",
                       },
                     ],
-                  }
+                  },
+                  undefined,
+                  undefined,
+                  "githubCommentable",
+                  pr
                 ),
               ];
             })
-          : undefined
+          : undefined,
+        undefined,
+        "githubCommentable",
+        pr
       );
     });
     items.push(
