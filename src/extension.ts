@@ -15,6 +15,7 @@ import {
   EXTENSION_ID,
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
   WATERMELON_COMMENT_JIRA_COMMAND,
+  WATERMELON_COMMENT_SLACK_COMMAND,
   WATERMELON_LOGIN_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
   WATERMELON_OPEN_LINK_COMMAND,
@@ -25,6 +26,7 @@ import {
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
 import commentJiraHandler from "./utils/commands/commentOnJira";
+import commentSlackHandler from "./utils/commands/commentOnSlack";
 
 import debugLogger from "./utils/vscode/debugLogger";
 import { WatermelonAuthenticationProvider } from "./auth";
@@ -387,6 +389,10 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       WATERMELON_OPEN_LINK_COMMAND,
       linkCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_COMMENT_SLACK_COMMAND,
+      commentSlackHandler
     ),
     vscode.commands.registerCommand(
       WATERMELON_COMMENT_JIRA_COMMAND,
