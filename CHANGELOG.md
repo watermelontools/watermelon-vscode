@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [2.0.6]
 
+- EXPERIMENTAL: Allows login from Gitpod[gitpod.io] to use the extension
+
+## [2.0.6]
+
 - Added GitHub PR commenting
 - Added Slack thread commenting
 
