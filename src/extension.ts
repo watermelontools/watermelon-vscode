@@ -224,6 +224,17 @@ export class WatermelonTreeDataProvider
 
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
+  if (vscode.env.uiKind === vscode.UIKind.Web) {
+    //log all env variables for web
+    console.log("vscode.env.appName", vscode.env.appName);
+    console.log("vscode.env.appRoot", vscode.env.appRoot);
+    console.log("vscode.env.appUriScheme", vscode.env.appHost);
+    console.log("vscode.env.remoteName", vscode.env.remoteName);
+    console.log(vscode.Uri.parse(vscode.env.uriScheme));
+    console.log("vscode.env.appUriScheme", vscode.env.uriScheme);
+    console.log(process.env);
+  }
+
   // allows saving state across sessions
   const workspaceState: { repo: string; owner: string } | undefined =
     context.workspaceState.get("workspaceState");
