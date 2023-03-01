@@ -17,10 +17,7 @@ export default async function postCommentOnTicket({
       issueIdOrKey,
       text,
     })
-    .then((res) => {
-      console.log(res.data);
-      return res.data;
-    })
+    .then((res) =>  res.data
     .catch((err) => {
       let reporter = analyticsReporter();
       let { message } = err;
