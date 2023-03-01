@@ -1,7 +1,7 @@
 {
   "name": "watermelon-tools",
   "description": "Watermelon, find all the historical context of your code",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "publisher": "WatermelonTools",
   "displayName": "Watermelon",
   "private": true,
@@ -52,7 +52,11 @@
       {
         "command": "watermelon.start",
         "title": "Get Code Context with Watermelon",
-        "category": "watermelon"
+        "category": "watermelon",
+        "icon": {
+          "light": "images/wmbw_bold_fill.svg",
+          "dark": "images/wmbw_bold_fill.svg"
+        }
       },
       {
         "command": "watermelon.show",
@@ -68,6 +72,30 @@
         "command": "watermelon.recommend",
         "title": "Add Watermelon to recommended extensions",
         "category": "watermelon"
+      },
+      {
+        "command": "watermelon.jira.comment",
+        "title": "Comment on this ticket",
+        "category": "watermelon",
+        "icon": "$(comment)"
+      },
+      {
+        "command": "watermelon.slack.comment",
+        "title": "Comment on this thread",
+        "category": "watermelon",
+        "icon": "$(comment)"
+      },
+      {
+        "command": "watermelon.github.comment",
+        "title": "Comment on this PR",
+        "category": "watermelon",
+        "icon": "$(comment)"
+      },
+      {
+        "command": "watermelon.github.comment",
+        "title": "Comment on this PR",
+        "category": "watermelon",
+        "icon": "$(comment)"
       }
     ],
     "views": {
@@ -145,6 +173,35 @@
         {
           "command": "watermelon.start",
           "when": "editorHasSelection"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "watermelon.jira.comment",
+          "when": "viewItem == jiraCommentable",
+          "group": "inline"
+        },
+        {
+          "command": "watermelon.jira.comment",
+          "when": "viewItem == jiraCommentable"
+        },
+        {
+          "command": "watermelon.slack.comment",
+          "when": "viewItem == slackCommentable",
+          "group": "inline"
+        },
+        {
+          "command": "watermelon.slack.comment",
+          "when": "viewItem == slackCommentable"
+        },
+        {
+          "command": "watermelon.github.comment",
+          "when": "viewItem == githubCommentable",
+          "group": "inline"
+        },
+        {
+          "command": "watermelon.github.comment",
+          "when": "viewItem == githubCommentable"
         }
       ]
     },

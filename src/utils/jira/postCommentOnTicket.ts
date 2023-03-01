@@ -2,10 +2,10 @@ import axios from "axios";
 import { backendURL } from "../../constants";
 import analyticsReporter from "../vscode/reporter";
 
-export default async function getTicketComments({
+export default async function postCommentOnTicket({
   email,
   issueIdOrKey,
-  text
+  text,
 }: {
   email: string;
   issueIdOrKey: string;
@@ -13,15 +13,15 @@ export default async function getTicketComments({
 }) {
   const sentComment = await axios
     .post(`${backendURL}/api/jira/commentOnJiraTicket`, {
-        user: email,
-        issueIdOrKey,
-        text
-      })
-      .then((res) => res.data)
-      .catch((err) => {
-        let reporter = analyticsReporter();
-        let { message } = err;
-        reporter?.sendTelemetryException(err, { error: message });
-      });
-      return sentComment;
+      user: email,
+      issueIdOrKey,
+      text
+    })
+    .then((res) =>  res.data)
+    .catch((err) => {
+      let reporter = analyticsReporter();
+      let { message } = err;
+      reporter?.sendTelemetryException(err, { error: message });
+    });
+  return sentComment;
 }

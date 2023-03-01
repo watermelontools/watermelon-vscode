@@ -14,6 +14,9 @@ import hover from "./utils/components/hover";
 import {
   EXTENSION_ID,
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
+  WATERMELON_COMMENT_GITHUB_COMMAND,
+  WATERMELON_COMMENT_JIRA_COMMAND,
+  WATERMELON_COMMENT_SLACK_COMMAND,
   WATERMELON_LOGIN_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
   WATERMELON_OPEN_LINK_COMMAND,
@@ -23,6 +26,10 @@ import {
 } from "./constants";
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
+import commentJiraHandler from "./utils/commands/commentOnJira";
+import commentSlackHandler from "./utils/commands/commentOnSlack";
+import commentGithubHandler from "./utils/commands/commentOnGithub";
+
 import debugLogger from "./utils/vscode/debugLogger";
 import { WatermelonAuthenticationProvider } from "./auth";
 import { ContextItem } from "./ContextItem";
@@ -32,6 +39,7 @@ import { getJiraItems } from "./utils/treeview/getJiraItems";
 import { getSlackItems } from "./utils/treeview/getSlackItems";
 import { getCodeContextSummary } from "./utils/treeview/getCodeContextSummary";
 import setLoading from "./utils/vscode/setLoading";
+import addToRecommendedCommandHandler from "./utils/commands/addToRecommended";
 
 // repo information
 let owner: string | undefined = "";
@@ -216,6 +224,17 @@ export class WatermelonTreeDataProvider
 
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
+  if (vscode.env.uiKind === vscode.UIKind.Web) {
+    //log all env variables for web
+    console.log("vscode.env.appName", vscode.env.appName);
+    console.log("vscode.env.appRoot", vscode.env.appRoot);
+    console.log("vscode.env.appUriScheme", vscode.env.appHost);
+    console.log("vscode.env.remoteName", vscode.env.remoteName);
+    console.log(vscode.Uri.parse(vscode.env.uriScheme));
+    console.log("vscode.env.appUriScheme", vscode.env.uriScheme);
+    console.log(process.env);
+  }
+
   // allows saving state across sessions
   const workspaceState: { repo: string; owner: string } | undefined =
     context.workspaceState.get("workspaceState");
@@ -310,12 +329,6 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.window.showInformationMessage(`Welcome ${session.account.label}`);
     }
   };
-  let addToRecommendedCommandHandler = async () => {
-    vscode.commands.executeCommand(
-      "workbench.extensions.action.addExtensionToWorkspaceRecommendations",
-      EXTENSION_ID
-    );
-  };
 
   let prsCommandHandler = async (
     startLine = undefined,
@@ -389,9 +402,20 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       WATERMELON_OPEN_LINK_COMMAND,
       linkCommandHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_COMMENT_SLACK_COMMAND,
+      commentSlackHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_COMMENT_JIRA_COMMAND,
+      commentJiraHandler
+    ),
+    vscode.commands.registerCommand(
+      WATERMELON_COMMENT_GITHUB_COMMAND,
+      commentGithubHandler
     )
   );
-
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
     let gitAPI = await getGitAPI();
     updateStatusBarItem(wmStatusBarItem);
