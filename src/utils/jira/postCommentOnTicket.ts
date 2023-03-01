@@ -15,9 +15,9 @@ export default async function postCommentOnTicket({
     .post(`${backendURL}/api/jira/commentOnJiraTicket`, {
       user: email,
       issueIdOrKey,
-      text,
+      text
     })
-    .then((res) =>  res.data
+    .then((res) =>  res.data)
     .catch((err) => {
       let reporter = analyticsReporter();
       let { message } = err;
