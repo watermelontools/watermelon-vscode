@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.0.7]
+
+- Update description
+
 ## [2.0.6]
 
 - EXPERIMENTAL: Allows login from Gitpod[gitpod.io] to use the extension
