@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [2.0.7]
 
+- EXPERIMENTAL: Allows login from Gitpod[gitpod.io] to use the extension
 - Adds logging of variables to debug web login
 
 ## [2.0.6]
