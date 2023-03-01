@@ -15,3 +15,6 @@ export const WATERMELON_MULTI_SELECT_COMMAND = "watermelon.multiSelect";
 export const WATERMELON_LOGIN_COMMAND = "watermelon.login";
 export const WATERMELON_ADD_TO_RECOMMENDED_COMMAND = "watermelon.recommend";
 export const WATERMELON_OPEN_LINK_COMMAND = "watermelon.openLink";
+export const WATERMELON_COMMENT_JIRA_COMMAND = "watermelon.jira.comment";
+export const WATERMELON_COMMENT_SLACK_COMMAND = "watermelon.slack.comment";
+export const WATERMELON_COMMENT_GITHUB_COMMAND = "watermelon.github.comment";

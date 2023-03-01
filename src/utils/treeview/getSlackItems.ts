@@ -51,7 +51,7 @@ export const getSlackItems = async (
           },
         ],
       },
-      thread.replies?.flatMap((reply: any) => {
+      thread.replies?.flatMap((reply: any, index: number) => {
         return [
           new ContextItem(
             reply.userInfo?.user?.profile?.real_name,
@@ -70,7 +70,11 @@ export const getSlackItems = async (
               ],
             },
             undefined,
-            reply?.userInfo?.user?.profile?.image_512
+            reply?.userInfo?.user?.profile?.image_512,
+            index === thread.replies.length - 1
+              ? "slackCommentable"
+              : undefined,
+            thread
           ),
           new ContextItem(
             reply.text,
@@ -88,11 +92,17 @@ export const getSlackItems = async (
               ],
             },
             undefined,
-            undefined
+            undefined,
+            index === thread.replies.length - 1
+              ? "slackCommentable"
+              : undefined,
+            thread
           ),
         ];
       }),
-      thread?.userInfo?.user?.profile?.image_512
+      thread?.userInfo?.user?.profile?.image_512,
+      "slackCommentable",
+      thread
     );
   });
   if (!slackItems?.length) {

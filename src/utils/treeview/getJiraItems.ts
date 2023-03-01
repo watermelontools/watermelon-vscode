@@ -65,7 +65,7 @@ export const getJiraItems = async (
             ticket.renderedFields.created,
             undefined,
             ticket?.comments?.length > 0
-              ? ticket.comments?.flatMap((comment: any) => {
+              ? ticket.comments?.flatMap((comment: any, index: number) => {
                   return [
                     new ContextItem(
                       comment.updateAuthor.displayName,
@@ -82,7 +82,10 @@ export const getJiraItems = async (
                         ],
                       },
                       undefined,
-                      comment.updateAuthor.avatarUrls["48x48"]
+                      comment.updateAuthor.avatarUrls["48x48"],
+                      index === ticket.comments.length - 1
+                        ? "jiraCommentable"
+                        : undefined
                     ),
                     new ContextItem(
                       comment.renderedBody,
@@ -97,13 +100,20 @@ export const getJiraItems = async (
                             source: "treeView",
                           },
                         ],
-                      }
+                      },
+                      undefined,
+                      undefined,
+                      index === ticket.comments.length - 1
+                        ? "jiraCommentable"
+                        : undefined
                     ),
                   ];
                 })
               : undefined
           ),
-        ]
+        ],
+        undefined,
+        "jiraCommentable"
       );
     });
   }

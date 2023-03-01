@@ -10,6 +10,7 @@ import {
   Uri,
   env,
 } from "vscode";
+import * as vscode from "vscode";
 
 class WatermelonAuthSession implements AuthenticationSession {
   readonly account = {
@@ -150,9 +151,18 @@ export class WatermelonAuthenticationProvider
     let token = await this.cacheTokenFromStorage();
     let email = await this.cacheEmailFromStorage();
     if (!token || !email) {
-      env.openExternal(
-        Uri.parse(`https://app.watermelontools.com/${env.uriScheme}`)
-      );
+      let urlToOpen = `https://app.watermelontools.com/${env.uriScheme}`;
+      if (vscode.env.uiKind === vscode.UIKind.Web) {
+        switch (vscode.env.appHost) {
+          case "Gitpod":
+            urlToOpen = `https://app.watermelontools.com/${env.uriScheme}?podURL=${process.env.GITPOD_WORKSPACE_ID}`;
+            break;
+          default:
+            urlToOpen = `https://app.watermelontools.com/${env.uriScheme}`;
+            break;
+        }
+      }
+      env.openExternal(Uri.parse(urlToOpen));
       return Promise.reject("Please log in to Watermelon");
     } else {
       console.log("Successfully logged in to Watermelon");
