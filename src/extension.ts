@@ -40,6 +40,7 @@ import { getSlackItems } from "./utils/treeview/getSlackItems";
 import { getCodeContextSummary } from "./utils/treeview/getCodeContextSummary";
 import setLoading from "./utils/vscode/setLoading";
 import addToRecommendedCommandHandler from "./utils/commands/addToRecommended";
+import ghHover from "./utils/components/ghHover";
 
 // repo information
 let owner: string | undefined = "";
@@ -224,16 +225,6 @@ export class WatermelonTreeDataProvider
 
 export async function activate(context: vscode.ExtensionContext) {
   setLoggedIn(false);
-  if (vscode.env.uiKind === vscode.UIKind.Web) {
-    //log all env variables for web
-    console.log("vscode.env.appName", vscode.env.appName);
-    console.log("vscode.env.appRoot", vscode.env.appRoot);
-    console.log("vscode.env.appUriScheme", vscode.env.appHost);
-    console.log("vscode.env.remoteName", vscode.env.remoteName);
-    console.log(vscode.Uri.parse(vscode.env.uriScheme));
-    console.log("vscode.env.appUriScheme", vscode.env.uriScheme);
-    console.log(process.env);
-  }
 
   // allows saving state across sessions
   const workspaceState: { repo: string; owner: string } | undefined =
@@ -315,6 +306,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // create the hover provider
   let wmHover = hover({ reporter });
+  let githubHover = ghHover({ reporter });
 
   let loginCommandHandler = async () => {
     // Get our PAT session.
