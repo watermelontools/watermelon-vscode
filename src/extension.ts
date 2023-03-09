@@ -42,6 +42,7 @@ import setLoading from "./utils/vscode/setLoading";
 import addToRecommendedCommandHandler from "./utils/commands/addToRecommended";
 import ghHover from "./utils/components/ghHover";
 import slackHover from "./utils/components/slackHover";
+import jiraHover from "./utils/components/jiraHover";
 
 // repo information
 let owner: string | undefined = "";
@@ -309,6 +310,7 @@ export async function activate(context: vscode.ExtensionContext) {
   let wmHover = hover({ reporter });
   let githubHover = ghHover({ reporter });
   let slckHover = slackHover({ reporter });
+  let jrHover = jiraHover({ reporter });
 
   let loginCommandHandler = async () => {
     // Get our PAT session.
