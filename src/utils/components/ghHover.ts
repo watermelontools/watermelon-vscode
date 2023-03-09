@@ -1,11 +1,7 @@
 import TelemetryReporter from "@vscode/extension-telemetry";
 import * as vscode from "vscode";
 import { WatermelonAuthenticationProvider } from "../../auth";
-import {
-  WATERMELON_OPEN_LINK_COMMAND,
-  WATERMELON_PULLS_COMMAND,
-} from "../../constants";
-import getNumberOfFileChanges from "../getNumberOfFileChanges";
+import { WATERMELON_PULLS_COMMAND } from "../../constants";
 import getPRsPerSHAS from "../github/getPRsPerSHAS";
 import getLatestCommit from "../others/git/getLatestCommit";
 import getGitAPI from "../vscode/getGitAPI";
