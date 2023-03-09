@@ -307,10 +307,10 @@ export async function activate(context: vscode.ExtensionContext) {
   updateStatusBarItem(wmStatusBarItem);
 
   // create the hover provider
-  let wmHover = hover({ reporter });
-  let githubHover = ghHover({ reporter });
-  let slckHover = slackHover({ reporter });
-  let jrHover = jiraHover({ reporter });
+  hover({ reporter });
+  ghHover({ reporter });
+  slackHover({ reporter });
+  jiraHover({ reporter });
 
   let loginCommandHandler = async () => {
     // Get our PAT session.

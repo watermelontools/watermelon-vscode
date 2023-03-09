@@ -33,6 +33,9 @@ const ghHover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
         shaArray: `${latestCommit.hash}, ${latestCommit.parents[0]}`,
         repoSource,
       });
+      if (!prs) {
+        return null;
+      }
       let sortedPRs: any[] = [];
       if (Array.isArray(prs)) {
         sortedPRs = prs?.sort(
