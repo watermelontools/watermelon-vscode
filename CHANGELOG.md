@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [2.0.8]
 
 - Added GitHub Hover response
+- Added Slack Hover response
 
 ## [2.0.7]
 
