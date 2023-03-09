@@ -48,7 +48,25 @@ const ghHover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       );
 
       const content: vscode.MarkdownString = new vscode.MarkdownString(
-        `[#${lastPR.number}: ${lastPR.title}](${startCommandUri})`
+        `<a href="${startCommandUri}">
+          <span style="display:flex;align-items:center;">
+          <img style="height:1em;max-height:1em;width:1em;max-width:1em;"
+          src='${vscode.Uri.parse(
+            path.join(
+              __filename,
+              "..",
+              "..",
+              "..",
+              "..",
+              "images",
+              "logos",
+              `github.svg`
+            )
+          )}' 
+          />
+           #${lastPR.number}: ${lastPR.title}
+          </span>
+        </a>`
       );
 
       content.appendMarkdown(`\n`);
