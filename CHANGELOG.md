@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Added GitHub Hover response
 - Added Slack Hover response
+- Added Jira Hover response
 
 ## [2.0.7]
 
