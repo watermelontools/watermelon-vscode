@@ -63,7 +63,7 @@ const ghHover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
               "..",
               "images",
               "logos",
-              `github.svg`
+              `githubSmall.svg`
             )
           )}' 
           />

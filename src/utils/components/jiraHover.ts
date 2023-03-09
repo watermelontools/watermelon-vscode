@@ -52,7 +52,7 @@ const jiraHover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
               "..",
               "images",
               "logos",
-              `jira.svg`
+              `jiraSmall.svg`
             )
           )}' 
           />

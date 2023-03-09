@@ -52,7 +52,7 @@ const slackHover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
               "..",
               "images",
               "logos",
-              `slack.svg`
+              `slackSmall.svg`
             )
           )}' 
           />
