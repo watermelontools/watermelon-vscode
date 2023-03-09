@@ -36,7 +36,7 @@ const slackHover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
         return null;
       }
       const sortedThreads = threads?.sort(
-        (a: any, b: any) => b?.comments?.length - a?.comments?.length
+        (a: any, b: any) => b?.replies?.length - a?.replies?.length
       );
       const lastThread = sortedThreads[0];
       const content: vscode.MarkdownString = new vscode.MarkdownString(
