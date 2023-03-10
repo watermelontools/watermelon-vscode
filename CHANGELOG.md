@@ -4,6 +4,12 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.0.8]
+
+- Added GitHub Hover response
+- Added Slack Hover response
+- Added Jira Hover response
+
 ## [2.0.7]
 
 - Update description
