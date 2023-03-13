@@ -2,13 +2,12 @@ import TelemetryReporter from "@vscode/extension-telemetry";
 import * as vscode from "vscode";
 import { WatermelonAuthenticationProvider } from "../../auth";
 import { WATERMELON_PULLS_COMMAND } from "../../constants";
-import getPRsPerSHAS from "../github/getPRsPerSHAS";
 import getLatestCommit from "../others/git/getLatestCommit";
 import getGitAPI from "../vscode/getGitAPI";
-import getRepoInfo from "../vscode/getRepoInfo";
 import path = require("path");
+import searchMessagesByText from "../slack/searchMessagesByText";
 
-const ghHover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
+const slackHover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
   return vscode.languages.registerHoverProvider("*", {
     async provideHover(document, position, token) {
       let gitAPI = await getGitAPI();
@@ -18,39 +17,28 @@ const ghHover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
         currentlyOpenTabfilePath: document,
         gitAPI,
       });
-      let repoInfo = await getRepoInfo({ reporter });
-      const repo = repoInfo?.repo;
-      const owner = repoInfo?.owner;
-      const repoSource = repoInfo?.source;
+
       const session = await vscode.authentication.getSession(
         WatermelonAuthenticationProvider.id,
         []
       );
-      let prs = await getPRsPerSHAS({
-        repo,
-        owner,
-        email: session?.account.label || "",
-        shaArray: `${latestCommit.hash}, ${latestCommit.parents[0]}`,
-        repoSource,
-      });
-
-      if (!prs) {
-        return null;
-      }
-      let sortedPRs: any[] = [];
-      if (Array.isArray(prs)) {
-        sortedPRs = prs?.sort(
-          (a: any, b: any) => b?.comments?.length - a?.comments?.length
-        );
-      }
-      const lastPR = sortedPRs[0];
       const args = [{ startLine: position.line, endLine: position.line }];
       const startCommandUri = vscode.Uri.parse(
         `command:${WATERMELON_PULLS_COMMAND}?${encodeURIComponent(
           JSON.stringify(args)
         )}`
       );
-
+      const threads = await searchMessagesByText({
+        email: session?.account.label || "",
+        text: latestCommit.message.replace(/(\r\n|\n|\r)/gm, ""),
+      });
+      if (!threads) {
+        return null;
+      }
+      const sortedThreads = threads?.sort(
+        (a: any, b: any) => b?.replies?.length - a?.replies?.length
+      );
+      const lastThread = sortedThreads[0];
       const content: vscode.MarkdownString = new vscode.MarkdownString(
         `<a href="${startCommandUri}">
           <span style="display:flex;align-items:center;">
@@ -64,23 +52,25 @@ const ghHover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
               "..",
               "images",
               "logos",
-              `githubSmall.svg`
+              `slackSmall.svg`
             )
           )}' 
           />
-           #${lastPR.number}: ${lastPR.title}
+           #${lastThread.channel.name}: ${
+          lastThread.text.length > 50
+            ? lastThread.text.slice(0, 50) + "..."
+            : lastThread.text
+        }
           </span>
         </a>`
       );
 
-      content.appendMarkdown(`\n`);
-
       content.supportHtml = true;
       content.isTrusted = true;
       content.supportThemeIcons = true;
-      reporter?.sendTelemetryEvent("ghhover");
+      reporter?.sendTelemetryEvent("slackhover");
       return new vscode.Hover(content);
     },
   });
 };
-export default ghHover;
+export default slackHover;
