@@ -307,7 +307,6 @@ export async function activate(context: vscode.ExtensionContext) {
   updateStatusBarItem(wmStatusBarItem);
 
   // create the hover providers
-
   hover({ reporter });
   ghHover({ reporter });
   slackHover({ reporter });
