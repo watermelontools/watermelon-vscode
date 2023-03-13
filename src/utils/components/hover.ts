@@ -40,8 +40,8 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       const content: vscode.MarkdownString = new vscode.MarkdownString(
         `<strong>
           <a href="${startCommandUri}">
-            <span style="color:#fff;background-color:#238636;">
-              &nbsp;$(github-inverted)View the code context with Watermelon 🍉&nbsp;&nbsp;
+            <span style="color:#fff;background-color:#1E90FF;">
+              &nbsp;View the code context with Watermelon 🍉&nbsp;&nbsp;
             </span>
           </a>
         </strong>`
@@ -74,7 +74,7 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       content.supportHtml = true;
       content.isTrusted = true;
       content.supportThemeIcons = true;
-      reporter?.sendTelemetryEvent("hover"); 
+      reporter?.sendTelemetryEvent("hover");
       return new vscode.Hover(content);
     },
   });
