@@ -126,7 +126,7 @@ export default async function getPRsToPaintPerSHAs({
           repo_url: issue.repository_url,
           state: issue.state,
           draft: issue.draft,
-          number: issue.number || issue.number,
+          number: issue.number || issueData.number,
           comments: issue?.comments,
         });
       }
