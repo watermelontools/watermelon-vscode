@@ -11,6 +11,7 @@ import {
   env,
 } from "vscode";
 import * as vscode from "vscode";
+import setLoggedIn from "./utils/vscode/setLoggedIn";
 
 class WatermelonAuthSession implements AuthenticationSession {
   readonly account = {
@@ -166,6 +167,7 @@ export class WatermelonAuthenticationProvider
       return Promise.reject("Please log in to Watermelon");
     } else {
       console.log("Successfully logged in to Watermelon");
+      setLoggedIn(true);
       let session = new WatermelonAuthSession(token, email);
       return session;
     }
@@ -180,5 +182,6 @@ export class WatermelonAuthenticationProvider
     this.currentToken = undefined;
     await this.context.secrets.delete("watermelonToken");
     await this.context.secrets.delete("watermelonEmail");
+    setLoggedIn(false);
   }
 }
