@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [2.0.9]
 
+- Added auth state setting on auth changes
 - Changed hover button color, removed GitHub logo
 
 ## [2.0.8]
