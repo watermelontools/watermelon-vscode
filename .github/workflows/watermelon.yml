@@ -1,7 +1,7 @@
 on: [pull_request]
 
 jobs:
-  getdata:
+  getData:
     runs-on: ubuntu-latest
     name: Get code context with Watermelon
     steps:
