@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.0.10]
+
+- Updated the tags that identify the package
+
 ## [2.0.9]
 
 - Added auth state setting on auth changes
