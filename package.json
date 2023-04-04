@@ -21,14 +21,18 @@
     "Other"
   ],
   "keywords": [
-    "Github",
     "Comments",
     "PRs",
     "Repo",
     "Context",
     "Pull request",
     "Blame",
-    "Git"
+    "Git",
+    "Jira",
+    "Slack"
+    "GitHub",
+    "GitLab",
+    "BitBucket"
   ],
   "icon": "images/logoTransparentBackground.png",
   "galleryBanner": {
