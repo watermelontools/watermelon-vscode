@@ -32,7 +32,8 @@
     "Slack"
     "GitHub",
     "GitLab",
-    "BitBucket"
+    "BitBucket",
+    "AI"
   ],
   "icon": "images/logoTransparentBackground.png",
   "galleryBanner": {
