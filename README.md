@@ -17,7 +17,7 @@ Watermelon is your **Open Source** Code Archeology Toolbox for **Visual Studio C
 Watermelon has 2 features that you can use for free:
 
 - Hover to get context
-- Get most relevant Pull Request (50 queries per month)
+- Get most relevant Pull Request (500 queries per month)
 
 ### Hover To Get Context
 
