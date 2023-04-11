@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [2.0.10]
 
+- Updated the repo URL, which pointed to the organization
 - Updated the tags that identify the package
 
 ## [2.0.9]
