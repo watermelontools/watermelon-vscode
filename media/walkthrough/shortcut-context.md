@@ -1,4 +1,4 @@
-# Pull Requests with our Shortcuts
+# Context with our Shortcut
 
 Select text with your keyboard, and press `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac).
-![shortcut-prs.gif](./shortcut-prs.gif)
+![shortcut-context.png](./shortcut-context.png)
