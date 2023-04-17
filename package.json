@@ -8,7 +8,7 @@
   "license": "See license.md (Apache)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/orgs/watermelontools/"
+    "url": "https://github.com/watermelontools/watermelon-extension"
   },
   "sponsor": {
     "url": "https://github.com/sponsors/watermelontools"
@@ -32,7 +32,8 @@
     "Slack"
     "GitHub",
     "GitLab",
-    "BitBucket"
+    "BitBucket",
+    "AI"
   ],
   "icon": "images/logoTransparentBackground.png",
   "galleryBanner": {
