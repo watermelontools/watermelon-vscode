@@ -303,7 +303,7 @@
             "title": "Get more services",
             "description": "Wait a few seconds and more services will be added to the panel.",
             "media": {
-              "markdown": "media/walkthrough/hover.md"
+              "markdown": "media/walkthrough/hover-extra.md"
             }
           }
         ]
