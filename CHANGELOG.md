@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Updated the repo URL, which pointed to the organization
 - Updated the tags that identify the package
+- Updated the walkthroughs
 
 ## [2.0.9]
 
