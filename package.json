@@ -222,65 +222,65 @@
       {
         "id": "watermelon-context",
         "title": "View the Context for a piece of code",
-        "description": "Learn how to use watermelon to find all the historical context of your code",
+        "description": "Learn how to use watermelon to find all the context of your code",
         "steps": [
           {
             "id": "prs-right-click",
             "title": "View Context with a Right Click",
             "description": "Select a piece of code and use your mouse's right click to launch Watermelon.",
             "media": {
-              "markdown": "media/walkthrough/right-click-history.md"
+              "markdown": "media/walkthrough/right-click-context.md"
             }
           },
           {
-            "id": "history-command",
-            "title": "View Commit History with a Command",
+            "id": "context-command",
+            "title": "View Context with a Command",
             "description": "Select a piece of code and view the Context from the keyboard with the Command Palette. Use the shortcut Ctrl+Shift+P (Cmd+Shift+P on Mac) to open the Command Palette. Type 'Watermelon' and select 'Watermelon:Get Code Context'.",
             "media": {
-              "markdown": "media/walkthrough/command-history.md"
+              "markdown": "media/walkthrough/command-context.md"
             }
           },
           {
-            "id": "history-button",
-            "title": "View Commit History with the Watermelon Sidebar",
-            "description": "Select a piece of code and view every commit that changed it from the Watermelon Sidebar.",
+            "id": "context-button",
+            "title": "View Context with the Watermelon Sidebar",
+            "description": "Select a piece of code and view the context from the Watermelon Sidebar.",
             "media": {
-              "markdown": "media/walkthrough/button-history.md"
+              "markdown": "media/walkthrough/button-context.md"
             }
           },
           {
-            "id": "history-hover",
-            "title": "View Commit History with the Watermelon Hover Panel",
-            "description": "Select a piece of code and view every commit that changed it from the Watermelon Panel.",
+            "id": "context-hover",
+            "title": "View Context with the Watermelon Hover Panel",
+            "description": "Select a piece of code and view the context from the Watermelon Panel.",
             "media": {
-              "markdown": "media/walkthrough/hover-history.md"
+              "markdown": "media/walkthrough/hover-context.md"
             }
           },
           {
-            "id": "history-shortcut-windows",
-            "title": "View Commit History with a Keyboard Shortcut",
-            "description": "Select a piece of code and view every commit that changed it from the keyboard with `Ctrl+Shift+H`.",
+            "id": "context-shortcut-windows",
+            "title": "View Context with a Keyboard Shortcut",
+            "description": "Select a piece of code and view the context from the keyboard with `Ctrl+Shift+C`.",
             "when": "isWindows",
             "media": {
-              "markdown": "media/walkthrough/shortcut-history.md"
+              "markdown": "media/walkthrough/shortcut-context.md"
             }
           },
           {
-            "id": "history-shortcut-linux",
-            "title": "View Commit History with a Keyboard Shortcut",
-            "description": "Select a piece of code and view every commit that changed it from the keyboard with `Ctrl+Shift+H`.",
+            "id": "context-shortcut-linux",
+            "title": "View Context with a Keyboard Shortcut",
+            "description": "Select a piece of code and view the context from the keyboard with `Ctrl+Shift+C`.",
             "when": "isLinux",
             "media": {
-              "markdown": "media/walkthrough/shortcut-history.md"
+              "markdown": "media/walkthrough/shortcut-context.md"
             }
           },
           {
-            "id": "history-shortcut-mac",
-            "title": "View Commit History with a Keyboard Shortcut",
-            "description": "Select a piece of code and view every commit that changed it from the keyboard with `Cmd+Shift+C`.",
+            "id": "context-shortcut-mac",
+            "title": "View Commit context with a Keyboard Shortcut",
+            "description": "Select a piece of code and view the context from the keyboard with `Cmd+Shift+C`.",
             "when": "isMac",
             "media": {
-              "markdown": "media/walkthrough/shortcut-history.md"
+              "markdown": "media/walkthrough/shortcut-context.md"
             }
           }
         ]
@@ -294,6 +294,14 @@
             "id": "hover",
             "title": "Understand a LOC context",
             "description": "Hover over code and view information on it.",
+            "media": {
+              "markdown": "media/walkthrough/hover.md"
+            }
+          },
+          {
+            "id": "hoverw",
+            "title": "Get more services",
+            "description": "Wait a few seconds and more services will be added to the panel.",
             "media": {
               "markdown": "media/walkthrough/hover.md"
             }
