@@ -219,14 +219,14 @@
     ],
     "walkthroughs": [
       {
-        "id": "watermelon-history",
-        "title": "View the Commit History for a piece of code",
+        "id": "watermelon-context",
+        "title": "View the Context for a piece of code",
         "description": "Learn how to use watermelon to find all the historical context of your code",
         "steps": [
           {
             "id": "prs-right-click",
-            "title": "View Commit History with a Right Click",
-            "description": "Select a piece of code and view every commit that changed it using your mouse.",
+            "title": "View Context with a Right Click",
+            "description": "Select a piece of code and use your mouse's right click to launch Watermelon.",
             "media": {
               "markdown": "media/walkthrough/right-click-history.md"
             }
@@ -234,7 +234,7 @@
           {
             "id": "history-command",
             "title": "View Commit History with a Command",
-            "description": "Select a piece of code and view every commit that changed it from the keyboard with the Command Palette.",
+            "description": "Select a piece of code and view the Context from the keyboard with the Command Palette. Use the shortcut Ctrl+Shift+P (Cmd+Shift+P on Mac) to open the Command Palette. Type 'Watermelon' and select 'Watermelon:Get Code Context'.",
             "media": {
               "markdown": "media/walkthrough/command-history.md"
             }
