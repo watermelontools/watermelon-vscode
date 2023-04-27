@@ -36,10 +36,11 @@ export const getSlackItems = async (
     }
   }
   const slackItems = relevantSlackThreads?.map((thread: any) => {
+    const dateToTransform = new Date(parseFloat(thread.ts) * 1000);
     return new ContextItem(
       `#${thread.channel.name}`,
       vscode.TreeItemCollapsibleState.Collapsed,
-      `${dateToHumanReadable(new Date(parseFloat(thread.ts)))}`,
+      `${dateToHumanReadable(new Date(dateToTransform))}`,
       {
         command: WATERMELON_OPEN_LINK_COMMAND,
         title: "View Slack thread",
