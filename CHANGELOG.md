@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [2.0.10]
 
 - Updated the tags that identify the package
+- Fixed a date issue on the Slack panel
 
 ## [2.0.9]
 
