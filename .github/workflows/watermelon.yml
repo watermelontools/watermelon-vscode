@@ -1,0 +1,14 @@
+name: watermelon-context
+on: [pull_request]
+
+jobs:
+  getcontext:
+    runs-on: ubuntu-latest
+    name: Get code context with Watermelon
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Watermelon-context-action
+        uses: watermelontools/watermelon-context-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

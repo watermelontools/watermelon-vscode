@@ -4,6 +4,13 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.0.10]
+
+- Updated the repo URL, which pointed to the organization
+- Updated the tags that identify the package
+- Fixed a date issue on the Slack panel
+- Updated the walkthroughs
+
 ## [2.0.9]
 
 - Added auth state setting on auth changes
