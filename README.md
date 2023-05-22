@@ -17,7 +17,11 @@ Watermelon is your **Open Source** Code Archeology Toolbox for **Visual Studio C
 Watermelon has 2 features that you can use for free:
 
 - Hover to get context
-- Get most relevant Pull Request (500 queries per month)
+- Get most relevant Pull Request 
+- Jira (get the most relevant ticket)
+- Slack (get the most relevant message thread)
+
+More integrations coming soon!
 
 ### Hover To Get Context
 
@@ -49,15 +53,6 @@ NOTE: This takes up to 10 seconds right now. Please be patient while we work on 
 #### Click get code context button on the right-click menu
 ![rightClickMenu](https://thumbs.gfycat.com/MeaslyNarrowGoat-size_restricted.gif)
 
-
-## Paid Features
-
-In addition to getting  unlimited code context queries, paying for Watermelon also gives you access to context from the following sources via its integrations:
-
-- Jira (get the most relevant ticket)
-- Slack (get the most relevant message thread)
-
-More integrations coming soon!
 
 ## Requirements
 
