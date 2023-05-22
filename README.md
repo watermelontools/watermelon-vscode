@@ -104,6 +104,8 @@ Alternatively, comment on our issues if you plan to solve one.
 
 We use [VS Code's telemetry library](https://github.com/microsoft/vscode-extension-telemetry). The library respects the user's decision about whether or not to send telemetry data.
 
+We also have settings to disable it.
+
 **We _don't_ store your code**
 
 ## Supporters
