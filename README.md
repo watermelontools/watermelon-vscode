@@ -91,7 +91,7 @@ Watermelon comes with a few commands that you can run from VS Code's Command Pal
 
 As an alternative, you can use the following shortcuts:
 
-- `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac) to view Pull Requests
+- `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac) to view your context results
 
 ## Contributing
 
