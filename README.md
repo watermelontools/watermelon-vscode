@@ -19,7 +19,7 @@ Watermelon has 2 features that you can use for free:
 - Hover to get context
 - Get most relevant Pull Request 
 - Get the most relevant Jira Tickets
-- Slack (get the most relevant message thread)
+- Get the most relevant Slack message thread
 
 More integrations coming soon!
 
