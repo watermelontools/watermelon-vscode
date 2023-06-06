@@ -4,6 +4,10 @@ All notable changes to the "watermelon" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [2.1.0]
+
+- New Rich hover speeds up fetching
+
 ## [2.0.10]
 
 - Updated the repo URL, which pointed to the organization
