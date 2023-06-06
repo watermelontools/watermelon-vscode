@@ -138,7 +138,6 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       </a>`);
         content.appendMarkdown(`<br />`);
       }
-      console.log(foundHoverData);
 
       content.supportHtml = true;
       content.isTrusted = true;
