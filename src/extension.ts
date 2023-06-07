@@ -40,9 +40,7 @@ import { getSlackItems } from "./utils/treeview/getSlackItems";
 import { getCodeContextSummary } from "./utils/treeview/getCodeContextSummary";
 import setLoading from "./utils/vscode/setLoading";
 import addToRecommendedCommandHandler from "./utils/commands/addToRecommended";
-import ghHover from "./utils/components/ghHover";
-import slackHover from "./utils/components/slackHover";
-import jiraHover from "./utils/components/jiraHover";
+import richHover from "./utils/components/richHover";
 
 // repo information
 let owner: string | undefined = "";
@@ -308,10 +306,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // create the hover providers
   hover({ reporter });
-  ghHover({ reporter });
-  slackHover({ reporter });
-  jiraHover({ reporter });
-
+  richHover({ reporter });
   let loginCommandHandler = async () => {
     // Get our PAT session.
     const session = await vscode.authentication.getSession(
