@@ -17,7 +17,11 @@ Watermelon is your **Open Source** Code Archeology Toolbox for **Visual Studio C
 Watermelon has 2 features that you can use for free:
 
 - Hover to get context
-- Get most relevant Pull Request (500 queries per month)
+- Get most relevant Pull Request 
+- Get the most relevant Jira Tickets
+- Get the most relevant Slack message thread
+
+More integrations coming soon!
 
 ### Hover To Get Context
 
@@ -49,15 +53,6 @@ NOTE: This takes up to 10 seconds right now. Please be patient while we work on 
 #### Click get code context button on the right-click menu
 ![rightClickMenu](https://thumbs.gfycat.com/MeaslyNarrowGoat-size_restricted.gif)
 
-
-## Paid Features
-
-In addition to getting  unlimited code context queries, paying for Watermelon also gives you access to context from the following sources via its integrations:
-
-- Jira (get the most relevant ticket)
-- Slack (get the most relevant message thread)
-
-More integrations coming soon!
 
 ## Requirements
 
@@ -91,7 +86,7 @@ Watermelon comes with a few commands that you can run from VS Code's Command Pal
 
 As an alternative, you can use the following shortcuts:
 
-- `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac) to view Pull Requests
+- `Ctrl+Shift+C` (`Cmd+Shift+C` on Mac) to view your context results
 
 ## Contributing
 
@@ -103,6 +98,8 @@ Alternatively, comment on our issues if you plan to solve one.
 ## Analytics
 
 We use [VS Code's telemetry library](https://github.com/microsoft/vscode-extension-telemetry). The library respects the user's decision about whether or not to send telemetry data.
+
+We also have settings to disable it.
 
 **We _don't_ store your code**
 
