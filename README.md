@@ -1,4 +1,4 @@
-# Watermelon GitHub Plugin for Visual Studio Code
+# Watermelon for Visual Studio Code
 
 [![Report an issue](https://img.shields.io/badge/-Report%20an%20issue-critical)](https://github.com/watermelontools/watermelon-extension/issues)
 
@@ -10,18 +10,38 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false#review-details)
 [![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)](https://discord.com/invite/H4AE6b9442)
 
-Watermelon is your **Open Source** Code Archeology Toolbox for **Visual Studio Code**. We allow developers to find the most relevant piece of context for a given block of code. We help you __grok__ codebases by indexing information from git, ticketing, and messaging systems. 
+**Watermelon helps your team merge Pull Requests With Business Value**. 
 
-## Free Features
+We've built a search algorithm that indexes the most relevant [passive documentation](https://www.watermelontools.com/post/what-is-passive-code-documentation-why-is-it-hard-to-scale-what-to-do-about-it) for a given block of code or pull request. 
 
-Watermelon has 2 features that you can use for free:
+To obtain business context in your IDE, use this extension.
+
+To obtain business context in your CI/CD, take a look at our [GitHub Application](https://github.com/apps/watermelon-context)
+
+
+## Integrations
+
+We currently support the following integrations
+
+|           | Git       | Project Management | Messaging | Documentation |
+|-----------|-----------|--------------------|-----------|---------------|
+|           |           |                    |           |               |
+| VS Code   | GitHub    | Jira               | Slack     |               |
+| Extension | GitLab    |                    |           |               |
+|           | Bitbucket |                    |           |               |
+|-----------|-----------|--------------------|-----------|---------------|
+|           |           |                    |           |               |
+| GitHub    | GitHub    | Jira               | Slack     | Notion        |
+| Application           |                    |           |               |               |
+|-----------|-----------|--------------------|-----------|---------------|
+
+
+## Features
+
+Watermelon's VS Code extension allows you to obtain business context for a file or block of code via:
 
 - Hover to get context
-- Get most relevant Pull Request 
-- Get the most relevant Jira Tickets
-- Get the most relevant Slack message thread
-
-More integrations coming soon!
+- Get code context button (to obtain the complete context)
 
 ### Hover To Get Context
 
@@ -29,30 +49,14 @@ The fastest way to use Watermelon is to hover over a line of code to get its con
 
 In the image below you can see how hovering over a line of code provides us the following:
 
-![hover](https://thumbs.gfycat.com/EcstaticSpryAracari-size_restricted.gif)
+<!-- ![hover](https://thumbs.gfycat.com/EcstaticSpryAracari-size_restricted.gif) -->
 
-- The author and date of the latest commit
+<!-- - The author and date of the latest commit
 - The message of the latest commit
 - The number of times the current file has changed
-- A button that says "View the code context with Watermelon"
+- A button that says "View the code context with Watermelon" -->
 
 If you want to do a deeper research about the code context history, simply click such button. 
-
-### Get Full Code Context
-
-Highlight a piece of code to get its full code context from git (free), ticketing and messaging (paid) systems. There are 3 ways you can use this feature.
-
-NOTE: This takes up to 10 seconds right now. Please be patient while we work on making this faster. 
-
-#### Click get code context button on the sidebar
-![sidebarButton](https://thumbs.gfycat.com/AccurateKeenLabradorretriever-size_restricted.gif)
-
-#### Click button from the hover context box
-![hoverGetContext](https://thumbs.gfycat.com/CharmingSharpChuckwalla-size_restricted.gif)
-
-#### Click get code context button on the right-click menu
-![rightClickMenu](https://thumbs.gfycat.com/MeaslyNarrowGoat-size_restricted.gif)
-
 
 ## Requirements
 
@@ -101,7 +105,7 @@ We use [VS Code's telemetry library](https://github.com/microsoft/vscode-extensi
 
 We also have settings to disable it.
 
-**We _don't_ store your code**
+Watermelon [doesn't store your code](https://www.watermelontools.com/post/building-a-code-archeology-toolbox-without-storing-your-code)
 
 ## Supporters
 
