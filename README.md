@@ -43,20 +43,7 @@ Watermelon's VS Code extension allows you to obtain business context for a file 
 - Hover to get context
 - Get code context button (to obtain the complete context)
 
-### Hover To Get Context
-
-The fastest way to use Watermelon is to hover over a line of code to get its context.
-
-In the image below you can see how hovering over a line of code provides us the following:
-
-<!-- ![hover](https://thumbs.gfycat.com/EcstaticSpryAracari-size_restricted.gif) -->
-
-<!-- - The author and date of the latest commit
-- The message of the latest commit
-- The number of times the current file has changed
-- A button that says "View the code context with Watermelon" -->
-
-If you want to do a deeper research about the code context history, simply click such button. 
+![watermelon-vscode-extension](https://i.ibb.co/3pGjBJq/IDE-1.png)
 
 ## Requirements
 
