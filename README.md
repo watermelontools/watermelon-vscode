@@ -23,22 +23,10 @@ To obtain business context in your CI/CD, take a look at our [GitHub Application
 
 We currently support the following integrations
 
-| Command                | Description                                              |
-| :--------------------- | :------------------------------------------------------- |
-| `watermelon.start`     | Get the historical context of the selected block of code |
-
-|           | Git       | Project Management | Messaging | Documentation |
-| :-------- | :-------- | :----------------- | :-------- |  :----------- |
-|           |           |                    |           |               |
-| VS Code   | GitHub    | Jira               | Slack     |               |
-| Extension | GitLab    |                    |           |               |
-|           | Bitbucket |                    |           |               |
-| :-------- | :-------- | :----------------- | :-------- | :------------ |
-|           |           |                    |           |               |
-| GitHub    | GitHub    | Jira               | Slack     | Notion        |
-| Application           |                    |           |               |               |
-
-
+|               | Git                                   | Project Management | Messaging | Documentation |
+| :------------ | :------------------------------------ | :----------------- | :-------- | :-----------  |
+| VS Code       | GitHub, GitLab, Bitbucket             | Jira               | Slack     |               |
+| GitHub App    | GitHub                                | Jira               | Slack     | Notion        |
 ## Features
 
 Watermelon's VS Code extension allows you to obtain business context for a file or block of code via:
