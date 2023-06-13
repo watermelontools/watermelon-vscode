@@ -24,12 +24,13 @@ To obtain business context in your CI/CD, take a look at our [GitHub Application
 We currently support the following integrations
 
 |           | Git       | Project Management | Messaging | Documentation |
+| :---------|---------- | :------------------| :---------|  :----------- |
 |-----------|-----------|--------------------|-----------|---------------|
 |           |           |                    |           |               |
 | VS Code   | GitHub    | Jira               | Slack     |               |
 | Extension | GitLab    |                    |           |               |
 |           | Bitbucket |                    |           |               |
-|-----------|-----------|--------------------|-----------|---------------|
+| :---------| :---------| :------------------| :---------| :-------------|
 |           |           |                    |           |               |
 | GitHub    | GitHub    | Jira               | Slack     | Notion        |
 | Application           |                    |           |               |               |
