@@ -10,7 +10,7 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false#review-details)
 [![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)](https://discord.com/invite/H4AE6b9442)
 
-**Watermelon helps your team merge Pull Requests With Business Value**. 
+**Watermelon helps your team merge Pull Requests With Business Value**. Our set of plug-ins help you understand business context, improve your coding velocity and merge PRs like a breeze.
 
 We've built a search algorithm that indexes the most relevant [passive documentation](https://www.watermelontools.com/post/what-is-passive-code-documentation-why-is-it-hard-to-scale-what-to-do-about-it) for a given block of code or pull request. 
 
