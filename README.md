@@ -12,7 +12,7 @@
 
 **Watermelon helps your team merge Pull Requests With Business Value**. Our set of plug-ins help you understand business context, improve your coding velocity and merge PRs like a breeze.
 
-We've built a search algorithm that indexes the most relevant [passive documentation](https://www.watermelontools.com/post/what-is-passive-code-documentation-why-is-it-hard-to-scale-what-to-do-about-it) for a given block of code or pull request. 
+We've built a search algorithm that indexes the most relevant [passive documentation](https://www.watermelontools.com/post/what-is-passive-code-documentation-why-is-it-hard-to-scale-what-to-do-about-it) for a given block of code. 
 
 To obtain business context in your IDE, use this extension.
 
