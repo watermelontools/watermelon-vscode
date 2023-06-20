@@ -8,5 +8,6 @@ After login, we have:
 - Jira
 - GitHub/GitLab/Bitbucket
 - Notion (Coming soon)
+- Send us an issue if you'd like anything else!
 
   ![hover-extra.png](./hover-extra.png)
