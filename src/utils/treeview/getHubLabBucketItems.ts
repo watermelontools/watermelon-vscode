@@ -20,6 +20,26 @@ export const getHubLabBucketItems = async (
   if (errorText) {
     // show vs code alert
     vscode.window.showErrorMessage(errorText);
+    if (errorText === "No search results") {
+      return items.push(
+        new ContextItem(
+          reposource === "gitlab.com"
+            ? "GitLab"
+            : reposource === "bitbucket.com"
+            ? "Bitbucket"
+            : "GitHub",
+          vscode.TreeItemCollapsibleState.None,
+          `No ${reposource === "gitlab.com" ? "M" : "P"}Rs found`,
+          undefined,
+          undefined,
+          reposource === "gitlab.com"
+            ? "gitLab"
+            : reposource === "bitbucket.com"
+            ? "bitbucket"
+            : "gitHub"
+        )
+      );
+    }
     items.push(
       new ContextItem(
         `Please login to ${
