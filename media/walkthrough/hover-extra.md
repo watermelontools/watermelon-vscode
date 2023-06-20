@@ -1,6 +1,7 @@
 # The Watermelon Full Hover
 
 The hover also connects other services, which take a little time to be fetched.
+All of these require logging in to the dashboard.
 
 After login, we have:
 
