@@ -18,6 +18,7 @@ export const getHubLabBucketItems = async (
     errorText = issuesWithTitlesAndGroupedComments?.errorText;
   }
   if (errorText) {
+    // show vs code alert
     vscode.window.showErrorMessage(errorText);
     if (errorText === "No search results") {
       return items.push(
@@ -39,7 +40,6 @@ export const getHubLabBucketItems = async (
         )
       );
     }
-    // show vs code alert
     items.push(
       new ContextItem(
         `Please login to ${
