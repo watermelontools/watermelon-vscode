@@ -7,5 +7,6 @@ After login, we have:
 - Slack
 - Jira
 - GitHub/GitLab/Bitbucket
+- Notion (Coming soon)
 
   ![hover-extra.png](./hover-extra.png)
