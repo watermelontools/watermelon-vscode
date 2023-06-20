@@ -18,7 +18,6 @@ export const getHubLabBucketItems = async (
     errorText = issuesWithTitlesAndGroupedComments?.errorText;
   }
   if (errorText) {
-    console.log(errorText);
     vscode.window.showErrorMessage(errorText);
     if (errorText === "No search results") {
       return items.push(
