@@ -76,6 +76,7 @@ Check out [Contributing.md](CONTRIBUTING.md) and be aware of the [Code of Conduc
 We're an early-stage project, therefore we still have the luxury to coordinate via short chats with our contributors. If you're interested in contributing, please join our [Discord](https://discord.com/invite/H4AE6b9442) community.
 Alternatively, comment on our issues if you plan to solve one.
 
+[![Report an issue](https://img.shields.io/badge/-Report%20an%20issue-critical)](https://github.com/watermelontools/watermelon-extension/issues)
 ## Analytics
 
 We use [VS Code's telemetry library](https://github.com/microsoft/vscode-extension-telemetry). The library respects the user's decision about whether or not to send telemetry data.
