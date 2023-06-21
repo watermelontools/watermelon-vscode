@@ -26,7 +26,7 @@ We currently support the following integrations
 |               | Git                                   | Project Management | Messaging | Documentation |
 | :------------ | :------------------------------------ | :----------------- | :-------- | :-----------  |
 | VS Code       | GitHub, GitLab (Beta), Bitbucket (Beta)    | Jira               | Slack     |               |
-| GitHub App    | GitHub, GitLab, Bitbucket             | Jira               | Slack     | Notion        |
+| GitHub App    | GitHub.                               | Jira               | Slack     | Notion        |
 ## Features
 
 Watermelon's VS Code extension allows you to obtain business context for a file or block of code via:
