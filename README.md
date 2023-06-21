@@ -55,7 +55,7 @@ Download from the [VS Codium Marketplace (Open VSX Registry)](https://open-vsx.o
 
 ## Commands
 
-Watermelon comes with a few commands that you can run from VS Code's Command Palette. The result is exactly the same as running a Watermelon query with the green button. Results sit in your sidebar.
+Watermelon comes with a few commands that you can run from [VS Code's Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette). The result is exactly the same as running a Watermelon query with the green button. Results sit in your sidebar.
 
 | Command                | Description                                              |
 | :--------------------- | :------------------------------------------------------- |
