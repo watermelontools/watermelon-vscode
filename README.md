@@ -23,7 +23,7 @@ To obtain business context in your CI/CD, take a look at our [GitHub Application
 
 We currently support the following integrations
 
-|               | Git                                   | Project Management | Messaging | Documentation |
+|Watermelon Product| Git                                   | Project Management | Messaging | Documentation |
 | :------------ | :------------------------------------ | :----------------- | :-------- | :-----------  |
 | VS Code       | GitHub, GitLab (Beta), Bitbucket (Beta)    | Jira               | Slack     |               |
 | GitHub App    | GitHub.                               | Jira               | Slack     | Notion        |
