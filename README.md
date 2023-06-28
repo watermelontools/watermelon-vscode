@@ -55,14 +55,13 @@ Download from the [VS Codium Marketplace (Open VSX Registry)](https://open-vsx.o
 
 ## Commands
 
-Watermelon comes with a few commands that you can run from VS Code's Command Palette. The result is exactly the same as running a Watermelon query with the green button. Results sit in your sidebar.
+Watermelon comes with a few commands that you can run from [VS Code's Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette). The result is exactly the same as running a Watermelon query with the green button. Results sit in your sidebar.
 
 | Command                | Description                                              |
 | :--------------------- | :------------------------------------------------------- |
 | `watermelon.start`     | Get the historical context of the selected block of code |
 | `watermelon.show`      | Reveal the extension                                     |
 | `watermelon.recommend` | Add the extension to the list of recommended             |
-| `watermelon.login`     | Login using GitHub                                       |
 
 ## Shortcuts
 
@@ -74,7 +73,7 @@ As an alternative, you can use the following shortcuts:
 
 Check out [Contributing.md](CONTRIBUTING.md) and be aware of the [Code of Conduct](CODE_OF_CONDUCT.md)!
 
-We're an early stage project, therefore we still have the luxury to coordinate via short chats with our contributors. If you're interested in contributing, please join our [Discord](https://discord.com/invite/H4AE6b9442) community.
+We're an early-stage project, therefore we still have the luxury to coordinate via short chats with our contributors. If you're interested in contributing, please join our [Discord](https://discord.com/invite/H4AE6b9442) community.
 Alternatively, comment on our issues if you plan to solve one.
 
 ## Analytics
@@ -95,7 +94,7 @@ Watermelon [doesn't store your code](https://www.watermelontools.com/post/buildi
 
 #### About Watermelon
 
-Watermelon is built by a globally distributed team of developers devoted to making software development easier. Join our [Discord](https://discord.com/invite/H4AE6b9442) community, follow us on [Twitter](https://twitter.com/WatermelonTools) and go to the [Watermelon blog](https://watermelon.tools/blog/blog) to get the best programming tips.
+Watermelon is built by a globally distributed team of developers devoted to making software development easier. Join our [Discord](https://discord.com/invite/H4AE6b9442) community, follow us on [Twitter](https://twitter.com/WatermelonTools) and go to the [Watermelon blog](https://watermelon.tools/blog) to get the best programming tips.
 
 ### License
 
