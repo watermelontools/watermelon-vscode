@@ -47,7 +47,7 @@ export const getCodeContextSummary = async (
       "",
       {
         command: "vscode.open",
-        title: "Learn more about OpenAI",
+        title: "Get code contexts in your PR reviews",
         arguments: [vscode.Uri.parse("https://github.com/marketplace/watermelon-context")]
       }
     )
