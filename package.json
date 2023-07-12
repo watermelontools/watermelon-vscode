@@ -124,7 +124,7 @@
     "viewsWelcome": [
       {
         "view": "watermelonButton",
-        "contents": "Watermelon 🍉 will help you understand code context better. \n [Get Code Context](command:watermelon.start)\n You can help us by [adding Watermelon to your recommended extensions](command:watermelon.recommend). \n Visit [our web page](https://watermelontools.com). \n We support Github, Gitlab, Bitbucket, Git, Slack and Jira.\n Support our Open Source work by [Starring on Github](https://github.com/watermelontools/wm-extension). \n [Join us on Discord](https://discord.gg/H4AE6b9442) to suggest product improvements \n [Read our Blog](https://www.watermelontools.com/blog) and learn with us."
+        "contents": "[Get Code Context](command:watermelon.start) \n 🍉 About Watermelon \n Watermelon helps your team merge Pull Requests With Business Value. \n You can also contextualize your pull requests with our [GitHub Application](https://github.com/apps/watermelon-context) \n [Add Watermelon to the repo's recommended extensions](command:watermelon.recommend). \n Support our Open Source work by [Starring us on Github](https://github.com/watermelontools/wm-extension). \n Need help? [Join us on Discord](https://discord.gg/H4AE6b9442) \n [Read our Blog](https://www.watermelontools.com/blog) and learn with us."
       },
       {
         "view": "watermelonExplorerTreeProvider",
@@ -148,12 +148,12 @@
       },
       {
         "view": "watermelonExplorerTreeProvider",
-        "contents": "Watermelon 🍉 will help you understand code context better. \n [Get Code Context](command:watermelon.start)\n",
+        "contents": "[Get Code Context](command:watermelon.start) \n Watermelon helps your team merge Pull Requests With Business Value.",
         "when": "watermelon.isLogged && !watermelon.isLoading"
       },
       {
         "view": "watermelonTreeProvider",
-        "contents": "Watermelon 🍉 will help you understand code context better. \n [Get Code Context](command:watermelon.start)\n",
+        "contents": "[Get Code Context](command:watermelon.start) \n 🍉 About Watermelon \n Watermelon helps your team merge Pull Requests With Business Value. \n You can also contextualize your pull requests with our [GitHub Application](https://github.com/apps/watermelon-context) \n [Add Watermelon to the repo's recommended extensions](command:watermelon.recommend). \n Support our Open Source work by [Starring us on Github](https://github.com/watermelontools/wm-extension). \n Need help? [Join us on Discord](https://discord.gg/H4AE6b9442) \n [Read our Blog](https://www.watermelontools.com/blog) and learn with us.",
         "when": "watermelon.isLogged && !watermelon.isLoading"
       }
     ],

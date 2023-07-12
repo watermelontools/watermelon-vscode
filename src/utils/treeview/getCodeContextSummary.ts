@@ -39,6 +39,17 @@ export const getCodeContextSummary = async (
         ),
       ],
       "openai"
+    ),
+
+    new ContextItem (
+      "Try our GitHub App",
+      vscode.TreeItemCollapsibleState.None,
+      "",
+      {
+        command: "vscode.open",
+        title: "Get code contexts in your PR reviews",
+        arguments: [vscode.Uri.parse("https://github.com/marketplace/watermelon-context")]
+      }
     )
   );
   return items;
