@@ -10,13 +10,13 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false#review-details)
 [![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)](https://discord.com/invite/H4AE6b9442)
 
-**Watermelon helps your team merge Pull Requests With Business Value**. Our set of plug-ins help you understand business context, improve your coding velocity and merge PRs like a breeze.
+**Watermelon is a Passive Documentation Search Engine** serving both our GitHub app and IDE extension. Our set of plug-ins help developers understand code context, improve their coding velocity and merge PRs like a breeze.
 
 We've built a search algorithm that indexes the most relevant [passive documentation](https://www.watermelontools.com/post/what-is-passive-code-documentation-why-is-it-hard-to-scale-what-to-do-about-it) for a given block of code. 
 
 To obtain business context in your IDE, use this extension.
 
-To obtain business context in your CI/CD, take a look at our [GitHub Application](https://github.com/apps/watermelon-context)
+To obtain business context in your CI/CD, take a look at our [GitHub Application](https://github.com/watermelontools/watermelon)
 
 
 ## Integrations
@@ -26,7 +26,7 @@ We currently support the following integrations
 |Watermelon Product| Git                                   | Project Management | Messaging | Documentation |
 | :------------ | :------------------------------------ | :----------------- | :-------- | :-----------  |
 | VS Code       | GitHub, GitLab (Beta), Bitbucket (Beta)    | Jira               | Slack     |               |
-| GitHub App    | GitHub.                               | Jira               | Slack     | Notion        |
+| GitHub App    | GitHub.                               | Jira, Linear               | Slack     | Notion, Confluence        |
 ## Features
 
 Watermelon's VS Code extension allows you to obtain business context for a file or block of code via:
