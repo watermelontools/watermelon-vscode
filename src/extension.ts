@@ -158,6 +158,7 @@ export class WatermelonTreeDataProvider
       ];
       let results = await Promise.all(itemPromises);
       results.forEach((result) => {
+        // @ts-ignore
         items.push(...result);
       });
       reporter?.sendTelemetryEvent("getCodeContext");
