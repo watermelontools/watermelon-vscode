@@ -100,23 +100,11 @@ export class WatermelonTreeDataProvider
       }
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
 
-      const parsedCommitObject = new Object(uniqueBlames[0]) as {
-        date: string;
-        message: string;
-        author: string;
-        email: string;
-        commit: string;
-        body: string;
-        sha: string;
-      };
-      const parsedMessage = parsedCommitObject.message;
-
-      debugLogger(`parsedMessage: ${parsedMessage}`);
       if (!session) {
         setLoggedIn(false);
         return items;
       }
-      let itemPromises = [
+      let results = await Promise.all([
         getGitItems(uniqueBlames),
         getContext({
           email: session?.account.label || "",
@@ -124,8 +112,7 @@ export class WatermelonTreeDataProvider
           owner,
           uniqueBlames,
         }),
-      ];
-      let results = await Promise.all(itemPromises);
+      ]);
       results.forEach((result) => {
         // @ts-ignore
         items.push(...result);
