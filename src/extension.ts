@@ -33,11 +33,8 @@ import commentGithubHandler from "./utils/commands/commentOnGithub";
 import debugLogger from "./utils/vscode/debugLogger";
 import { WatermelonAuthenticationProvider } from "./auth";
 import { ContextItem } from "./ContextItem";
-import { getHubLabBucketItems } from "./utils/treeview/getHubLabBucketItems";
 import { getGitItems } from "./utils/treeview/getGitItems";
-import { getJiraItems } from "./utils/treeview/getJiraItems";
-import { getSlackItems } from "./utils/treeview/getSlackItems";
-import { getCodeContextSummary } from "./utils/treeview/getCodeContextSummary";
+import { getContext } from "./utils/treeview/getContext";
 import setLoading from "./utils/vscode/setLoading";
 import addToRecommendedCommandHandler from "./utils/commands/addToRecommended";
 import richHover from "./utils/components/richHover";
@@ -140,21 +137,13 @@ export class WatermelonTreeDataProvider
         return items;
       }
       let itemPromises = [
-        getHubLabBucketItems(issuesWithTitlesAndGroupedComments, repoSource),
         getGitItems(uniqueBlames),
-        getJiraItems(
-          sortedPRs[0]?.title || parsedMessage,
-          session.account.label
-        ),
-        getSlackItems(
-          sortedPRs[0]?.title || parsedMessage,
-          session.account.label
-        ),
-        getCodeContextSummary(
-          sortedPRs[0]?.title || parsedMessage,
-          sortedPRs[0]?.body || parsedCommitObject.body,
-          session.account.label
-        ),
+        getContext({
+          email: session?.account.label || "",
+          repo,
+          owner,
+          uniqueBlames,
+        }),
       ];
       let results = await Promise.all(itemPromises);
       results.forEach((result) => {
