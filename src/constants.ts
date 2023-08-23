@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 // external image url
 export const watermelonBannerImageURL =
   "https://uploads-ssl.webflow.com/61481c822e33bdb0fc03b217/614825b4a1420225f943ffc1_IMAGOTIPO%20FINAL%201-8.png";
@@ -18,3 +19,22 @@ export const WATERMELON_OPEN_LINK_COMMAND = "watermelon.openLink";
 export const WATERMELON_COMMENT_JIRA_COMMAND = "watermelon.jira.comment";
 export const WATERMELON_COMMENT_SLACK_COMMAND = "watermelon.slack.comment";
 export const WATERMELON_COMMENT_GITHUB_COMMAND = "watermelon.github.comment";
+export enum ServiceKeys {
+  GITHUB = "github",
+  JIRA = "jira",
+  SLACK = "slack",
+  CONFLUENCE = "confluence",
+  LINEAR = "linear",
+  NOTION = "notion",
+  SUMMARY = "watermelonSummary",
+}
+
+export const ServiceDescriptions: Record<ServiceKeys, string> = {
+  [ServiceKeys.GITHUB]: "GitHub PRs",
+  [ServiceKeys.JIRA]: "Jira Tickets",
+  [ServiceKeys.SLACK]: "Slack Messages",
+  [ServiceKeys.CONFLUENCE]: "Confluence Docs",
+  [ServiceKeys.LINEAR]: "Linear Tickets",
+  [ServiceKeys.NOTION]: "Notion Pages",
+  [ServiceKeys.SUMMARY]: "AI Summary",
+};
