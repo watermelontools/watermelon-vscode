@@ -104,7 +104,7 @@ export class WatermelonTreeDataProvider
         setLoggedIn(false);
         return items;
       }
-      let results = await Promise.all([
+      const [gitItems, contextItems] = await Promise.all([
         getGitItems(uniqueBlames),
         getContext({
           email: session?.account.label || "",
@@ -113,12 +113,9 @@ export class WatermelonTreeDataProvider
           uniqueBlames,
         }),
       ]);
-      results.forEach((result) => {
-        // @ts-ignore
-        items.push(...result);
-      });
+
       reporter?.sendTelemetryEvent("getCodeContext");
-      return items;
+      return [...gitItems, ...contextItems];
     } else {
       vscode.commands.executeCommand("watermelon.multiSelect");
       arrayOfSHAs = await getSHAArray(

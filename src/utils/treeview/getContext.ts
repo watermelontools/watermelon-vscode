@@ -19,11 +19,11 @@ export const getContext = async ({
   repo: string;
   owner: string;
   uniqueBlames: any[];
-}) => {
+}): Promise<any[]> => {
   let items: ContextItem[] = [];
   const commitList = uniqueBlames.map((commit) => commit.message).toString();
   if (!repo || !owner) {
-    return null;
+    return items;
   }
   let reporter = analyticsReporter();
   console.log({
