@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 import getBlame from "./utils/getBlame";
-import getSHAArray from "./utils/getSHAArray";
 import getGitAPI from "./utils/vscode/getGitAPI";
 import getPackageInfo from "./utils/getPackageInfo";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
@@ -36,9 +35,6 @@ import richHover from "./utils/components/richHover";
 let owner: string | undefined = "";
 let repo: string | undefined = "";
 let repoSource: string | undefined = "";
-
-// selected shas
-let arrayOfSHAs: string[] = [];
 
 let startLine: any = undefined;
 let endLine: any = undefined;
@@ -89,64 +85,37 @@ export class WatermelonTreeDataProvider
     }
     setLoggedIn(true);
     setLoading(true);
-    if (startLine === undefined && endLine === undefined) {
-      if (!arrayOfSHAs?.length) {
-        arrayOfSHAs = await getSHAArray(
-          1,
-          vscode.window.activeTextEditor?.document.lineCount ?? 2,
-          vscode.window.activeTextEditor?.document.uri.fsPath,
-          gitAPI
-        );
-      }
-      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+    let uniqueBlames;
 
-      if (!session) {
-        setLoggedIn(false);
-        return items;
-      }
-      const [gitItems, contextItems] = await Promise.all([
-        getGitItems(uniqueBlames),
-        getContext({
-          email: session?.account.label || "",
-          repo,
-          owner,
-          uniqueBlames,
-        }),
-      ]);
-
-      reporter?.sendTelemetryEvent("getCodeContext");
-      return [...gitItems, ...contextItems];
-    } else {
-      vscode.commands.executeCommand("watermelon.multiSelect");
-      arrayOfSHAs = await getSHAArray(
-        (startLine && startLine > 1 ? startLine - 1 : startLine) ?? 1,
-        endLine
-          ? endLine + 1
-          : vscode.window.activeTextEditor?.document.lineCount ?? 2,
-        vscode.window.activeTextEditor?.document.uri.fsPath,
-        gitAPI
+    if (
+      (startLine === undefined && endLine === undefined) ||
+      startLine === endLine
+    ) {
+      uniqueBlames = await getBlame(
+        gitAPI,
+        1,
+        vscode.window.activeTextEditor?.document.lineCount ?? 2
       );
-      if (!arrayOfSHAs?.length) {
-        arrayOfSHAs = await getSHAArray(
-          1,
-          vscode.window.activeTextEditor?.document.lineCount ?? 2,
-          vscode.window.activeTextEditor?.document.uri.fsPath,
-          gitAPI
-        );
-      }
-
-      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
+    } else {
+      uniqueBlames = await getBlame(gitAPI, startLine, endLine);
     }
+
+    if (!session) {
+      setLoggedIn(false);
+      return items;
+    }
+    const [contextItems] = await Promise.all([
+      getContext({
+        email: session?.account.label || "",
+        repo,
+        owner,
+        uniqueBlames,
+      }),
+    ]);
+
+    reporter?.sendTelemetryEvent("getCodeContext");
     setLoading(false);
-    return [
-      new ContextItem(
-        "Code Context",
-        vscode.TreeItemCollapsibleState.Expanded,
-        "by Watermelon",
-        undefined,
-        items
-      ),
-    ];
+    return [...contextItems];
   }
 }
 
@@ -323,15 +292,9 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
-    let gitAPI = await getGitAPI();
+    startLine = selection.selections[0].start.line;
+    endLine = selection.selections[0].end.line;
     updateStatusBarItem(wmStatusBarItem);
-    arrayOfSHAs = await getSHAArray(
-      selection.selections[0].start.line,
-      selection.selections[0].end.line,
-      vscode.window.activeTextEditor?.document.uri.fsPath,
-      gitAPI
-    );
-    debugLogger(`arrayOfSHAs: ${JSON.stringify(arrayOfSHAs)}`);
   });
 }
 
