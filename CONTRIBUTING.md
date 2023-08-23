@@ -2,6 +2,8 @@
 
 For now, we discuss on [Discord](https://t.co/fMIlnb9egq).
 
+Anyone is free to contribute changes to any file in this repository. You don't need to ask for permission or get in line. If you see an issue that's open and it seems interesting to you, feel free to pick it up. Your solution may be better. Open-source is beautiful. 
+
 ## Running the extension
 To run:
 1. Open the folder containing the code on [VSCode](https://code.visualstudio.com/download).
