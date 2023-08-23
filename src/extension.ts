@@ -5,7 +5,6 @@ import getGitAPI from "./utils/vscode/getGitAPI";
 import getPackageInfo from "./utils/getPackageInfo";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
-import getPRsToPaintPerSHAs from "./utils/github/getPRsToPaintPerSHAs";
 import analyticsReporter from "./utils/vscode/reporter";
 import statusBarItem, {
   updateStatusBarItem,
@@ -100,19 +99,6 @@ export class WatermelonTreeDataProvider
         );
       }
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-        arrayOfSHAs,
-        email: session?.account.label || "",
-        owner,
-        repo,
-        repoSource,
-      });
-      let sortedPRs: any[] = [];
-      if (Array.isArray(issuesWithTitlesAndGroupedComments)) {
-        sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-          (a: any, b: any) => b?.comments?.length - a?.comments?.length
-        );
-      }
 
       const parsedCommitObject = new Object(uniqueBlames[0]) as {
         date: string;
@@ -165,34 +151,7 @@ export class WatermelonTreeDataProvider
         );
       }
 
-      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-        arrayOfSHAs,
-        email: session?.account.label || "",
-        owner,
-        repo,
-        repoSource,
-      });
-
-      if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-        /*      return provider.sendMessage({
-          command: "error",
-          error: issuesWithTitlesAndGroupedComments,
-        }); */
-        return [];
-      }
-      let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-        (a: any, b: any) => b.comments.length - a.comments.length
-      );
       let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-      const parsedCommitObject = new Object(uniqueBlames[0]) as {
-        date: string;
-        message: string;
-        author: string;
-        email: string;
-        commit: string;
-        body: string;
-        sha: string;
-      };
     }
     setLoading(false);
     return [
