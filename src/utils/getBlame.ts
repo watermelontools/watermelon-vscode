@@ -3,8 +3,8 @@ import getFullBlame from "./getFullBlame";
 
 async function getBlame(
   gitAPI: any,
-  startLine = undefined,
-  endLine = undefined
+  startLine: number | undefined = undefined,
+  endLine: number | undefined = undefined
 ) {
   let blamePromises = await getFullBlame(
     startLine || (vscode?.window?.activeTextEditor?.selection.start.line ?? 1),
