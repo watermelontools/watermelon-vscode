@@ -32,7 +32,7 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
       let owner = repoInfo?.owner;
       const foundHoverData = await axios
         .post(`${backendURL}/api/hover/getHoverData`, {
-          user: session?.account.label,
+          email: session?.account.label,
           commitTitle: latestCommit.message.replace(/(\r\n|\n|\r)/gm, ""),
           repo,
           owner,
@@ -61,82 +61,49 @@ const hover = ({ reporter }: { reporter: TelemetryReporter | null }) => {
         `### Watermelon Context 🍉`
       );
       content.appendMarkdown(`\n\n`);
+      let { data } = foundHoverData;
+      // now all services have the shape:
+      /* {
+        [serviceName]: {
+          title: string;
+         body?: string;
+         link?: string;
+         number?: number | string;
+         image?: string;
+      }[]
+    } */
+      for (const serviceName in data) {
+        const service = data[serviceName];
 
-      if (foundHoverData?.github?.length > 0) {
-        content.appendMarkdown(`<a href="${startCommandUri}">
-        <span style="display:flex;align-items:center;">
-        <img style="height:1em;max-height:1em;width:1em;max-width:1em;"
-        src='${vscode.Uri.parse(
-          path.join(
-            __filename,
-            "..",
-            "..",
-            "..",
-            "..",
-            "images",
-            "logos",
-            `githubSmall.svg`
-          )
-        )}' 
-        />
-         #${foundHoverData?.github[0].number}: ${
-          foundHoverData?.github[0].title
+        // Check if the service is an array and has items in it
+        if (Array.isArray(service) && service.length > 0) {
+          content.appendMarkdown(`<a href="${startCommandUri}">
+              <span style='display:flex;align-items:center; height: 1em;'>
+                  <img 
+                  height="14px" 
+                  width="14px" 
+                  src='${vscode.Uri.parse(
+                    path.join(
+                      __filename,
+                      "..",
+                      "..",
+                      "..",
+                      "..",
+                      "images",
+                      "logos",
+                      `${serviceName}.svg`
+                    )
+                  )}' 
+                  />
+                  ${service[0]?.number ? `#${service[0]?.number}:` : ""} ${
+            service[0].title.length > 50
+              ? service[0].title.slice(0, 50) + "..."
+              : service[0].title
+          }
+              </span>
+          </a>`);
+          content.appendMarkdown(`<br />`);
         }
-        </span>
-      </a>`);
-        content.appendMarkdown(`<br />`);
-      }
-      if (foundHoverData?.jira?.length > 0) {
-        content.appendMarkdown(`<a href="${startCommandUri}">
-        <span style="display:flex;align-items:center;">
-        <img style="height:1em;max-height:1em;width:1em;max-width:1em;"
-        src='${vscode.Uri.parse(
-          path.join(
-            __filename,
-            "..",
-            "..",
-            "..",
-            "..",
-            "images",
-            "logos",
-            `jiraSmall.svg`
-          )
-        )}' 
-        />
-         ${foundHoverData?.jira[0].key}: ${
-          foundHoverData?.jira[0].fields.summary.length > 50
-            ? foundHoverData?.jira[0].fields.summary.slice(0, 50) + "..."
-            : foundHoverData?.jira[0].fields.summary
-        }
-        </span>
-      </a>`);
-        content.appendMarkdown(`<br />`);
-      }
-      if (foundHoverData?.slack?.length > 0) {
-        content.appendMarkdown(`<a href="${startCommandUri}">
-        <span style="display:flex;align-items:center;">
-        <img style="height:1em;max-height:1em;width:1em;max-width:1em;"
-        src='${vscode.Uri.parse(
-          path.join(
-            __filename,
-            "..",
-            "..",
-            "..",
-            "..",
-            "images",
-            "logos",
-            `slackSmall.svg`
-          )
-        )}'
-        />
-          #${foundHoverData?.slack[0].channel.name}: ${
-          foundHoverData?.slack[0].text.length > 50
-            ? foundHoverData?.slack[0].text.slice(0, 50) + "..."
-            : foundHoverData?.slack[0].text
-        }
-        </span>
-      </a>`);
-        content.appendMarkdown(`<br />`);
       }
 
       content.supportHtml = true;
