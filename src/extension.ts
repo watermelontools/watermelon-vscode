@@ -1,11 +1,9 @@
 import * as vscode from "vscode";
 import getBlame from "./utils/getBlame";
-import getSHAArray from "./utils/getSHAArray";
 import getGitAPI from "./utils/vscode/getGitAPI";
 import getPackageInfo from "./utils/getPackageInfo";
 import setLoggedIn from "./utils/vscode/setLoggedIn";
 import getRepoInfo from "./utils/vscode/getRepoInfo";
-import getPRsToPaintPerSHAs from "./utils/github/getPRsToPaintPerSHAs";
 import analyticsReporter from "./utils/vscode/reporter";
 import statusBarItem, {
   updateStatusBarItem,
@@ -14,9 +12,6 @@ import hover from "./utils/components/hover";
 import {
   EXTENSION_ID,
   WATERMELON_ADD_TO_RECOMMENDED_COMMAND,
-  WATERMELON_COMMENT_GITHUB_COMMAND,
-  WATERMELON_COMMENT_JIRA_COMMAND,
-  WATERMELON_COMMENT_SLACK_COMMAND,
   WATERMELON_LOGIN_COMMAND,
   WATERMELON_MULTI_SELECT_COMMAND,
   WATERMELON_OPEN_LINK_COMMAND,
@@ -26,18 +21,12 @@ import {
 } from "./constants";
 import multiSelectCommandHandler from "./utils/commands/multiSelect";
 import selectCommandHandler from "./utils/commands/select";
-import commentJiraHandler from "./utils/commands/commentOnJira";
-import commentSlackHandler from "./utils/commands/commentOnSlack";
-import commentGithubHandler from "./utils/commands/commentOnGithub";
 
 import debugLogger from "./utils/vscode/debugLogger";
 import { WatermelonAuthenticationProvider } from "./auth";
 import { ContextItem } from "./ContextItem";
-import { getHubLabBucketItems } from "./utils/treeview/getHubLabBucketItems";
 import { getGitItems } from "./utils/treeview/getGitItems";
-import { getJiraItems } from "./utils/treeview/getJiraItems";
-import { getSlackItems } from "./utils/treeview/getSlackItems";
-import { getCodeContextSummary } from "./utils/treeview/getCodeContextSummary";
+import { getContext } from "./utils/treeview/getContext";
 import setLoading from "./utils/vscode/setLoading";
 import addToRecommendedCommandHandler from "./utils/commands/addToRecommended";
 import richHover from "./utils/components/richHover";
@@ -46,9 +35,6 @@ import richHover from "./utils/components/richHover";
 let owner: string | undefined = "";
 let repo: string | undefined = "";
 let repoSource: string | undefined = "";
-
-// selected shas
-let arrayOfSHAs: string[] = [];
 
 let startLine: any = undefined;
 let endLine: any = undefined;
@@ -99,127 +85,37 @@ export class WatermelonTreeDataProvider
     }
     setLoggedIn(true);
     setLoading(true);
-    if (startLine === undefined && endLine === undefined) {
-      if (!arrayOfSHAs?.length) {
-        arrayOfSHAs = await getSHAArray(
-          1,
-          vscode.window.activeTextEditor?.document.lineCount ?? 2,
-          vscode.window.activeTextEditor?.document.uri.fsPath,
-          gitAPI
-        );
-      }
-      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-        arrayOfSHAs,
-        email: session?.account.label || "",
-        owner,
-        repo,
-        repoSource,
-      });
-      let sortedPRs: any[] = [];
-      if (Array.isArray(issuesWithTitlesAndGroupedComments)) {
-        sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-          (a: any, b: any) => b?.comments?.length - a?.comments?.length
-        );
-      }
+    let uniqueBlames;
 
-      const parsedCommitObject = new Object(uniqueBlames[0]) as {
-        date: string;
-        message: string;
-        author: string;
-        email: string;
-        commit: string;
-        body: string;
-        sha: string;
-      };
-      const parsedMessage = parsedCommitObject.message;
-
-      debugLogger(`parsedMessage: ${parsedMessage}`);
-      if (!session) {
-        setLoggedIn(false);
-        return items;
-      }
-      let itemPromises = [
-        getHubLabBucketItems(issuesWithTitlesAndGroupedComments, repoSource),
-        getGitItems(uniqueBlames),
-        getJiraItems(
-          sortedPRs[0]?.title || parsedMessage,
-          session.account.label
-        ),
-        getSlackItems(
-          sortedPRs[0]?.title || parsedMessage,
-          session.account.label
-        ),
-        getCodeContextSummary(
-          sortedPRs[0]?.title || parsedMessage,
-          sortedPRs[0]?.body || parsedCommitObject.body,
-          session.account.label
-        ),
-      ];
-      let results = await Promise.all(itemPromises);
-      results.forEach((result) => {
-        items.push(...result);
-      });
-      reporter?.sendTelemetryEvent("getCodeContext");
-      return items;
+    if (
+      (startLine === undefined && endLine === undefined) ||
+      startLine === endLine
+    ) {
+      uniqueBlames = await getBlame(
+        gitAPI,
+        1,
+        vscode.window.activeTextEditor?.document.lineCount ?? 2
+      );
     } else {
-      vscode.commands.executeCommand("watermelon.multiSelect");
-      arrayOfSHAs = await getSHAArray(
-        (startLine && startLine > 1 ? startLine - 1 : startLine) ?? 1,
-        endLine
-          ? endLine + 1
-          : vscode.window.activeTextEditor?.document.lineCount ?? 2,
-        vscode.window.activeTextEditor?.document.uri.fsPath,
-        gitAPI
-      );
-      if (!arrayOfSHAs?.length) {
-        arrayOfSHAs = await getSHAArray(
-          1,
-          vscode.window.activeTextEditor?.document.lineCount ?? 2,
-          vscode.window.activeTextEditor?.document.uri.fsPath,
-          gitAPI
-        );
-      }
-
-      let issuesWithTitlesAndGroupedComments = await getPRsToPaintPerSHAs({
-        arrayOfSHAs,
-        email: session?.account.label || "",
-        owner,
-        repo,
-        repoSource,
-      });
-
-      if (!Array.isArray(issuesWithTitlesAndGroupedComments)) {
-        /*      return provider.sendMessage({
-          command: "error",
-          error: issuesWithTitlesAndGroupedComments,
-        }); */
-        return [];
-      }
-      let sortedPRs = issuesWithTitlesAndGroupedComments?.sort(
-        (a: any, b: any) => b.comments.length - a.comments.length
-      );
-      let uniqueBlames = await getBlame(gitAPI, startLine, endLine);
-      const parsedCommitObject = new Object(uniqueBlames[0]) as {
-        date: string;
-        message: string;
-        author: string;
-        email: string;
-        commit: string;
-        body: string;
-        sha: string;
-      };
+      uniqueBlames = await getBlame(gitAPI, startLine, endLine);
     }
+
+    if (!session) {
+      setLoggedIn(false);
+      return items;
+    }
+    const [contextItems] = await Promise.all([
+      getContext({
+        email: session?.account.label || "",
+        repo,
+        owner,
+        uniqueBlames,
+      }),
+    ]);
+
+    reporter?.sendTelemetryEvent("getCodeContext");
     setLoading(false);
-    return [
-      new ContextItem(
-        "Code Context",
-        vscode.TreeItemCollapsibleState.Expanded,
-        "by Watermelon",
-        undefined,
-        items
-      ),
-    ];
+    return [...contextItems];
   }
 }
 
@@ -393,30 +289,12 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       WATERMELON_OPEN_LINK_COMMAND,
       linkCommandHandler
-    ),
-    vscode.commands.registerCommand(
-      WATERMELON_COMMENT_SLACK_COMMAND,
-      commentSlackHandler
-    ),
-    vscode.commands.registerCommand(
-      WATERMELON_COMMENT_JIRA_COMMAND,
-      commentJiraHandler
-    ),
-    vscode.commands.registerCommand(
-      WATERMELON_COMMENT_GITHUB_COMMAND,
-      commentGithubHandler
     )
   );
   vscode.window.onDidChangeTextEditorSelection(async (selection) => {
-    let gitAPI = await getGitAPI();
+    startLine = selection.selections[0].start.line;
+    endLine = selection.selections[0].end.line;
     updateStatusBarItem(wmStatusBarItem);
-    arrayOfSHAs = await getSHAArray(
-      selection.selections[0].start.line,
-      selection.selections[0].end.line,
-      vscode.window.activeTextEditor?.document.uri.fsPath,
-      gitAPI
-    );
-    debugLogger(`arrayOfSHAs: ${JSON.stringify(arrayOfSHAs)}`);
   });
 }
 
