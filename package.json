@@ -352,7 +352,7 @@
     "@vscode/vsce": "^2.6.7"
   },
   "dependencies": {
-    "@vscode/codicons": "^0.0.31",
+    "@vscode/codicons": "^0.0.33",
     "@vscode/extension-telemetry": "^0.5.1",
     "@vscode/test-electron": "^2.1.2",
     "axios": "^0.26.1",
