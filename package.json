@@ -355,7 +355,7 @@
     "@vscode/codicons": "^0.0.31",
     "@vscode/extension-telemetry": "^0.5.1",
     "@vscode/test-electron": "^2.1.2",
-    "axios": "^0.26.1",
+    "axios": "^0.27.2",
     "git-url-parse": "^11.6.0"
   },
   "__metadata": {
