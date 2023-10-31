@@ -13,23 +13,24 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/WatermelonTools.watermelon-tools?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=WatermelonTools.watermelon-tools&ssr=false#review-details)
 [![Discord](https://img.shields.io/discord/933846506438541492?style=flat-square)](https://discord.com/invite/H4AE6b9442)
 
-**Watermelon is a Passive Documentation Search Engine** serving both our GitHub app and IDE extension. Our set of plug-ins help developers understand code context, improve their coding velocity and merge PRs like a breeze.
+**Watermelon is an Open Source Copilot For Code Review**. Our GitHub application allows developers to pre-review GitHub Pull Requests by tracing their code context and performing static code analysis. Using LLMs to detect errors, compare intent to implementation, and give the PR a first health check.
 
-We've built a search algorithm that indexes the most relevant [passive documentation](https://www.watermelontools.com/post/what-is-passive-code-documentation-why-is-it-hard-to-scale-what-to-do-about-it) for a given block of code. 
+We've built a search algorithm that indexes the most relevant [code context](https://www.watermelontools.com/post/what-is-passive-code-documentation-why-is-it-hard-to-scale-what-to-do-about-it) for a given block of code.
 
-To obtain business context in your IDE, use this extension.
+To obtain code context in your IDE, use this extension.
 
-To obtain business context in your CI/CD, take a look at our [GitHub Application](https://github.com/watermelontools/watermelon)
-
+To obtain code context in your CI/CD, take a look at our [GitHub Application](https://github.com/watermelontools/watermelon)
 
 ## Integrations
 
 We currently support the following integrations
 
-|Watermelon Product| Git                                   | Project Management | Messaging | Documentation |
-| :------------ | :------------------------------------ | :----------------- | :-------- | :-----------  |
-| VS Code       | GitHub, GitLab (Beta), Bitbucket (Beta)    | Jira               | Slack     |               |
-| GitHub App    | GitHub.                               | Jira, Linear               | Slack     | Notion, Confluence        |
+| Watermelon Product | Git                                     | Project Management | Messaging | Documentation |
+|:-------------------|:----------------------------------------| :----------------- | :-------- | :-----------  |
+| IntelliJ           | GitHub, GitLab (Beta), Bitbucket (Beta)                          | Jira               | Slack     | Notion, Confluence              |
+| VS Code            | GitHub, GitLab (Beta), Bitbucket (Beta) | Jira               | Slack     |               |
+| GitHub App         | GitHub.                                 | Jira, Linear               | Slack     | Notion, Confluence        |
+
 ## Features
 
 Watermelon's VS Code extension allows you to obtain business context for a file or block of code via:
@@ -87,12 +88,6 @@ We use [VS Code's telemetry library](https://github.com/microsoft/vscode-extensi
 We also have settings to disable it.
 
 Watermelon [doesn't store your code](https://www.watermelontools.com/post/building-a-code-archeology-toolbox-without-storing-your-code)
-
-## Supporters
-
-[![Stargazers repo roster for @watermelontools/watermelon-extension](https://reporoster.com/stars/watermelontools/watermelon-extension)](https://github.com/watermelontools/watermelon-extension/stargazers)
-
-[![Forkers repo roster for @watermelontools/watermelon-extension](https://reporoster.com/forks/watermelontools/watermelon-extension)](https://github.com/watermelontools/watermelon-extension/network/members)
 
 ---
 
