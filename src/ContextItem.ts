@@ -2,6 +2,8 @@ import * as vscode from "vscode";
 import path = require("path");
 export class ContextItem extends vscode.TreeItem {
   children: any;
+  iconPath: vscode.TreeItem["iconPath"];
+
   constructor(
     public readonly label: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
@@ -20,31 +22,26 @@ export class ContextItem extends vscode.TreeItem {
     this.logo = logo;
     this.elementType = elementType;
     this.metadata = metadata;
-  }
 
-  iconPath =
-    this.logo === undefined
-      ? undefined
-      : this.logo?.includes("http")
-      ? vscode.Uri.parse(this.logo)
-      : {
-          light: path.join(
-            __filename,
-            "..",
-            "..",
-            "images",
-            "logos",
-            `${this.logo ? this.logo : "wmbw_bold_fill"}.svg`
-          ),
-          dark: path.join(
-            __filename,
-            "..",
-            "..",
-            "images",
-            "logos",
-            `${this.logo ? this.logo : "wmbw_bold_fill"}.svg`
-          ),
-        };
+    if (this.logo === undefined) {
+      this.iconPath = undefined;
+    } else if (this.logo.includes("http")) {
+      this.iconPath = vscode.Uri.parse(this.logo);
+    } else {
+      const iconFile = path.join(
+        __filename,
+        "..",
+        "..",
+        "images",
+        "logos",
+        `${this.logo ? this.logo : "wmbw_bold_fill"}.svg`
+      );
+      this.iconPath = {
+        light: vscode.Uri.file(iconFile),
+        dark: vscode.Uri.file(iconFile),
+      };
+    }
+  }
 
   contextValue = this.elementType;
 }

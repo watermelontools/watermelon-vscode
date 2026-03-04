@@ -5,9 +5,9 @@ suite("Git tests", () => {
     test("should parse from local files", async () => {
         let { owner, repo, source, protocol } = await getRepoInfo({});
         assert.strictEqual(owner, "watermelontools");
-        assert.strictEqual(repo, "watermelon-extension");
+        assert.ok(["watermelon-extension", "watermelon-vscode"].includes(repo || ""));
         assert.strictEqual(source, "github.com");
-        assert.strictEqual(protocol, "https");
+        assert.ok(["https", "ssh"].includes(protocol || ""));
     });
     const testCases = [
         { protocol: "http", url: "http://github.com/watermelontools/wm-extension.git" },

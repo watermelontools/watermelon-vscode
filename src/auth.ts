@@ -2,6 +2,7 @@ import {
   authentication,
   AuthenticationProvider,
   AuthenticationProviderAuthenticationSessionsChangeEvent,
+  AuthenticationProviderSessionOptions,
   AuthenticationSession,
   Disposable,
   Event,
@@ -91,7 +92,7 @@ export class WatermelonAuthenticationProvider
 
     const previousToken = await this.currentToken;
     const previousEmail = await this.currentEmail;
-    const session = (await this.getSessions())[0];
+    const session = (await this.getSessions(undefined, {}))[0];
 
     if (session?.accessToken && !previousToken) {
       added.push(session);
@@ -127,8 +128,9 @@ export class WatermelonAuthenticationProvider
 
   // This function is called first when `vscode.authentication.getSession is called.
   async getSessions(
-    _scopes?: string[]
-  ): Promise<readonly AuthenticationSession[]> {
+    _scopes: readonly string[] | undefined,
+    _options: AuthenticationProviderSessionOptions
+  ): Promise<AuthenticationSession[]> {
     this.ensureInitialized();
     const token = await this.cacheTokenFromStorage();
     const email = await this.cacheEmailFromStorage();
@@ -145,7 +147,9 @@ export class WatermelonAuthenticationProvider
   // - `this.getSessions` returns nothing but `createIfNone` was set to `true` in `vscode.authentication.getSessions`
   // - `vscode.authentication.getSessions` was called with `forceNewSession: true`
   // - The end user initiates the "silent" auth flow via the Accounts menu
-  async createSession(_scopes: string[]): Promise<AuthenticationSession> {
+  async createSession(
+    _scopes: readonly string[]
+  ): Promise<AuthenticationSession> {
     this.ensureInitialized();
 
     // Don't set `currentToken` here, since we want to fire the proper events in the `checkForUpdates` call
