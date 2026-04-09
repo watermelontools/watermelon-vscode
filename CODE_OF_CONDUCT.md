@@ -1,4 +1,4 @@
-# Watermelon Code of Conduct
+CODE_OF_CONDUCT.md# Watermelon Code of Conduct
 
 ## Our Standards
 
